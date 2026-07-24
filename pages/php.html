@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="lv" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PHP dokumentācija — Documentation Samis</title>
+<link rel="stylesheet" href="../css/style.css" />
+<script>
+  (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
+</script>
+</head>
+<body>
+<div class="bg-glow"></div>
+<div class="bg-grid"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="mark">DS</span>
+    Documentation Samis
+  </div>
+  <div class="topbar-actions">
+    <a class="btn-back" href="../index.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M5 12h14"/></svg>
+      Kategorijas
+    </a>
+    <button class="icon-btn" id="theme-toggle" title="Pārslēgt tēmu" aria-label="Pārslēgt tēmu">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="doc-shell">
+  <aside class="doc-sidebar">
+    <div class="doc-sidebar-group">
+      <h4>Pamati</h4>
+      <a href="#ievads" class="active"><span class="bullet"></span>Ievads PHP</a>
+      <a href="#sintakse"><span class="bullet"></span>Sintakse &amp; tipi</a>
+      <a href="#konstantes"><span class="bullet"></span>Konstantes</a>
+      <a href="#nosacijumi-cikli"><span class="bullet"></span>Nosacījumi &amp; cikli</a>
+      <a href="#masivi"><span class="bullet"></span>Masīvi</a>
+      <a href="#strings"><span class="bullet"></span>String funkcijas</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Praktiski</h4>
+      <a href="#superglobali"><span class="bullet"></span>Superglobālie mainīgie</a>
+      <a href="#sesijas"><span class="bullet"></span>Sesijas &amp; sīkdatnes</a>
+      <a href="#include"><span class="bullet"></span>include / require</a>
+      <a href="#klaudas"><span class="bullet"></span>Kļūdu apstrāde</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>OOP</h4>
+      <a href="#klases"><span class="bullet"></span>Klases &amp; objekti</a>
+      <a href="#mantojums"><span class="bullet"></span>Mantojums</a>
+      <a href="#interfeisi"><span class="bullet"></span>Interfeisi</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Rīki</h4>
+      <a href="#datubaze"><span class="bullet"></span>Datubāzes (PDO)</a>
+      <a href="#composer"><span class="bullet"></span>Composer</a>
+    </div>
+  </aside>
+
+  <main class="doc-main">
+    <div class="doc-breadcrumb">
+      <a href="../index.html">Sākums</a>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span>PHP</span>
+    </div>
+
+    <div class="doc-header">
+      <div class="icon" style="background: var(--c-php-soft); color: var(--c-php);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="12" rx="10" ry="6"/><path d="M8 10.5h1.5a1.5 1.5 0 0 1 0 3H8V9m8 1.5h1.5a1.5 1.5 0 0 1 0 3H16V9m-6 0v6"/></svg>
+      </div>
+      <h1 style="margin-bottom:0;">PHP</h1>
+    </div>
+    <p class="doc-lead">Pilns iesācēja ceļvedis: katrai tēmai — skaidrojums, kāpēc tas vajadzīgs, un pilnībā patstāvīgs koda piemērs, ko var iekopēt un uzreiz palaist.</p>
+
+    <section class="doc-section" id="ievads">
+      <h2>Ievads PHP</h2>
+      <p>PHP ir servera puses skriptvaloda — kods izpildās <strong>serverī</strong>, pirms rezultāts (parasti HTML) tiek nosūtīts apmeklētāja pārlūkam. Apmeklētājs pats PHP kodu nekad neredz, tikai gala rezultātu. Tā ir viena no visizplatītākajām valodām web izstrādē un darbina arī WordPress.</p>
+      <p><strong>Kā palaist PHP kodu savā datorā (izvēlies vienu no diviem):</strong></p>
+      <pre class="code-block"><span class="lang">text</span><code>1. Vienkāršākais veids — iebūvētais PHP serveris:
+   Instalē PHP (php.net) → izveido failu index.php ar kodu →
+   terminālī tajā pašā mapē palaid: php -S localhost:8000
+   → atver pārlūkā http://localhost:8000
+
+2. Vai izmanto gatavu vidi: XAMPP / Local / Laragon —
+   tie uzreiz iekļauj PHP + MySQL + serveri vienā instalācijā.</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Visi šīs lapas piemēri sākas ar <code>&lt;?php</code> — tieši tā jāsāk jebkurš <code>.php</code> fails, lai serveris zinātu, kur sākas PHP kods (pretstatā parastam HTML).</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="sintakse">
+      <h2>Sintakse &amp; tipi</h2>
+      <p>PHP mainīgie vienmēr sākas ar <code>$</code> un tiem nav jānorāda tips iepriekš. Katra rinda beidzas ar semikolu <code>;</code>. Pamata tipi: <code>string</code> (teksts), <code>int</code>/<code>float</code> (skaitļi), <code>bool</code> (true/false), <code>array</code> (masīvs).</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-fn">$vards</span> = <span class="tok-str">"Anna"</span>;
+<span class="tok-fn">$vecums</span> = 25;
+<span class="tok-fn">$aktivs</span> = <span class="tok-kw">true</span>;
+
+<span class="tok-kw">function</span> <span class="tok-fn">sveiciens</span>(<span class="tok-kw">string</span> <span class="tok-fn">$vards</span>): <span class="tok-kw">string</span> {
+    <span class="tok-kw">return</span> <span class="tok-str">"Sveiks, {$vards}!"</span>;
+}
+
+<span class="tok-kw">echo</span> <span class="tok-fn">sveiciens</span>(<span class="tok-fn">$vards</span>); <span class="tok-com">// izvada: Sveiks, Anna!</span>
+<span class="tok-kw">echo</span> <span class="tok-fn">gettype</span>(<span class="tok-fn">$vecums</span>);   <span class="tok-com">// izvada: integer</span></code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>"Sveiks, {$vards}!"</code> — teksts pēdiņās (dubultajās) automātiski ievieto mainīgo vērtību. Vienpēdiņu tekstā (<code>'...'</code>) tas nenotiek — <code>$vards</code> tur paliktu kā burtisks teksts.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="konstantes">
+      <h2>Konstantes</h2>
+      <p>Konstante ir vērtība, kas pēc definēšanas nekad nemainās visa skripta izpildes laikā — atšķirībā no mainīgā, to nevar vēlāk pārrakstīt. Noder iestatījumiem, konfigurācijas vērtībām un "burtiskiem" skaitļiem, kuriem vēlies aprakstošu nosaukumu.</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-kw">define</span>(<span class="tok-str">'SITE_NAME'</span>, <span class="tok-str">'Mana Vietne'</span>);
+<span class="tok-kw">const</span> MAX_MEGINAJUMI = 3;
+
+<span class="tok-kw">echo</span> SITE_NAME;       <span class="tok-com">// izvada: Mana Vietne</span>
+<span class="tok-kw">echo</span> MAX_MEGINAJUMI;  <span class="tok-com">// izvada: 3</span>
+
+<span class="tok-com">// Mēģinājums mainīt konstanti izraisītu kļūdu:</span>
+<span class="tok-com">// SITE_NAME = 'Cits nosaukums'; // Fatal error</span></code></pre>
+    </section>
+
+    <section class="doc-section" id="nosacijumi-cikli">
+      <h2>Nosacījumi &amp; cikli</h2>
+      <p>Tāpat kā citās valodās, <code>if</code>/<code>elseif</code>/<code>else</code> ļauj pieņemt lēmumus, bet cikli (<code>for</code>, <code>foreach</code>, <code>while</code>) atkārto kodu. <code>foreach</code> ir īpaši ērts masīviem — PHP to izmanto biežāk nekā klasisko <code>for</code>.</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-fn">$vecums</span> = 16;
+
+<span class="tok-kw">if</span> (<span class="tok-fn">$vecums</span> >= 18) {
+    <span class="tok-kw">echo</span> <span class="tok-str">"Pieaugušais"</span>;
+} <span class="tok-kw">elseif</span> (<span class="tok-fn">$vecums</span> >= 13) {
+    <span class="tok-kw">echo</span> <span class="tok-str">"Pusaudzis"</span>; <span class="tok-com">// šis izpildīsies</span>
+} <span class="tok-kw">else</span> {
+    <span class="tok-kw">echo</span> <span class="tok-str">"Bērns"</span>;
+}
+
+<span class="tok-kw">echo</span> <span class="tok-str">"\n---\n"</span>;
+
+<span class="tok-kw">for</span> (<span class="tok-fn">$i</span> = 0; <span class="tok-fn">$i</span> < 5; <span class="tok-fn">$i</span>++) {
+    <span class="tok-kw">echo</span> <span class="tok-fn">$i</span> . <span class="tok-str">" "</span>; <span class="tok-com">// 0 1 2 3 4</span>
+}
+
+<span class="tok-kw">echo</span> <span class="tok-str">"\n---\n"</span>;
+
+<span class="tok-fn">$i</span> = 0;
+<span class="tok-kw">while</span> (<span class="tok-fn">$i</span> < 3) {
+    <span class="tok-kw">echo</span> <span class="tok-str">"Mēģinājums "</span> . <span class="tok-fn">$i</span> . <span class="tok-str">"\n"</span>;
+    <span class="tok-fn">$i</span>++;
+}</code></pre>
+      <p>Salīdzinot vērtības, <code>===</code> pārbauda arī tipu, ne tikai vērtību — <code>"5" == 5</code> ir <code>true</code>, bet <code>"5" === 5</code> ir <code>false</code>. Droši ieteicams vienmēr izmantot <code>===</code>.</p>
+    </section>
+
+    <section class="doc-section" id="masivi">
+      <h2>Masīvi</h2>
+      <p>PHP masīvi var būt <strong>indeksēti</strong> (numurēti automātiski, sākot no 0) vai <strong>asociatīvi</strong> (paši nosauc atslēgas, kā "vārdnīca"). <code>foreach</code> iet cauri jebkuram no tiem.</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-com">// Indeksēts masīvs</span>
+<span class="tok-fn">$augli</span> = [<span class="tok-str">"ābols"</span>, <span class="tok-str">"banāns"</span>, <span class="tok-str">"apelsīns"</span>];
+
+<span class="tok-kw">foreach</span> (<span class="tok-fn">$augli</span> <span class="tok-kw">as</span> <span class="tok-fn">$auglis</span>) {
+    <span class="tok-kw">echo</span> <span class="tok-fn">$auglis</span> . <span class="tok-str">"\n"</span>;
+}
+
+<span class="tok-com">// Asociatīvs masīvs</span>
+<span class="tok-fn">$lietotajs</span> = [
+    <span class="tok-str">"vards"</span> => <span class="tok-str">"Kārlis"</span>,
+    <span class="tok-str">"vecums"</span> => 30,
+];
+
+<span class="tok-kw">foreach</span> (<span class="tok-fn">$lietotajs</span> <span class="tok-kw">as</span> <span class="tok-fn">$atslega</span> => <span class="tok-fn">$vertiba</span>) {
+    <span class="tok-kw">echo</span> <span class="tok-str">"{$atslega}: {$vertiba}\n"</span>;
+}
+<span class="tok-com">// vards: Kārlis
+// vecums: 30</span>
+
+<span class="tok-kw">echo</span> <span class="tok-fn">count</span>(<span class="tok-fn">$augli</span>); <span class="tok-com">// 3 — elementu skaits</span></code></pre>
+    </section>
+
+    <section class="doc-section" id="strings">
+      <h2>String funkcijas</h2>
+      <p>PHP piedāvā simtiem iebūvētu funkciju teksta apstrādei — biežāk lietotās:</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-kw">echo</span> <span class="tok-fn">strlen</span>(<span class="tok-str">"Sveiki"</span>) . <span class="tok-str">"\n"</span>;                      <span class="tok-com">// 6 — garums</span>
+<span class="tok-kw">echo</span> <span class="tok-fn">str_replace</span>(<span class="tok-str">"a"</span>, <span class="tok-str">"o"</span>, <span class="tok-str">"banāns"</span>) . <span class="tok-str">"\n"</span>;      <span class="tok-com">// "bonāns"</span>
+<span class="tok-kw">echo</span> <span class="tok-fn">strtoupper</span>(<span class="tok-str">"sveiki"</span>) . <span class="tok-str">"\n"</span>;                <span class="tok-com">// "SVEIKI"</span>
+
+<span class="tok-fn">$dalas</span> = <span class="tok-fn">explode</span>(<span class="tok-str">","</span>, <span class="tok-str">"a,b,c"</span>);
+<span class="tok-fn">print_r</span>(<span class="tok-fn">$dalas</span>);                                    <span class="tok-com">// ["a", "b", "c"]</span>
+
+<span class="tok-kw">echo</span> <span class="tok-fn">implode</span>(<span class="tok-str">", "</span>, [<span class="tok-str">"a"</span>, <span class="tok-str">"b"</span>, <span class="tok-str">"c"</span>]) . <span class="tok-str">"\n"</span>;      <span class="tok-com">// "a, b, c"</span>
+<span class="tok-kw">echo</span> <span class="tok-fn">trim</span>(<span class="tok-str">"  teksts  "</span>) . <span class="tok-str">"\n"</span>;                   <span class="tok-com">// "teksts" (bez atstarpēm)</span></code></pre>
+    </section>
+
+    <section class="doc-section" id="superglobali">
+      <h2>Superglobālie mainīgie</h2>
+      <p>Iebūvēti masīvi, kas pieejami <strong>jebkurā</strong> faila vietā (bez īpašas importēšanas) un satur ievaddatus no lietotāja vai pārlūka:</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-com">// URL: piemers.lv/lapa.php?id=5</span>
+<span class="tok-fn">$id</span> = <span class="tok-fn">$_GET</span>[<span class="tok-str">'id'</span>] ?? <span class="tok-kw">null</span>; <span class="tok-com">// "5"</span>
+
+<span class="tok-com">// Nosūtīta veidlapa ar method="post"</span>
+<span class="tok-fn">$epasts</span> = <span class="tok-fn">$_POST</span>[<span class="tok-str">'epasts'</span>] ?? <span class="tok-kw">null</span>;
+
+<span class="tok-com">// Dati, kas saglabāti starp lapām (skat. nākamo sadaļu)</span>
+<span class="tok-fn">$lietotaja_id</span> = <span class="tok-fn">$_SESSION</span>[<span class="tok-str">'user_id'</span>] ?? <span class="tok-kw">null</span>;
+
+<span class="tok-kw">echo</span> <span class="tok-str">"ID no URL: "</span> . (<span class="tok-fn">$id</span> ?? <span class="tok-str">'nav norādīts'</span>);</code></pre>
+      <p><code>??</code> ir "null coalescing" operators — atgriež kreiso pusi, ja tā nav <code>null</code>, citādi labo. Tas pasargā no kļūdas, ja parametrs vispār nav nosūtīts.</p>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Šie dati nāk tieši no lietotāja — nekad neuzticies tiem tieši. Vienmēr pārbaudi/attīri ar <code>htmlspecialchars()</code> pirms izvadīšanas HTML, lai novērstu XSS uzbrukumus.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="sesijas">
+      <h2>Sesijas &amp; sīkdatnes</h2>
+      <p><strong>Sesija</strong> saglabā datus serverī starp lapas ielādēm (piem., vai lietotājs ir pieteicies) — jāsāk ar <code>session_start()</code> pašā faila sākumā, pirms jebkāda izvada. <strong>Sīkdatne</strong> (cookie) tā vietā saglabā nelielu datu daudzumu pašā lietotāja pārlūkā.</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-fn">session_start</span>(); <span class="tok-com">// vienmēr pirmā rinda, pirms echo/HTML</span>
+
+<span class="tok-fn">$_SESSION</span>[<span class="tok-str">'user_id'</span>] = 5;
+<span class="tok-kw">echo</span> <span class="tok-str">"Saglabāts sesijā: "</span> . <span class="tok-fn">$_SESSION</span>[<span class="tok-str">'user_id'</span>];
+
+<span class="tok-com">// Sīkdatne, derīga 1 stundu (3600 sekundes)</span>
+<span class="tok-fn">setcookie</span>(<span class="tok-str">'valoda'</span>, <span class="tok-str">'lv'</span>, time() + 3600);</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Ja <code>session_start()</code> izsauc pēc tam, kad kaut kas jau izvadīts (pat viena atstarpe pirms <code>&lt;?php</code>), PHP izmet kļūdu "headers already sent" — tas ir viens no biežākajiem iesācēju stiķiem.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="include">
+      <h2>include / require</h2>
+      <p>Ielādē citu PHP failu tieši pašreizējā vietā — noder koda sadalīšanai vairākos failos (galvene, kājene, konfigurācija), lai neatkārtotu vienu un to pašu kodu katrā lapā. <code>require</code> apstādina visu skriptu, ja fails nav atrasts; <code>include</code> tikai izmet brīdinājumu un turpina tālāk.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// config.php</span>
+&lt;?php
+<span class="tok-fn">$site_name</span> = <span class="tok-str">"Mana Vietne"</span>;
+
+<span class="tok-com">// index.php</span>
+&lt;?php
+<span class="tok-fn">require_once</span> <span class="tok-str">'config.php'</span>; <span class="tok-com">// "once" — ielādē tikai vienreiz, pat ja izsauc vairākkārt</span>
+
+<span class="tok-kw">echo</span> <span class="tok-str">"Laipni lūdzam vietnē "</span> . <span class="tok-fn">$site_name</span>;</code></pre>
+    </section>
+
+    <section class="doc-section" id="klaudas">
+      <h2>Kļūdu apstrāde</h2>
+      <p><code>try/catch</code> ļauj "noķert" kļūdu, nevis ļaut tai apstādināt visu skriptu ar fatālu paziņojumu. Kļūdu var pašam izraisīt ar <code>throw</code>, kad kods nonāk situācijā, kuru negribi turpināt apstrādāt.</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-kw">function</span> <span class="tok-fn">dalit</span>(<span class="tok-kw">float</span> <span class="tok-fn">$a</span>, <span class="tok-kw">float</span> <span class="tok-fn">$b</span>): <span class="tok-kw">float</span> {
+    <span class="tok-kw">if</span> (<span class="tok-fn">$b</span> === 0.0) {
+        <span class="tok-kw">throw new</span> <span class="tok-fn">Exception</span>(<span class="tok-str">"Nevar dalīt ar nulli"</span>);
+    }
+    <span class="tok-kw">return</span> <span class="tok-fn">$a</span> / <span class="tok-fn">$b</span>;
+}
+
+<span class="tok-kw">try</span> {
+    <span class="tok-kw">echo</span> <span class="tok-fn">dalit</span>(10, 0);
+} <span class="tok-kw">catch</span> (<span class="tok-fn">Exception</span> <span class="tok-fn">$e</span>) {
+    <span class="tok-kw">echo</span> <span class="tok-str">"Kļūda: "</span> . <span class="tok-fn">$e</span>->getMessage();
+} <span class="tok-kw">finally</span> {
+    <span class="tok-kw">echo</span> <span class="tok-str">"\nAprēķins pabeigts."</span>;
+}
+<span class="tok-com">// izvada: "Kļūda: Nevar dalīt ar nulli" tad "Aprēķins pabeigts."</span></code></pre>
+    </section>
+
+    <section class="doc-section" id="klases">
+      <h2>Klases &amp; objekti</h2>
+      <p>Klase apraksta objekta struktūru (kādas īpašības un funkcijas tam būs), objekts ir konkrēta šīs klases "kopija" (instance). <code>__construct</code> izpildās automātiski, veidojot jaunu objektu ar <code>new</code>.</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-kw">class</span> <span class="tok-fn">Lietotajs</span> {
+    <span class="tok-kw">public function</span> <span class="tok-fn">__construct</span>(
+        <span class="tok-kw">private string</span> <span class="tok-fn">$vards</span>,
+        <span class="tok-kw">private int</span> <span class="tok-fn">$vecums</span>
+    ) {}
+
+    <span class="tok-kw">public function</span> <span class="tok-fn">sveicies</span>(): <span class="tok-kw">string</span> {
+        <span class="tok-kw">return</span> <span class="tok-str">"Sveiks, es esmu {$this->vards} un man ir {$this->vecums} gadi"</span>;
+    }
+}
+
+<span class="tok-fn">$lietotajs</span> = <span class="tok-kw">new</span> <span class="tok-fn">Lietotajs</span>(<span class="tok-str">"Anna"</span>, 25);
+<span class="tok-kw">echo</span> <span class="tok-fn">$lietotajs</span>->sveicies();
+<span class="tok-com">// "Sveiks, es esmu Anna un man ir 25 gadi"</span></code></pre>
+      <p>Konstruktora argumenti ar <code>private</code>/<code>public</code> priekšā (PHP 8+) automātiski izveido un aizpilda attiecīgās klases īpašības — bez šī saīsinājuma vajadzētu rakstīt <code>$this-&gt;vards = $vards;</code> katram parametram atsevišķi.</p>
+    </section>
+
+    <section class="doc-section" id="mantojums">
+      <h2>Mantojums</h2>
+      <p>Klase var pārmantot citas klases funkcionalitāti ar <code>extends</code> — noder, kad vairākām klasēm ir kopīga bāze. <code>abstract</code> klase pati nevar tikt izveidota (<code>new</code>), tā ir tikai "veidne" citām klasēm.</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-kw">abstract class</span> <span class="tok-fn">Dzivnieks</span> {
+    <span class="tok-kw">public function</span> <span class="tok-fn">__construct</span>(<span class="tok-kw">protected string</span> <span class="tok-fn">$vards</span>) {}
+
+    <span class="tok-kw">abstract public function</span> <span class="tok-fn">skana</span>(): <span class="tok-kw">string</span>;
+
+    <span class="tok-kw">public function</span> <span class="tok-fn">apraksts</span>(): <span class="tok-kw">string</span> {
+        <span class="tok-kw">return</span> <span class="tok-str">"{$this->vards} saka: "</span> . <span class="tok-kw">$this</span>->skana();
+    }
+}
+
+<span class="tok-kw">class</span> <span class="tok-fn">Suns</span> <span class="tok-kw">extends</span> <span class="tok-fn">Dzivnieks</span> {
+    <span class="tok-kw">public function</span> <span class="tok-fn">skana</span>(): <span class="tok-kw">string</span> {
+        <span class="tok-kw">return</span> <span class="tok-str">"Vau!"</span>;
+    }
+}
+
+<span class="tok-fn">$suns</span> = <span class="tok-kw">new</span> <span class="tok-fn">Suns</span>(<span class="tok-str">"Reksis"</span>);
+<span class="tok-kw">echo</span> <span class="tok-fn">$suns</span>->apraksts(); <span class="tok-com">// "Reksis saka: Vau!"</span></code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Dod priekšroku <strong>composition over inheritance</strong> ("sastāvs pār mantojumu") — ja hierarhija kļūst dziļa un sarežģīta, interfeisi un mazākas, koplietojamas klases bieži ir elastīgāks risinājums.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="interfeisi">
+      <h2>Interfeisi</h2>
+      <p>Interfeiss apraksta, <strong>kādas funkcijas</strong> klasei jāievieš, bet ne to, kā tās strādā iekšēji. Tas ļauj dažādām, nesaistītām klasēm strādāt savstarpēji aizvietojami — jebkur, kur sagaida <code>Maksajums</code>, var padot jebkuru klasi, kas šo interfeisu ievieš.</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-kw">interface</span> <span class="tok-fn">Maksajums</span> {
+    <span class="tok-kw">public function</span> <span class="tok-fn">apstradat</span>(<span class="tok-kw">float</span> <span class="tok-fn">$summa</span>): <span class="tok-kw">bool</span>;
+}
+
+<span class="tok-kw">class</span> <span class="tok-fn">KartesMaksajums</span> <span class="tok-kw">implements</span> <span class="tok-fn">Maksajums</span> {
+    <span class="tok-kw">public function</span> <span class="tok-fn">apstradat</span>(<span class="tok-kw">float</span> <span class="tok-fn">$summa</span>): <span class="tok-kw">bool</span> {
+        <span class="tok-kw">echo</span> <span class="tok-str">"Apstrādā {$summa}€ ar karti\n"</span>;
+        <span class="tok-kw">return true</span>;
+    }
+}
+
+<span class="tok-kw">function</span> <span class="tok-fn">veiktPirkumu</span>(<span class="tok-fn">Maksajums</span> <span class="tok-fn">$metode</span>, <span class="tok-kw">float</span> <span class="tok-fn">$summa</span>): <span class="tok-kw">void</span> {
+    <span class="tok-fn">$metode</span>->apstradat(<span class="tok-fn">$summa</span>);
+}
+
+<span class="tok-fn">veiktPirkumu</span>(<span class="tok-kw">new</span> <span class="tok-fn">KartesMaksajums</span>(), 49.99);
+<span class="tok-com">// "Apstrādā 49.99€ ar karti"</span></code></pre>
+    </section>
+
+    <section class="doc-section" id="datubaze">
+      <h2>Datubāzes (PDO)</h2>
+      <p>PDO ir vienota saskarne darbam ar dažādām datubāzēm (MySQL, PostgreSQL, SQLite) — kods paliek līdzīgs, nomainot tikai savienojuma rindu. Zemāk pilns piemērs SQLite datubāzei, ko var izmēģināt uzreiz bez servera iestatīšanas (SQLite ir viens fails, iebūvēts PHP):</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-com">// Izveido datubāzi atmiņā un tabulu (viss vienā failā, bez servera)</span>
+<span class="tok-fn">$pdo</span> = <span class="tok-kw">new</span> <span class="tok-fn">PDO</span>(<span class="tok-str">'sqlite::memory:'</span>);
+<span class="tok-fn">$pdo</span>->exec(<span class="tok-str">'CREATE TABLE lietotaji (id INTEGER PRIMARY KEY, vards TEXT)'</span>);
+<span class="tok-fn">$pdo</span>->exec(<span class="tok-str">"INSERT INTO lietotaji (vards) VALUES ('Anna')"</span>);
+
+<span class="tok-com">// Drošs vaicājums ar prepared statement</span>
+<span class="tok-fn">$stmt</span> = <span class="tok-fn">$pdo</span>->prepare(<span class="tok-str">'SELECT * FROM lietotaji WHERE id = ?'</span>);
+<span class="tok-fn">$stmt</span>->execute([1]);
+<span class="tok-fn">$lietotajs</span> = <span class="tok-fn">$stmt</span>->fetch();
+
+<span class="tok-kw">echo</span> <span class="tok-fn">$lietotajs</span>[<span class="tok-str">'vards'</span>]; <span class="tok-com">// "Anna"</span></code></pre>
+      <p>Reālam projektam ar MySQL savienojuma rinda izskatās šādi:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">$pdo</span> = <span class="tok-kw">new</span> <span class="tok-fn">PDO</span>(<span class="tok-str">"mysql:host=localhost;dbname=veikals"</span>, <span class="tok-str">"root"</span>, <span class="tok-str">"secret"</span>);</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Vienmēr izmanto <strong>prepared statements</strong> (kā piemērā, ar <code>?</code> vietturiem) — nekad nesalīmē lietotāja ievadi tieši SQL vaicājuma tekstā, jo tas atver ceļu SQL injection uzbrukumiem.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="composer">
+      <h2>Composer</h2>
+      <p>Composer ir PHP pakotņu pārvaldnieks — ļauj instalēt un pārvaldīt gatavas bibliotēkas, nevis rakstīt visu no nulles. Instalētās bibliotēkas nonāk <code>vendor/</code> mapē un tiek automātiski ielādētas.</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Izveido jaunu projektu ar composer.json failu</span>
+composer init
+
+<span class="tok-com"># Instalē konkrētu bibliotēku (piem., loga rakstīšanai)</span>
+composer require monolog/monolog
+
+<span class="tok-com"># Instalē visas atkarības, kas jau uzskaitītas composer.json</span>
+composer install</code></pre>
+      <p>Pēc instalēšanas bibliotēku izmanto, pievienojot vienu rindu koda sākumā:</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-fn">require</span> <span class="tok-str">'vendor/autoload.php'</span>; <span class="tok-com">// ielādē visas Composer bibliotēkas</span></code></pre>
+    </section>
+
+    <div class="doc-pager">
+      <a href="javascript.html"><span class="lbl">← Iepriekšējais</span>JavaScript</a>
+      <a class="to-next" href="web-izveide.html"><span class="lbl">Tālāk →</span>Web izveide</a>
+    </div>
+  </main>
+</div>
+
+<script src="../js/theme.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

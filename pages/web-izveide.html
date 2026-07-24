@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="lv" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>IP, DNS & SSL — Documentation Samis</title>
+<link rel="stylesheet" href="../css/style.css" />
+<script>
+  (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
+</script>
+</head>
+<body>
+<div class="bg-glow"></div>
+<div class="bg-grid"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="mark">DS</span>
+    Documentation Samis
+  </div>
+  <div class="topbar-actions">
+    <a class="btn-back" href="../index.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M5 12h14"/></svg>
+      Kategorijas
+    </a>
+    <button class="icon-btn" id="theme-toggle" title="Pārslēgt tēmu" aria-label="Pārslēgt tēmu">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="doc-shell">
+  <aside class="doc-sidebar">
+    <div class="doc-sidebar-group">
+      <h4>⚠️ Kļūdu risinājumi</h4>
+      <a href="#err-overview" class="active"><span class="bullet"></span>Kur meklēt vainīgo</a>
+      <a href="#err-nxdomain"><span class="bullet"></span>DNS_PROBE_FINISHED_NXDOMAIN</a>
+      <a href="#err-hosts-fix"><span class="bullet"></span>Hosts fails (ātrais labojums)</a>
+      <a href="#err-connection"><span class="bullet"></span>CONNECTION_REFUSED / TIMED_OUT</a>
+      <a href="#err-ssl"><span class="bullet"></span>SSL kļūdas</a>
+      <a href="#err-redirect"><span class="bullet"></span>TOO_MANY_REDIRECTS</a>
+      <a href="#err-5xx"><span class="bullet"></span>502 / 503 / 504</a>
+      <a href="#err-panel-welcome"><span class="bullet"></span>Redzu paneļa sveiciena lapu</a>
+      <a href="#err-http-codes"><span class="bullet"></span>HTTP statusa kodi</a>
+      <a href="#err-cors"><span class="bullet"></span>CORS kļūda</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>IP &amp; DNS pamati</h4>
+      <a href="#ip-basics"><span class="bullet"></span>Kas ir IP adrese</a>
+      <a href="#ports"><span class="bullet"></span>Porti</a>
+      <a href="#dns-basics"><span class="bullet"></span>Kas ir DNS</a>
+      <a href="#dns-records"><span class="bullet"></span>DNS ieraksti (A, CNAME, MX...)</a>
+      <a href="#www-vs-non"><span class="bullet"></span>www vs bez-www</a>
+      <a href="#cdn-basics"><span class="bullet"></span>CDN īsumā</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>SSL / HTTPS</h4>
+      <a href="#ssl-basics"><span class="bullet"></span>Kas ir SSL/HTTPS</a>
+      <a href="#ssl-certs"><span class="bullet"></span>Sertifikāti īsumā</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Praktiski</h4>
+      <a href="#tools"><span class="bullet"></span>Noderīgas komandas</a>
+    </div>
+  </aside>
+
+  <main class="doc-main">
+    <div class="doc-breadcrumb">
+      <a href="../index.html">Sākums</a>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span>IP, DNS &amp; SSL</span>
+    </div>
+
+    <div class="doc-header">
+      <div class="icon" style="background: var(--c-web-soft); color: var(--c-web);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10 15 15 0 0 1 4-10z"/></svg>
+      </div>
+      <h1 style="margin-bottom:0;">IP, DNS &amp; SSL</h1>
+    </div>
+    <p class="doc-lead">Pilns iesācēja ceļvedis: kas ir IP adrese, DNS un SSL, un ko darīt, kad kaut kas nestrādā — katrai tēmai pilns skaidrojums un komandas, ko var iekopēt un uzreiz palaist.</p>
+
+    <section class="doc-section" id="err-overview">
+      <h2>Kur meklēt vainīgo</h2>
+      <p>Kad pārlūkā parādās kļūda, pirmais un svarīgākais solis ir noskaidrot, <strong>kurā slānī</strong> problēma radusies — jo katrs slānis prasa pavisam citu risinājumu. Ceļš no domēna ieraksta līdz redzamai vietnei iet cauri četriem posmiem: (1) <strong>DNS</strong> — domēns jāpārvērš IP adresē; (2) <strong>savienojums</strong> — pārlūkam jāizveido tīkla savienojums ar šo IP; (3) <strong>šifrēšana (TLS/SSL)</strong> — jāizveido drošs kanāls; (4) <strong>serveris/aplikācija</strong> — serverim jāatgriež pati lapa. Kļūdas ziņojums parasti pasaka, kurā no šiem posmiem process apstājās.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>DNS_PROBE_FINISHED_NXDOMAIN</h4><p>Domēns vispār neeksistē DNS acīs — apstājās posmā (1).</p></div>
+        <div class="doc-mini-card"><h4>CONNECTION_REFUSED / TIMED_OUT</h4><p>Serveris nesasniedzams vai neatbild — apstājās posmā (2).</p></div>
+        <div class="doc-mini-card"><h4>SSL_PROTOCOL_ERROR / CERT_*</h4><p>Problēma ar HTTPS/sertifikātu — apstājās posmā (3).</p></div>
+        <div class="doc-mini-card"><h4>502 / 503 / 504</h4><p>Serveris strādā, bet backend — nē — apstājās posmā (4).</p></div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="err-nxdomain">
+      <h2>DNS_PROBE_FINISHED_NXDOMAIN</h2>
+      <p>Šī Chrome/Edge kļūda nozīmē, ka pārlūks mēģināja izšķirt (atrisināt) domēnu, taču DNS sistēma atbildēja, ka tāda domēna <strong>vispār nav</strong> (NXDOMAIN = "Non-Existent Domain"). Svarīgi saprast: tā <em>nav</em> servera problēma — process apstājās vēl pirms pārlūks vispār mēģināja pieslēgties jebkuram serverim, tāpēc servera pusē neko labot nevar, kamēr nav atrisināts pats DNS ieraksts.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>📅 Domēns nav reģistrēts / beidzies</h4><p>Reģistrācijas termiņš beidzies vai domēns vēl nemaz nav iegādāts.</p></div>
+        <div class="doc-mini-card"><h4>⏳ DNS vēl nav iestatīts</h4><p>Jaunam domēnam/serverim A/NS ieraksti vēl nav pievienoti vai nav propagējušies.</p></div>
+        <div class="doc-mini-card"><h4>✏️ Pareizrakstības kļūda</h4><p>Pārbaudi, vai domēna nosaukums ierakstīts pareizi — pārsteidzoši bieži tas ir vainīgais.</p></div>
+        <div class="doc-mini-card"><h4>💻 Lokāla DNS/hosts problēma</h4><p>Vecs kešotais ieraksts vai nepareiza rinda operētājsistēmas <code>hosts</code> failā.</p></div>
+      </div>
+      <p>Ieteicamā diagnostikas secība — izpildi terminālī (Windows: CMD vai PowerShell; Mac/Linux: Terminal) pēc kārtas, nomainot <code>piemers.lv</code> uz savu domēnu:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># 1. Vai domēns vispār reģistrēts un derīgs</span>
+whois piemers.lv
+
+<span class="tok-com"># 2. Vai domēnam iestatīti nameserveri</span>
+dig piemers.lv NS
+
+<span class="tok-com"># 3. Vai eksistē A ieraksts (IP adrese)</span>
+dig piemers.lv A
+
+<span class="tok-com"># 4. Pamēģini citu DNS resolveri, lai izslēgtu sava ISP problēmu</span>
+dig @8.8.8.8 piemers.lv
+
+<span class="tok-com"># 5. Notīri lokālo DNS kešu (Windows)</span>
+ipconfig /flushdns</code></pre>
+      <p>Ja 4. solī, vaicājot tieši Google publiskajam resolverim (<code>8.8.8.8</code>), joprojām nav atbildes — problēma nav tavā datorā vai internetā, tā ir pašā domēna DNS konfigurācijā (jāgaida propagācija vai jāpārbauda ieraksti pie reģistrētāja).</p>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Ja <code>dig</code>/<code>nslookup</code> no <strong>cita</strong> tīkla vai ierīces (piem., telefona ar mobilo internetu, nevis WiFi) arī nerāda nekādu ierakstu, tas apstiprina, ka problēma ir DNS/servera pusē, nevis tavā konkrētajā datorā.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="err-hosts-fix">
+      <h2>Hosts fails (ātrais labojums)</h2>
+      <p>Ja zini servera IP adresi, bet DNS vēl nestrādā (piemēram, gaidi propagāciju vai domēns vēl nav pievienots), vari "piespiest" savu datoru izmantot konkrēto IP šim domēnam, apejot DNS pilnībā. Šis paņēmiens maina rezultātu <strong>tikai tavā datorā</strong> — neviens cits apmeklētājs neko neredzēs savādāk, un tas nekādi neietekmē reālo DNS vai serveri.</p>
+      <p><strong>Windows soļi:</strong></p>
+      <pre class="code-block"><span class="lang">cmd</span><code><span class="tok-com">1. Nospied Windows taustiņu, ieraksti "cmd", labais klikšķis uz "Command Prompt" → "Run as administrator"</span>
+<span class="tok-com">2. Ievadi šo komandu, lai atvērtu hosts failu Notepad:</span>
+notepad C:\Windows\System32\drivers\etc\hosts
+
+<span class="tok-com">3. Faila pašās beigās pievieno rindu (nomaini uz savu IP un domēnu):</span>
+81.198.171.19   piemers.lv
+
+<span class="tok-com">4. Saglabā (Ctrl+S), tad notīri DNS kešu un pārbaudi:</span>
+ipconfig /flushdns</code></pre>
+      <p><strong>Mac/Linux soļi:</strong></p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Atver hosts failu ar redaktoru (sudo, jo fails ir aizsargāts)</span>
+sudo nano /etc/hosts
+
+<span class="tok-com"># Pievieno tajā pašā formātā, saglabā ar Ctrl+O, iziet ar Ctrl+X</span>
+81.198.171.19   piemers.lv</code></pre>
+      <p>Pēc saglabāšanas atver pārlūku un ej uz <code>http://piemers.lv</code> — pārlūkam tagad vajadzētu doties tieši uz norādīto IP, apejot DNS vaicājumu pavisam.</p>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><strong>"Access is denied" saglabājot?</strong> Notepad nav atvērts kā administrators — aizver to un atkārto no 1. soļa. <strong>Redzi hostinga paneļa lapu, nevis savu vietni?</strong> Tas ir sagaidāms un normāls nākamais solis — skat. <a href="#err-panel-welcome">"Redzu paneļa sveiciena lapu"</a> zemāk. Kad testēšana pabeigta, <strong>neaizmirsti izdzēst</strong> pievienoto rindu — pretējā gadījumā pēc mēnešiem var rasties mulsinoša situācija, kad tavā datorā vietne izskatās savādāk nekā visiem citiem.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="err-connection">
+      <h2>CONNECTION_REFUSED / TIMED_OUT</h2>
+      <p>Abas šīs kļūdas nozīmē, ka DNS <strong>jau ir atrisinājies</strong> veiksmīgi (domēns pareizi noved pie IP adreses), bet neizdodas izveidot tīkla savienojumu ar pašu serveri. Atšķirība ir <em>kā</em> tieši tas neizdodas:</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>🚫 REFUSED</h4><p>Serveris <strong>aktīvi atsaka</strong> savienojumu — atbild uzreiz ar "nē". Cēlonis: pakalpojums (Nginx/Apache) nav palaists, vai neviens serviss neklausās uz šī porta.</p></div>
+        <div class="doc-mini-card"><h4>⏱️ TIMED_OUT</h4><p>Pieprasījums <strong>pazūd klusumā</strong> — pārlūks gaida un beidzot padodas. Cēlonis: ugunsmūris/drošības grupa klusi nomet paketes, vai IP adrese ir nepareiza/vairs neaktīva.</p></div>
+      </div>
+      <p>Diagnostikas komandas (izpildi serverī pa SSH vai attālināti no sava datora):</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Serverī — vai serviss vispār darbojas un klausās</span>
+sudo systemctl status nginx
+sudo ss -tulpn | grep :443
+
+<span class="tok-com"># No sava datora — vai ports vispār sasniedzams no ārpuses</span>
+telnet piemers.lv 443</code></pre>
+      <p>Ja <code>ss</code> serverī rāda, ka serviss klausās uz porta, bet <code>telnet</code> no ārpuses "karājas" vai atsaka — problēma ir <strong>ugunsmūrī starp tevi un serveri</strong> (servera OS ugunsmūris ar <code>ufw</code>/<code>iptables</code>, vai mākoņa nodrošinātāja drošības grupas noteikumi — pēdējais ir bieži aizmirsta vieta, jo tas atrodas ārpus paša servera konfigurācijas).</p>
+    </section>
+
+    <section class="doc-section" id="err-ssl">
+      <h2>SSL kļūdas</h2>
+      <p><code>ERR_SSL_PROTOCOL_ERROR</code> parādās, kad TCP savienojums ar serveri izveidojas veiksmīgi, bet TLS "sarunas" (handshake, skat. zemāk) neizdodas pabeigt. Biežākais iemesls — pārlūks mēģina runāt HTTPS ar portu vai servisu, kas TLS vispār nesatur (piem., serveris klausās tikai uz parastā HTTP porta 80).</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>🔌 Nepareizs ports</h4><p>HTTPS mēģina savienoties ar portu, kur serveris runā tikai parasto HTTP.</p></div>
+        <div class="doc-mini-card"><h4>🧓 Novecojis TLS</h4><p>Serveris atbalsta tikai novecojušas, jau izslēgtas TLS versijas.</p></div>
+        <div class="doc-mini-card"><h4>🔀 Reverse proxy konflikts</h4><p>Cloudflare/Nginx priekšā sagaida HTTPS, bet backend serveris to nenodrošina.</p></div>
+      </div>
+      <p>Ja kļūda saistīta ar paša sertifikāta <strong>saturu</strong> (<code>NET::ERR_CERT_COMMON_NAME_INVALID</code> — domēns nesakrīt; <code>ERR_CERT_AUTHORITY_INVALID</code> — neuzticams izdevējs; <code>ERR_CERT_DATE_INVALID</code> — beidzies), risinājums aprakstīts sadaļā <a href="#ssl-certs">"Sertifikāti īsumā"</a> zemāk. Ātrai pārbaudei, ko tieši serveris atbild:</p>
+      <pre class="code-block"><span class="lang">bash</span><code>echo | openssl s_client -connect piemers.lv:443 -servername piemers.lv 2>/dev/null | openssl x509 -noout -dates -subject</code></pre>
+      <p>Šī komanda parāda sertifikāta derīguma termiņu un to, kuram domēnam sertifikāts izsniegts — ja domēns šeit nesakrīt ar to, kuru apmeklē pārlūkā, tas ir tieši cēlonis.</p>
+    </section>
+
+    <section class="doc-section" id="err-redirect">
+      <h2>TOO_MANY_REDIRECTS</h2>
+      <p>Šī kļūda nozīmē, ka vietne novirza pati uz sevi bezgalīgā ciklā — pārlūks pēc noteikta skaita pāradresāciju (parasti ap 20) padodas un parāda kļūdu, nevis mēģina bezgalīgi.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>⚙️ WordPress Address/Site Address</h4><p>Iestatījumos viens ir <code>http://</code>, otrs <code>https://</code> — WordPress mēģina pastāvīgi "izlabot" adresi, radot ciklu.</p></div>
+        <div class="doc-mini-card"><h4>☁️ Cloudflare "Flexible" SSL</h4><p>Cloudflare sūta pieprasījumu serverim pa HTTP, bet serveris pats piespiedu kārtā novirza atpakaļ uz HTTPS — Cloudflare to atkal pārtver un cikls turpinās. Risinājums: Cloudflare panelī pārslēgt SSL/TLS režīmu uz "Full" vai "Full (strict)".</p></div>
+        <div class="doc-mini-card"><h4>📄 .htaccess redirect cikls</h4><p>Pretrunīgi vai pārklājoši <code>RewriteRule</code> noteikumi, kas piespiedu kārtā novirza uz HTTPS, paši sevi "ķeksē" bezgalīgi.</p></div>
+      </div>
+      <p>Pirmais solis diagnostikai — pārbaudi, cik reižu un uz kurieni notiek pāradresācija:</p>
+      <pre class="code-block"><span class="lang">bash</span><code>curl -IL https://piemers.lv</code></pre>
+      <p><code>-I</code> parāda tikai galvenes (bez satura), <code>-L</code> seko pāradresācijām — izvadā redzēsi katru soli (<code>301</code>/<code>302</code> un <code>Location:</code> galveni), kas parāda tieši, kur cikls sākas atkārtoties.</p>
+    </section>
+
+    <section class="doc-section" id="err-5xx">
+      <h2>502 / 503 / 504</h2>
+      <p>Šīs kļūdas nozīmē, ka pats serveris <strong>ir</strong> sasniedzams (DNS un savienojums strādā), bet kaut kas nogāja greizi tālāk — parasti backend (PHP-FPM, Node.js process, datubāze) līmenī, nevis pašā tīkla savienojumā.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>502 Bad Gateway</h4><p>Reverse proxy (Nginx) nesaņem derīgu atbildi no backend — visbiežāk nokritis PHP-FPM vai app process.</p></div>
+        <div class="doc-mini-card"><h4>503 Service Unavailable</h4><p>Serveris pārslogots (pārāk daudz vienlaicīgu pieprasījumu) vai apzināti pārslēgts uzturēšanas režīmā.</p></div>
+        <div class="doc-mini-card"><h4>504 Gateway Timeout</h4><p>Backend atbild pārāk lēni — smags datubāzes vaicājums, bezgalīga cilpa kodā vai resursu (RAM/CPU) trūkums.</p></div>
+      </div>
+      <p>Precīzu iemeslu gandrīz vienmēr atklāj servera žurnāli — pieslēdzies pa SSH un skaties tos tiešraidē, kamēr atsvaidzini lapu pārlūkā:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Nginx kļūdu žurnāls tiešraidē</span>
+sudo tail -f /var/log/nginx/error.log
+
+<span class="tok-com"># PHP-FPM statuss — vai process vispār darbojas</span>
+sudo systemctl status php8.1-fpm</code></pre>
+    </section>
+
+    <section class="doc-section" id="err-panel-welcome">
+      <h2>Redzu hostinga paneļa sveiciena lapu, nevis savu vietni</h2>
+      <p>Bieži sastopams scenārijs: domēns (vai hosts failā pievienots ieraksts) pareizi ved uz servera IP, pārlūks veiksmīgi izveido savienojumu — taču tā vietā, lai redzētu paredzēto vietni, parādās hostinga <strong>vadības paneļa</strong> (VestaCP, cPanel, Plesk) noklusējuma "Welcome" lapa, dažkārt ar 301 pāradresāciju uz kaut ko līdzīgu <code>vps-1.piemers.lv</code>.</p>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><strong>Pareizs IP ≠ pareiza vietne.</strong> Viens fizisks serveris var apkalpot desmitiem dažādu domēnu vienlaikus. Kuru tieši vietni rādīt konkrētam pieprasījumam, tīmekļa serveris (Apache/Nginx) izvēlas pēc pieprasījuma <code>Host</code> galvenes — to sauc par <strong>virtual host</strong> mehānismu. Ja šim konkrētajam domēnam serverī vēl nav izveidots atbilstošs ieraksts, serveris vienkārši parāda savu noklusējuma (paneļa) vietni.</p>
+      </div>
+      <p>Risinājuma soļi:</p>
+      <pre class="code-block"><span class="lang">text</span><code>1. Pieslēdzies hostinga vadības panelim (VestaCP/cPanel/Plesk) pārlūkā
+2. Atrodi sadaļu domēnu/Web Domain pārvaldībai
+3. Izveido/pievieno šo konkrēto domēnu kā "Web Domain" tieši šajā kontā
+4. Pārliecinies, ka domēna DocumentRoot norāda uz pareizo mapi ar vietnes failiem
+5. Saglabā izmaiņas un atsvaidzini vietni pārlūkā — efekts parasti redzams uzreiz</code></pre>
+    </section>
+
+    <section class="doc-section" id="err-http-codes">
+      <h2>HTTP statusa kodi</h2>
+      <p>Katra servera atbilde nāk kopā ar trīsciparu kodu, kas pasaka, kas tieši notika — pārlūks (un izstrādātāja rīki) to izmanto, lai izlemtu, kā rīkoties tālāk (rādīt lapu, sekot pāradresācijai, parādīt kļūdu).</p>
+      <pre class="code-block"><span class="lang">text</span><code>200 OK                    → pieprasījums izdevās, šeit ir saturs
+301 Moved Permanently     → resurss pastāvīgi pārvietots (piem., http → https)
+302 Found                 → pagaidu pāradresācija
+403 Forbidden             → serveris saprot pieprasījumu, bet atsaka piekļuvi
+404 Not Found             → šāda adrese/lapa neeksistē
+500 Internal Server Error → neapstrādāta kļūda servera/aplikācijas kodā</code></pre>
+      <p>Kodu var pārbaudīt tieši no komandrindas, neatverot pārlūku — ērti, lai ātri pārbaudītu, ko serveris atbild:</p>
+      <pre class="code-block"><span class="lang">bash</span><code>curl -I https://piemers.lv
+<span class="tok-com"># Pirmā izvada rinda būs, piem.: HTTP/2 200</span></code></pre>
+    </section>
+
+    <section class="doc-section" id="err-cors">
+      <h2>CORS kļūda</h2>
+      <p>CORS (Cross-Origin Resource Sharing) kļūda parādās pārlūka konsolē, kad lapā ielādēts JavaScript no viena domēna (piem., <code>mana-app.lv</code>) mēģina ar <code>fetch()</code> piekļūt datiem no <strong>cita</strong> domēna (piem., <code>api.citssrverits.lv</code>), un tas serveris skaidri nav atļāvis šādus pieprasījumus. Tas ir pārlūka iebūvēts drošības mehānisms, kas pasargā lietotājus no ļaunprātīgas datu nolasīšanas starp vietnēm.</p>
+      <p>Kļūda konsolē parasti izskatās aptuveni šādi:</p>
+      <pre class="code-block"><span class="lang">text</span><code>Access to fetch at 'https://api.citssrverits.lv/dati' from origin
+'https://mana-app.lv' has been blocked by CORS policy: No
+'Access-Control-Allow-Origin' header is present on the requested resource.</code></pre>
+      <p><strong>Risinājums vienmēr ir servera pusē</strong> (tajā serverī, no kura tiek prasīti dati) — tas jāpaziņo, kuriem domēniem drīkst piekļūt. Ar Node.js/Express to izdara šādi:</p>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// Servera (Express) kodā</span>
+app.<span class="tok-fn">use</span>((req, res, next) => {
+  res.<span class="tok-fn">setHeader</span>(<span class="tok-str">'Access-Control-Allow-Origin'</span>, <span class="tok-str">'https://mana-app.lv'</span>);
+  next();
+});</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>CORS kļūdu <strong>nevar</strong> apiet, mainot kodu pārlūka pusē (klienta JavaScript) — tas ir apzināti tā izveidots, lai tikai servera īpašnieks varētu atļaut piekļuvi. Ja tas nav "tavs" API, jāsazinās ar tā uzturētāju.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="ip-basics">
+      <h2>Kas ir IP adrese</h2>
+      <p>Katrai ierīcei, kas ir tieši pieejama internetā, ir sava unikāla adrese — līdzīgi kā mājas adrese pasta piegādei. Visizplatītākais formāts ir <strong>IPv4</strong> — četri skaitļi no 0 līdz 255, atdalīti ar punktiem, piemēram, <code>81.198.171.19</code>. Domēns (<code>piemers.lv</code>) ir tikai cilvēkam ērtāks vārds šai adresei — DNS (skat. zemāk) tos savieno.</p>
+      <p>Tā kā IPv4 adrešu skaits (~4.3 miljardi) ir izsīcis, ieviests jaunāks formāts <strong>IPv6</strong> ar praktiski neierobežotu apjomu — piemēram, <code>2a02:6b8::1</code>. Ir arī adreses, kas strādā <strong>tikai</strong> vietējā tīklā, nevis internetā, piem. <code>192.168.1.1</code> (tipiska mājas rūtera adrese) vai <code>127.0.0.1</code> (adrese, ar kuru dators "runā pats ar sevi" — noder lokālai izstrādei).</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Uzzini savu publisko IP adresi (ar kuru tevi redz internets)</span>
+curl ifconfig.me</code></pre>
+    </section>
+
+    <section class="doc-section" id="ports">
+      <h2>Porti</h2>
+      <p>Viena IP adrese var apkalpot vairākus pakalpojumus vienlaikus — <strong>ports</strong> (skaitlis no 0 līdz 65535) pasaka, kuram tieši pakalpojumam serverī adresēts konkrētais pieprasījums. Ja IP adrese ir kā mājas adrese, ports ir kā konkrēta dzīvokļa numurs tajā mājā.</p>
+      <pre class="code-block"><span class="lang">text</span><code>80    → HTTP  (parastā, nešifrētā tīmekļa satiksme)
+443   → HTTPS (šifrētā tīmekļa satiksme)
+22    → SSH   (drošs attālinātais pieslēgums serverim)
+3306  → MySQL (datubāzes savienojumi)</code></pre>
+      <p>Adresējot vietni pārlūkā parasti portu neraksta, jo <code>http://</code> noklusēti nozīmē 80, bet <code>https://</code> — 443. Citiem servisiem to bieži norāda skaidri, piem. <code>piemers.lv:8080</code>.</p>
+    </section>
+
+    <section class="doc-section" id="dns-basics">
+      <h2>Kas ir DNS</h2>
+      <p>DNS (Domain Name System) ir sadalīta, hierarhiska "tālruņu grāmata" internetam — tā pārvērš cilvēkam ērtu domēna vārdu (<code>piemers.lv</code>) par IP adresi, kuru pārlūks tehniski var izmantot savienojuma izveidei.</p>
+      <p>Kad pārlūkā ieraksti adresi, notiek aptuveni šāda secība: pārlūks vaicā DNS resolverim (parasti interneta pakalpojumu sniedzēja vai publiskam, piem. 8.8.8.8) → resolvers vaicā root serveriem → tie norāda uz attiecīgā domēna zonas (<code>.lv</code>) serveriem → tie norāda uz domēna paša autoritatīvajiem nameserveriem → tie beidzot atbild ar konkrētu IP adresi. Rezultāts tiek <strong>kešots</strong> uz noteiktu laiku (<strong>TTL</strong>, Time To Live), lai nevajadzētu atkārtot visu ceļu katru reizi — tieši tāpēc DNS izmaiņas var kļūt redzamas ne uzreiz visiem, bet dažu minūšu līdz pat 48 stundu laikā ("propagācija").</p>
+      <pre class="code-block"><span class="lang">bash</span><code>dig piemers.lv +short
+<span class="tok-com"># izvada tikai IP adresi, piem.: 81.198.171.19</span></code></pre>
+    </section>
+
+    <section class="doc-section" id="dns-records">
+      <h2>DNS ieraksti (A, CNAME, MX...)</h2>
+      <p>Domēnam pieder vairāki dažāda tipa ieraksti — katrs pasaka DNS sistēmai kaut ko citu par šo domēnu:</p>
+      <pre class="code-block"><span class="lang">text</span><code>A       → domēns ved uz konkrētu IPv4 adresi
+AAAA    → tas pats, bet IPv6 adresei
+CNAME   → alias uz citu domēnu (piem. www → piemers.lv)
+MX      → kurš serveris apstrādā šī domēna e-pastu
+TXT     → brīvs teksts (bieži domēna verifikācijai vai SPF e-pasta drošībai)
+NS      → kurš serveris ir "atbildīgais" (autoritatīvais) par šo domēnu</code></pre>
+      <p>Piemērs, kā šie ieraksti izskatās domēna DNS zonas iestatījumos:</p>
+      <pre class="code-block"><span class="lang">text</span><code>piemers.lv.       A       81.198.171.19
+piemers.lv.       MX  10  mail.piemers.lv.
+www.piemers.lv.   CNAME   piemers.lv.</code></pre>
+      <p>Konkrētu ieraksta tipu var pārbaudīt atsevišķi:</p>
+      <pre class="code-block"><span class="lang">bash</span><code>dig piemers.lv MX
+dig piemers.lv TXT</code></pre>
+    </section>
+
+    <section class="doc-section" id="www-vs-non">
+      <h2>www vs bez-www</h2>
+      <p>Tehniski <code>piemers.lv</code> un <code>www.piemers.lv</code> ir <strong>divas dažādas</strong> adreses DNS acīs, kaut arī cilvēkam tās šķiet vienādas. Vēsturiski <code>www</code> apzīmēja "World Wide Web" servisu atsevišķi no citiem tā paša domēna servisiem (piem., e-pasta). Mūsdienās izvēle, kuru versiju darīt par "galveno", ir tikai stila jautājums — abas parasti tiek sasaistītas, lai vietne strādātu neatkarīgi no tā, kā apmeklētājs to ieraksta.</p>
+      <p>Praksē to panāk ar <code>CNAME</code> ierakstu un pāradresāciju, piemēram:</p>
+      <pre class="code-block"><span class="lang">text</span><code>www.piemers.lv.   CNAME   piemers.lv.</code></pre>
+      <p>Un servera pusē (piem., Nginx) pievieno noteikumu, kas <code>www</code> versiju pāradresē uz galveno (vai otrādi) ar 301 (pastāvīgu) pāradresāciju, lai meklētājprogrammas neuzskatītu abas versijas par diviem atsevišķiem, dublētiem saturiem.</p>
+    </section>
+
+    <section class="doc-section" id="cdn-basics">
+      <h2>CDN īsumā</h2>
+      <p>CDN (Content Delivery Network, piem. Cloudflare, Fastly) ir tīkls no serveriem, kas izvietoti dažādās pasaules vietās un glabā vietnes satura kopijas. Kad apmeklētājs atver vietni, viņu apkalpo <strong>ģeogrāfiski tuvākais</strong> CDN serveris, nevis vienmēr tas pats oriģinālais serveris — tas ievērojami paātrina lapas ielādi, īpaši apmeklētājiem, kas atrodas tālu no oriģinālā servera.</p>
+      <p>Blakusefekts, kas iesācējus bieži mulsina: kad domēns ir "aiz" CDN, DNS uzziņas (<code>dig</code>) parāda <strong>CDN servera</strong> IP adresi, nevis īsto vietnes servera IP — tas apzināti tā, lai īstā servera adrese paliktu paslēpta un aizsargāta no tiešiem uzbrukumiem.</p>
+    </section>
+
+    <section class="doc-section" id="ssl-basics">
+      <h2>Kas ir SSL/HTTPS</h2>
+      <p><strong>SSL</strong> (Secure Sockets Layer) un tā mūsdienu, drošāks pēctecis <strong>TLS</strong> (Transport Layer Security) ir protokoli, kas šifrē datu plūsmu starp pārlūku un serveri, lai neviens pa vidu (piem., tajā pašā publiskajā WiFi tīklā) nevarētu to nolasīt vai klusi izmainīt. <strong>HTTPS = HTTP + šis šifrējums.</strong> Ikdienā termins "SSL" joprojām tiek lietots, kaut arī tehniski visur jau strādā TLS.</p>
+      <p>Process, kā pārlūks un serveris vienojas par šifrēšanu, saucas <strong>TLS handshake</strong>: pārlūks piedāvā atbalstītās TLS versijas → serveris atbild ar savu sertifikātu → pārlūks pārbauda sertifikātu (izsniedzējs, derīgums, domēns) → abas puses vienojas par kopīgu, sesijai unikālu šifrēšanas atslēgu → sākas šifrēta saziņa.</p>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Bez HTTPS pārlūki atzīmē vietni kā "Nedrošu", paroļu lauki tiek īpaši brīdināti, un Google to izmanto arī kā ranžēšanas faktoru — mūsdienās HTTPS ir obligāts minimums jebkurai publiskai vietnei.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="ssl-certs">
+      <h2>Sertifikāti īsumā</h2>
+      <p>SSL/TLS sertifikātu izsniedz uzticama iestāde — <strong>Sertifikācijas iestāde</strong> (Certificate Authority, CA), kurai pārlūki un operētājsistēmas jau uzticas "no rūpnīcas". Populārākā un bezmaksas — <strong>Let's Encrypt</strong>, kas sertifikātus izsniedz automatizēti. Sertifikāts apliecina, ka vietne, ar kuru sazinies, tiešām pieder norādītajam domēnam.</p>
+      <p>Let's Encrypt sertifikāti derīgi tikai 90 dienas — apzināti īss termiņš, lai piespiestu automatizēt atjaunošanu, nevis paļauties uz manuālu atcerēšanos. Rīks <code>certbot</code> to iestata automātiski:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Uzstāda certbot (Ubuntu/Debian serverim ar Nginx)</span>
+sudo apt install certbot python3-certbot-nginx
+
+<span class="tok-com"># Iegūst un automātiski konfigurē sertifikātu konkrētam domēnam</span>
+sudo certbot --nginx -d piemers.lv -d www.piemers.lv
+
+<span class="tok-com"># Pārbauda, vai automātiskā atjaunošana strādās (nemaina neko reāli)</span>
+sudo certbot renew --dry-run</code></pre>
+      <p>Ja pēc uzstādīšanas jāpārbauda, kas tieši ir instalēts un cik ilgi tas vēl derīgs:</p>
+      <pre class="code-block"><span class="lang">bash</span><code>echo | openssl s_client -connect piemers.lv:443 2>/dev/null | openssl x509 -noout -dates</code></pre>
+      <p>Šī komanda izvadīs divas rindas — <code>notBefore</code> (kopš kura brīža sertifikāts derīgs) un <code>notAfter</code> (kad tas beidzas).</p>
+    </section>
+
+    <section class="doc-section" id="tools">
+      <h2>Noderīgas komandas</h2>
+      <p>Kopsavilkums — visas komandas, kas parādījās šajā lapā, vienuviet ātrai uzziņai. Visas darbojas jebkura moderna operētājsistēmas terminālī (Windows: CMD/PowerShell ar <code>ipconfig</code>, Mac/Linux ar attiecīgajiem ekvivalentiem):</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># DNS pārbaude</span>
+nslookup piemers.lv
+dig piemers.lv +short
+dig piemers.lv MX
+dig piemers.lv NS
+
+<span class="tok-com"># Kam pieder domēns / kad reģistrēts</span>
+whois piemers.lv
+
+<span class="tok-com"># HTTP statusa kods un pāradresācijas</span>
+curl -IL https://piemers.lv
+
+<span class="tok-com"># SSL sertifikāta pārbaude tieši no servera</span>
+echo | openssl s_client -connect piemers.lv:443 2>/dev/null | openssl x509 -noout -dates
+
+<span class="tok-com"># Vietējais DNS keša tīrīšana (Windows)</span>
+ipconfig /flushdns</code></pre>
+    </section>
+
+    <div class="doc-pager">
+      <a href="php.html"><span class="lbl">← Iepriekšējais</span>PHP</a>
+      <a class="to-next" href="../index.html"><span class="lbl">Atpakaļ →</span>Visas kategorijas</a>
+    </div>
+  </main>
+</div>
+
+<script src="../js/theme.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>

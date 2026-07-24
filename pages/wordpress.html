@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="lv" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WordPress dokumentācija — Documentation Samis</title>
+<link rel="stylesheet" href="../css/style.css" />
+<script>
+  (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
+</script>
+</head>
+<body>
+<div class="bg-glow"></div>
+<div class="bg-grid"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="mark">DS</span>
+    Documentation Samis
+  </div>
+  <div class="topbar-actions">
+    <a class="btn-back" href="../index.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M5 12h14"/></svg>
+      Kategorijas
+    </a>
+    <button class="icon-btn" id="theme-toggle" title="Pārslēgt tēmu" aria-label="Pārslēgt tēmu">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="doc-shell">
+  <aside class="doc-sidebar">
+    <div class="doc-sidebar-group">
+      <h4>Izstrāde</h4>
+      <a href="#temas-vs-spraudni" class="active"><span class="bullet"></span>Tēmas vs spraudņi</a>
+      <a href="#temas"><span class="bullet"></span>Tēmu izveide</a>
+      <a href="#wpconfig"><span class="bullet"></span>wp-config.php</a>
+      <a href="#loop"><span class="bullet"></span>The Loop</a>
+      <a href="#izvelnes"><span class="bullet"></span>Izvēlnes</a>
+      <a href="#enqueue"><span class="bullet"></span>Skriptu/stilu pieslēgšana</a>
+      <a href="#hooks"><span class="bullet"></span>Hooks &amp; Filters</a>
+      <a href="#drosiba"><span class="bullet"></span>Drošība (nonce &amp; escaping)</a>
+      <a href="#cpt"><span class="bullet"></span>Custom Post Types</a>
+      <a href="#custom-fields"><span class="bullet"></span>Pielāgoti lauki</a>
+    </div>
+  </aside>
+
+  <main class="doc-main">
+    <div class="doc-breadcrumb">
+      <a href="../index.html">Sākums</a>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span>WordPress</span>
+    </div>
+
+    <div class="doc-header">
+      <div class="icon" style="background: var(--c-wordpress-soft); color: var(--c-wordpress);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10 15 15 0 0 1 4-10z"/></svg>
+      </div>
+      <h1 style="margin-bottom:0;">WordPress</h1>
+    </div>
+    <p class="doc-lead">Pilns iesācēja ceļvedis: katrai tēmai — skaidrojums, kāpēc tas vajadzīgs, un pilnībā patstāvīgs koda piemērs, ko var iekopēt un uzreiz redzēt strādājam.</p>
+
+    <div class="callout tip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+      <p><strong>Kur likt PHP kodu:</strong> ja vien nav norādīts citādi, visi šīs lapas PHP piemēri jāievieto aktīvās tēmas <code>functions.php</code> failā (Izskats → Tēmas redaktors, vai tieši failā serverī) un jāsaglabā — izmaiņas parasti redzamas uzreiz pēc lapas atsvaidzināšanas.</p>
+    </div>
+
+    <section class="doc-section" id="temas-vs-spraudni">
+      <h2>Tēmas vs spraudņi</h2>
+      <p>WordPress funkcionalitāti paplašina divos veidos, un iesācējiem tos bieži sajauc: <strong>Tēma</strong> nosaka vietnes izskatu un izkārtojumu — krāsas, fontus, to, kā izskatās lapa un ieraksts. <strong>Spraudnis</strong> pievieno jaunu funkcionalitāti (kontaktformu, veikalu, SEO rīkus), kas turpina darboties arī pēc tēmas nomaiņas.</p>
+      <p>Praktisks jautājums, ko sev uzdot: "Ja rīt nomainīšu vietnes dizainu, vai šai funkcijai jāpazūd?" Ja atbilde ir "nē" (piem., ziņu abonēšana, kalkulators), tā pieder spraudnī, nevis tēmā.</p>
+    </section>
+
+    <section class="doc-section" id="temas">
+      <h2>Tēmu izveide</h2>
+      <p>Lai WordPress atpazītu mapi <code>wp-content/themes/</code> iekšpusē kā tēmu, obligāti nepieciešami tikai divi faili: <code>style.css</code> (ar galvenes komentāru) un <code>index.php</code>. Bez <code>index.php</code> tēma administrācijā parādās kā "Broken Theme" un to nevar aktivizēt.</p>
+      <p><strong>1. solis</strong> — izveido mapi <code>wp-content/themes/mana-tema/</code> un tajā šo failu:</p>
+      <pre class="code-block"><span class="lang">css</span><code><span class="tok-com">/* style.css */
+/*
+Theme Name: Mana Tēma
+Version: 1.0
+*/</span>
+
+<span class="tok-fn">body</span> { <span class="tok-fn">font-family</span>: sans-serif; }</code></pre>
+      <p><strong>2. solis</strong> — tajā pašā mapē izveido <code>index.php</code>:</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php <span class="tok-fn">get_header</span>(); ?&gt;
+
+&lt;main&gt;
+  &lt;?php <span class="tok-kw">if</span> (<span class="tok-fn">have_posts</span>()) : <span class="tok-kw">while</span> (<span class="tok-fn">have_posts</span>()) : <span class="tok-fn">the_post</span>(); ?&gt;
+    &lt;article&gt;
+      &lt;h2&gt;&lt;?php <span class="tok-fn">the_title</span>(); ?&gt;&lt;/h2&gt;
+      &lt;?php <span class="tok-fn">the_content</span>(); ?&gt;
+    &lt;/article&gt;
+  &lt;?php <span class="tok-kw">endwhile</span>; <span class="tok-kw">endif</span>; ?&gt;
+&lt;/main&gt;
+
+&lt;?php <span class="tok-fn">get_footer</span>(); ?&gt;</code></pre>
+      <p><strong>3. solis</strong> — WordPress admin panelī ej uz Izskats → Tēmas → aktivizē "Mana Tēma". Tas ir viss — tēma jau strādā, kaut arī izskatīsies "kaila", jo trūkst <code>header.php</code>/<code>footer.php</code>.</p>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Ja <code>index.php</code> izmanto <code>get_header()</code>/<code>get_footer()</code>, tad <code>header.php</code>/<code>footer.php</code> failiem jau <strong>jāeksistē</strong> tajā pašā mapē (kaut tukšiem: <code>&lt;html&gt;&lt;body&gt;</code> un attiecīgi <code>&lt;/body&gt;&lt;/html&gt;</code>), citādi radīsies kļūda.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="wpconfig">
+      <h2>wp-config.php</h2>
+      <p>Galvenais konfigurācijas fails, kas atrodas WordPress saknes mapē (blakus <code>wp-admin</code>, <code>wp-content</code>) — satur datubāzes pieejas datus un svarīgākos globālos iestatījumus. Šo failu neveido pats — to automātiski izveido WordPress instalācijas laikā, bet vēlāk to var rediģēt.</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-kw">define</span>(<span class="tok-str">'DB_NAME'</span>, <span class="tok-str">'mana_datubaze'</span>);
+<span class="tok-kw">define</span>(<span class="tok-str">'DB_USER'</span>, <span class="tok-str">'root'</span>);
+<span class="tok-kw">define</span>(<span class="tok-str">'DB_PASSWORD'</span>, <span class="tok-str">'secret'</span>);
+<span class="tok-kw">define</span>(<span class="tok-str">'DB_HOST'</span>, <span class="tok-str">'localhost'</span>);
+
+<span class="tok-com">// Rāda kļūdas ekrānā — noder izstrādes laikā</span>
+<span class="tok-kw">define</span>(<span class="tok-str">'WP_DEBUG'</span>, <span class="tok-kw">true</span>);</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Pirms vietnes publicēšanas obligāti iestati <code>WP_DEBUG</code> uz <code>false</code> — kļūdu izvade ražošanas vietnē var atklāt failu ceļus un citu jutīgu informāciju apmeklētājiem.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="loop">
+      <h2>The Loop</h2>
+      <p>WordPress ierakstus lapā izvada ar "The Loop" — standarta ciklu, ko izmanto gandrīz katrā veidnes failā (<code>index.php</code>, <code>archive.php</code>, <code>single.php</code>). <code>have_posts()</code> pārbauda, vai vēl ir ieraksti; <code>the_post()</code> "sagatavo" nākamo ierakstu, lai funkcijas kā <code>the_title()</code> zinātu, par kuru ierakstu runāt.</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php <span class="tok-kw">if</span> (<span class="tok-fn">have_posts</span>()) : ?&gt;
+
+  &lt;?php <span class="tok-kw">while</span> (<span class="tok-fn">have_posts</span>()) : <span class="tok-fn">the_post</span>(); ?&gt;
+
+    &lt;article&gt;
+      &lt;h2&gt;&lt;a href="&lt;?php <span class="tok-fn">the_permalink</span>(); ?&gt;"&gt;&lt;?php <span class="tok-fn">the_title</span>(); ?&gt;&lt;/a&gt;&lt;/h2&gt;
+      &lt;p&gt;Ieraksta ID: &lt;?php <span class="tok-kw">echo</span> <span class="tok-fn">get_the_ID</span>(); ?&gt;&lt;/p&gt;
+      &lt;?php <span class="tok-fn">the_content</span>(); ?&gt;
+    &lt;/article&gt;
+
+  &lt;?php <span class="tok-kw">endwhile</span>; ?&gt;
+
+&lt;?php <span class="tok-kw">else</span> : ?&gt;
+  &lt;p&gt;Ieraksti nav atrasti.&lt;/p&gt;
+&lt;?php <span class="tok-kw">endif</span>; ?&gt;</code></pre>
+      <p>Šo bloku ievieto jebkurā veidnes failā, kur jāparāda ierakstu saraksts vai saturs — visbiežāk <code>index.php</code>, <code>archive.php</code> vai <code>single.php</code>.</p>
+    </section>
+
+    <section class="doc-section" id="izvelnes">
+      <h2>Izvēlnes</h2>
+      <p>Izvēlnes izveide notiek divos soļos: pirmkārt, <code>functions.php</code> failā <strong>reģistrē</strong> vietu izvēlnei (piešķir tai iekšēju nosaukumu), otrkārt, veidnē (parasti <code>header.php</code>) <strong>izvada</strong> to ar <code>wp_nav_menu()</code>. Pašu izvēlnes saturu (kādas saites tajā ir) pēc tam pārvalda administrācijā, nevis kodā.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// functions.php — reģistrē izvēlnes vietu</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'after_setup_theme'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-fn">register_nav_menus</span>([
+        <span class="tok-str">'galvena'</span> => <span class="tok-str">'Galvenā izvēlne'</span>,
+    ]);
+});</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// header.php — izvada izvēlni šajā vietā</span>
+&lt;?php
+<span class="tok-fn">wp_nav_menu</span>([
+    <span class="tok-str">'theme_location'</span> => <span class="tok-str">'galvena'</span>,
+    <span class="tok-str">'container'</span>      => <span class="tok-str">'nav'</span>,
+]);
+?&gt;</code></pre>
+      <p>Pēc šī koda pievienošanas admin panelī parādīsies jauna sadaļa: Izskats → Izvēlnes, kur var izveidot izvēlni, pievienot tai lapas/saites un piešķirt to pozīcijai "Galvenā izvēlne".</p>
+    </section>
+
+    <section class="doc-section" id="enqueue">
+      <h2>Skriptu/stilu pieslēgšana</h2>
+      <p>CSS un JS failus tēmā <strong>nekad</strong> nepievieno tieši ar <code>&lt;link&gt;</code>/<code>&lt;script&gt;</code> tagiem veidnē — tā vietā izmanto <code>wp_enqueue_scripts</code> āķi. Tas ļauj WordPress pašam pārvaldīt failu ielādes secību un izvairīties no konfliktiem, ja vēlāk spraudnis mēģina pievienot to pašu bibliotēku.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// functions.php</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'wp_enqueue_scripts'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-com">// Tēmas galvenais CSS fails (style.css)</span>
+    <span class="tok-fn">wp_enqueue_style</span>(<span class="tok-str">'mana-tema-style'</span>, <span class="tok-fn">get_stylesheet_uri</span>());
+
+    <span class="tok-com">// Pielāgots JS fails no tēmas /js/ mapes</span>
+    <span class="tok-fn">wp_enqueue_script</span>(
+        <span class="tok-str">'mana-tema-main'</span>,
+        <span class="tok-fn">get_template_directory_uri</span>() . <span class="tok-str">'/js/main.js'</span>,
+        [],       <span class="tok-com">// atkarības (piem., ['jquery'])</span>
+        <span class="tok-str">'1.0'</span>,     <span class="tok-com">// versija (kešošanas atjaunošanai)</span>
+        <span class="tok-kw">true</span>       <span class="tok-com">// ielādēt lapas beigās, ne &lt;head&gt;</span>
+    );
+});</code></pre>
+      <p>Lai šis piemērs strādātu, jāizveido reāls fails <code>js/main.js</code> tēmas mapē — pretējā gadījumā pārlūka konsolē redzēsi 404 kļūdu tam vienam failam (pati vietne turpinās strādāt).</p>
+    </section>
+
+    <section class="doc-section" id="hooks">
+      <h2>Hooks &amp; Filters</h2>
+      <p>Hooks ir WordPress galvenais mehānisms, kā mainīt vai papildināt uzvedību, neaiztiekot kodola failus. <strong>Actions</strong> ļauj izpildīt savu kodu noteiktā brīdī (piem., lapas ielādes laikā), <strong>filters</strong> ļauj pārtvert un mainīt vērtību pirms tā tiek izmantota tālāk.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Action — pievieno kaut ko pirms &lt;/body&gt; tagā (piem., analītikas skriptu)</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'wp_footer'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-kw">echo</span> <span class="tok-str">'&lt;!-- Šis teksts parādās katras lapas HTML kodā pirms &lt;/body&gt; -->'</span>;
+});
+
+<span class="tok-com">// Filter — maina ieraksta virsrakstu pirms tas tiek attēlots</span>
+<span class="tok-fn">add_filter</span>(<span class="tok-str">'the_title'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$title</span>) {
+    <span class="tok-kw">return</span> <span class="tok-str">'★ '</span> . <span class="tok-fn">$title</span>;
+});</code></pre>
+      <p>Pēc šī koda pievienošanas <code>functions.php</code> failā un lapas atsvaidzināšanas — katra ieraksta virsraksts sāksies ar "★ ", un pārlūka izejas kodā (View Source) redzēsi jauno komentāru pirms <code>&lt;/body&gt;</code>.</p>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Biežākie āķi, ar kuriem sāksi: <code>init</code> (WordPress ielādēts), <code>wp_enqueue_scripts</code> (CSS/JS), <code>wp_head</code>/<code>wp_footer</code> (lapas sākums/beigas).</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="drosiba">
+      <h2>Drošība: nonce &amp; escaping</h2>
+      <p>Divi drošības jēdzieni, kas jāzina no paša sākuma. <strong>Escaping</strong> — izvadot jebkādus datus HTML, izmanto <code>esc_html()</code>/<code>esc_attr()</code>, lai novērstu XSS (kāds ievieto ļaunprātīgu <code>&lt;script&gt;</code> tagu, kas izpildās citu apmeklētāju pārlūkos). <strong>Nonce</strong> — formas, kas maina datus, aizsargā ar vienreizēju "biļeti", kas apliecina, ka pieprasījums patiešām nāk no tavas lapas.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Veidnē — droša izvade</span>
+<span class="tok-kw">echo</span> <span class="tok-fn">esc_html</span>(<span class="tok-fn">$lietotaja_teksts</span>);
+
+<span class="tok-com">// Formā — pievieno slēptu, unikālu lauku</span>
+&lt;form method="post"&gt;
+    &lt;?php <span class="tok-fn">wp_nonce_field</span>(<span class="tok-str">'mana_darbiba'</span>, <span class="tok-str">'mans_nonce'</span>); ?&gt;
+    &lt;input type="text" name="komentars"&gt;
+    &lt;button type="submit"&gt;Sūtīt&lt;/button&gt;
+&lt;/form&gt;
+
+<span class="tok-com">// Apstrādājot formu — vispirms pārbauda nonce</span>
+&lt;?php
+<span class="tok-kw">if</span> (!<span class="tok-fn">wp_verify_nonce</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'mans_nonce'</span>] ?? <span class="tok-str">''</span>, <span class="tok-str">'mana_darbiba'</span>)) {
+    <span class="tok-kw">die</span>(<span class="tok-str">'Drošības pārbaude neizdevās'</span>);
+}
+<span class="tok-com">// ... šeit droši apstrādā $_POST['komentars']</span></code></pre>
+    </section>
+
+    <section class="doc-section" id="cpt">
+      <h2>Custom Post Types (CPT)</h2>
+      <p>Papildus ierakstiem un lapām WordPress ļauj izveidot savus, strukturētus satura tipus — piemēram, "Produkti" vai "Atsauksmes", katru ar savu administrācijas sadaļu. Reģistrē tos ar <code>register_post_type()</code>, izsauktu caur <code>init</code> āķi.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// functions.php</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'init'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-fn">register_post_type</span>(<span class="tok-str">'produkts'</span>, [
+        <span class="tok-str">'labels'</span>       => [
+            <span class="tok-str">'name'</span>          => <span class="tok-str">'Produkti'</span>,
+            <span class="tok-str">'singular_name'</span> => <span class="tok-str">'Produkts'</span>,
+        ],
+        <span class="tok-str">'public'</span>       => <span class="tok-kw">true</span>,
+        <span class="tok-str">'has_archive'</span>  => <span class="tok-kw">true</span>,
+        <span class="tok-str">'show_in_rest'</span> => <span class="tok-kw">true</span>, <span class="tok-com">// vajadzīgs Gutenberg redaktoram</span>
+        <span class="tok-str">'menu_icon'</span>    => <span class="tok-str">'dashicons-cart'</span>,
+        <span class="tok-str">'supports'</span>     => [<span class="tok-str">'title'</span>, <span class="tok-str">'editor'</span>, <span class="tok-str">'thumbnail'</span>],
+    ]);
+});</code></pre>
+      <p>Pēc šī koda pievienošanas un lapas atsvaidzināšanas admin panelī sānizvēlnē parādīsies jauna sadaļa "Produkti" ar savu grozāmo ikonu — tur var pievienot jaunus ierakstus tāpat kā parastus WordPress ierakstus.</p>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Pēc pievienošanas ejot uz jaunā CPT publisko lapu (piem., <code>/produkts/kaut-kas/</code>) var rādīties 404 — jāatjauno pastāvīgās saites: <strong>Iestatījumi → Pastāvīgās saites → Saglabāt</strong> (nekas nav jāmaina, pats saglabāšanas klikšķis atjauno noteikumus).</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="custom-fields">
+      <h2>Pielāgoti lauki</h2>
+      <p>Bez ACF spraudņa pielāgotus datus jebkuram ierakstam (arī parastam, ne tikai CPT) var pievienot un vēlāk nolasīt tieši ar <code>update_post_meta()</code>/<code>get_post_meta()</code> — noder, kad pietiek ar dažiem papildu laukiem un negribi papildu atkarību.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Saglabā vērtību konkrētam ierakstam (piem., admin darbībā vai formā)</span>
+<span class="tok-fn">update_post_meta</span>(<span class="tok-fn">$post_id</span>, <span class="tok-str">'cena'</span>, 49.99);
+
+<span class="tok-com">// Nolasa veidnē (single.php vai archive-produkts.php), The Loop iekšpusē</span>
+&lt;?php <span class="tok-kw">while</span> (<span class="tok-fn">have_posts</span>()) : <span class="tok-fn">the_post</span>(); ?&gt;
+
+  &lt;h2&gt;&lt;?php <span class="tok-fn">the_title</span>(); ?&gt;&lt;/h2&gt;
+
+  &lt;?php
+  <span class="tok-fn">$cena</span> = <span class="tok-fn">get_post_meta</span>(<span class="tok-fn">get_the_ID</span>(), <span class="tok-str">'cena'</span>, <span class="tok-kw">true</span>);
+  <span class="tok-kw">if</span> (<span class="tok-fn">$cena</span>) {
+      <span class="tok-kw">echo</span> <span class="tok-str">'&lt;p&gt;Cena: '</span> . <span class="tok-fn">esc_html</span>(<span class="tok-fn">$cena</span>) . <span class="tok-str">' €&lt;/p&gt;'</span>;
+  }
+  ?&gt;
+
+&lt;?php <span class="tok-kw">endwhile</span>; ?&gt;</code></pre>
+      <p>Trešais parametrs <code>get_post_meta()</code> (<code>true</code>) nozīmē "atgriez vienu vērtību, ne masīvu" — bez tā funkcija vienmēr atgriež masīvu, pat ja lauks ir tikai viens.</p>
+    </section>
+
+    <div class="doc-pager">
+      <a href="../index.html"><span class="lbl">← Atpakaļ</span>Visas kategorijas</a>
+      <a class="to-next" href="javascript.html"><span class="lbl">Tālāk →</span>JavaScript</a>
+    </div>
+  </main>
+</div>
+
+<script src="../js/theme.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>
