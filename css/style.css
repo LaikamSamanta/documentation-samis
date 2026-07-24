@@ -21,6 +21,8 @@
   --c-php-soft: rgba(139, 123, 247, 0.15);
   --c-web: #f76ba8;
   --c-web-soft: rgba(247, 107, 168, 0.15);
+  --c-integrations: #2dd4bf;
+  --c-integrations-soft: rgba(45, 212, 191, 0.15);
 }
 
 /* ---------- Dark theme (default) ---------- */
@@ -531,6 +533,7 @@ code {
 .card.js        { --card-color: var(--c-js);        --card-soft: var(--c-js-soft); }
 .card.php       { --card-color: var(--c-php);       --card-soft: var(--c-php-soft); }
 .card.web       { --card-color: var(--c-web);        --card-soft: var(--c-web-soft); }
+.card.integrations { --card-color: var(--c-integrations); --card-soft: var(--c-integrations-soft); }
 
 /* ---------- Stats strip ---------- */
 .stats {
@@ -640,6 +643,85 @@ footer.site-footer a:hover {
   font-weight: 700;
 }
 .doc-sidebar-group a .bullet {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* ---------- Accordion sidebar (used on pages with many grouped integrations) ---------- */
+.doc-sidebar-accordion {
+  margin-bottom: 10px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--bg-elevated);
+}
+.doc-accordion-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: left;
+}
+.doc-accordion-toggle:hover {
+  color: var(--accent-2);
+}
+.doc-accordion-toggle .chevron {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--text-muted);
+  transition: transform 0.25s var(--ease);
+}
+.doc-sidebar-accordion.open .doc-accordion-toggle .chevron {
+  transform: rotate(90deg);
+  color: var(--accent-2);
+}
+.doc-accordion-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s var(--ease);
+  padding: 0 8px;
+}
+.doc-sidebar-accordion.open .doc-accordion-body {
+  max-height: 900px;
+  padding: 0 8px 10px;
+}
+.doc-accordion-body a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 8px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  transition: all 0.18s var(--ease);
+  border: 1px solid transparent;
+}
+.doc-accordion-body a:hover {
+  background: var(--bg-card);
+  color: var(--text);
+}
+.doc-accordion-body a.active {
+  background: var(--accent-soft);
+  color: var(--accent-2);
+  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+  font-weight: 700;
+}
+.doc-accordion-body a .bullet {
   width: 5px;
   height: 5px;
   border-radius: 50%;

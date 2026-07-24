@@ -35,10 +35,29 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  // accordion sidebar (used on pages that group many sections under a
+  // collapsible integration name, e.g. pages/integracijas.html) —
+  // clicking a header opens its body and closes any other open one
+  document.querySelectorAll(".doc-accordion-toggle").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var group = btn.closest(".doc-sidebar-accordion");
+      if (!group) return;
+      var wasOpen = group.classList.contains("open");
+      var parent = group.parentElement;
+      if (parent) {
+        parent.querySelectorAll(".doc-sidebar-accordion.open").forEach(function (g) {
+          if (g !== group) g.classList.remove("open");
+        });
+      }
+      group.classList.toggle("open", !wasOpen);
+    });
+  });
+
   // sidebar active link highlighting on scroll (doc pages)
   // observes whatever element each sidebar link actually points to —
   // a full .doc-section OR just a heading anchor nested inside one
-  var links = document.querySelectorAll(".doc-sidebar-group a[href^='#']");
+  // (covers both flat .doc-sidebar-group lists and accordion bodies)
+  var links = document.querySelectorAll(".doc-sidebar a[href^='#']");
   var sections = [];
   links.forEach(function (l) {
     var target = document.getElementById(l.getAttribute("href").slice(1));
@@ -46,6 +65,18 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   if (sections.length && links.length) {
     var visible = new Set();
+
+    function openAncestorAccordion(link) {
+      var group = link.closest(".doc-sidebar-accordion");
+      if (!group) return;
+      var parent = group.parentElement;
+      if (parent) {
+        parent.querySelectorAll(".doc-sidebar-accordion.open").forEach(function (g) {
+          if (g !== group) g.classList.remove("open");
+        });
+      }
+      group.classList.add("open");
+    }
 
     // instant feedback on click — don't wait for the scroll/observer to
     // settle, since a clicked heading can briefly land outside the
@@ -71,8 +102,11 @@ document.addEventListener("DOMContentLoaded", function () {
       candidates.sort(function (a, b) { return a.getBoundingClientRect().top - b.getBoundingClientRect().top; });
       var bestId = candidates[0].id;
       links.forEach(function (l) { l.classList.remove("active"); });
-      var active = document.querySelector('.doc-sidebar-group a[href="#' + bestId + '"]');
-      if (active) active.classList.add("active");
+      var active = document.querySelector('.doc-sidebar a[href="#' + bestId + '"]');
+      if (active) {
+        active.classList.add("active");
+        openAncestorAccordion(active);
+      }
     }
 
     var observer = new IntersectionObserver(
