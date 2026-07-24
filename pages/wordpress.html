@@ -46,6 +46,19 @@
       <a href="#cpt"><span class="bullet"></span>Custom Post Types</a>
       <a href="#custom-fields"><span class="bullet"></span>Pielāgoti lauki</a>
     </div>
+    <div class="doc-sidebar-group">
+      <h4>🧩 Integrācijas</h4>
+      <a href="#lang-overview"><span class="bullet"></span>Valodu sistēma — pārskats</a>
+      <a href="#lang-setup"><span class="bullet"></span>1. Pamata fails &amp; valodu saraksts</a>
+      <a href="#lang-detect"><span class="bullet"></span>2. Aktīvās valodas noteikšana</a>
+      <a href="#lang-routing"><span class="bullet"></span>3. Pretty URL maršrutēšana</a>
+      <a href="#lang-statictext"><span class="bullet"></span>4. Statiskā teksta tulkojumi</a>
+      <a href="#lang-fields"><span class="bullet"></span>5. Daudzvalodu pielāgotie lauki</a>
+      <a href="#lang-admin"><span class="bullet"></span>6. Admin lapa valodām</a>
+      <a href="#lang-google"><span class="bullet"></span>7. Google Translate poga</a>
+      <a href="#lang-switcher"><span class="bullet"></span>8. Pārslēdzējs &amp; SEO</a>
+      <a href="#lang-usage"><span class="bullet"></span>Kā ielikt citā projektā</a>
+    </div>
   </aside>
 
   <main class="doc-main">
@@ -301,6 +314,472 @@ Version: 1.0
 
 &lt;?php <span class="tok-kw">endwhile</span>; ?&gt;</code></pre>
       <p>Trešais parametrs <code>get_post_meta()</code> (<code>true</code>) nozīmē "atgriez vienu vērtību, ne masīvu" — bez tā funkcija vienmēr atgriež masīvu, pat ja lauks ir tikai viens.</p>
+    </section>
+
+    <section class="doc-section" id="lang-overview">
+      <h2>Valodu sistēma (multi-language) — pārskats</h2>
+      <p>Šī ir pilna, patstāvīga daudzvalodu sistēma — tavs paša "mini WPML", bet vienkāršāks, bez maksas un pilnībā tavā kontrolē. To var iekopēt gandrīz jebkurā WordPress projektā un tā uzreiz strādā. Sistēma sastāv no astoņām daļām, kuras zemāk izskaidrotas pa vienai:</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>1️⃣ Valodu saraksts</h4><p>JSON fails ar aktīvajām valodām (kods + nosaukums).</p></div>
+        <div class="doc-mini-card"><h4>2️⃣ Valodas noteikšana</h4><p>No URL, sīkdatnes vai noklusējuma — automātiski.</p></div>
+        <div class="doc-mini-card"><h4>3️⃣ Pretty URL</h4><p><code>/en/lapa/</code> vietā neglīta <code>?lang=en</code>.</p></div>
+        <div class="doc-mini-card"><h4>4️⃣ Statiskā teksta tulkojumi</h4><p>Pogas, izvēlnes, virsraksti — visās valodās.</p></div>
+        <div class="doc-mini-card"><h4>5️⃣ Daudzvalodu lauki</h4><p>Ieraksta lauki (piem., apakšvirsraksts) katrā valodā atsevišķi.</p></div>
+        <div class="doc-mini-card"><h4>6️⃣ Admin lapa</h4><p>Valodu pievienošana/dzēšana bez koda rediģēšanas.</p></div>
+        <div class="doc-mini-card"><h4>7️⃣ Google Translate</h4><p>Viena poga aizpilda tulkojumu automātiski.</p></div>
+        <div class="doc-mini-card"><h4>8️⃣ Pārslēdzējs &amp; SEO</h4><p>Frontend valodu izvēlne + <code>hreflang</code> tagi.</p></div>
+      </div>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Visas 8 daļas kopā veido <strong>vienu failu</strong> — <code>inc/multilingual.php</code>. Katra sadaļa zemāk paskaidro savu gabalu un rāda tā kodu; pēdējā sadaļā ("Kā ielikt citā projektā") ir precīzi soļi, kā tās salikt kopā jaunā WordPress projektā.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="lang-setup">
+      <h2>1. Pamata fails &amp; valodu saraksts</h2>
+      <p>Valodu saraksts netiek glabāts datubāzē, bet vienkāršā JSON failā <code>wp-content/uploads/ml-lang/languages.json</code> — tas ir ātrāk nekā datubāzes vaicājums un failu var apskatīt/rediģēt tieši, ja kādreiz vajag. Fails ar <code>.htaccess</code> tiek pasargāts, lai neviens to nevarētu atvērt tieši pārlūkā.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">/**
+ * inc/multilingual.php
+ * Daudzvalodu sistēma — daļa 1: pamata valodu saraksts
+ */</span>
+<span class="tok-kw">defined</span>(<span class="tok-str">'ABSPATH'</span>) || <span class="tok-kw">exit</span>;
+
+<span class="tok-com">// Atgriež mapes ceļu, kur glabājam valodu datus (izveido, ja neeksistē)</span>
+<span class="tok-kw">function</span> <span class="tok-fn">ml_lang_dir</span>(): <span class="tok-kw">string</span> {
+    <span class="tok-fn">$dir</span> = <span class="tok-fn">wp_upload_dir</span>()[<span class="tok-str">'basedir'</span>] . <span class="tok-str">'/ml-lang'</span>;
+    <span class="tok-kw">if</span> (!<span class="tok-fn">file_exists</span>(<span class="tok-fn">$dir</span>)) {
+        <span class="tok-fn">wp_mkdir_p</span>(<span class="tok-fn">$dir</span>);
+        <span class="tok-fn">file_put_contents</span>(<span class="tok-fn">$dir</span> . <span class="tok-str">'/.htaccess'</span>, <span class="tok-str">'deny from all'</span>);
+    }
+    <span class="tok-kw">return</span> <span class="tok-fn">$dir</span>;
+}
+
+<span class="tok-com">// Nolasa aktīvo valodu sarakstu — piem. [['code'=>'lv','label'=>'Latviešu'], ...]</span>
+<span class="tok-kw">function</span> <span class="tok-fn">ml_get_languages</span>(): <span class="tok-kw">array</span> {
+    <span class="tok-fn">$file</span> = <span class="tok-fn">ml_lang_dir</span>() . <span class="tok-str">'/languages.json'</span>;
+
+    <span class="tok-kw">if</span> (!<span class="tok-fn">file_exists</span>(<span class="tok-fn">$file</span>)) {
+        <span class="tok-kw">return</span> [[<span class="tok-str">'code'</span> => <span class="tok-str">'lv'</span>, <span class="tok-str">'label'</span> => <span class="tok-str">'Latviešu'</span>]];
+    }
+
+    <span class="tok-fn">$data</span> = <span class="tok-fn">json_decode</span>(<span class="tok-fn">file_get_contents</span>(<span class="tok-fn">$file</span>), <span class="tok-kw">true</span>);
+    <span class="tok-kw">return</span> (<span class="tok-fn">is_array</span>(<span class="tok-fn">$data</span>) && !<span class="tok-fn">empty</span>(<span class="tok-fn">$data</span>))
+        ? <span class="tok-fn">$data</span>
+        : [[<span class="tok-str">'code'</span> => <span class="tok-str">'lv'</span>, <span class="tok-str">'label'</span> => <span class="tok-str">'Latviešu'</span>]];
+}
+
+<span class="tok-com">// Saglabā valodu sarakstu atpakaļ JSON failā</span>
+<span class="tok-kw">function</span> <span class="tok-fn">ml_save_languages</span>(<span class="tok-kw">array</span> <span class="tok-fn">$langs</span>): <span class="tok-kw">bool</span> {
+    <span class="tok-fn">$file</span> = <span class="tok-fn">ml_lang_dir</span>() . <span class="tok-str">'/languages.json'</span>;
+    <span class="tok-fn">$json</span> = <span class="tok-fn">wp_json_encode</span>(<span class="tok-fn">$langs</span>, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    <span class="tok-kw">return</span> (<span class="tok-kw">bool</span>) <span class="tok-fn">file_put_contents</span>(<span class="tok-fn">$file</span>, <span class="tok-fn">$json</span>);
+}
+
+<span class="tok-com">// Pirmā valoda sarakstā vienmēr ir noklusējuma (galvenā) valoda</span>
+<span class="tok-kw">function</span> <span class="tok-fn">ml_default_lang</span>(): <span class="tok-kw">string</span> {
+    <span class="tok-fn">$langs</span> = <span class="tok-fn">ml_get_languages</span>();
+    <span class="tok-kw">return</span> <span class="tok-fn">$langs</span>[0][<span class="tok-str">'code'</span>] ?? <span class="tok-str">'lv'</span>;
+}</code></pre>
+      <p>Ja fails vēl neeksistē, sistēma automātiski strādā ar vienu noklusējuma valodu (<code>lv</code>) — tā nekad "nesalūzt" pat pirms pirmās konfigurēšanas.</p>
+    </section>
+
+    <section class="doc-section" id="lang-detect">
+      <h2>2. Aktīvās valodas noteikšana</h2>
+      <p>Katrā lapas ielādē sistēmai jāzina, kurā valodā rādīt saturu. Prioritāšu secība: vispirms skatās <strong>URL</strong> (<code>/en/...</code>), tad <strong>sīkdatni</strong> (atceras iepriekšējo izvēli), visbeidzot — <strong>noklusējumu</strong>.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Nosaka un atceras aktīvo valodu vienas lapas ielādes ietvaros (static — skaitļo tikai vienreiz)</span>
+<span class="tok-kw">function</span> <span class="tok-fn">ml_detect_lang</span>(): <span class="tok-kw">string</span> {
+    <span class="tok-kw">static</span> <span class="tok-fn">$detected</span> = <span class="tok-kw">null</span>;
+    <span class="tok-kw">if</span> (<span class="tok-fn">$detected</span> !== <span class="tok-kw">null</span>) <span class="tok-kw">return</span> <span class="tok-fn">$detected</span>;
+
+    <span class="tok-fn">$allowed</span> = <span class="tok-fn">array_column</span>(<span class="tok-fn">ml_get_languages</span>(), <span class="tok-str">'code'</span>);
+    <span class="tok-fn">$default</span> = <span class="tok-fn">ml_default_lang</span>();
+
+    <span class="tok-com">// 1) URL segments, piem. "/en/kontakti/" -> "en"</span>
+    <span class="tok-fn">$path</span>  = <span class="tok-fn">parse_url</span>(<span class="tok-fn">$_SERVER</span>[<span class="tok-str">'REQUEST_URI'</span>] ?? <span class="tok-str">'/'</span>, PHP_URL_PATH) ?? <span class="tok-str">'/'</span>;
+    <span class="tok-fn">$parts</span> = <span class="tok-fn">explode</span>(<span class="tok-str">'/'</span>, <span class="tok-fn">trim</span>(<span class="tok-fn">$path</span>, <span class="tok-str">'/'</span>));
+
+    <span class="tok-kw">if</span> (!<span class="tok-fn">empty</span>(<span class="tok-fn">$parts</span>[0]) && <span class="tok-fn">in_array</span>(<span class="tok-fn">$parts</span>[0], <span class="tok-fn">$allowed</span>, <span class="tok-kw">true</span>)) {
+        <span class="tok-kw">return</span> <span class="tok-fn">$detected</span> = <span class="tok-fn">$parts</span>[0];
+    }
+
+    <span class="tok-com">// 2) Sīkdatne no iepriekšējā apmeklējuma</span>
+    <span class="tok-fn">$cookie</span> = <span class="tok-fn">sanitize_key</span>(<span class="tok-fn">$_COOKIE</span>[<span class="tok-str">'ml_lang'</span>] ?? <span class="tok-str">''</span>);
+    <span class="tok-kw">if</span> (<span class="tok-fn">$cookie</span> && <span class="tok-fn">in_array</span>(<span class="tok-fn">$cookie</span>, <span class="tok-fn">$allowed</span>, <span class="tok-kw">true</span>)) {
+        <span class="tok-kw">return</span> <span class="tok-fn">$detected</span> = <span class="tok-fn">$cookie</span>;
+    }
+
+    <span class="tok-com">// 3) Noklusējums</span>
+    <span class="tok-kw">return</span> <span class="tok-fn">$detected</span> = <span class="tok-fn">$default</span>;
+}
+
+<span class="tok-com">// Īsāks, ērtāks alias — šo sauc visur pārējā kodā un veidnēs</span>
+<span class="tok-kw">function</span> <span class="tok-fn">ml_current_lang</span>(): <span class="tok-kw">string</span> {
+    <span class="tok-kw">return</span> <span class="tok-fn">ml_detect_lang</span>();
+}
+
+<span class="tok-com">// Katru reizi, kad valoda mainās, atjaunojam sīkdatni uz gadu</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'init'</span>, <span class="tok-kw">function</span> () {
+    <span class="tok-fn">$lang</span> = <span class="tok-fn">ml_detect_lang</span>();
+    <span class="tok-kw">if</span> ((<span class="tok-fn">$_COOKIE</span>[<span class="tok-str">'ml_lang'</span>] ?? <span class="tok-str">''</span>) !== <span class="tok-fn">$lang</span>) {
+        <span class="tok-fn">setcookie</span>(<span class="tok-str">'ml_lang'</span>, <span class="tok-fn">$lang</span>, time() + YEAR_IN_SECONDS, COOKIEPATH, COOKIE_DOMAIN, <span class="tok-fn">is_ssl</span>(), <span class="tok-kw">true</span>);
+    }
+});</code></pre>
+    </section>
+
+    <section class="doc-section" id="lang-routing">
+      <h2>3. Pretty URL maršrutēšana</h2>
+      <p>Bez šī soļa vienīgais veids, kā norādīt valodu, būtu neglīts <code>?lang=en</code> parametrs. <code>add_rewrite_rule()</code> māca WordPress saprast, ka <code>/en/kontakti/</code> ir tas pats, kas parastā "kontakti" lapa, tikai citā valodā.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Reģistrē URL noteikumus katrai valodai: /en/, /en/jebkas/, u.t.t.</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'init'</span>, <span class="tok-kw">function</span> () {
+    <span class="tok-kw">foreach</span> (<span class="tok-fn">ml_get_languages</span>() <span class="tok-kw">as</span> <span class="tok-fn">$l</span>) {
+        <span class="tok-fn">$code</span> = <span class="tok-fn">preg_quote</span>(<span class="tok-fn">$l</span>[<span class="tok-str">'code'</span>], <span class="tok-str">'#'</span>);
+
+        <span class="tok-fn">add_rewrite_rule</span>(<span class="tok-str">'^'</span> . <span class="tok-fn">$code</span> . <span class="tok-str">'/?$'</span>, <span class="tok-str">'index.php?ml_lang='</span> . <span class="tok-fn">$l</span>[<span class="tok-str">'code'</span>], <span class="tok-str">'top'</span>);
+        <span class="tok-fn">add_rewrite_rule</span>(<span class="tok-str">'^'</span> . <span class="tok-fn">$code</span> . <span class="tok-str">'/(.+?)/?$'</span>, <span class="tok-str">'index.php?ml_lang='</span> . <span class="tok-fn">$l</span>[<span class="tok-str">'code'</span>] . <span class="tok-str">'&ml_path=$matches[1]'</span>, <span class="tok-str">'top'</span>);
+    }
+});
+
+<span class="tok-com">// Māca WordPress atpazīt jaunos URL parametrus</span>
+<span class="tok-fn">add_filter</span>(<span class="tok-str">'query_vars'</span>, <span class="tok-kw">function</span> (<span class="tok-kw">array</span> <span class="tok-fn">$vars</span>): <span class="tok-kw">array</span> {
+    <span class="tok-fn">$vars</span>[] = <span class="tok-str">'ml_lang'</span>;
+    <span class="tok-fn">$vars</span>[] = <span class="tok-str">'ml_path'</span>;
+    <span class="tok-kw">return</span> <span class="tok-fn">$vars</span>;
+});
+
+<span class="tok-com">// Pārvērš "ml_path" (piem. "kontakti") par īstu WordPress lapu</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'parse_request'</span>, <span class="tok-kw">function</span> (WP <span class="tok-fn">$wp</span>): <span class="tok-kw">void</span> {
+    <span class="tok-kw">if</span> (<span class="tok-fn">empty</span>(<span class="tok-fn">$wp</span>->query_vars[<span class="tok-str">'ml_lang'</span>] ?? <span class="tok-str">''</span>)) <span class="tok-kw">return</span>;
+
+    <span class="tok-fn">$path</span> = <span class="tok-fn">trim</span>(<span class="tok-fn">$wp</span>->query_vars[<span class="tok-str">'ml_path'</span>] ?? <span class="tok-str">''</span>, <span class="tok-str">'/'</span>);
+    <span class="tok-kw">unset</span>(<span class="tok-fn">$wp</span>->query_vars[<span class="tok-str">'ml_path'</span>]);
+
+    <span class="tok-com">// Tukšs ceļš ("/en/") -> sākumlapa</span>
+    <span class="tok-kw">if</span> (<span class="tok-fn">$path</span> === <span class="tok-str">''</span>) {
+        <span class="tok-fn">$front_id</span> = (<span class="tok-kw">int</span>) <span class="tok-fn">get_option</span>(<span class="tok-str">'page_on_front'</span>);
+        <span class="tok-kw">if</span> (<span class="tok-fn">$front_id</span>) <span class="tok-fn">$wp</span>->query_vars[<span class="tok-str">'page_id'</span>] = <span class="tok-fn">$front_id</span>;
+        <span class="tok-kw">return</span>;
+    }
+
+    <span class="tok-com">// Meklē lapu pēc slug, piem. "kontakti"</span>
+    <span class="tok-fn">$page</span> = <span class="tok-fn">get_page_by_path</span>(<span class="tok-fn">$path</span>);
+    <span class="tok-kw">if</span> (<span class="tok-fn">$page</span>) {
+        <span class="tok-fn">$wp</span>->query_vars[<span class="tok-str">'page_id'</span>] = <span class="tok-fn">$page</span>->ID;
+        <span class="tok-kw">return</span>;
+    }
+
+    <span class="tok-com">// Ja nekas neatrodas, ļauj WordPress mēģināt pašam (arī raksti/CPT)</span>
+    <span class="tok-fn">$wp</span>->query_vars[<span class="tok-str">'pagename'</span>] = <span class="tok-fn">$path</span>;
+});
+
+<span class="tok-com">// Ģenerē saiti uz pašreizējo lapu, bet citā valodā (izmanto pārslēdzējā)</span>
+<span class="tok-kw">function</span> <span class="tok-fn">ml_url</span>(<span class="tok-kw">string</span> <span class="tok-fn">$target_lang</span>): <span class="tok-kw">string</span> {
+    <span class="tok-fn">$home</span>    = <span class="tok-fn">untrailingslashit</span>(<span class="tok-fn">home_url</span>());
+    <span class="tok-fn">$default</span> = <span class="tok-fn">ml_default_lang</span>();
+    <span class="tok-fn">$allowed</span> = <span class="tok-fn">array_column</span>(<span class="tok-fn">ml_get_languages</span>(), <span class="tok-str">'code'</span>);
+
+    <span class="tok-kw">if</span> (!<span class="tok-fn">in_array</span>(<span class="tok-fn">$target_lang</span>, <span class="tok-fn">$allowed</span>, <span class="tok-kw">true</span>)) <span class="tok-kw">return</span> <span class="tok-fn">$home</span> . <span class="tok-str">'/'</span>;
+
+    <span class="tok-fn">$path</span>     = <span class="tok-fn">parse_url</span>(<span class="tok-fn">$_SERVER</span>[<span class="tok-str">'REQUEST_URI'</span>] ?? <span class="tok-str">'/'</span>, PHP_URL_PATH) ?? <span class="tok-str">'/'</span>;
+    <span class="tok-fn">$relative</span> = <span class="tok-str">'/'</span> . <span class="tok-fn">ltrim</span>(<span class="tok-fn">$path</span>, <span class="tok-str">'/'</span>);
+
+    <span class="tok-com">// Noņem esošo valodas prefiksu, ja tāds jau ir ceļā</span>
+    <span class="tok-kw">foreach</span> (<span class="tok-fn">$allowed</span> <span class="tok-kw">as</span> <span class="tok-fn">$code</span>) {
+        <span class="tok-fn">$prefix</span> = <span class="tok-str">'/'</span> . <span class="tok-fn">$code</span>;
+        <span class="tok-kw">if</span> (<span class="tok-fn">$relative</span> === <span class="tok-fn">$prefix</span> || <span class="tok-fn">str_starts_with</span>(<span class="tok-fn">$relative</span>, <span class="tok-fn">$prefix</span> . <span class="tok-str">'/'</span>)) {
+            <span class="tok-fn">$relative</span> = <span class="tok-fn">substr</span>(<span class="tok-fn">$relative</span>, <span class="tok-fn">strlen</span>(<span class="tok-fn">$prefix</span>));
+            <span class="tok-kw">break</span>;
+        }
+    }
+    <span class="tok-fn">$relative</span> = <span class="tok-str">'/'</span> . <span class="tok-fn">ltrim</span>(<span class="tok-fn">$relative</span> ?: <span class="tok-str">'/'</span>, <span class="tok-str">'/'</span>);
+
+    <span class="tok-kw">return</span> <span class="tok-fn">$target_lang</span> === <span class="tok-fn">$default</span>
+        ? <span class="tok-fn">$home</span> . <span class="tok-fn">$relative</span>
+        : <span class="tok-fn">$home</span> . <span class="tok-str">'/'</span> . <span class="tok-fn">$target_lang</span> . <span class="tok-fn">$relative</span>;
+}
+
+<span class="tok-com">// Katru reizi, kad maini valodas vai atjauno tēmu, jāatsvaidzina URL noteikumi</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'after_switch_theme'</span>, <span class="tok-str">'flush_rewrite_rules'</span>);</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Pēc šī koda pievienošanas dodies uz <strong>Iestatījumi → Pastāvīgās saites → Saglabāt</strong> — tas piespiedu kārtā atsvaidzina URL noteikumus. Bez šī soļa <code>/en/...</code> adreses rādīs 404.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="lang-statictext">
+      <h2>4. Statiskā teksta tulkojumi</h2>
+      <p>Šis nodrošina tulkojumus fiksētiem tekstiem, kas <strong>nav</strong> piesaistīti konkrētam ierakstam — pogas, izvēlnes vārdi, virsraksti. Tie tiek glabāti JSON failos, sagrupēti pa "grupām" (piem., <code>menu.json</code>, <code>kontakti.json</code>), lai katra lapa/sadaļa turētu savu nelielo tulkojumu failu.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Nolasa/raksta konkrētas grupas tulkojumu failu, piem. "menu" -> ml-lang/menu.json</span>
+<span class="tok-kw">function</span> <span class="tok-fn">ml_dict_file</span>(<span class="tok-kw">string</span> <span class="tok-fn">$group</span>): <span class="tok-kw">string</span> {
+    <span class="tok-kw">return</span> <span class="tok-fn">ml_lang_dir</span>() . <span class="tok-str">'/'</span> . <span class="tok-fn">sanitize_file_name</span>(<span class="tok-fn">$group</span>) . <span class="tok-str">'.json'</span>;
+}
+
+<span class="tok-kw">function</span> <span class="tok-fn">ml_dict_read</span>(<span class="tok-kw">string</span> <span class="tok-fn">$group</span>): <span class="tok-kw">array</span> {
+    <span class="tok-fn">$file</span> = <span class="tok-fn">ml_dict_file</span>(<span class="tok-fn">$group</span>);
+    <span class="tok-kw">if</span> (!<span class="tok-fn">file_exists</span>(<span class="tok-fn">$file</span>)) <span class="tok-kw">return</span> [];
+    <span class="tok-fn">$data</span> = <span class="tok-fn">json_decode</span>(<span class="tok-fn">file_get_contents</span>(<span class="tok-fn">$file</span>), <span class="tok-kw">true</span>);
+    <span class="tok-kw">return</span> <span class="tok-fn">is_array</span>(<span class="tok-fn">$data</span>) ? <span class="tok-fn">$data</span> : [];
+}
+
+<span class="tok-kw">function</span> <span class="tok-fn">ml_dict_write</span>(<span class="tok-kw">string</span> <span class="tok-fn">$group</span>, <span class="tok-kw">array</span> <span class="tok-fn">$data</span>): <span class="tok-kw">bool</span> {
+    <span class="tok-kw">return</span> (<span class="tok-kw">bool</span>) <span class="tok-fn">file_put_contents</span>(<span class="tok-fn">ml_dict_file</span>(<span class="tok-fn">$group</span>), <span class="tok-fn">wp_json_encode</span>(<span class="tok-fn">$data</span>, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+}
+
+<span class="tok-com">// ŠO IZSAUC VEIDNĒS: ml_t('menu', 'home') -> "Sākums" / "Home" / "Главная"</span>
+<span class="tok-kw">function</span> <span class="tok-fn">ml_t</span>(<span class="tok-kw">string</span> <span class="tok-fn">$group</span>, <span class="tok-kw">string</span> <span class="tok-fn">$key</span>, <span class="tok-kw">string</span> <span class="tok-fn">$lang</span> = <span class="tok-str">''</span>): <span class="tok-kw">string</span> {
+    <span class="tok-fn">$lang</span> = <span class="tok-fn">$lang</span> ?: <span class="tok-fn">ml_current_lang</span>();
+    <span class="tok-fn">$data</span> = <span class="tok-fn">ml_dict_read</span>(<span class="tok-fn">$group</span>);
+
+    <span class="tok-kw">return</span> <span class="tok-fn">$data</span>[<span class="tok-fn">$lang</span>][<span class="tok-fn">$key</span>]
+        ?? <span class="tok-fn">$data</span>[<span class="tok-fn">ml_default_lang</span>()][<span class="tok-fn">$key</span>]
+        ?? <span class="tok-str">''</span>;
+}</code></pre>
+      <p>Lietošana veidnē (piem. <code>header.php</code>):</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;a href="/"&gt;&lt;?= <span class="tok-fn">esc_html</span>(<span class="tok-fn">ml_t</span>(<span class="tok-str">'menu'</span>, <span class="tok-str">'home'</span>)) ?&gt;&lt;/a&gt;</code></pre>
+      <p>Atbilstošais <code>menu.json</code> fails izskatītos šādi (šo faila saturu vēlāk rediģēs caur admin lapu, skat. 6. soli, nevis ar roku):</p>
+      <pre class="code-block"><span class="lang">json</span><code>{
+    "lv": { "home": "Sākums", "contact": "Kontakti" },
+    "en": { "home": "Home",   "contact": "Contact" }
+}</code></pre>
+    </section>
+
+    <section class="doc-section" id="lang-fields">
+      <h2>5. Daudzvalodu pielāgotie lauki</h2>
+      <p>Šī daļa atšķiras no 4. soļa — tā ir domāta laukiem, kas pieder <strong>konkrētam ierakstam</strong> (piem., raksta apakšvirsraksts), nevis fiksētiem UI tekstiem. Vērtība katrai valodai tiek saglabāta <strong>vienā</strong> post meta laukā kā JSON masīvs — piem. <code>{"lv": "...", "en": "..."}</code>.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// ŠO IZSAUC VEIDNĒS: ml_field(get_the_ID(), 'ml_subtitle')</span>
+<span class="tok-kw">function</span> <span class="tok-fn">ml_field</span>(<span class="tok-kw">int</span> <span class="tok-fn">$post_id</span>, <span class="tok-kw">string</span> <span class="tok-fn">$field</span>, <span class="tok-kw">string</span> <span class="tok-fn">$lang</span> = <span class="tok-str">''</span>): <span class="tok-kw">string</span> {
+    <span class="tok-fn">$raw</span> = <span class="tok-fn">get_post_meta</span>(<span class="tok-fn">$post_id</span>, <span class="tok-fn">$field</span>, <span class="tok-kw">true</span>);
+    <span class="tok-kw">if</span> (<span class="tok-fn">empty</span>(<span class="tok-fn">$raw</span>)) <span class="tok-kw">return</span> <span class="tok-str">''</span>;
+
+    <span class="tok-fn">$data</span> = <span class="tok-fn">is_array</span>(<span class="tok-fn">$raw</span>) ? <span class="tok-fn">$raw</span> : <span class="tok-fn">json_decode</span>(<span class="tok-fn">$raw</span>, <span class="tok-kw">true</span>);
+    <span class="tok-kw">if</span> (!<span class="tok-fn">is_array</span>(<span class="tok-fn">$data</span>)) <span class="tok-kw">return</span> <span class="tok-str">''</span>;
+
+    <span class="tok-fn">$lang</span> = <span class="tok-fn">$lang</span> ?: <span class="tok-fn">ml_current_lang</span>();
+
+    <span class="tok-kw">return</span> <span class="tok-fn">$data</span>[<span class="tok-fn">$lang</span>]
+        ?? <span class="tok-fn">$data</span>[<span class="tok-fn">ml_default_lang</span>()]
+        ?? <span class="tok-fn">reset</span>(<span class="tok-fn">$data</span>)
+        ?: <span class="tok-str">''</span>;
+}</code></pre>
+      <p>Un pilns <strong>meta box piemērs</strong> — pievieno vienu ievades lauku katrai valodai jebkura ieraksta rediģēšanas ekrānā, ar drošu saglabāšanu (nonce pārbaude):</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'add_meta_boxes'</span>, <span class="tok-kw">function</span> () {
+    <span class="tok-fn">add_meta_box</span>(<span class="tok-str">'ml_subtitle_box'</span>, <span class="tok-str">'Apakšvirsraksts (visās valodās)'</span>, <span class="tok-str">'ml_render_subtitle_box'</span>, <span class="tok-str">'post'</span>);
+});
+
+<span class="tok-kw">function</span> <span class="tok-fn">ml_render_subtitle_box</span>(WP_Post <span class="tok-fn">$post</span>): <span class="tok-kw">void</span> {
+    <span class="tok-fn">wp_nonce_field</span>(<span class="tok-str">'ml_save_subtitle'</span>, <span class="tok-str">'ml_subtitle_nonce'</span>);
+
+    <span class="tok-fn">$raw</span>     = <span class="tok-fn">get_post_meta</span>(<span class="tok-fn">$post</span>->ID, <span class="tok-str">'ml_subtitle'</span>, <span class="tok-kw">true</span>);
+    <span class="tok-fn">$data</span>    = <span class="tok-fn">$raw</span> ? <span class="tok-fn">json_decode</span>(<span class="tok-fn">$raw</span>, <span class="tok-kw">true</span>) : [];
+    <span class="tok-fn">$langs</span>   = <span class="tok-fn">ml_get_languages</span>();
+    <span class="tok-fn">$default</span> = <span class="tok-fn">ml_default_lang</span>();
+
+    <span class="tok-kw">foreach</span> (<span class="tok-fn">$langs</span> <span class="tok-kw">as</span> <span class="tok-fn">$l</span>):
+        <span class="tok-fn">$code</span> = <span class="tok-fn">$l</span>[<span class="tok-str">'code'</span>];
+        <span class="tok-fn">$val</span>  = <span class="tok-fn">$data</span>[<span class="tok-fn">$code</span>] ?? <span class="tok-str">''</span>;
+    ?&gt;
+    &lt;p&gt;
+        &lt;label&gt;&lt;strong&gt;&lt;?= esc_html(strtoupper($code)) ?&gt; — &lt;?= esc_html($l['label']) ?&gt;&lt;/strong&gt;&lt;/label&gt;&lt;br&gt;
+        &lt;input type="text" style="width:100%"
+               id="ml_subtitle_&lt;?= esc_attr($code) ?&gt;"
+               name="ml_subtitle[&lt;?= esc_attr($code) ?&gt;]"
+               value="&lt;?= esc_attr($val) ?&gt;"&gt;
+        &lt;?php if ($code !== $default): ?&gt;
+            &lt;button type="button" class="button ml-translate-btn"
+                data-from="&lt;?= esc_attr($default) ?&gt;" data-to="&lt;?= esc_attr($code) ?&gt;"
+                data-source="#ml_subtitle_&lt;?= esc_attr($default) ?&gt;"
+                data-target="#ml_subtitle_&lt;?= esc_attr($code) ?&gt;"&gt;
+                🌍 Tulkot no &lt;?= esc_html(strtoupper($default)) ?&gt;
+            &lt;/button&gt;
+        &lt;?php endif; ?&gt;
+    &lt;/p&gt;
+    &lt;?php
+    endforeach;
+}
+
+<span class="tok-fn">add_action</span>(<span class="tok-str">'save_post'</span>, <span class="tok-kw">function</span> (<span class="tok-kw">int</span> <span class="tok-fn">$post_id</span>) {
+    <span class="tok-kw">if</span> (!<span class="tok-fn">isset</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'ml_subtitle_nonce'</span>]) || !<span class="tok-fn">wp_verify_nonce</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'ml_subtitle_nonce'</span>], <span class="tok-str">'ml_save_subtitle'</span>)) <span class="tok-kw">return</span>;
+    <span class="tok-kw">if</span> (!<span class="tok-fn">current_user_can</span>(<span class="tok-str">'edit_post'</span>, <span class="tok-fn">$post_id</span>)) <span class="tok-kw">return</span>;
+
+    <span class="tok-fn">$values</span> = <span class="tok-fn">array_map</span>(<span class="tok-str">'sanitize_text_field'</span>, <span class="tok-fn">$_POST</span>[<span class="tok-str">'ml_subtitle'</span>] ?? []);
+    <span class="tok-fn">update_post_meta</span>(<span class="tok-fn">$post_id</span>, <span class="tok-str">'ml_subtitle'</span>, <span class="tok-fn">wp_json_encode</span>(<span class="tok-fn">$values</span>, JSON_UNESCAPED_UNICODE));
+});</code></pre>
+      <p>Un rādīšana veidnē (piem. <code>single.php</code>):</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php <span class="tok-fn">$apaksvirsraksts</span> = <span class="tok-fn">ml_field</span>(<span class="tok-fn">get_the_ID</span>(), <span class="tok-str">'ml_subtitle'</span>); ?&gt;
+&lt;?php <span class="tok-kw">if</span> (<span class="tok-fn">$apaksvirsraksts</span>): ?&gt;
+    &lt;p class="subtitle"&gt;&lt;?= esc_html($apaksvirsraksts) ?&gt;&lt;/p&gt;
+&lt;?php <span class="tok-kw">endif</span>; ?&gt;</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Vēlies daudzvalodu lauku citam CPT vai citam laukam? Nokopē šo pašu meta box piemēru, nomaini <code>'post'</code> uz savu satura tipu un <code>'ml_subtitle'</code> uz savu lauka nosaukumu — pārējais paliek identisks.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="lang-admin">
+      <h2>6. Admin lapa valodām</h2>
+      <p>Lai valodas varētu pievienot/dzēst bez koda rediģēšanas, pievieno vienkāršu admin lapu. Tā parādās WordPress sānizvēlnē un ļauj rediģēt valodu tabulu (kods + nosaukums), kas tieši atbilst 1. solī izveidotajam <code>languages.json</code>.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'admin_menu'</span>, <span class="tok-kw">function</span> () {
+    <span class="tok-fn">add_menu_page</span>(<span class="tok-str">'Valodas'</span>, <span class="tok-str">'Valodas'</span>, <span class="tok-str">'manage_options'</span>, <span class="tok-str">'ml-languages'</span>, <span class="tok-str">'ml_languages_page'</span>, <span class="tok-str">'dashicons-translation'</span>, 80);
+});
+
+<span class="tok-kw">function</span> <span class="tok-fn">ml_languages_page</span>(): <span class="tok-kw">void</span> {
+    <span class="tok-kw">if</span> (!<span class="tok-fn">current_user_can</span>(<span class="tok-str">'manage_options'</span>)) <span class="tok-kw">return</span>;
+
+    <span class="tok-kw">if</span> (<span class="tok-fn">isset</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'ml_save'</span>]) && <span class="tok-fn">check_admin_referer</span>(<span class="tok-str">'ml_save_langs'</span>)) {
+        <span class="tok-fn">$codes</span>  = <span class="tok-fn">array_map</span>(<span class="tok-str">'sanitize_key'</span>,        <span class="tok-fn">$_POST</span>[<span class="tok-str">'code'</span>]  ?? []);
+        <span class="tok-fn">$labels</span> = <span class="tok-fn">array_map</span>(<span class="tok-str">'sanitize_text_field'</span>, <span class="tok-fn">$_POST</span>[<span class="tok-str">'label'</span>] ?? []);
+
+        <span class="tok-fn">$langs</span> = [];
+        <span class="tok-kw">foreach</span> (<span class="tok-fn">$codes</span> <span class="tok-kw">as</span> <span class="tok-fn">$i</span> => <span class="tok-fn">$code</span>) {
+            <span class="tok-kw">if</span> (<span class="tok-fn">$code</span> && !<span class="tok-fn">empty</span>(<span class="tok-fn">$labels</span>[<span class="tok-fn">$i</span>])) {
+                <span class="tok-fn">$langs</span>[] = [<span class="tok-str">'code'</span> => <span class="tok-fn">$code</span>, <span class="tok-str">'label'</span> => <span class="tok-fn">$labels</span>[<span class="tok-fn">$i</span>]];
+            }
+        }
+
+        <span class="tok-kw">if</span> (<span class="tok-fn">$langs</span>) {
+            <span class="tok-fn">ml_save_languages</span>(<span class="tok-fn">$langs</span>);
+            <span class="tok-fn">flush_rewrite_rules</span>(); <span class="tok-com">// jauna valoda = jauni URL noteikumi</span>
+            <span class="tok-kw">echo</span> <span class="tok-str">'&lt;div class="notice notice-success"&gt;&lt;p&gt;Saglabāts!&lt;/p&gt;&lt;/div&gt;'</span>;
+        }
+    }
+
+    <span class="tok-fn">$langs</span> = <span class="tok-fn">ml_get_languages</span>();
+    ?&gt;
+    &lt;div class="wrap"&gt;
+        &lt;h1&gt;🌍 Valodas&lt;/h1&gt;
+        &lt;form method="post"&gt;
+            &lt;?php wp_nonce_field('ml_save_langs'); ?&gt;
+            &lt;table class="widefat"&gt;
+                &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Kods&lt;/th&gt;&lt;th&gt;Nosaukums&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+                &lt;tbody&gt;
+                &lt;?php foreach ($langs as $l): ?&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;&lt;input type="text" name="code[]" value="&lt;?= esc_attr($l['code']) ?&gt;" maxlength="5"&gt;&lt;/td&gt;
+                        &lt;td&gt;&lt;input type="text" name="label[]" value="&lt;?= esc_attr($l['label']) ?&gt;"&gt;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;?php endforeach; ?&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;&lt;input type="text" name="code[]" placeholder="en" maxlength="5"&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;input type="text" name="label[]" placeholder="English"&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;/tbody&gt;
+            &lt;/table&gt;
+            &lt;p&gt;&lt;button type="submit" name="ml_save" class="button button-primary"&gt;Saglabāt&lt;/button&gt;&lt;/p&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+    &lt;?php
+}</code></pre>
+      <p>Pēdējā tukšā rinda tabulā vienmēr ļauj pievienot vēl vienu jaunu valodu — vienkārši ieraksti kodu un nosaukumu un spied "Saglabāt".</p>
+    </section>
+
+    <section class="doc-section" id="lang-google">
+      <h2>7. Google Translate automātiskā tulkošana</h2>
+      <p>Šī daļa pievieno pogu "🌍 Tulkot", kas automātiski aizpilda tulkojuma lauku, izmantojot Google Translate <strong>bezmaksas, neoficiālo</strong> galapunktu (to pašu, ko izmanto translate.google.com pārlūkā). Nav vajadzīga API atslēga vai maksas konts.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'admin_footer'</span>, <span class="tok-kw">function</span> () {
+    ?&gt;
+    &lt;script&gt;
+    (function () {
+        <span class="tok-com">// Tulko tekstu no vienas valodas uz otru caur Google Translate</span>
+        async function <span class="tok-fn">mlTranslate</span>(text, from, to) {
+            if (!text.trim()) return text;
+            const url = 'https://translate.googleapis.com/translate_a/single'
+                + '?client=gtx&sl=' + from + '&tl=' + to + '&dt=t&q=' + encodeURIComponent(text);
+            const res  = await fetch(url);
+            const json = await res.json();
+            <span class="tok-com">// Google atgriež ligzdotu masīvu — saliekam gabalus vienā tekstā</span>
+            return json[0].map(part => part[0]).join('');
+        }
+
+        document.addEventListener('click', async function (e) {
+            const btn = e.target.closest('.ml-translate-btn');
+            if (!btn) return;
+
+            const from = btn.dataset.from || 'lv';
+            const to   = btn.dataset.to;
+            const src  = document.querySelector(btn.dataset.source);
+            const dest = document.querySelector(btn.dataset.target);
+            if (!src || !dest) return;
+
+            btn.disabled = true;
+            const original = btn.textContent;
+            btn.textContent = '⏳ Tulko...';
+
+            dest.value = await <span class="tok-fn">mlTranslate</span>(src.value, from, to);
+
+            btn.textContent = '✅ Gatavs';
+            setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 1500);
+        });
+    })();
+    &lt;/script&gt;
+    &lt;?php
+});</code></pre>
+      <p>Šī poga jau strādā ar 5. solī izveidoto meta box piemēru (tur tai jau ir pareizie <code>data-*</code> atribūti) — ne pati funkcija, ne pogas HTML nekas papildus nav jāraksta.</p>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Šis ir <strong>neoficiāls</strong> Google galapunkts (nav Google Cloud Translation API) — tas ir bez maksas un ideāls admin ērtībai, bet <strong>nav garantijas</strong>, ka Google to nemainīs nākotnē. Lieliem apjomiem vai kritiskiem projektiem ilgtermiņā apsver oficiālo, maksas <a href="https://cloud.google.com/translate" target="_blank" rel="noopener">Google Cloud Translation API</a>.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="lang-switcher">
+      <h2>8. Valodu pārslēdzējs &amp; SEO</h2>
+      <p>Pēdējā daļa — apmeklētājam redzamā valodu izvēlne un <code>hreflang</code> SEO tagi, kas palīdz Google saprast, ka lapas dažādās valodās ir viena un tā pati satura versija, nevis dublēts saturs.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// ŠO IZSAUC VEIDNĒ (piem. header.php): &lt;?php ml_language_switcher(); ?&gt;</span>
+<span class="tok-kw">function</span> <span class="tok-fn">ml_language_switcher</span>(): <span class="tok-kw">void</span> {
+    <span class="tok-fn">$langs</span> = <span class="tok-fn">ml_get_languages</span>();
+    <span class="tok-kw">if</span> (<span class="tok-fn">count</span>(<span class="tok-fn">$langs</span>) < 2) <span class="tok-kw">return</span>; <span class="tok-com">// nav jēgas rādīt pārslēdzēju vienai valodai</span>
+
+    <span class="tok-fn">$current</span> = <span class="tok-fn">ml_current_lang</span>();
+    ?&gt;
+    &lt;div class="ml-switcher"&gt;
+        &lt;?php foreach ($langs as $l): ?&gt;
+            &lt;a href="&lt;?= esc_url(ml_url($l['code'])) ?&gt;"
+               class="ml-switcher-item &lt;?= $l['code'] === $current ? 'active' : '' ?&gt;"&gt;
+                &lt;?= esc_html(strtoupper($l['code'])) ?&gt;
+            &lt;/a&gt;
+        &lt;?php endforeach; ?&gt;
+    &lt;/div&gt;
+    &lt;?php
+}
+
+<span class="tok-com">// hreflang tagi &lt;head&gt; sadaļā — palīdz SEO, novērš "dublēta satura" problēmu</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'wp_head'</span>, <span class="tok-kw">function</span> () {
+    <span class="tok-fn">$langs</span> = <span class="tok-fn">ml_get_languages</span>();
+    <span class="tok-kw">if</span> (<span class="tok-fn">count</span>(<span class="tok-fn">$langs</span>) < 2) <span class="tok-kw">return</span>;
+
+    <span class="tok-kw">foreach</span> (<span class="tok-fn">$langs</span> <span class="tok-kw">as</span> <span class="tok-fn">$l</span>) {
+        <span class="tok-fn">printf</span>(
+            <span class="tok-str">'&lt;link rel="alternate" hreflang="%s" href="%s"&gt;'</span> . <span class="tok-str">"\n"</span>,
+            <span class="tok-fn">esc_attr</span>(<span class="tok-fn">$l</span>[<span class="tok-str">'code'</span>]),
+            <span class="tok-fn">esc_url</span>(<span class="tok-fn">ml_url</span>(<span class="tok-fn">$l</span>[<span class="tok-str">'code'</span>]))
+        );
+    }
+}, 1);</code></pre>
+      <p>Minimāls CSS pārslēdzējam (pielāgo pēc savas vietnes stila):</p>
+      <pre class="code-block"><span class="lang">css</span><code>.ml-switcher { display: flex; gap: 8px; }
+.ml-switcher-item { opacity: .5; text-decoration: none; font-weight: 600; }
+.ml-switcher-item.active { opacity: 1; }</code></pre>
+    </section>
+
+    <section class="doc-section" id="lang-usage">
+      <h2>Kā ielikt citā projektā</h2>
+      <p>Precīza soļu secība, lai šo sistēmu pievienotu jaunam vai esošam WordPress projektam:</p>
+      <pre class="code-block"><span class="lang">text</span><code>1. Izveido failu:  wp-content/themes/tava-tema/inc/multilingual.php
+2. Iekopē tajā VISU kodu no 1.-8. sadaļas augstāk (šajā secībā)
+3. functions.php failā pievieno vienu rindu:
+   require_once get_template_directory() . '/inc/multilingual.php';
+4. WordPress admin: Iestatījumi → Pastāvīgās saites → Saglabāt
+   (tas aktivizē /en/, /ru/ u.c. URL noteikumus)
+5. Ej uz jauno "🌍 Valodas" izvēlni admin sānjoslā un pievieno valodas
+6. header.php failā ielikt: <?php ml_language_switcher(); ?>
+7. Veidnēs izmanto ml_t('grupa', 'atslēga') statiskajam tekstam
+   un ml_field($post_id, 'lauka_vards') ieraksta laukiem</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Sistēma darbojas ar <strong>jebkuru</strong> valodu skaitu un jebkuriem kodiem (<code>lv</code>, <code>en</code>, <code>ru</code>, <code>de</code>, ...) — nekas kodā nav "hardkodēts" uz konkrētām valodām. Pievienojot jaunu valodu admin lapā, viss (URL, pārslēdzējs, hreflang) sāk strādāt automātiski.</p>
+      </div>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Ja projektā jau ir cita daudzvalodu sistēma vai spraudnis (WPML, Polylang), <strong>neinstalē abas vienlaikus</strong> — tās konfliktēs (piem., abas mēģinās reģistrēt savus <code>add_rewrite_rule()</code> noteikumus un URL sajuks).</p>
+      </div>
     </section>
 
     <div class="doc-pager">
