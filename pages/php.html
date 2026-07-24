@@ -53,6 +53,7 @@
       <a href="#klases"><span class="bullet"></span>Klases &amp; objekti</a>
       <a href="#mantojums"><span class="bullet"></span>Mantojums</a>
       <a href="#interfeisi"><span class="bullet"></span>Interfeisi</a>
+      <a href="#traits"><span class="bullet"></span>Traits</a>
     </div>
     <div class="doc-sidebar-group">
       <h4>Rīki</h4>
@@ -341,6 +342,47 @@
 
 <span class="tok-fn">veiktPirkumu</span>(<span class="tok-kw">new</span> <span class="tok-fn">KartesMaksajums</span>(), 49.99);
 <span class="tok-com">// "Apstrādā 49.99€ ar karti"</span></code></pre>
+    </section>
+
+    <section class="doc-section" id="traits">
+      <h2>Traits</h2>
+      <p>PHP klase var <code>extends</code> tikai <strong>vienu</strong> vecākklasi — atšķirībā no dažām citām valodām, PHP neatbalsta vairākkārtēju mantojumu. Bet bieži gadās, ka divām nesaistītām klasēm (piem., <code>Lietotajs</code> un <code>Produkts</code>) vajag tieši to pašu, gatavo funkcionalitāti — piem., laika zīmogu izsekošanu. <strong>Trait</strong> atrisina šo: tas ir gatavu metožu "gabals", ko var iekopēt jebkurā klasē ar <code>use</code>, neatkarīgi no klases mantojuma hierarhijas.</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-kw">trait</span> <span class="tok-fn">Laikazimogojams</span> {
+    <span class="tok-kw">private</span> ?<span class="tok-kw">string</span> <span class="tok-fn">$izveidots</span> = <span class="tok-kw">null</span>;
+
+    <span class="tok-kw">public function</span> <span class="tok-fn">atzimetIzveidosanu</span>(): <span class="tok-kw">void</span> {
+        <span class="tok-kw">$this</span>->izveidots = <span class="tok-fn">date</span>(<span class="tok-str">'Y-m-d H:i:s'</span>);
+    }
+
+    <span class="tok-kw">public function</span> <span class="tok-fn">iegutIzveidosanasLaiku</span>(): ?<span class="tok-kw">string</span> {
+        <span class="tok-kw">return</span> <span class="tok-kw">$this</span>->izveidots;
+    }
+}
+
+<span class="tok-com">// Divas pilnīgi nesaistītas klases izmanto to pašu funkcionalitāti</span>
+<span class="tok-kw">class</span> <span class="tok-fn">Lietotajs</span> {
+    <span class="tok-kw">use</span> <span class="tok-fn">Laikazimogojams</span>;
+
+    <span class="tok-kw">public function</span> <span class="tok-fn">__construct</span>(<span class="tok-kw">public string</span> <span class="tok-fn">$vards</span>) {
+        <span class="tok-kw">$this</span>->atzimetIzveidosanu();
+    }
+}
+
+<span class="tok-kw">class</span> <span class="tok-fn">Produkts</span> {
+    <span class="tok-kw">use</span> <span class="tok-fn">Laikazimogojams</span>;
+
+    <span class="tok-kw">public function</span> <span class="tok-fn">__construct</span>(<span class="tok-kw">public string</span> <span class="tok-fn">$nosaukums</span>) {
+        <span class="tok-kw">$this</span>->atzimetIzveidosanu();
+    }
+}
+
+<span class="tok-fn">$lietotajs</span> = <span class="tok-kw">new</span> <span class="tok-fn">Lietotajs</span>(<span class="tok-str">"Anna"</span>);
+<span class="tok-kw">echo</span> <span class="tok-fn">$lietotajs</span>->iegutIzveidosanasLaiku(); <span class="tok-com">// piem. "2026-07-24 14:32:10"</span></code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Vienkāršs veids atcerēties atšķirību: <strong>interfeiss</strong> saka "šeit ir tikai <em>saraksts</em>, ko tev jāievieš pašam", <strong>trait</strong> saka "šeit ir <em>gatavs</em> kods, ko vari uzreiz izmantot". Klase var izmantot vairākus traits vienlaikus (<code>use TraitViens, TraitDivi;</code>), kas apiet "tikai viena vecākklase" ierobežojumu.</p>
+      </div>
     </section>
 
     <section class="doc-section" id="datubaze">

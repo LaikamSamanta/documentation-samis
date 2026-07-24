@@ -36,6 +36,7 @@
       <h4>Izstrāde</h4>
       <a href="#temas-vs-spraudni" class="active"><span class="bullet"></span>Tēmas vs spraudņi</a>
       <a href="#temas"><span class="bullet"></span>Tēmu izveide</a>
+      <a href="#child-tema"><span class="bullet"></span>Bērnu tēmas (Child Themes)</a>
       <a href="#wpconfig"><span class="bullet"></span>wp-config.php</a>
       <a href="#loop"><span class="bullet"></span>The Loop</a>
       <a href="#izvelnes"><span class="bullet"></span>Izvēlnes</a>
@@ -101,6 +102,41 @@ Version: 1.0
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
         <p>Ja <code>index.php</code> izmanto <code>get_header()</code>/<code>get_footer()</code>, tad <code>header.php</code>/<code>footer.php</code> failiem jau <strong>jāeksistē</strong> tajā pašā mapē (kaut tukšiem: <code>&lt;html&gt;&lt;body&gt;</code> un attiecīgi <code>&lt;/body&gt;&lt;/html&gt;</code>), citādi radīsies kļūda.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="child-tema">
+      <h2>Bērnu tēmas (Child Themes)</h2>
+      <p>Viens no biežākajiem un dārgākajiem iesācēju kļūdām: rediģēt lejupielādētu vai iegādātu tēmu <strong>tieši</strong> (piem., mainīt <code>style.css</code> vai <code>functions.php</code> failā, kas nāca kopā ar tēmu). Kad tēmas autors izlaidīs atjauninājumu un to uzstādīsi, <strong>visas tavas izmaiņas tiks pilnībā pārrakstītas un pazudīs</strong> — WordPress vienkārši aizvieto veco tēmas mapi ar jauno.</p>
+      <p><strong>Bērnu tēma</strong> atrisina šo problēmu: tā ir atsevišķa, maza tēma, kas "manto" visu no vecāktēmas (parent theme), bet ļauj droši pārrakstīt tikai to, ko vēlies mainīt. Vecāktēmu var brīvi atjaunināt — bērnu tēma un tavas izmaiņas paliek neskartas.</p>
+      <p><strong>1. solis</strong> — izveido jaunu mapi, piem. <code>wp-content/themes/mana-tema-child/</code>, ar šo <code>style.css</code>:</p>
+      <pre class="code-block"><span class="lang">css</span><code><span class="tok-com">/*
+Theme Name: Mana Tēma Child
+Template: mana-tema
+Version: 1.0
+*/</span></code></pre>
+      <p><code>Template</code> rindā jānorāda tieši vecāktēmas <strong>mapes nosaukums</strong> (nevis "Theme Name") — šī ir vienīgā obligātā saite starp abām tēmām.</p>
+      <p><strong>2. solis</strong> — tajā pašā mapē izveido <code>functions.php</code>, kas ielādē gan vecāktēmas, gan bērnu tēmas stilus:</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-fn">add_action</span>(<span class="tok-str">'wp_enqueue_scripts'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-com">// Vispirms ielādē vecāktēmas stilus</span>
+    <span class="tok-fn">wp_enqueue_style</span>(
+        <span class="tok-str">'parent-style'</span>,
+        <span class="tok-fn">get_template_directory_uri</span>() . <span class="tok-str">'/style.css'</span>
+    );
+
+    <span class="tok-com">// Tad bērnu tēmas stilus — "vecāks" no parent-style,
+    // lai tas ielādētos PĒC un varētu pārrakstīt tā noteikumus</span>
+    <span class="tok-fn">wp_enqueue_style</span>(
+        <span class="tok-str">'child-style'</span>,
+        <span class="tok-fn">get_stylesheet_uri</span>(),
+        [<span class="tok-str">'parent-style'</span>]
+    );
+});</code></pre>
+      <p><strong>3. solis</strong> — Izskats → Tēmas → aktivizē "Mana Tēma Child". Vietne izskatīsies tieši tāpat kā ar vecāktēmu, bet tagad droši vari pievienot savu CSS <code>style.css</code> beigās vai pārrakstīt atsevišķus <code>.php</code> failus (piem., <code>footer.php</code>), tos nokopējot no vecāktēmas uz bērnu tēmas mapi un tur rediģējot — WordPress vienmēr vispirms meklē failu bērnu tēmā, un tikai tad vecāktēmā.</p>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Ja plāno izmantot lejupielādētu vai iegādātu tēmu (ne pašrakstītu), vienmēr izveido tai bērnu tēmu <strong>uzreiz sākumā</strong>, pirms sāc jebko rediģēt — daudz vieglāk to izdarīt no paša sākuma, nekā mēģināt "izvilkt" izmaiņas no galvenās tēmas failiem vēlāk.</p>
       </div>
     </section>
 

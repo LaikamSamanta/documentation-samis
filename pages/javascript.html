@@ -46,6 +46,7 @@
       <a href="#klases"><span class="bullet"></span>Klases</a>
       <a href="#async"><span class="bullet"></span>Async/Await</a>
       <a href="#destruct"><span class="bullet"></span>Destrukturēšana</a>
+      <a href="#optional-chaining"><span class="bullet"></span>?. un ??</a>
       <a href="#spread"><span class="bullet"></span>Spread &amp; Rest (...)</a>
       <a href="#moduli"><span class="bullet"></span>Moduļi</a>
     </div>
@@ -301,6 +302,36 @@
   <span class="tok-fn">console</span>.log(`${vards} ir ${vecums} gadus vecs`);
 }
 <span class="tok-fn">parada</span>(lietotajs); <span class="tok-com">// "Anna ir 25 gadus vecs"</span></code></pre>
+    </section>
+
+    <section class="doc-section" id="optional-chaining">
+      <h2>?. un ??</h2>
+      <p>Divi mazi, bet ārkārtīgi bieži lietoti operatori, kas pasargā no vienas no visbiežākajām JS kļūdām — <code>Cannot read properties of undefined</code>. <strong>Optional chaining</strong> (<code>?.</code>) pārtrauc piekļuvi un atgriež <code>undefined</code>, tiklīdz sastop <code>null</code>/<code>undefined</code>, nevis izmet kļūdu. <strong>Nullish coalescing</strong> (<code>??</code>) atgriež labo pusi tikai tad, ja kreisā ir tieši <code>null</code> vai <code>undefined</code> (atšķirībā no <code>||</code>, kas nostrādā arī uz <code>0</code>, <code>""</code> vai <code>false</code>).</p>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">const</span> lietotajs = {
+  vards: <span class="tok-str">"Anna"</span>,
+  adrese: {
+    pilseta: <span class="tok-str">"Rīga"</span>,
+    <span class="tok-com">// nav "valsts" lauka</span>
+  },
+};
+
+<span class="tok-com">// Bez ?. — šī rinda izmestu kļūdu, ja "adrese" nebūtu definēta:</span>
+<span class="tok-fn">console</span>.log(lietotajs.adrese?.valsts);        <span class="tok-com">// undefined (bez kļūdas)</span>
+<span class="tok-fn">console</span>.log(lietotajs.kontakti?.epasts);     <span class="tok-com">// undefined — "kontakti" pat neeksistē</span>
+
+<span class="tok-com">// Var kombinēt ar funkciju izsaukumu</span>
+<span class="tok-kw">const</span> objekts = { <span class="tok-fn">saskaitit</span>(a, b) { <span class="tok-kw">return</span> a + b; } };
+<span class="tok-fn">console</span>.log(objekts.saskaitit?.(2, 3));       <span class="tok-com">// 5</span>
+<span class="tok-fn">console</span>.log(objekts.atnemt?.(5, 2));          <span class="tok-com">// undefined — metode neeksistē, bez kļūdas</span>
+
+<span class="tok-com">// ?? — noklusējuma vērtība TIKAI null/undefined gadījumā</span>
+<span class="tok-kw">const</span> atlaide = 0;
+<span class="tok-fn">console</span>.log(atlaide || <span class="tok-str">"nav atlaides"</span>);   <span class="tok-com">// "nav atlaides" — || uzskata 0 par "tukšu"! (kļūda)</span>
+<span class="tok-fn">console</span>.log(atlaide ?? <span class="tok-str">"nav atlaides"</span>);   <span class="tok-com">// 0 — ?? pareizi atpazīst, ka 0 ir derīga vērtība</span></code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Pēdējais piemērs parāda ļoti biežu kļūdu: ja vēlies noklusējuma vērtību tikai tad, kad dati patiešām nav norādīti (nevis kad tie ir <code>0</code>, tukšs teksts vai <code>false</code>), vienmēr izmanto <code>??</code>, nevis <code>||</code>.</p>
+      </div>
     </section>
 
     <section class="doc-section" id="spread">
