@@ -59,6 +59,16 @@
       <a href="#lang-switcher"><span class="bullet"></span>8. Pārslēdzējs &amp; SEO</a>
       <a href="#lang-usage"><span class="bullet"></span>Kā ielikt citā projektā</a>
     </div>
+    <div class="doc-sidebar-group">
+      <h4>📬 Kontaktforma + Turnstile</h4>
+      <a href="#contact-overview"><span class="bullet"></span>Pārskats</a>
+      <a href="#contact-turnstile-setup"><span class="bullet"></span>1. Cloudflare Turnstile uzstādīšana</a>
+      <a href="#contact-keys"><span class="bullet"></span>2. Kur glabāt atslēgas</a>
+      <a href="#contact-form-html"><span class="bullet"></span>3. Formas HTML</a>
+      <a href="#contact-form-js"><span class="bullet"></span>4. Iesūtīšana (JS)</a>
+      <a href="#contact-form-php"><span class="bullet"></span>5. Servera apstrāde (PHP)</a>
+      <a href="#contact-usage"><span class="bullet"></span>Kā ielikt citā projektā</a>
+    </div>
   </aside>
 
   <main class="doc-main">
@@ -779,6 +789,266 @@ Version: 1.0
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
         <p>Ja projektā jau ir cita daudzvalodu sistēma vai spraudnis (WPML, Polylang), <strong>neinstalē abas vienlaikus</strong> — tās konfliktēs (piem., abas mēģinās reģistrēt savus <code>add_rewrite_rule()</code> noteikumus un URL sajuks).</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="contact-overview">
+      <h2>Kontaktforma + Cloudflare Turnstile — pārskats</h2>
+      <p>Šī ir pilna, darbojoša kontaktforma ar mūsdienīgu spam aizsardzību — bez kaitinošajām "izvēlies visus attēlus ar autobusiem" reCAPTCHA mīklām. <strong>Cloudflare Turnstile</strong> lielākajai daļai apmeklētāju ir pilnīgi neredzama (strādā fonā, analizējot pārlūka uzvedību) un ir bez maksas jebkuram apmeklējumu apjomam.</p>
+      <p>Sistēmai ir trīs slāņi aizsardzības pret spamu un trīs galvenās daļas:</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>🛡️ Turnstile</h4><p>Cloudflare pārbauda, vai aiz formas stāv reāls cilvēks, nevis bots.</p></div>
+        <div class="doc-mini-card"><h4>🍯 Honeypot</h4><p>Slēpts lauks, ko cilvēks neredz un neaizpilda — boti gan bieži aizpilda visu.</p></div>
+        <div class="doc-mini-card"><h4>🔐 WordPress nonce</h4><p>Apliecina, ka pieprasījums nāk no tavas lapas, nevis no ārpuses.</p></div>
+        <div class="doc-mini-card"><h4>📝 Forma (HTML)</h4><p>Vārds, e-pasts, ziņojums + neredzams Turnstile logrīks.</p></div>
+        <div class="doc-mini-card"><h4>⚡ Iesūtīšana (JS)</h4><p>Nosūta datus bez lapas pārlādēšanas (AJAX/fetch).</p></div>
+        <div class="doc-mini-card"><h4>📧 Apstrāde (PHP)</h4><p>Pārbauda visu, tad nosūta divas e-pasta vēstules.</p></div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="contact-turnstile-setup">
+      <h2>1. Cloudflare Turnstile uzstādīšana</h2>
+      <p>Pirms koda raksti, jāiegūst divas atslēgas no Cloudflare — tas ir bez maksas un neprasa, lai tava vietne vispār būtu pieslēgta Cloudflare (Turnstile strādā neatkarīgi no tā, kur mitināta vietne).</p>
+      <pre class="code-block"><span class="lang">text</span><code>1. Ej uz https://dash.cloudflare.com un izveido bezmaksas kontu (ja vēl nav)
+2. Kreisajā izvēlnē atrodi sadaļu "Turnstile"
+3. Spied "Add site" (Pievienot vietni)
+4. Ievadi:
+   - Site name:  jebkurš nosaukums sev pašam (piem. "Mana Vietne")
+   - Domain:     tavas vietnes domēns, piem. piemers.lv
+                 (lokālai izstrādei vari pievienot arī "localhost")
+5. Widget Mode — izvēlies "Managed" (ieteicams sākumā, Cloudflare
+   pati izlemj, cik pamanāms logrīks jārāda konkrētam apmeklētājam)
+6. Spied "Create"
+7. Cloudflare parādīs DIVAS atslēgas — nokopē abas:
+   - Site Key   (publiska, redzama HTML kodā)
+   - Secret Key (SLEPENA, nekad nerāda publiski!)</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><strong>Site Key</strong> drīkst redzēt HTML kodā (to redz ikviens, kas atver "View Source") — tas ir normāli un ar nodomu. <strong>Secret Key</strong> nekad nedrīkst nonākt HTML, JavaScript vai publiski redzamā vietā — tas paliek tikai servera (PHP) kodā.</p>
+      </div>
+      <p>Tālāk jāreģistrē pats Turnstile skripts, kas WordPress pusē renderē logrīku:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// functions.php — pieslēdz Cloudflare Turnstile skriptu visai vietnei</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'wp_enqueue_scripts'</span>, <span class="tok-kw">function</span> () {
+    <span class="tok-fn">wp_enqueue_script</span>(
+        <span class="tok-str">'cf-turnstile'</span>,
+        <span class="tok-str">'https://challenges.cloudflare.com/turnstile/v0/api.js'</span>,
+        [], <span class="tok-kw">null</span>, <span class="tok-kw">true</span>
+    );
+});</code></pre>
+    </section>
+
+    <section class="doc-section" id="contact-keys">
+      <h2>2. Kur glabāt atslēgas: wp-config.php vai functions.php</h2>
+      <p>Secret Key <strong>nekad</strong> nedrīkst tikt saglabāta datubāzē (piem., kā parasta iestatījuma vērtība) vai iekļauta tēmas failos, kas var nonākt publiskā Git repozitorijā. Ir divas saprātīgas vietas, kur to definēt kā PHP konstanti:</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>✅ wp-config.php <span class="tag easy">Ieteicams</span></h4><p>Atrodas ārpus tēmas — paliek nemainīgs, ja nomaini vai atjaunini tēmu. Šis fails <strong>nekad</strong> netiek iekļauts Git repozitorijā (standarta WordPress prakse), tāpēc atslēga automātiski paliek ārpus versiju kontroles.</p></div>
+        <div class="doc-mini-card"><h4>⚠️ functions.php <span class="tag mid">Der, bet ne ideāli</span></h4><p>Vienkāršāk rediģēt (pat caur WP admin tēmas redaktoru), taču atslēga "pieder" tēmai — nomainot tēmu, to vajadzēs pārnest manuāli. Ja tēmas kods glabājas Git, atslēga var netīšām tur nonākt.</p></div>
+      </div>
+      <p><strong>Ieteicamais variants</strong> — pievieno faila <code>wp-config.php</code> beigās, <strong>pirms</strong> rindas <code>/* That's all, stop editing! */</code>:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">define</span>(<span class="tok-str">'TURNSTILE_SITE_KEY'</span>,   <span class="tok-str">'ievieto_savu_site_key_šeit'</span>);
+<span class="tok-kw">define</span>(<span class="tok-str">'TURNSTILE_SECRET_KEY'</span>, <span class="tok-str">'ievieto_savu_secret_key_šeit'</span>);
+<span class="tok-kw">define</span>(<span class="tok-str">'CONTACT_OWNER_EMAIL'</span>,  <span class="tok-str">'tavs@epasts.lv'</span>); <span class="tok-com">// kur sūtīt jaunos ziņojumus</span></code></pre>
+      <p>Ja tomēr izvēlies <code>functions.php</code> ceļu (piem., ja nav ērtas piekļuves <code>wp-config.php</code> failam), tieši tas pats kods darbojas arī tur — vienīgā atšķirība ir <strong>kurā failā</strong> šīs trīs rindas ieliec. Lai kods nesagāztos, ja atslēgas kādreiz aizmirst pievienot, visur kodā tās izmanto ar drošu pārbaudi:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">$site_key</span>   = <span class="tok-fn">defined</span>(<span class="tok-str">'TURNSTILE_SITE_KEY'</span>)   ? TURNSTILE_SITE_KEY   : <span class="tok-str">''</span>;
+<span class="tok-fn">$secret_key</span> = <span class="tok-fn">defined</span>(<span class="tok-str">'TURNSTILE_SECRET_KEY'</span>) ? TURNSTILE_SECRET_KEY : <span class="tok-str">''</span>;</code></pre>
+    </section>
+
+    <section class="doc-section" id="contact-form-html">
+      <h2>3. Formas HTML</h2>
+      <p>Ievieto šo veidnē (piem., <code>page-kontakti.php</code> vai tieši lapas saturā). Pievērs uzmanību <strong>honeypot</strong> laukam — tas ir tīši paslēpts ar CSS un normālam apmeklētājam nekad nav redzams, tāpēc, ja tas tomēr ir aizpildīts, zinām, ka to darīja bots.</p>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;form id="contact-form" novalidate&gt;
+    &lt;!-- Honeypot — cilvēkam neredzams, boti to bieži aizpilda --&gt;
+    &lt;input type="text" name="website" style="display:none !important" tabindex="-1" autocomplete="off"&gt;
+
+    &lt;div class="form-group"&gt;
+        &lt;label for="cf_name"&gt;Vārds&lt;/label&gt;
+        &lt;input type="text" id="cf_name" name="name" required&gt;
+    &lt;/div&gt;
+
+    &lt;div class="form-group"&gt;
+        &lt;label for="cf_email"&gt;E-pasts&lt;/label&gt;
+        &lt;input type="email" id="cf_email" name="email" required&gt;
+    &lt;/div&gt;
+
+    &lt;div class="form-group"&gt;
+        &lt;label for="cf_message"&gt;Ziņojums&lt;/label&gt;
+        &lt;textarea id="cf_message" name="message" required&gt;&lt;/textarea&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Cloudflare Turnstile logrīks --&gt;
+    &lt;div class="cf-turnstile" data-sitekey="&lt;?= <span class="tok-fn">defined</span>(<span class="tok-str">'TURNSTILE_SITE_KEY'</span>) ? <span class="tok-fn">esc_attr</span>(TURNSTILE_SITE_KEY) : <span class="tok-str">''</span> ?&gt;"&gt;&lt;/div&gt;
+
+    &lt;div id="contact-form-msg" role="alert"&gt;&lt;/div&gt;
+
+    &lt;button type="submit"&gt;Nosūtīt ziņu&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+    </section>
+
+    <section class="doc-section" id="contact-form-js">
+      <h2>4. Iesūtīšana (JS)</h2>
+      <p>Šis skripts pārtver formas nosūtīšanu, savāc visus laukus (ieskaitot Turnstile "biļeti", kuru logrīks pats automātiski ievieto slēptā laukā <code>cf-turnstile-response</code>) un nosūta tos WordPress <code>admin-ajax.php</code> galapunktam bez lapas pārlādēšanas.</p>
+      <pre class="code-block"><span class="lang">js</span><code>document.getElementById(<span class="tok-str">'contact-form'</span>).addEventListener(<span class="tok-str">'submit'</span>, <span class="tok-kw">async</span> <span class="tok-kw">function</span> (e) {
+  e.preventDefault();
+
+  <span class="tok-kw">const</span> btn = <span class="tok-kw">this</span>.querySelector(<span class="tok-str">'button[type="submit"]'</span>);
+  <span class="tok-kw">const</span> msg = document.<span class="tok-fn">getElementById</span>(<span class="tok-str">'contact-form-msg'</span>);
+  btn.disabled = <span class="tok-kw">true</span>;
+
+  <span class="tok-kw">try</span> {
+    <span class="tok-kw">const</span> data = <span class="tok-kw">new</span> <span class="tok-fn">FormData</span>(<span class="tok-kw">this</span>);
+    data.<span class="tok-fn">append</span>(<span class="tok-str">'action'</span>, <span class="tok-str">'handle_contact_form'</span>); <span class="tok-com">// jāsakrīt ar PHP wp_ajax_ āķa nosaukumu</span>
+    data.<span class="tok-fn">append</span>(<span class="tok-str">'nonce'</span>, CF_DATA.nonce);          <span class="tok-com">// skat. 5. soli — nonce nāk no PHP</span>
+
+    <span class="tok-kw">const</span> res    = <span class="tok-kw">await</span> <span class="tok-fn">fetch</span>(CF_DATA.ajax_url, { method: <span class="tok-str">'POST'</span>, body: data });
+    <span class="tok-kw">const</span> result = <span class="tok-kw">await</span> res.json();
+
+    msg.className   = result.success ? <span class="tok-str">'form-success'</span> : <span class="tok-str">'form-error'</span>;
+    msg.textContent = result.data.message;
+
+    <span class="tok-kw">if</span> (result.success) <span class="tok-kw">this</span>.reset();
+  } <span class="tok-kw">catch</span> (err) {
+    msg.className   = <span class="tok-str">'form-error'</span>;
+    msg.textContent = <span class="tok-str">'Kļūda nosūtot. Mēģiniet vēlreiz.'</span>;
+  } <span class="tok-kw">finally</span> {
+    btn.disabled = <span class="tok-kw">false</span>;
+  }
+});</code></pre>
+      <p>Mainīgais <code>CF_DATA</code> (ar <code>ajax_url</code> un <code>nonce</code>) jānodod no PHP puses — tas parādīts nākamajā solī (<code>wp_localize_script</code>).</p>
+    </section>
+
+    <section class="doc-section" id="contact-form-php">
+      <h2>5. Servera apstrāde (PHP)</h2>
+      <p>Šeit notiek viss būtiskais: nonce pārbaude, Turnstile pārbaude <strong>servera pusē</strong> (klienta puses pārbaude vien nav droša — to var apiet), honeypot pārbaude, datu attīrīšana un divu e-pasta vēstuļu nosūtīšana — īpašniekam par jauno ziņu un apmeklētājam kā apstiprinājums.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 1) Nododam JS pusei nepieciešamos datus (ajax_url un nonce)</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'wp_enqueue_scripts'</span>, <span class="tok-kw">function</span> () {
+    <span class="tok-fn">wp_enqueue_script</span>(<span class="tok-str">'contact-form-js'</span>, <span class="tok-fn">get_template_directory_uri</span>() . <span class="tok-str">'/js/contact-form.js'</span>, [], <span class="tok-str">'1.0'</span>, <span class="tok-kw">true</span>);
+    <span class="tok-fn">wp_localize_script</span>(<span class="tok-str">'contact-form-js'</span>, <span class="tok-str">'CF_DATA'</span>, [
+        <span class="tok-str">'ajax_url'</span> => <span class="tok-fn">admin_url</span>(<span class="tok-str">'admin-ajax.php'</span>),
+        <span class="tok-str">'nonce'</span>    => <span class="tok-fn">wp_create_nonce</span>(<span class="tok-str">'contact_form_nonce'</span>),
+    ]);
+});
+
+<span class="tok-com">// 2) Reģistrējam AJAX āķi — nopriv versija ļauj strādāt arī neielogotiem apmeklētājiem</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'wp_ajax_handle_contact_form'</span>,        <span class="tok-str">'handle_contact_form_submit'</span>);
+<span class="tok-fn">add_action</span>(<span class="tok-str">'wp_ajax_nopriv_handle_contact_form'</span>, <span class="tok-str">'handle_contact_form_submit'</span>);
+
+<span class="tok-kw">function</span> <span class="tok-fn">handle_contact_form_submit</span>(): <span class="tok-kw">void</span> {
+
+    <span class="tok-com">// ── 1. Nonce — vai pieprasījums nāk no mūsu pašu lapas ──</span>
+    <span class="tok-kw">if</span> (!<span class="tok-fn">wp_verify_nonce</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'nonce'</span>] ?? <span class="tok-str">''</span>, <span class="tok-str">'contact_form_nonce'</span>)) {
+        <span class="tok-fn">wp_send_json_error</span>([<span class="tok-str">'message'</span> => <span class="tok-str">'Drošības kļūda. Atsvaidzini lapu un mēģini vēlreiz.'</span>]);
+    }
+
+    <span class="tok-com">// ── 2. Honeypot — ja "website" lauks aizpildīts, tas ir bots ──</span>
+    <span class="tok-kw">if</span> (!<span class="tok-fn">empty</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'website'</span>])) {
+        <span class="tok-fn">wp_send_json_error</span>([<span class="tok-str">'message'</span> => <span class="tok-str">'Konstatēts spams.'</span>]);
+    }
+
+    <span class="tok-com">// ── 3. Cloudflare Turnstile — pārbauda ar Cloudflare serveri ──</span>
+    <span class="tok-fn">$turnstile_token</span> = <span class="tok-fn">$_POST</span>[<span class="tok-str">'cf-turnstile-response'</span>] ?? <span class="tok-str">''</span>;
+    <span class="tok-kw">if</span> (<span class="tok-fn">empty</span>(<span class="tok-fn">$turnstile_token</span>)) {
+        <span class="tok-fn">wp_send_json_error</span>([<span class="tok-str">'message'</span> => <span class="tok-str">'Lūdzu, pabeidziet drošības pārbaudi.'</span>]);
+    }
+
+    <span class="tok-fn">$secret_key</span> = <span class="tok-fn">defined</span>(<span class="tok-str">'TURNSTILE_SECRET_KEY'</span>) ? TURNSTILE_SECRET_KEY : <span class="tok-str">''</span>;
+
+    <span class="tok-fn">$verify</span> = <span class="tok-fn">wp_remote_post</span>(<span class="tok-str">'https://challenges.cloudflare.com/turnstile/v0/siteverify'</span>, [
+        <span class="tok-str">'body'</span> => [
+            <span class="tok-str">'secret'</span>   => <span class="tok-fn">$secret_key</span>,
+            <span class="tok-str">'response'</span> => <span class="tok-fn">$turnstile_token</span>,
+            <span class="tok-str">'remoteip'</span> => <span class="tok-fn">$_SERVER</span>[<span class="tok-str">'HTTP_CF_CONNECTING_IP'</span>] ?? <span class="tok-fn">$_SERVER</span>[<span class="tok-str">'REMOTE_ADDR'</span>],
+        ],
+    ]);
+
+    <span class="tok-fn">$outcome</span> = <span class="tok-fn">json_decode</span>(<span class="tok-fn">wp_remote_retrieve_body</span>(<span class="tok-fn">$verify</span>), <span class="tok-kw">true</span>);
+
+    <span class="tok-kw">if</span> (<span class="tok-fn">empty</span>(<span class="tok-fn">$outcome</span>[<span class="tok-str">'success'</span>])) {
+        <span class="tok-fn">wp_send_json_error</span>([<span class="tok-str">'message'</span> => <span class="tok-str">'Drošības pārbaude neizdevās. Vai tu neesi bots?'</span>]);
+    }
+
+    <span class="tok-com">// ── 4. Lauku validācija un attīrīšana ──</span>
+    <span class="tok-kw">if</span> (<span class="tok-fn">empty</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'name'</span>]) || <span class="tok-fn">empty</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'email'</span>]) || <span class="tok-fn">empty</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'message'</span>])) {
+        <span class="tok-fn">wp_send_json_error</span>([<span class="tok-str">'message'</span> => <span class="tok-str">'Lūdzu, aizpildi visus laukus.'</span>]);
+    }
+
+    <span class="tok-fn">$name</span>    = <span class="tok-fn">sanitize_text_field</span>(<span class="tok-fn">wp_unslash</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'name'</span>]));
+    <span class="tok-fn">$email</span>   = <span class="tok-fn">sanitize_email</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'email'</span>]);
+    <span class="tok-fn">$message</span> = <span class="tok-fn">sanitize_textarea_field</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'message'</span>]);
+
+    <span class="tok-kw">if</span> (!<span class="tok-fn">is_email</span>(<span class="tok-fn">$email</span>)) {
+        <span class="tok-fn">wp_send_json_error</span>([<span class="tok-str">'message'</span> => <span class="tok-str">'Nederīga e-pasta adrese.'</span>]);
+    }
+
+    <span class="tok-com">// ── 5. E-pastu sagatavošana un nosūtīšana ──</span>
+    <span class="tok-fn">$owner_email</span> = <span class="tok-fn">defined</span>(<span class="tok-str">'CONTACT_OWNER_EMAIL'</span>) ? CONTACT_OWNER_EMAIL : <span class="tok-fn">get_option</span>(<span class="tok-str">'admin_email'</span>);
+    <span class="tok-fn">$site_name</span>   = <span class="tok-fn">get_bloginfo</span>(<span class="tok-str">'name'</span>);
+
+    <span class="tok-com">// Vēstule vietnes īpašniekam</span>
+    <span class="tok-fn">$owner_body</span> = <span class="tok-str">"&lt;p&gt;&lt;strong&gt;Vārds:&lt;/strong&gt; {$name}&lt;/p&gt;"</span>
+        . <span class="tok-str">"&lt;p&gt;&lt;strong&gt;E-pasts:&lt;/strong&gt; {$email}&lt;/p&gt;"</span>
+        . <span class="tok-str">"&lt;p&gt;&lt;strong&gt;Ziņojums:&lt;/strong&gt;&lt;br&gt;"</span> . <span class="tok-fn">nl2br</span>(<span class="tok-fn">esc_html</span>(<span class="tok-fn">$message</span>)) . <span class="tok-str">"&lt;/p&gt;"</span>;
+
+    <span class="tok-fn">$owner_sent</span> = <span class="tok-fn">wp_mail</span>(
+        <span class="tok-fn">$owner_email</span>,
+        <span class="tok-str">'Jauns ziņojums no vietnes '</span> . <span class="tok-fn">$site_name</span>,
+        <span class="tok-fn">$owner_body</span>,
+        [<span class="tok-str">'Content-Type: text/html; charset=UTF-8'</span>, <span class="tok-str">'Reply-To: '</span> . <span class="tok-fn">$name</span> . <span class="tok-str">' &lt;'</span> . <span class="tok-fn">$email</span> . <span class="tok-str">'&gt;'</span>]
+    );
+
+    <span class="tok-com">// Apstiprinājuma vēstule apmeklētājam</span>
+    <span class="tok-fn">$client_body</span> = <span class="tok-str">"&lt;p&gt;Sveiki, {$name}!&lt;/p&gt;"</span>
+        . <span class="tok-str">"&lt;p&gt;Esam saņēmuši Jūsu ziņojumu un atbildēsim pēc iespējas ātrāk.&lt;/p&gt;"</span>
+        . <span class="tok-str">"&lt;p&gt;&lt;em&gt;"</span> . <span class="tok-fn">nl2br</span>(<span class="tok-fn">esc_html</span>(<span class="tok-fn">$message</span>)) . <span class="tok-str">"&lt;/em&gt;&lt;/p&gt;"</span>
+        . <span class="tok-str">"&lt;p&gt;Ar cieņu,&lt;br&gt;{$site_name}&lt;/p&gt;"</span>;
+
+    <span class="tok-fn">wp_mail</span>(
+        <span class="tok-fn">$email</span>,
+        <span class="tok-str">'Paldies par ziņojumu — '</span> . <span class="tok-fn">$site_name</span>,
+        <span class="tok-fn">$client_body</span>,
+        [<span class="tok-str">'Content-Type: text/html; charset=UTF-8'</span>, <span class="tok-str">'From: '</span> . <span class="tok-fn">$site_name</span> . <span class="tok-str">' &lt;'</span> . <span class="tok-fn">$owner_email</span> . <span class="tok-str">'&gt;'</span>]
+    );
+
+    <span class="tok-kw">if</span> (<span class="tok-fn">$owner_sent</span>) {
+        <span class="tok-fn">wp_send_json_success</span>([<span class="tok-str">'message'</span> => <span class="tok-str">'Ziņojums veiksmīgi nosūtīts!'</span>]);
+    }
+
+    <span class="tok-fn">wp_send_json_error</span>([<span class="tok-str">'message'</span> => <span class="tok-str">'Sūtīšanas kļūda. Lūdzu, mēģiniet vēlreiz.'</span>]);
+}</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Turnstile pārbaudi <strong>nekad nedrīkst darīt tikai JavaScript pusē</strong> — jebkurš var atvērt pārlūka rīkus un nosūtīt pieprasījumu tieši uz <code>admin-ajax.php</code>, apejot JS pilnībā. Tāpēc solis "wp_remote_post uz siteverify" servera pusē ir absolūti obligāts, ne tikai ieteicams.</p>
+      </div>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Ja e-pasti nesasniedz iesūtni (bieži nokrīt spamā), tas parasti nav koda kļūda — WordPress <code>wp_mail()</code> pēc noklusējuma sūta no servera IP, kam bieži nav SPF/DKIM ieraksta. Risinājums: uzstādi spraudni kā <strong>WP Mail SMTP</strong> un nosūti vēstules caur īstu e-pasta servisu (Gmail, SendGrid, Brevo u.tml.).</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="contact-usage">
+      <h2>Kā ielikt citā projektā</h2>
+      <pre class="code-block"><span class="lang">text</span><code>1. Cloudflare Turnstile panelī izveido jaunu "site" savam domēnam
+   un nokopē Site Key + Secret Key (1. sadaļa augstāk)
+
+2. wp-config.php failā (pirms "stop editing" rindas) pievieno:
+   define('TURNSTILE_SITE_KEY', '...');
+   define('TURNSTILE_SECRET_KEY', '...');
+   define('CONTACT_OWNER_EMAIL', 'tavs@epasts.lv');
+
+3. functions.php pievieno skripta pieslēgšanu (1. sadaļa) un
+   AJAX apstrādi (5. sadaļa) — vai izceļ 5. sadaļu atsevišķā
+   failā, piem. inc/contact-form.php, un pievieno:
+   require_once get_template_directory() . '/inc/contact-form.php';
+
+4. Izveido failu js/contact-form.js ar 4. sadaļas JS kodu
+
+5. Veidnē (piem. page-kontakti.php) ievieto 3. sadaļas HTML formu
+
+6. Pārbaudi: aizpildi formu īstā vietnē (ne localhost — Turnstile
+   sitekey ir piesaistīts konkrētam domēnam) un pārliecinies,
+   ka abas e-pasta vēstules pienāk</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Vēlies to pašu formu izmantot vairākās lapās (kontakti, footer, popup)? Nekas jāmaina nav — HTML/JS/PHP paliek identisks, jāpārliecinās tikai, ka katrā lapā ir unikāls elementa <code>id</code>, ja vienā lapā ir vairākas formas vienlaikus.</p>
       </div>
     </section>
 
