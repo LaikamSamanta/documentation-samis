@@ -19,6 +19,10 @@
     Documentation Samis
   </a>
   <div class="topbar-actions">
+    <a class="btn-back" href="cheatsheet-wordpress.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-6-6z"/><path d="M13 2v6h6M9 13h6M9 17h6M9 9h1"/></svg>
+      Cheatsheet
+    </a>
     <a class="btn-back" href="../index.html">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M5 12h14"/></svg>
       Kategorijas
@@ -33,18 +37,44 @@
 <div class="doc-shell">
   <aside class="doc-sidebar">
     <div class="doc-sidebar-group">
-      <h4>Izstrāde</h4>
+      <h4>Pamati</h4>
       <a href="#temas-vs-spraudni" class="active"><span class="bullet"></span>Tēmas vs spraudņi</a>
       <a href="#temas"><span class="bullet"></span>Tēmu izveide</a>
       <a href="#child-tema"><span class="bullet"></span>Bērnu tēmas (Child Themes)</a>
       <a href="#wpconfig"><span class="bullet"></span>wp-config.php</a>
+      <a href="#spraudnis"><span class="bullet"></span>Spraudņa pamatstruktūra</a>
+      <a href="#template-hierarchy"><span class="bullet"></span>Template Hierarchy</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Saturs &amp; vaicājumi</h4>
       <a href="#loop"><span class="bullet"></span>The Loop</a>
+      <a href="#template-tags"><span class="bullet"></span>Template Tags</a>
+      <a href="#conditional-tags"><span class="bullet"></span>Conditional Tags</a>
+      <a href="#wp-query"><span class="bullet"></span>WP_Query (pielāgoti vaicājumi)</a>
+      <a href="#taksonomijas"><span class="bullet"></span>Taksonomijas</a>
+      <a href="#cpt"><span class="bullet"></span>Custom Post Types</a>
+      <a href="#custom-fields"><span class="bullet"></span>Pielāgoti lauki</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Izstrādes rīki</h4>
       <a href="#izvelnes"><span class="bullet"></span>Izvēlnes</a>
       <a href="#enqueue"><span class="bullet"></span>Skriptu/stilu pieslēgšana</a>
       <a href="#hooks"><span class="bullet"></span>Hooks &amp; Filters</a>
+      <a href="#shortcodes"><span class="bullet"></span>Shortcodes</a>
+      <a href="#widgets"><span class="bullet"></span>Widgets &amp; Sidebars</a>
+      <a href="#ajax"><span class="bullet"></span>AJAX pamati</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Drošība &amp; lietotāji</h4>
       <a href="#drosiba"><span class="bullet"></span>Drošība (nonce &amp; escaping)</a>
-      <a href="#cpt"><span class="bullet"></span>Custom Post Types</a>
-      <a href="#custom-fields"><span class="bullet"></span>Pielāgoti lauki</a>
+      <a href="#lomas"><span class="bullet"></span>Lietotāju lomas &amp; tiesības</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Datubāze &amp; serviss</h4>
+      <a href="#wpdb"><span class="bullet"></span>$wpdb vaicājumi</a>
+      <a href="#transients"><span class="bullet"></span>Transients (kešošana)</a>
+      <a href="#cron"><span class="bullet"></span>Cron uzdevumi</a>
+      <a href="#rest-api"><span class="bullet"></span>REST API pamati</a>
     </div>
   </aside>
 
@@ -65,7 +95,7 @@
 
     <div class="callout tip">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-      <p><strong>Kur likt PHP kodu:</strong> ja vien nav norādīts citādi, visi šīs lapas PHP piemēri jāievieto aktīvās tēmas <code>functions.php</code> failā (Izskats → Tēmas redaktors, vai tieši failā serverī) un jāsaglabā — izmaiņas parasti redzamas uzreiz pēc lapas atsvaidzināšanas.</p>
+      <p><strong>Kur likt PHP kodu:</strong> ja vien nav norādīts citādi, visi šīs lapas PHP piemēri jāievieto aktīvās tēmas <code>functions.php</code> failā (Izskats → Tēmas redaktors, vai tieši failā serverī) un jāsaglabā — izmaiņas parasti redzamas uzreiz pēc lapas atsvaidzināšanas. Meklē ātru sintakses uzziņu? Skaties <a href="cheatsheet-wordpress.html">WordPress Cheatsheet</a>. Vēlies gatavas, kopējamas integrācijas (valodas, kontaktforma)? Tās dzīvo <a href="integracijas.html">Integrācijas</a> kategorijā.</p>
     </div>
 
     <section class="doc-section" id="temas-vs-spraudni">
@@ -157,6 +187,42 @@ Version: 1.0
       </div>
     </section>
 
+    <section class="doc-section" id="spraudnis">
+      <h2>Spraudņa pamatstruktūra</h2>
+      <p>Ja funkcionalitātei jāpaliek neatkarīgai no tēmas (skat. "Tēmas vs spraudņi" augstāk), to noformē kā spraudni, nevis <code>functions.php</code>. Minimāls spraudnis ir viens PHP fails ar galvenes komentāru — WordPress to atpazīst pēc šī komentāra formāta, nevis pēc faila nosaukuma.</p>
+      <p>Izveido <code>wp-content/plugins/mans-spraudnis/mans-spraudnis.php</code>:</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-com">/**
+ * Plugin Name: Mans Spraudnis
+ * Description: Īss apraksts, ko tas dara
+ * Version: 1.0
+ * Author: Tavs vārds
+ */</span>
+
+<span class="tok-com">// Pasargā failu no tiešas piekļuves ārpus WordPress</span>
+<span class="tok-kw">defined</span>(<span class="tok-str">'ABSPATH'</span>) || <span class="tok-kw">exit</span>;
+
+<span class="tok-com">// No šejienes tālāk — tieši tāda pati sintakse kā functions.php</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'wp_footer'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-kw">echo</span> <span class="tok-str">'&lt;!-- Mans spraudnis strādā -->'</span>;
+});</code></pre>
+      <p>Pēc faila saglabāšanas admin panelī Spraudņi → Uzstādītie spraudņi parādīsies "Mans Spraudnis" ar pogu "Aktivizēt".</p>
+    </section>
+
+    <section class="doc-section" id="template-hierarchy">
+      <h2>Template Hierarchy</h2>
+      <p>Kad apmeklētājs atver lapu, WordPress automātiski izvēlas, kuru veidnes failu izmantot, sekojot noteiktai prioritāšu secībai — pirmo atrasto failu tēmas mapē tas arī izmanto. Ja specifiskāka veidne neeksistē, WordPress "krīt atpakaļ" uz vispārīgāku, un galu galā vienmēr uz <code>index.php</code> (vienīgo patiešām obligāto failu).</p>
+      <pre class="code-block"><span class="lang">text</span><code>Sākumlapa:        front-page.php → home.php → index.php
+Viens ieraksts:    single-{post-type}.php → single.php → index.php
+Statiska lapa:     page-{slug}.php → page.php → index.php
+Ierakstu arhīvs:   archive-{post-type}.php → archive.php → index.php
+Kategorija:        category-{slug}.php → category.php → archive.php → index.php
+Birka:             tag-{slug}.php → tag.php → archive.php → index.php
+Meklēšana:         search.php → index.php
+Kļūda 404:         404.php → index.php</code></pre>
+      <p>Piemērs: ja tēmā izveido <code>single-produkts.php</code>, tas automātiski parādīsies visiem "produkts" CPT ierakstiem, nevajag neko papildus reģistrēt — WordPress pats atrod šo failu pēc nosaukuma.</p>
+    </section>
+
     <section class="doc-section" id="loop">
       <h2>The Loop</h2>
       <p>WordPress ierakstus lapā izvada ar "The Loop" — standarta ciklu, ko izmanto gandrīz katrā veidnes failā (<code>index.php</code>, <code>archive.php</code>, <code>single.php</code>). <code>have_posts()</code> pārbauda, vai vēl ir ieraksti; <code>the_post()</code> "sagatavo" nākamo ierakstu, lai funkcijas kā <code>the_title()</code> zinātu, par kuru ierakstu runāt.</p>
@@ -176,6 +242,131 @@ Version: 1.0
   &lt;p&gt;Ieraksti nav atrasti.&lt;/p&gt;
 &lt;?php <span class="tok-kw">endif</span>; ?&gt;</code></pre>
       <p>Šo bloku ievieto jebkurā veidnes failā, kur jāparāda ierakstu saraksts vai saturs — visbiežāk <code>index.php</code>, <code>archive.php</code> vai <code>single.php</code>.</p>
+    </section>
+
+    <section class="doc-section" id="template-tags">
+      <h2>Template Tags</h2>
+      <p>Template tags ir funkcijas, ko izsauc The Loop iekšienē (starp <code>have_posts()</code> un <code>endwhile</code>), lai izvadītu konkrētā ieraksta datus — nosaukumu, saturu, datumu, izcēlattēlu.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4><code>the_title()</code></h4><p>Izvada ieraksta virsrakstu tieši (echo).</p></div>
+        <div class="doc-mini-card"><h4><code>the_content()</code></h4><p>Izvada pilnu ieraksta saturu (ar formatējumu).</p></div>
+        <div class="doc-mini-card"><h4><code>the_excerpt()</code></h4><p>Izvada īsu izvilkumu — noder sarakstu skatiem.</p></div>
+        <div class="doc-mini-card"><h4><code>the_permalink()</code></h4><p>Izvada pilnu URL uz ierakstu.</p></div>
+        <div class="doc-mini-card"><h4><code>the_date()</code></h4><p>Izvada publicēšanas datumu.</p></div>
+        <div class="doc-mini-card"><h4><code>the_post_thumbnail()</code></h4><p>Izvada izcēlattēlu kā <code>&lt;img&gt;</code> tagu.</p></div>
+      </div>
+      <p>Katrai <code>the_*()</code> funkcijai ir arī <code>get_the_*()</code> versija (piem. <code>get_the_title()</code>), kas <strong>atgriež</strong> vērtību, nevis izvada uzreiz — noderīga, ja vērtība jāapstrādā pirms izvades:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">$virsraksts</span> = <span class="tok-fn">get_the_title</span>();
+<span class="tok-kw">echo</span> <span class="tok-fn">strtoupper</span>(<span class="tok-fn">$virsraksts</span>); <span class="tok-com">// virsraksts LIELAJIEM BURTIEM</span>
+
+<span class="tok-com">// Izcēlattēls prasa aktivizēt atbalstu functions.php failā:</span>
+<span class="tok-fn">add_theme_support</span>(<span class="tok-str">'post-thumbnails'</span>);</code></pre>
+    </section>
+
+    <section class="doc-section" id="conditional-tags">
+      <h2>Conditional Tags</h2>
+      <p>Funkcijas, kas atgriež <code>true</code>/<code>false</code>, lai noteiktu, kāda veida lapa pašlaik tiek rādīta — īpaši noderīgas koplietotos failos (<code>header.php</code>, <code>footer.php</code>), kur jāizvada dažāds saturs atkarībā no lapas.</p>
+      <pre class="code-block"><span class="lang">text</span><code>is_front_page()      → vai šī ir sākumlapa
+is_home()             → vai šī ir ierakstu plūsmas lapa
+is_single()           → vai šis ir viens ieraksts/CPT
+is_page()             → vai šī ir statiska lapa
+is_archive()          → vai šī ir jebkāds arhīvs
+is_category() / is_tag() → vai konkrēta kategorija/birka
+is_search()           → vai šī ir meklēšanas rezultātu lapa
+is_404()              → vai šī ir "nav atrasts" lapa
+is_user_logged_in()   → vai apmeklētājs ir pieteicies
+is_admin()            → vai atrodamies admin panelī</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">if</span> (<span class="tok-fn">is_front_page</span>()) {
+    <span class="tok-kw">echo</span> <span class="tok-str">'Laipni lūdzam sākumlapā!'</span>;
+} <span class="tok-kw">elseif</span> (<span class="tok-fn">is_single</span>()) {
+    <span class="tok-kw">echo</span> <span class="tok-str">'Skaties vienu ierakstu.'</span>;
+}</code></pre>
+    </section>
+
+    <section class="doc-section" id="wp-query">
+      <h2>WP_Query (pielāgoti vaicājumi)</h2>
+      <p>Kad jāizgūst ieraksti <strong>ārpus</strong> galvenā The Loop (piem., "Populārākie raksti" bloks sānjoslā), izmanto <code>WP_Query</code> klasi. Pēc pielāgotā cikla vienmēr jāizsauc <code>wp_reset_postdata()</code>, lai atjaunotu globālo <code>$post</code> mainīgo — citādi galvenais Loop tālāk lapā var sākt rādīt nepareizus datus.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">$vaicajums</span> = <span class="tok-kw">new</span> <span class="tok-fn">WP_Query</span>([
+    <span class="tok-str">'post_type'</span>      => <span class="tok-str">'post'</span>,
+    <span class="tok-str">'posts_per_page'</span> => 5,
+    <span class="tok-str">'orderby'</span>        => <span class="tok-str">'date'</span>,
+    <span class="tok-str">'order'</span>          => <span class="tok-str">'DESC'</span>,
+]);
+
+<span class="tok-kw">if</span> (<span class="tok-fn">$vaicajums</span>->have_posts()) :
+    <span class="tok-kw">while</span> (<span class="tok-fn">$vaicajums</span>->have_posts()) : <span class="tok-fn">$vaicajums</span>->the_post(); ?&gt;
+        &lt;h3&gt;&lt;?php <span class="tok-fn">the_title</span>(); ?&gt;&lt;/h3&gt;
+    &lt;?php <span class="tok-kw">endwhile</span>;
+<span class="tok-kw">endif</span>;
+
+<span class="tok-fn">wp_reset_postdata</span>(); <span class="tok-com">// obligāti pēc pielāgota vaicājuma!</span></code></pre>
+      <p>Lai galvenajā arhīva vaicājumā mainītu iestatījumus (piem., cik ierakstu rādīt vienā lapā), labāk izmanto āķi <code>pre_get_posts</code>, nevis jaunu <code>WP_Query</code>:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'pre_get_posts'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$query</span>) {
+    <span class="tok-kw">if</span> (!<span class="tok-fn">is_admin</span>() && <span class="tok-fn">$query</span>->is_main_query() && <span class="tok-fn">$query</span>->is_category(<span class="tok-str">'jaunumi'</span>)) {
+        <span class="tok-fn">$query</span>->set(<span class="tok-str">'posts_per_page'</span>, 12);
+    }
+});</code></pre>
+    </section>
+
+    <section class="doc-section" id="taksonomijas">
+      <h2>Taksonomijas</h2>
+      <p>Taksonomija ir veids, kā grupēt saturu — WordPress jau nāk ar divām iebūvētām: <strong>kategorijas</strong> (hierarhiskas, ar apakškategorijām) un <strong>birkas</strong> (plakanas, bez hierarhijas). Savu taksonomiju izveido ar <code>register_taxonomy()</code>, un to var piesaistīt gan parastiem ierakstiem, gan CPT.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'init'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-fn">register_taxonomy</span>(<span class="tok-str">'zime'</span>, <span class="tok-str">'post'</span>, [
+        <span class="tok-str">'label'</span>              => <span class="tok-str">'Zīmes'</span>,
+        <span class="tok-str">'hierarchical'</span>       => <span class="tok-kw">true</span>,  <span class="tok-com">// true = kā kategorijas, false = kā birkas</span>
+        <span class="tok-str">'show_in_rest'</span>       => <span class="tok-kw">true</span>,  <span class="tok-com">// vajadzīgs Gutenberg redaktoram</span>
+        <span class="tok-str">'show_admin_column'</span>  => <span class="tok-kw">true</span>,  <span class="tok-com">// parāda kolonnu ierakstu sarakstā</span>
+    ]);
+});</code></pre>
+      <p>Rādīšana veidnē — ierakstam piesaistīto terminu saraksts:</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php <span class="tok-kw">echo</span> <span class="tok-fn">get_the_term_list</span>(<span class="tok-fn">get_the_ID</span>(), <span class="tok-str">'zime'</span>, <span class="tok-str">''</span>, <span class="tok-str">', '</span>); ?&gt;</code></pre>
+    </section>
+
+    <section class="doc-section" id="cpt">
+      <h2>Custom Post Types (CPT)</h2>
+      <p>Papildus ierakstiem un lapām WordPress ļauj izveidot savus, strukturētus satura tipus — piemēram, "Produkti" vai "Atsauksmes", katru ar savu administrācijas sadaļu. Reģistrē tos ar <code>register_post_type()</code>, izsauktu caur <code>init</code> āķi.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// functions.php</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'init'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-fn">register_post_type</span>(<span class="tok-str">'produkts'</span>, [
+        <span class="tok-str">'labels'</span>       => [
+            <span class="tok-str">'name'</span>          => <span class="tok-str">'Produkti'</span>,
+            <span class="tok-str">'singular_name'</span> => <span class="tok-str">'Produkts'</span>,
+        ],
+        <span class="tok-str">'public'</span>       => <span class="tok-kw">true</span>,
+        <span class="tok-str">'has_archive'</span>  => <span class="tok-kw">true</span>,
+        <span class="tok-str">'show_in_rest'</span> => <span class="tok-kw">true</span>, <span class="tok-com">// vajadzīgs Gutenberg redaktoram</span>
+        <span class="tok-str">'menu_icon'</span>    => <span class="tok-str">'dashicons-cart'</span>,
+        <span class="tok-str">'supports'</span>     => [<span class="tok-str">'title'</span>, <span class="tok-str">'editor'</span>, <span class="tok-str">'thumbnail'</span>],
+    ]);
+});</code></pre>
+      <p>Pēc šī koda pievienošanas un lapas atsvaidzināšanas admin panelī sānizvēlnē parādīsies jauna sadaļa "Produkti" ar savu grozāmo ikonu — tur var pievienot jaunus ierakstus tāpat kā parastus WordPress ierakstus.</p>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Pēc pievienošanas ejot uz jaunā CPT publisko lapu (piem., <code>/produkts/kaut-kas/</code>) var rādīties 404 — jāatjauno pastāvīgās saites: <strong>Iestatījumi → Pastāvīgās saites → Saglabāt</strong> (nekas nav jāmaina, pats saglabāšanas klikšķis atjauno noteikumus).</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="custom-fields">
+      <h2>Pielāgoti lauki</h2>
+      <p>Bez ACF spraudņa pielāgotus datus jebkuram ierakstam (arī parastam, ne tikai CPT) var pievienot un vēlāk nolasīt tieši ar <code>update_post_meta()</code>/<code>get_post_meta()</code> — noder, kad pietiek ar dažiem papildu laukiem un negribi papildu atkarību.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Saglabā vērtību konkrētam ierakstam (piem., admin darbībā vai formā)</span>
+<span class="tok-fn">update_post_meta</span>(<span class="tok-fn">$post_id</span>, <span class="tok-str">'cena'</span>, 49.99);
+
+<span class="tok-com">// Nolasa veidnē (single.php vai archive-produkts.php), The Loop iekšpusē</span>
+&lt;?php <span class="tok-kw">while</span> (<span class="tok-fn">have_posts</span>()) : <span class="tok-fn">the_post</span>(); ?&gt;
+
+  &lt;h2&gt;&lt;?php <span class="tok-fn">the_title</span>(); ?&gt;&lt;/h2&gt;
+
+  &lt;?php
+  <span class="tok-fn">$cena</span> = <span class="tok-fn">get_post_meta</span>(<span class="tok-fn">get_the_ID</span>(), <span class="tok-str">'cena'</span>, <span class="tok-kw">true</span>);
+  <span class="tok-kw">if</span> (<span class="tok-fn">$cena</span>) {
+      <span class="tok-kw">echo</span> <span class="tok-str">'&lt;p&gt;Cena: '</span> . <span class="tok-fn">esc_html</span>(<span class="tok-fn">$cena</span>) . <span class="tok-str">' €&lt;/p&gt;'</span>;
+  }
+  ?&gt;
+
+&lt;?php <span class="tok-kw">endwhile</span>; ?&gt;</code></pre>
+      <p>Trešais parametrs <code>get_post_meta()</code> (<code>true</code>) nozīmē "atgriez vienu vērtību, ne masīvu" — bez tā funkcija vienmēr atgriež masīvu, pat ja lauks ir tikai viens.</p>
     </section>
 
     <section class="doc-section" id="izvelnes">
@@ -236,6 +427,76 @@ Version: 1.0
       </div>
     </section>
 
+    <section class="doc-section" id="shortcodes">
+      <h2>Shortcodes</h2>
+      <p>Shortcode ļauj ievietot dinamisku PHP saturu tieši Gutenberg/klasiskā redaktora tekstā, rakstot vienkāršu iekavu tagu, piem. <code>[gads]</code>. Reģistrē ar <code>add_shortcode()</code> — funkcijai jāatgriež (<code>return</code>) rezultāts, nekad nedrīkst to izvadīt ar <code>echo</code>.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Vienkāršs shortcode bez parametriem: [gads]</span>
+<span class="tok-fn">add_shortcode</span>(<span class="tok-str">'gads'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-kw">return</span> <span class="tok-fn">date</span>(<span class="tok-str">'Y'</span>);
+});
+
+<span class="tok-com">// Shortcode ar parametru (atribūtu): [sveiciens vards="Anna"]</span>
+<span class="tok-fn">add_shortcode</span>(<span class="tok-str">'sveiciens'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$atts</span>) {
+    <span class="tok-fn">$atts</span> = <span class="tok-fn">shortcode_atts</span>([<span class="tok-str">'vards'</span> => <span class="tok-str">'Viesi'</span>], <span class="tok-fn">$atts</span>);
+    <span class="tok-kw">return</span> <span class="tok-str">'Sveiki, '</span> . <span class="tok-fn">esc_html</span>(<span class="tok-fn">$atts</span>[<span class="tok-str">'vards'</span>]) . <span class="tok-str">'!'</span>;
+});</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>shortcode_atts()</code> ir svarīgs, nevis tikai ērtība — tas nodrošina noklusējuma vērtības un pasargā no PHP kļūdas, ja lietotājs shortcode uzraksta bez atribūta.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="widgets">
+      <h2>Widgets &amp; Sidebars</h2>
+      <p>Sidebar (WordPress terminoloģijā) ir jebkura widžetiem paredzēta zona — bieži sānjosla, bet var būt arī kājene. Vispirms reģistrē zonu ar <code>register_sidebar()</code>, tad veidnē izvada to ar <code>dynamic_sidebar()</code> — pēc tam admin lietotājs pats no Izskats → Widžeti var ievilkt tur jebkādus blokus, negrozot kodu.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// functions.php — reģistrē widžetu zonu</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'widgets_init'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-fn">register_sidebar</span>([
+        <span class="tok-str">'name'</span>          => <span class="tok-str">'Galvenā sānjosla'</span>,
+        <span class="tok-str">'id'</span>            => <span class="tok-str">'galvena-sanjosla'</span>,
+        <span class="tok-str">'before_widget'</span> => <span class="tok-str">'&lt;div class="widget"&gt;'</span>,
+        <span class="tok-str">'after_widget'</span>  => <span class="tok-str">'&lt;/div&gt;'</span>,
+    ]);
+});</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// sidebar.php — izvada šīs zonas saturu</span>
+&lt;?php <span class="tok-kw">if</span> (<span class="tok-fn">is_active_sidebar</span>(<span class="tok-str">'galvena-sanjosla'</span>)) : ?&gt;
+    &lt;aside&gt;&lt;?php <span class="tok-fn">dynamic_sidebar</span>(<span class="tok-str">'galvena-sanjosla'</span>); ?&gt;&lt;/aside&gt;
+&lt;?php <span class="tok-kw">endif</span>; ?&gt;</code></pre>
+    </section>
+
+    <section class="doc-section" id="ajax">
+      <h2>AJAX pamati</h2>
+      <p>AJAX ļauj lapai apmainīties ar datiem ar serveri bez pilnas pārlādēšanas (piem., "Ielādēt vairāk" poga). WordPress visiem AJAX pieprasījumiem izmanto vienu kopīgu galapunktu — <code>admin-ajax.php</code>. PHP pusē reģistrē <strong>divus</strong> āķus ar vienādu vārdu: <code>wp_ajax_{action}</code> ielogotiem lietotājiem, <code>wp_ajax_nopriv_{action}</code> — pārējiem.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 1) Nododam JS pusei ajax_url un nonce</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'wp_enqueue_scripts'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-fn">wp_enqueue_script</span>(<span class="tok-str">'mana-tema-main'</span>, <span class="tok-fn">get_template_directory_uri</span>() . <span class="tok-str">'/js/main.js'</span>, [], <span class="tok-str">'1.0'</span>, <span class="tok-kw">true</span>);
+    <span class="tok-fn">wp_localize_script</span>(<span class="tok-str">'mana-tema-main'</span>, <span class="tok-str">'MyAjax'</span>, [
+        <span class="tok-str">'ajax_url'</span> => <span class="tok-fn">admin_url</span>(<span class="tok-str">'admin-ajax.php'</span>),
+        <span class="tok-str">'nonce'</span>    => <span class="tok-fn">wp_create_nonce</span>(<span class="tok-str">'my_ajax_nonce'</span>),
+    ]);
+});
+
+<span class="tok-com">// 2) Apstrādājam pieprasījumu servera pusē</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'wp_ajax_paskaitit'</span>,        <span class="tok-str">'mana_tema_paskaitit'</span>);
+<span class="tok-fn">add_action</span>(<span class="tok-str">'wp_ajax_nopriv_paskaitit'</span>, <span class="tok-str">'mana_tema_paskaitit'</span>);
+
+<span class="tok-kw">function</span> <span class="tok-fn">mana_tema_paskaitit</span>(): <span class="tok-kw">void</span> {
+    <span class="tok-kw">if</span> (!<span class="tok-fn">wp_verify_nonce</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'nonce'</span>] ?? <span class="tok-str">''</span>, <span class="tok-str">'my_ajax_nonce'</span>)) {
+        <span class="tok-fn">wp_send_json_error</span>([<span class="tok-str">'message'</span> => <span class="tok-str">'Drošības kļūda'</span>]);
+    }
+    <span class="tok-fn">$a</span> = (<span class="tok-kw">int</span>) (<span class="tok-fn">$_POST</span>[<span class="tok-str">'a'</span>] ?? 0);
+    <span class="tok-fn">$b</span> = (<span class="tok-kw">int</span>) (<span class="tok-fn">$_POST</span>[<span class="tok-str">'b'</span>] ?? 0);
+    <span class="tok-fn">wp_send_json_success</span>([<span class="tok-str">'summa'</span> => <span class="tok-fn">$a</span> + <span class="tok-fn">$b</span>]);
+}</code></pre>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// js/main.js — pieprasījums no pārlūka puses</span>
+fetch(MyAjax.ajax_url, {
+  method: <span class="tok-str">'POST'</span>,
+  body: <span class="tok-kw">new</span> <span class="tok-fn">URLSearchParams</span>({ action: <span class="tok-str">'paskaitit'</span>, nonce: MyAjax.nonce, a: 2, b: 3 }),
+})
+  .then(res => res.json())
+  .then(data => console.log(data.data.summa)); <span class="tok-com">// 5</span></code></pre>
+    </section>
+
     <section class="doc-section" id="drosiba">
       <h2>Drošība: nonce &amp; escaping</h2>
       <p>Divi drošības jēdzieni, kas jāzina no paša sākuma. <strong>Escaping</strong> — izvadot jebkādus datus HTML, izmanto <code>esc_html()</code>/<code>esc_attr()</code>, lai novērstu XSS (kāds ievieto ļaunprātīgu <code>&lt;script&gt;</code> tagu, kas izpildās citu apmeklētāju pārlūkos). <strong>Nonce</strong> — formas, kas maina datus, aizsargā ar vienreizēju "biļeti", kas apliecina, ka pieprasījums patiešām nāk no tavas lapas.</p>
@@ -257,50 +518,95 @@ Version: 1.0
 <span class="tok-com">// ... šeit droši apstrādā $_POST['komentars']</span></code></pre>
     </section>
 
-    <section class="doc-section" id="cpt">
-      <h2>Custom Post Types (CPT)</h2>
-      <p>Papildus ierakstiem un lapām WordPress ļauj izveidot savus, strukturētus satura tipus — piemēram, "Produkti" vai "Atsauksmes", katru ar savu administrācijas sadaļu. Reģistrē tos ar <code>register_post_type()</code>, izsauktu caur <code>init</code> āķi.</p>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// functions.php</span>
-<span class="tok-fn">add_action</span>(<span class="tok-str">'init'</span>, <span class="tok-kw">function</span>() {
-    <span class="tok-fn">register_post_type</span>(<span class="tok-str">'produkts'</span>, [
-        <span class="tok-str">'labels'</span>       => [
-            <span class="tok-str">'name'</span>          => <span class="tok-str">'Produkti'</span>,
-            <span class="tok-str">'singular_name'</span> => <span class="tok-str">'Produkts'</span>,
-        ],
-        <span class="tok-str">'public'</span>       => <span class="tok-kw">true</span>,
-        <span class="tok-str">'has_archive'</span>  => <span class="tok-kw">true</span>,
-        <span class="tok-str">'show_in_rest'</span> => <span class="tok-kw">true</span>, <span class="tok-com">// vajadzīgs Gutenberg redaktoram</span>
-        <span class="tok-str">'menu_icon'</span>    => <span class="tok-str">'dashicons-cart'</span>,
-        <span class="tok-str">'supports'</span>     => [<span class="tok-str">'title'</span>, <span class="tok-str">'editor'</span>, <span class="tok-str">'thumbnail'</span>],
-    ]);
+    <section class="doc-section" id="lomas">
+      <h2>Lietotāju lomas &amp; tiesības</h2>
+      <p>WordPress lietotājiem piešķir <strong>lomu</strong> (role), kas satur konkrētu <strong>tiesību</strong> (capability) kopumu — nekad nepārbaudi tiešo lomu kodā, vienmēr pārbaudi konkrētu tiesību, jo tas paliek pareizs pat tad, ja lomu struktūra vēlāk mainās.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>Administrator</h4><p>Visas tiesības, ieskaitot spraudņu/tēmu pārvaldību.</p></div>
+        <div class="doc-mini-card"><h4>Editor</h4><p>Var rediģēt un publicēt visu lietotāju ierakstus.</p></div>
+        <div class="doc-mini-card"><h4>Author</h4><p>Var publicēt un pārvaldīt tikai savus ierakstus.</p></div>
+        <div class="doc-mini-card"><h4>Contributor</h4><p>Var rakstīt ierakstus, bet nevar tos pats publicēt.</p></div>
+        <div class="doc-mini-card"><h4>Subscriber</h4><p>Var tikai rediģēt savu profilu.</p></div>
+      </div>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">if</span> (<span class="tok-fn">current_user_can</span>(<span class="tok-str">'publish_posts'</span>)) {
+    <span class="tok-kw">echo</span> <span class="tok-str">'Vari publicēt ierakstus.'</span>;
+}
+
+<span class="tok-com">// Pielāgotas lomas izveide (parasti izsauc vienreiz, aktivizējot spraudni)</span>
+<span class="tok-fn">add_role</span>(<span class="tok-str">'redaktors_lite'</span>, <span class="tok-str">'Redaktors (ierobežots)'</span>, [
+    <span class="tok-str">'read'</span>         => <span class="tok-kw">true</span>,
+    <span class="tok-str">'edit_posts'</span>   => <span class="tok-kw">true</span>,
+    <span class="tok-str">'publish_posts'</span> => <span class="tok-kw">false</span>,
+]);</code></pre>
+    </section>
+
+    <section class="doc-section" id="wpdb">
+      <h2>$wpdb vaicājumi</h2>
+      <p>Kad <code>WP_Query</code> nesniedz vajadzīgo elastību (piem., savai, pielāgotai datubāzes tabulai), globālais <code>$wpdb</code> objekts ļauj rakstīt SQL tieši. Lietotāja ievadi <strong>nekad</strong> nesalīmē tieši vaicājuma tekstā — vienmēr izmanto <code>$wpdb->prepare()</code>.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">global</span> <span class="tok-fn">$wpdb</span>;
+
+<span class="tok-com">// Droši — vērtība tiek automātiski attīrīta</span>
+<span class="tok-fn">$rezultati</span> = <span class="tok-fn">$wpdb</span>->get_results(
+    <span class="tok-fn">$wpdb</span>->prepare(<span class="tok-str">"SELECT * FROM {$wpdb->prefix}atsauksmes WHERE vertejums >= %d"</span>, 4)
+);
+
+<span class="tok-kw">foreach</span> (<span class="tok-fn">$rezultati</span> <span class="tok-kw">as</span> <span class="tok-fn">$rinda</span>) {
+    <span class="tok-kw">echo</span> <span class="tok-fn">esc_html</span>(<span class="tok-fn">$rinda</span>->teksts);
+}</code></pre>
+      <p><code>{$wpdb->prefix}</code> automātiski ievieto pareizo tabulu prefiksu (parasti <code>wp_</code>, bet var atšķirties) — nekad nehardkodē <code>wp_</code> tieši.</p>
+    </section>
+
+    <section class="doc-section" id="transients">
+      <h2>Transients (kešošana)</h2>
+      <p>Transients ir pagaidu vērtība ar derīguma termiņu — glabājas datubāzē (vai kešošanas sistēmā, ja tāda uzstādīta). Noder, lai izvairītos no smaga darba (ārējs API pieprasījums, sarežģīts vaicājums) atkārtošanas katrā lapas ielādē.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">function</span> <span class="tok-fn">iegut_valutas_kursu</span>(): <span class="tok-kw">float</span> {
+    <span class="tok-fn">$saglabats</span> = <span class="tok-fn">get_transient</span>(<span class="tok-str">'valutas_kurss'</span>);
+    <span class="tok-kw">if</span> (<span class="tok-fn">$saglabats</span> !== <span class="tok-kw">false</span>) {
+        <span class="tok-kw">return</span> (<span class="tok-kw">float</span>) <span class="tok-fn">$saglabats</span>;
+    }
+
+    <span class="tok-com">// Šis "smagais" darbs izpildīsies tikai reizi stundā</span>
+    <span class="tok-fn">$kurss</span> = 1.08; <span class="tok-com">// šeit reāli būtu ārējs API izsaukums</span>
+    <span class="tok-fn">set_transient</span>(<span class="tok-str">'valutas_kurss'</span>, <span class="tok-fn">$kurss</span>, HOUR_IN_SECONDS);
+
+    <span class="tok-kw">return</span> <span class="tok-fn">$kurss</span>;
+}</code></pre>
+    </section>
+
+    <section class="doc-section" id="cron">
+      <h2>Cron uzdevumi</h2>
+      <p>WordPress Cron <strong>nav</strong> īsts servera cron — tas ieplānoto uzdevumu pārbauda un izpilda tikai tad, kad kāds apmeklē vietni. Vienmēr vispirms pārbaudi ar <code>wp_next_scheduled()</code>, vai uzdevums jau nav ieplānots, citādi katrā aktivizācijā izveidosi dublikātus.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Ieplāno uzdevumu, ja tas vēl nav ieplānots</span>
+<span class="tok-kw">if</span> (!<span class="tok-fn">wp_next_scheduled</span>(<span class="tok-str">'mana_tema_dienas_uzdevums'</span>)) {
+    <span class="tok-fn">wp_schedule_event</span>(time(), <span class="tok-str">'daily'</span>, <span class="tok-str">'mana_tema_dienas_uzdevums'</span>);
+}
+
+<span class="tok-com">// Pieslēdz reālo funkciju šim āķim</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'mana_tema_dienas_uzdevums'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-com">// piem., iztīra vecus pagaidu ierakstus</span>
 });</code></pre>
-      <p>Pēc šī koda pievienošanas un lapas atsvaidzināšanas admin panelī sānizvēlnē parādīsies jauna sadaļa "Produkti" ar savu grozāmo ikonu — tur var pievienot jaunus ierakstus tāpat kā parastus WordPress ierakstus.</p>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Pēc pievienošanas ejot uz jaunā CPT publisko lapu (piem., <code>/produkts/kaut-kas/</code>) var rādīties 404 — jāatjauno pastāvīgās saites: <strong>Iestatījumi → Pastāvīgās saites → Saglabāt</strong> (nekas nav jāmaina, pats saglabāšanas klikšķis atjauno noteikumus).</p>
+        <p>Zemapmeklētai vietnei WP-Cron var kavēties (nav apmeklētāju = nav trigera). Ražošanas vietnēm bieži atspējo iebūvēto sistēmu (<code>define('DISABLE_WP_CRON', true)</code> failā <code>wp-config.php</code>) un aizstāj ar īstu servera cron, kas ik minūti izsauc <code>wp-cron.php</code>.</p>
       </div>
     </section>
 
-    <section class="doc-section" id="custom-fields">
-      <h2>Pielāgoti lauki</h2>
-      <p>Bez ACF spraudņa pielāgotus datus jebkuram ierakstam (arī parastam, ne tikai CPT) var pievienot un vēlāk nolasīt tieši ar <code>update_post_meta()</code>/<code>get_post_meta()</code> — noder, kad pietiek ar dažiem papildu laukiem un negribi papildu atkarību.</p>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Saglabā vērtību konkrētam ierakstam (piem., admin darbībā vai formā)</span>
-<span class="tok-fn">update_post_meta</span>(<span class="tok-fn">$post_id</span>, <span class="tok-str">'cena'</span>, 49.99);
-
-<span class="tok-com">// Nolasa veidnē (single.php vai archive-produkts.php), The Loop iekšpusē</span>
-&lt;?php <span class="tok-kw">while</span> (<span class="tok-fn">have_posts</span>()) : <span class="tok-fn">the_post</span>(); ?&gt;
-
-  &lt;h2&gt;&lt;?php <span class="tok-fn">the_title</span>(); ?&gt;&lt;/h2&gt;
-
-  &lt;?php
-  <span class="tok-fn">$cena</span> = <span class="tok-fn">get_post_meta</span>(<span class="tok-fn">get_the_ID</span>(), <span class="tok-str">'cena'</span>, <span class="tok-kw">true</span>);
-  <span class="tok-kw">if</span> (<span class="tok-fn">$cena</span>) {
-      <span class="tok-kw">echo</span> <span class="tok-str">'&lt;p&gt;Cena: '</span> . <span class="tok-fn">esc_html</span>(<span class="tok-fn">$cena</span>) . <span class="tok-str">' €&lt;/p&gt;'</span>;
-  }
-  ?&gt;
-
-&lt;?php <span class="tok-kw">endwhile</span>; ?&gt;</code></pre>
-      <p>Trešais parametrs <code>get_post_meta()</code> (<code>true</code>) nozīmē "atgriez vienu vērtību, ne masīvu" — bez tā funkcija vienmēr atgriež masīvu, pat ja lauks ir tikai viens.</p>
+    <section class="doc-section" id="rest-api">
+      <h2>REST API pamati</h2>
+      <p>WordPress jau nāk ar iebūvētu REST API — bez papildu koda ieraksti pieejami kā JSON adresē <code>/wp-json/wp/v2/posts</code>. Savus, pielāgotus galapunktus izveido ar <code>register_rest_route()</code>.</p>
+      <pre class="code-block"><span class="lang">text</span><code>GET /wp-json/wp/v2/posts        → visi publicētie ieraksti kā JSON
+GET /wp-json/wp/v2/posts/5      → viens ieraksts (ID=5)
+GET /wp-json/wp/v2/produkts     → CPT ieraksti (ja show_in_rest: true)</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'rest_api_init'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-fn">register_rest_route</span>(<span class="tok-str">'mana-tema/v1'</span>, <span class="tok-str">'/sveiciens'</span>, [
+        <span class="tok-str">'methods'</span>  => <span class="tok-str">'GET'</span>,
+        <span class="tok-str">'callback'</span> => <span class="tok-kw">function</span>() {
+            <span class="tok-kw">return</span> [<span class="tok-str">'teksts'</span> => <span class="tok-str">'Sveiki no pielāgota REST galapunkta!'</span>];
+        },
+        <span class="tok-str">'permission_callback'</span> => <span class="tok-str">'__return_true'</span>, <span class="tok-com">// publiski pieejams</span>
+    ]);
+});
+<span class="tok-com">// Pieejams: /wp-json/mana-tema/v1/sveiciens</span></code></pre>
     </section>
 
     <div class="doc-pager">

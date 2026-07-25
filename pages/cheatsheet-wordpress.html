@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="lv" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WordPress Cheatsheet — Documentation Samis</title>
+<link rel="stylesheet" href="../css/style.css?v=2" />
+<script>
+  (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
+</script>
+</head>
+<body>
+<div class="bg-glow"></div>
+<div class="bg-grid"></div>
+
+<header class="topbar">
+  <a class="brand" href="../index.html">
+    <span class="mark">DS</span>
+    Documentation Samis
+  </a>
+  <div class="topbar-actions">
+    <a class="btn-back" href="wordpress.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M5 12h14"/></svg>
+      Pilnā dokumentācija
+    </a>
+    <button class="icon-btn" id="theme-toggle" title="Pārslēgt tēmu" aria-label="Pārslēgt tēmu">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main class="doc-main" style="max-width:1300px; margin:0 auto;">
+  <div class="doc-breadcrumb">
+    <a href="../index.html">Sākums</a>
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    <a href="wordpress.html">WordPress</a>
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    <span>Cheatsheet</span>
+  </div>
+
+  <div class="doc-header">
+    <div class="icon" style="background: var(--c-wordpress-soft); color: var(--c-wordpress);">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10 15 15 0 0 1 4-10z"/></svg>
+    </div>
+    <h1 style="margin-bottom:0;">WordPress Cheatsheet</h1>
+  </div>
+  <p class="doc-lead">Blīva ātrās uzziņas lapa — sintakse un funkcijas bez garajiem skaidrojumiem. Pilnus piemērus un paskaidrojumus skaties <a href="wordpress.html">pilnajā WordPress dokumentācijā</a>.</p>
+
+  <nav class="cheat-jump">
+    <a href="#ct-tags">Template Tags</a>
+    <a href="#ct-conditional">Conditional Tags</a>
+    <a href="#ct-loop">Loop &amp; WP_Query</a>
+    <a href="#ct-hooks">Biežākie Hooks</a>
+    <a href="#ct-cpt">CPT &amp; Taxonomy</a>
+    <a href="#ct-meta">Post Meta</a>
+    <a href="#ct-enqueue">Enqueue</a>
+    <a href="#ct-security">Drošība</a>
+    <a href="#ct-users">Lietotāji</a>
+    <a href="#ct-urls">URL &amp; Ceļi</a>
+    <a href="#ct-db">Datubāze</a>
+    <a href="#ct-media">Media</a>
+    <a href="#ct-ajax">AJAX &amp; REST</a>
+    <a href="#ct-misc">Citas noderīgas</a>
+  </nav>
+
+  <section class="cheat-section" id="ct-tags">
+    <h2>Template Tags</h2>
+    <p class="cheat-sub">Izsauc The Loop iekšpusē, lai izvadītu ieraksta datus.</p>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>the_title()</h4><p>Izvada virsrakstu</p><pre><code>&lt;h2&gt;&lt;?php the_title(); ?&gt;&lt;/h2&gt;</code></pre></div>
+      <div class="cheat-card"><h4>the_content()</h4><p>Pilns saturs</p><pre><code>&lt;?php the_content(); ?&gt;</code></pre></div>
+      <div class="cheat-card"><h4>the_excerpt()</h4><p>Īss izvilkums</p><pre><code>&lt;?php the_excerpt(); ?&gt;</code></pre></div>
+      <div class="cheat-card"><h4>the_permalink()</h4><p>Pilns URL uz ierakstu</p><pre><code>&lt;a href="&lt;?php the_permalink(); ?&gt;"&gt;</code></pre></div>
+      <div class="cheat-card"><h4>get_the_ID()</h4><p>Pašreizējā ieraksta ID</p><pre><code>$id = get_the_ID();</code></pre></div>
+      <div class="cheat-card"><h4>the_date()</h4><p>Publicēšanas datums</p><pre><code>&lt;?php the_date('j.m.Y'); ?&gt;</code></pre></div>
+      <div class="cheat-card"><h4>the_author()</h4><p>Autora vārds</p><pre><code>&lt;?php the_author(); ?&gt;</code></pre></div>
+      <div class="cheat-card"><h4>the_post_thumbnail()</h4><p>Izcēlattēls kā &lt;img&gt;</p><pre><code>&lt;?php the_post_thumbnail('medium'); ?&gt;</code></pre></div>
+      <div class="cheat-card"><h4>get_the_title($id)</h4><p>Atgriež (neizvada)</p><pre><code>$t = get_the_title($id);</code></pre></div>
+      <div class="cheat-card"><h4>bloginfo()</h4><p>Vietnes info</p><pre><code>&lt;?php bloginfo('name'); ?&gt;</code></pre></div>
+      <div class="cheat-card"><h4>wp_title()</h4><p>Lapas &lt;title&gt; saturs</p><pre><code>&lt;?php wp_title('-'); ?&gt;</code></pre></div>
+      <div class="cheat-card"><h4>get_the_term_list()</h4><p>Kategorijas/birkas</p><pre><code>echo get_the_term_list($id, 'category');</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-conditional">
+    <h2>Conditional Tags</h2>
+    <p class="cheat-sub">Atgriež true/false — kāds lapas veids pašlaik tiek rādīts.</p>
+    <div class="cheat-table-wrap">
+      <table class="cheat-table">
+        <tbody>
+          <tr><td><code>is_front_page()</code></td><td>Sākumlapa</td></tr>
+          <tr><td><code>is_home()</code></td><td>Ierakstu plūsmas lapa</td></tr>
+          <tr><td><code>is_single()</code></td><td>Viens ieraksts / CPT</td></tr>
+          <tr><td><code>is_page()</code></td><td>Statiska lapa</td></tr>
+          <tr><td><code>is_page('kontakti')</code></td><td>Konkrēta lapa pēc slug</td></tr>
+          <tr><td><code>is_archive()</code></td><td>Jebkurš arhīvs</td></tr>
+          <tr><td><code>is_category()</code> / <code>is_tag()</code></td><td>Kategorijas/birkas arhīvs</td></tr>
+          <tr><td><code>is_search()</code></td><td>Meklēšanas rezultāti</td></tr>
+          <tr><td><code>is_404()</code></td><td>Nav atrasts</td></tr>
+          <tr><td><code>is_user_logged_in()</code></td><td>Apmeklētājs pieteicies</td></tr>
+          <tr><td><code>is_admin()</code></td><td>Atrodamies admin panelī</td></tr>
+          <tr><td><code>has_post_thumbnail()</code></td><td>Ierakstam ir izcēlattēls</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-loop">
+    <h2>Loop &amp; WP_Query</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>The Loop</h4><p>Standarta cikls</p><pre><code>if (have_posts()) : while (have_posts()) : the_post();
+  // saturs
+endwhile; endif;</code></pre></div>
+      <div class="cheat-card"><h4>WP_Query</h4><p>Pielāgots vaicājums</p><pre><code>$q = new WP_Query([
+  'post_type' =&gt; 'post',
+  'posts_per_page' =&gt; 5,
+]);</code></pre></div>
+      <div class="cheat-card"><h4>wp_reset_postdata()</h4><p>Pēc katra WP_Query</p><pre><code>wp_reset_postdata();</code></pre></div>
+      <div class="cheat-card"><h4>get_posts()</h4><p>Īsāka alternatīva</p><pre><code>$posts = get_posts(['numberposts' =&gt; 5]);</code></pre></div>
+      <div class="cheat-card"><h4>meta_query</h4><p>Filtrē pēc post meta</p><pre><code>'meta_query' =&gt; [[
+  'key' =&gt; 'cena', 'value' =&gt; 50,
+  'compare' =&gt; '&lt;=', 'type' =&gt; 'NUMERIC',
+]]</code></pre></div>
+      <div class="cheat-card"><h4>tax_query</h4><p>Filtrē pēc taksonomijas</p><pre><code>'tax_query' =&gt; [[
+  'taxonomy' =&gt; 'category',
+  'field' =&gt; 'slug', 'terms' =&gt; 'jaunumi',
+]]</code></pre></div>
+      <div class="cheat-card"><h4>pre_get_posts</h4><p>Maina galveno vaicājumu</p><pre><code>add_action('pre_get_posts', function($q) {
+  if (!is_admin() && $q-&gt;is_main_query())
+    $q-&gt;set('posts_per_page', 12);
+});</code></pre></div>
+      <div class="cheat-card"><h4>Pagination</h4><p>Lapu numerācija</p><pre><code>'paged' =&gt; get_query_var('paged') ?: 1</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-hooks">
+    <h2>Biežākie Hooks</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>init</h4><p>WP ielādēts — CPT/taxonomy</p><pre><code>add_action('init', 'fn');</code></pre></div>
+      <div class="cheat-card"><h4>after_setup_theme</h4><p>Tēmas atbalsta funkcijas</p><pre><code>add_action('after_setup_theme', 'fn');</code></pre></div>
+      <div class="cheat-card"><h4>wp_enqueue_scripts</h4><p>CSS/JS pieslēgšana</p><pre><code>add_action('wp_enqueue_scripts', 'fn');</code></pre></div>
+      <div class="cheat-card"><h4>wp_head / wp_footer</h4><p>&lt;head&gt; / pirms &lt;/body&gt;</p><pre><code>add_action('wp_footer', 'fn');</code></pre></div>
+      <div class="cheat-card"><h4>save_post</h4><p>Ieraksts saglabāts</p><pre><code>add_action('save_post', 'fn');</code></pre></div>
+      <div class="cheat-card"><h4>admin_menu</h4><p>Jauna admin izvēlne</p><pre><code>add_action('admin_menu', 'fn');</code></pre></div>
+      <div class="cheat-card"><h4>the_title (filter)</h4><p>Maina virsrakstu</p><pre><code>add_filter('the_title', 'fn');</code></pre></div>
+      <div class="cheat-card"><h4>the_content (filter)</h4><p>Maina saturu</p><pre><code>add_filter('the_content', 'fn');</code></pre></div>
+      <div class="cheat-card"><h4>do_action() / apply_filters()</h4><p>Savs, pielāgots āķis</p><pre><code>do_action('mans_akis');
+$v = apply_filters('mans_filtrs', $v);</code></pre></div>
+      <div class="cheat-card"><h4>remove_action()</h4><p>Noņem āķi (tā pati prioritāte!)</p><pre><code>remove_action('wp_head', 'wp_generator');</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-cpt">
+    <h2>CPT &amp; Taxonomy</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>register_post_type()</h4><p>Jauns satura tips</p><pre><code>register_post_type('produkts', [
+  'public' =&gt; true, 'show_in_rest' =&gt; true,
+  'supports' =&gt; ['title','editor'],
+]);</code></pre></div>
+      <div class="cheat-card"><h4>register_taxonomy()</h4><p>Jauna taksonomija</p><pre><code>register_taxonomy('zime', 'post', [
+  'hierarchical' =&gt; true,
+]);</code></pre></div>
+      <div class="cheat-card"><h4>Template failu nosaukumi</h4><p>Automātiski atpazīti</p><pre><code>single-produkts.php
+archive-produkts.php</code></pre></div>
+      <div class="cheat-card"><h4>Pēc reģistrēšanas</h4><p>Vienreiz jāatjauno</p><pre><code>Iestatījumi → Pastāvīgās
+saites → Saglabāt</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-meta">
+    <h2>Post Meta (pielāgoti lauki)</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>update_post_meta()</h4><p>Saglabā/pārraksta</p><pre><code>update_post_meta($id, 'cena', 49.99);</code></pre></div>
+      <div class="cheat-card"><h4>get_post_meta()</h4><p>3. param. true = viena vērtība</p><pre><code>get_post_meta($id, 'cena', true);</code></pre></div>
+      <div class="cheat-card"><h4>add_post_meta()</h4><p>Pievieno, ja unikāls</p><pre><code>add_post_meta($id, 'cena', 49.99, true);</code></pre></div>
+      <div class="cheat-card"><h4>delete_post_meta()</h4><p>Izdzēš lauku</p><pre><code>delete_post_meta($id, 'cena');</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-enqueue">
+    <h2>Enqueue (skripti/stili)</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>wp_enqueue_style()</h4><p>CSS fails</p><pre><code>wp_enqueue_style('id', get_stylesheet_uri());</code></pre></div>
+      <div class="cheat-card"><h4>wp_enqueue_script()</h4><p>JS fails (args: handle,src,deps,ver,footer)</p><pre><code>wp_enqueue_script('id', $url, [], '1.0', true);</code></pre></div>
+      <div class="cheat-card"><h4>wp_localize_script()</h4><p>PHP dati → JS mainīgais</p><pre><code>wp_localize_script('id', 'Data', ['x' =&gt; 1]);</code></pre></div>
+      <div class="cheat-card"><h4>get_template_directory_uri()</h4><p>Tēmas mapes URL</p><pre><code>get_template_directory_uri() . '/js/app.js'</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-security">
+    <h2>Drošība</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>esc_html()</h4><p>Droša HTML izvade</p><pre><code>echo esc_html($teksts);</code></pre></div>
+      <div class="cheat-card"><h4>esc_attr()</h4><p>Droša HTML atribūta izvade</p><pre><code>value="&lt;?= esc_attr($v) ?&gt;"</code></pre></div>
+      <div class="cheat-card"><h4>esc_url()</h4><p>Droša saite</p><pre><code>href="&lt;?= esc_url($url) ?&gt;"</code></pre></div>
+      <div class="cheat-card"><h4>sanitize_text_field()</h4><p>Attīra ievadi</p><pre><code>$v = sanitize_text_field($_POST['x']);</code></pre></div>
+      <div class="cheat-card"><h4>wp_nonce_field()</h4><p>Nonce formā</p><pre><code>wp_nonce_field('darbiba', 'nonce_lauks');</code></pre></div>
+      <div class="cheat-card"><h4>wp_verify_nonce()</h4><p>Pārbauda nonce</p><pre><code>wp_verify_nonce($_POST['n'], 'darbiba');</code></pre></div>
+      <div class="cheat-card"><h4>current_user_can()</h4><p>Tiesību pārbaude</p><pre><code>if (current_user_can('edit_posts')) { }</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-users">
+    <h2>Lietotāji &amp; lomas</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>wp_get_current_user()</h4><p>Pašreizējais lietotājs</p><pre><code>$u = wp_get_current_user();</code></pre></div>
+      <div class="cheat-card"><h4>is_user_logged_in()</h4><p>Vai pieteicies</p><pre><code>if (is_user_logged_in()) { }</code></pre></div>
+      <div class="cheat-card"><h4>get_userdata($id)</h4><p>Lietotāja dati pēc ID</p><pre><code>$u = get_userdata(5);</code></pre></div>
+      <div class="cheat-card"><h4>wp_insert_user()</h4><p>Izveido lietotāju</p><pre><code>wp_insert_user(['user_login'=&gt;'x','user_pass'=&gt;'y']);</code></pre></div>
+      <div class="cheat-card"><h4>Lomas (zems→augsts)</h4><p>Iebūvētās lomas</p><pre><code>Subscriber → Contributor →
+Author → Editor → Administrator</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-urls">
+    <h2>URL &amp; Ceļi</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>home_url()</h4><p>Vietnes pamata URL</p><pre><code>home_url('/kontakti')</code></pre></div>
+      <div class="cheat-card"><h4>site_url()</h4><p>WP instalācijas URL</p><pre><code>site_url()</code></pre></div>
+      <div class="cheat-card"><h4>admin_url()</h4><p>Admin paneļa URL</p><pre><code>admin_url('admin-ajax.php')</code></pre></div>
+      <div class="cheat-card"><h4>get_permalink($id)</h4><p>Ieraksta pastāvīgā saite</p><pre><code>get_permalink($id)</code></pre></div>
+      <div class="cheat-card"><h4>get_template_directory()</h4><p>Servera ceļš (ne URL)</p><pre><code>get_template_directory() . '/inc/x.php'</code></pre></div>
+      <div class="cheat-card"><h4>plugin_dir_url(__FILE__)</h4><p>Spraudņa mapes URL</p><pre><code>plugin_dir_url(__FILE__)</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-db">
+    <h2>Datubāze ($wpdb)</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>$wpdb->get_results()</h4><p>Vairākas rindas</p><pre><code>global $wpdb;
+$wpdb-&gt;get_results("SELECT * FROM {$wpdb-&gt;posts}");</code></pre></div>
+      <div class="cheat-card"><h4>$wpdb->get_row()</h4><p>Viena rinda</p><pre><code>$wpdb-&gt;get_row("... WHERE id=1");</code></pre></div>
+      <div class="cheat-card"><h4>$wpdb->prepare()</h4><p>Droši (izvairās no SQL injection)</p><pre><code>$wpdb-&gt;prepare("... WHERE id=%d", $id)</code></pre></div>
+      <div class="cheat-card"><h4>$wpdb->prefix</h4><p>Tabulu prefikss (parasti wp_)</p><pre><code>{$wpdb-&gt;prefix}mana_tabula</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-media">
+    <h2>Media</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>add_theme_support()</h4><p>Aktivizē izcēlattēlus</p><pre><code>add_theme_support('post-thumbnails');</code></pre></div>
+      <div class="cheat-card"><h4>the_post_thumbnail()</h4><p>Izvada &lt;img&gt;</p><pre><code>the_post_thumbnail('large');</code></pre></div>
+      <div class="cheat-card"><h4>get_the_post_thumbnail_url()</h4><p>Tikai URL</p><pre><code>$url = get_the_post_thumbnail_url($id);</code></pre></div>
+      <div class="cheat-card"><h4>wp_get_attachment_image()</h4><p>Attēls pēc ID</p><pre><code>wp_get_attachment_image($att_id, 'medium');</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-ajax">
+    <h2>AJAX &amp; REST</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>wp_ajax_ / wp_ajax_nopriv_</h4><p>AJAX āķi (abi = strādā visiem)</p><pre><code>add_action('wp_ajax_x', 'fn');
+add_action('wp_ajax_nopriv_x', 'fn');</code></pre></div>
+      <div class="cheat-card"><h4>wp_send_json_success/error()</h4><p>JSON atbilde</p><pre><code>wp_send_json_success(['ok' =&gt; true]);</code></pre></div>
+      <div class="cheat-card"><h4>register_rest_route()</h4><p>Pielāgots REST galapunkts</p><pre><code>register_rest_route('ns/v1', '/x', [
+  'methods' =&gt; 'GET', 'callback' =&gt; 'fn',
+]);</code></pre></div>
+      <div class="cheat-card"><h4>/wp-json/wp/v2/posts</h4><p>Iebūvēts REST galapunkts</p><pre><code>GET /wp-json/wp/v2/posts</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-misc">
+    <h2>Citas noderīgas</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>add_shortcode()</h4><p>[tags] redaktorā</p><pre><code>add_shortcode('gads', fn() =&gt; date('Y'));</code></pre></div>
+      <div class="cheat-card"><h4>set_transient() / get_transient()</h4><p>Pagaidu kešs</p><pre><code>set_transient('x', $v, HOUR_IN_SECONDS);</code></pre></div>
+      <div class="cheat-card"><h4>wp_schedule_event()</h4><p>Cron uzdevums</p><pre><code>if (!wp_next_scheduled('h'))
+  wp_schedule_event(time(), 'daily', 'h');</code></pre></div>
+      <div class="cheat-card"><h4>register_sidebar()</h4><p>Widžetu zona</p><pre><code>register_sidebar(['id' =&gt; 'main']);</code></pre></div>
+      <div class="cheat-card"><h4>register_nav_menus()</h4><p>Izvēlnes vieta</p><pre><code>register_nav_menus(['primary' =&gt; 'Galvenā']);</code></pre></div>
+      <div class="cheat-card"><h4>wp_mail()</h4><p>Nosūta e-pastu</p><pre><code>wp_mail($to, $subject, $body);</code></pre></div>
+    </div>
+  </section>
+
+  <div class="doc-pager">
+    <a href="wordpress.html"><span class="lbl">← Atpakaļ</span>Pilnā WordPress dokumentācija</a>
+    <a class="to-next" href="../index.html"><span class="lbl">Atpakaļ →</span>Visas kategorijas</a>
+  </div>
+</main>
+
+<script src="../js/theme.js?v=2"></script>
+<script src="../js/main.js?v=2"></script>
+</body>
+</html>

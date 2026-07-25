@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="lv" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PHP Cheatsheet — Documentation Samis</title>
+<link rel="stylesheet" href="../css/style.css?v=2" />
+<script>
+  (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
+</script>
+</head>
+<body>
+<div class="bg-glow"></div>
+<div class="bg-grid"></div>
+
+<header class="topbar">
+  <a class="brand" href="../index.html">
+    <span class="mark">DS</span>
+    Documentation Samis
+  </a>
+  <div class="topbar-actions">
+    <a class="btn-back" href="php.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M5 12h14"/></svg>
+      Pilnā dokumentācija
+    </a>
+    <button class="icon-btn" id="theme-toggle" title="Pārslēgt tēmu" aria-label="Pārslēgt tēmu">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main class="doc-main" style="max-width:1300px; margin:0 auto;">
+  <div class="doc-breadcrumb">
+    <a href="../index.html">Sākums</a>
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    <a href="php.html">PHP</a>
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    <span>Cheatsheet</span>
+  </div>
+
+  <div class="doc-header">
+    <div class="icon" style="background: var(--c-php-soft); color: var(--c-php);">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="12" rx="10" ry="6"/><path d="M8 10h1.5a1.5 1.5 0 0 1 0 3H8v-3zM8 13v1M14 10h2M14 10v3M14 11.5h1.5"/></svg>
+    </div>
+    <h1 style="margin-bottom:0;">PHP Cheatsheet</h1>
+  </div>
+  <p class="doc-lead">Blīva ātrās uzziņas lapa — sintakse bez garajiem skaidrojumiem. Pilnus piemērus un paskaidrojumus skaties <a href="php.html">pilnajā PHP dokumentācijā</a>.</p>
+
+  <nav class="cheat-jump">
+    <a href="#ct-syntax">Sintakse &amp; tipi</a>
+    <a href="#ct-vars">Mainīgie &amp; konstantes</a>
+    <a href="#ct-ops">Operatori</a>
+    <a href="#ct-flow">Vadības struktūras</a>
+    <a href="#ct-func">Funkcijas</a>
+    <a href="#ct-arrays">Masīvi</a>
+    <a href="#ct-strings">Teksti</a>
+    <a href="#ct-oop">OOP</a>
+    <a href="#ct-errors">Kļūdas</a>
+    <a href="#ct-super">Superglobālie</a>
+    <a href="#ct-files">Faili &amp; include</a>
+    <a href="#ct-date">Datums &amp; laiks</a>
+    <a href="#ct-regex">Regex</a>
+    <a href="#ct-pdo">PDO datubāze</a>
+    <a href="#ct-misc">Citas noderīgas</a>
+  </nav>
+
+  <section class="cheat-section" id="ct-syntax">
+    <h2>Sintakse &amp; tipi</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>Atvēršanas tags</h4><pre><code>&lt;?php
+// kods
+?&gt;</code></pre></div>
+      <div class="cheat-card"><h4>echo / print</h4><pre><code>echo "Sveiks";
+echo "A", "B";</code></pre></div>
+      <div class="cheat-card"><h4>gettype() / var_dump()</h4><pre><code>gettype($x);
+var_dump($x);</code></pre></div>
+      <div class="cheat-card"><h4>Tipi</h4><pre><code>string, int, float, bool,
+array, object, null</code></pre></div>
+      <div class="cheat-card"><h4>Tipa konvertācija</h4><pre><code>(int) "5"; (string) 5;
+intval($x); strval($x);</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-vars">
+    <h2>Mainīgie &amp; konstantes</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>Mainīgais</h4><pre><code>$vards = "Anna";</code></pre></div>
+      <div class="cheat-card"><h4>define() / const</h4><pre><code>define('VERSIJA', '1.0');
+const MAX = 100;</code></pre></div>
+      <div class="cheat-card"><h4>Interpolācija</h4><pre><code>echo "Sveiks, $vards!";
+echo "Sveiks, {$obj-&gt;vards}!";</code></pre></div>
+      <div class="cheat-card"><h4>isset() / empty() / is_null()</h4><pre><code>isset($x); empty($x); is_null($x);</code></pre></div>
+      <div class="cheat-card"><h4>null coalescing</h4><pre><code>$v = $x ?? "noklusējums";
+$x ??= "noklusējums";</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-ops">
+    <h2>Operatori</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>===</h4><p>Stingra salīdzināšana</p><pre><code>"5" === 5 // false</code></pre></div>
+      <div class="cheat-card"><h4>&lt;=&gt;</h4><p>Spaceship, kārtošanai</p><pre><code>usort($a, fn($x,$y) =&gt; $x &lt;=&gt; $y);</code></pre></div>
+      <div class="cheat-card"><h4>Ternārais / short ternary</h4><pre><code>$x ? "jā" : "nē";
+$x ?: "noklusējums";</code></pre></div>
+      <div class="cheat-card"><h4>. (konkatenācija)</h4><pre><code>$pilns = $vards . " " . $uzvards;</code></pre></div>
+      <div class="cheat-card"><h4>&amp;&amp; / || / !</h4><pre><code>if ($a &amp;&amp; !$b) {}</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-flow">
+    <h2>Vadības struktūras</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>if / elseif / else</h4><pre><code>if ($a) {} elseif ($b) {} else {}</code></pre></div>
+      <div class="cheat-card"><h4>match (PHP 8+)</h4><pre><code>$r = match($x) {
+  1, 2 =&gt; "mazs",
+  default =&gt; "cits",
+};</code></pre></div>
+      <div class="cheat-card"><h4>switch</h4><pre><code>switch ($x) {
+  case 1: break;
+  default: break;
+}</code></pre></div>
+      <div class="cheat-card"><h4>for / foreach</h4><pre><code>for ($i=0; $i&lt;5; $i++) {}
+foreach ($arr as $k =&gt; $v) {}</code></pre></div>
+      <div class="cheat-card"><h4>while / do...while</h4><pre><code>while ($x &lt; 5) { $x++; }</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-func">
+    <h2>Funkcijas</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>function</h4><pre><code>function saskaitit($a, $b) {
+  return $a + $b;
+}</code></pre></div>
+      <div class="cheat-card"><h4>Noklusējuma parametrs</h4><pre><code>function f($x = 10) {}</code></pre></div>
+      <div class="cheat-card"><h4>Tipizēti parametri</h4><pre><code>function f(int $x): string {
+  return (string) $x;
+}</code></pre></div>
+      <div class="cheat-card"><h4>Anonīma / arrow function</h4><pre><code>$f = function($x) { return $x * 2; };
+$f = fn($x) =&gt; $x * 2;</code></pre></div>
+      <div class="cheat-card"><h4>Variadiskie parametri</h4><pre><code>function f(...$args) {}</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-arrays">
+    <h2>Masīvi</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>array_map()</h4><pre><code>array_map(fn($n) =&gt; $n * 2, $arr);</code></pre></div>
+      <div class="cheat-card"><h4>array_filter()</h4><pre><code>array_filter($arr, fn($n) =&gt; $n &gt; 0);</code></pre></div>
+      <div class="cheat-card"><h4>array_reduce()</h4><pre><code>array_reduce($arr, fn($c,$n) =&gt; $c+$n, 0);</code></pre></div>
+      <div class="cheat-card"><h4>array_merge()</h4><pre><code>array_merge($a, $b);</code></pre></div>
+      <div class="cheat-card"><h4>in_array() / array_search()</h4><pre><code>in_array(3, $arr);
+array_search(3, $arr);</code></pre></div>
+      <div class="cheat-card"><h4>count() / sort()</h4><pre><code>count($arr);
+sort($arr); rsort($arr);</code></pre></div>
+      <div class="cheat-card"><h4>array_keys() / array_values()</h4><pre><code>array_keys($arr);
+array_values($arr);</code></pre></div>
+      <div class="cheat-card"><h4>array_slice()</h4><pre><code>array_slice($arr, 1, 2);</code></pre></div>
+      <div class="cheat-card"><h4>Asociatīvais masīvs</h4><pre><code>$a = ['vards' =&gt; 'Anna', 'vecums' =&gt; 30];</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-strings">
+    <h2>Teksti</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>strlen() / str_replace()</h4><pre><code>strlen($s);
+str_replace("a", "x", $s);</code></pre></div>
+      <div class="cheat-card"><h4>explode() / implode()</h4><pre><code>explode(",", "a,b,c");
+implode(", ", $arr);</code></pre></div>
+      <div class="cheat-card"><h4>trim() / substr()</h4><pre><code>trim($s);
+substr($s, 0, 3);</code></pre></div>
+      <div class="cheat-card"><h4>strtoupper() / strtolower()</h4><pre><code>strtoupper($s);
+strtolower($s);</code></pre></div>
+      <div class="cheat-card"><h4>sprintf()</h4><pre><code>sprintf("Cena: %.2f EUR", 9.5);</code></pre></div>
+      <div class="cheat-card"><h4>str_contains/starts/ends</h4><pre><code>str_contains($s, "abc");
+str_starts_with($s, "a");</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-oop">
+    <h2>OOP</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>class / constructor</h4><pre><code>class Lietotajs {
+  public function __construct(
+    private string $vards
+  ) {}
+}</code></pre></div>
+      <div class="cheat-card"><h4>extends / implements</h4><pre><code>class Admins extends Lietotajs implements Loggable {}</code></pre></div>
+      <div class="cheat-card"><h4>interface</h4><pre><code>interface Loggable {
+  public function log(): void;
+}</code></pre></div>
+      <div class="cheat-card"><h4>trait</h4><pre><code>trait Sveiciens {
+  public function sveicini() { echo "Sveiks"; }
+}
+class X { use Sveiciens; }</code></pre></div>
+      <div class="cheat-card"><h4>static</h4><pre><code>class C { public static int $skaits = 0; }
+C::$skaits++;</code></pre></div>
+      <div class="cheat-card"><h4>abstract</h4><pre><code>abstract class Forma {
+  abstract public function laukums(): float;
+}</code></pre></div>
+      <div class="cheat-card"><h4>Redzamība</h4><pre><code>public, protected, private</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-errors">
+    <h2>Kļūdu apstrāde</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>try/catch/finally</h4><pre><code>try {
+  riskants();
+} catch (Exception $e) {
+  echo $e-&gt;getMessage();
+} finally {}</code></pre></div>
+      <div class="cheat-card"><h4>throw</h4><pre><code>throw new InvalidArgumentException("kļūda");</code></pre></div>
+      <div class="cheat-card"><h4>Custom exception</h4><pre><code>class ManaKluda extends Exception {}</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-super">
+    <h2>Superglobālie mainīgie</h2>
+    <div class="cheat-table-wrap">
+      <table class="cheat-table">
+        <thead><tr><th>Mainīgais</th><th>Satur</th></tr></thead>
+        <tbody>
+          <tr><td><code>$_GET</code></td><td>URL query parametri</td></tr>
+          <tr><td><code>$_POST</code></td><td>Formas dati (POST metode)</td></tr>
+          <tr><td><code>$_SESSION</code></td><td>Sesijas dati (pēc <code>session_start()</code>)</td></tr>
+          <tr><td><code>$_COOKIE</code></td><td>Sīkdatnes</td></tr>
+          <tr><td><code>$_SERVER</code></td><td>Servera un pieprasījuma info</td></tr>
+          <tr><td><code>$_FILES</code></td><td>Augšupielādētie faili</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-files">
+    <h2>Faili &amp; include</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>include / require</h4><p>require pārtrauc izpildi, ja fails nav atrasts</p><pre><code>require_once 'config.php';
+include 'header.php';</code></pre></div>
+      <div class="cheat-card"><h4>file_get_contents / put</h4><pre><code>$s = file_get_contents('fails.txt');
+file_put_contents('fails.txt', $s);</code></pre></div>
+      <div class="cheat-card"><h4>file_exists()</h4><pre><code>if (file_exists('fails.txt')) {}</code></pre></div>
+      <div class="cheat-card"><h4>__DIR__ / __FILE__</h4><pre><code>require __DIR__ . '/config.php';</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-date">
+    <h2>Datums &amp; laiks</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>date()</h4><pre><code>date('Y-m-d H:i:s');</code></pre></div>
+      <div class="cheat-card"><h4>DateTime</h4><pre><code>$d = new DateTime('2026-07-25');
+$d-&gt;modify('+1 day');</code></pre></div>
+      <div class="cheat-card"><h4>strtotime()</h4><pre><code>strtotime('+1 week');</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-regex">
+    <h2>Regex</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>preg_match()</h4><pre><code>preg_match('/^[a-z]+$/', $s, $m);</code></pre></div>
+      <div class="cheat-card"><h4>preg_replace()</h4><pre><code>preg_replace('/\d+/', '#', $s);</code></pre></div>
+      <div class="cheat-card"><h4>preg_match_all()</h4><pre><code>preg_match_all('/\d+/', $s, $m);</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-pdo">
+    <h2>PDO datubāze</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>Savienojums</h4><pre><code>$pdo = new PDO(
+  'mysql:host=localhost;dbname=db;charset=utf8mb4',
+  'lietotajs', 'parole'
+);</code></pre></div>
+      <div class="cheat-card"><h4>Sagatavots vaicājums (drošs!)</h4><pre><code>$stmt = $pdo-&gt;prepare('SELECT * FROM lietotaji WHERE id = ?');
+$stmt-&gt;execute([$id]);
+$rinda = $stmt-&gt;fetch();</code></pre></div>
+      <div class="cheat-card"><h4>Vairākas rindas</h4><pre><code>$rindas = $stmt-&gt;fetchAll();</code></pre></div>
+      <div class="cheat-card"><h4>INSERT + lastInsertId</h4><pre><code>$stmt = $pdo-&gt;prepare(
+  'INSERT INTO log (teksts) VALUES (?)'
+);
+$stmt-&gt;execute([$teksts]);
+$id = $pdo-&gt;lastInsertId();</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-misc">
+    <h2>Citas noderīgas</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>json_encode / decode</h4><pre><code>json_encode($arr);
+json_decode($json, true);</code></pre></div>
+      <div class="cheat-card"><h4>htmlspecialchars()</h4><p>Aizsardzība pret XSS</p><pre><code>echo htmlspecialchars($lietotaja_teksts);</code></pre></div>
+      <div class="cheat-card"><h4>null safe operator</h4><pre><code>$pilseta = $lietotajs?-&gt;adrese?-&gt;pilseta;</code></pre></div>
+    </div>
+  </section>
+
+  <div class="doc-pager">
+    <a href="php.html"><span class="lbl">← Atpakaļ</span>Pilnā PHP dokumentācija</a>
+    <a class="to-next" href="../index.html"><span class="lbl">Atpakaļ →</span>Visas kategorijas</a>
+  </div>
+</main>
+
+<script src="../js/theme.js?v=2"></script>
+<script src="../js/main.js?v=2"></script>
+</body>
+</html>
