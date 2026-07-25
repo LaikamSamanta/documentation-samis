@@ -565,6 +565,11 @@ fetch(MyAjax.ajax_url, {
 })
   .then(res => res.json())
   .then(data => console.log(data.data.summa)); <span class="tok-com">// 5</span></code></pre>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4><code>fetch()</code></h4><p>Pārlūkā iebūvēta funkcija tīkla pieprasījumu sūtīšanai — WordPress kontekstā ar to nosūta datus uz <code>admin-ajax.php</code> bez lapas pārlādēšanas. Atgriež <em>Promise</em> (solījumu par vēlāku atbildi), tāpēc lieto ar <code>.then()</code>.</p></div>
+        <div class="doc-mini-card"><h4><code>new URLSearchParams(objekts)</code></h4><p>Pārlūka iebūvēta klase, kas parastu JS objektu pārvērš formā, ko servera <code>$_POST</code> spēj nolasīt tieši (tas pats formāts, ko sūta parasta HTML forma). Bez tās <code>fetch()</code> nosūtītu JSON tekstu, ko <code>$_POST</code> nesaprastu.</p></div>
+        <div class="doc-mini-card"><h4><code>res.json()</code></h4><p><code>res</code> ir servera atbilde no <code>fetch()</code>. <code>.json()</code> pārvērš to no jēla teksta par lietojamu JS objektu — arī tas atgriež <em>Promise</em>, tāpēc seko vēl viens <code>.then()</code>, lai piekļūtu jau pārveidotajiem datiem.</p></div>
+      </div>
     </section>
 
     <section class="doc-section" id="drosiba">

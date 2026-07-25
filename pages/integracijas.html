@@ -489,6 +489,11 @@
     &lt;/script&gt;
     &lt;?php
 });</code></pre>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4><code>fetch(url)</code></h4><p>Pārlūkā iebūvēta funkcija tīkla pieprasījumu sūtīšanai — šeit ar to nosūta pieprasījumu tieši uz Google Translate. Atgriež <em>Promise</em> (solījumu par vēlāku atbildi), tāpēc jālieto ar <code>await</code> vai <code>.then()</code>.</p></div>
+        <div class="doc-mini-card"><h4><code>async</code> / <code>await</code></h4><p><code>async</code> pirms funkcijas ļauj tās iekšpusē lietot <code>await</code> — tas "aptur" izpildi tikai šajā funkcijā, līdz <code>fetch()</code> saņem atbildi, bet neaptur visu lapu. Bez <code>await</code> kods turpinātos, pirms atbilde vēl būtu pienākusi.</p></div>
+        <div class="doc-mini-card"><h4><code>res.json()</code></h4><p><code>res</code> ir servera atbilde no <code>fetch()</code>. <code>.json()</code> pārvērš to no jēla teksta par lietojamu JS objektu/masīvu — tas arī ir asinhrons, tāpēc arī šeit vajadzīgs <code>await</code>.</p></div>
+      </div>
       <p>Šī poga jau strādā ar 5. solī izveidoto meta box piemēru (tur tai jau ir pareizie <code>data-*</code> atribūti) — ne pati funkcija, ne pogas HTML nekas papildus nav jāraksta.</p>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
@@ -680,7 +685,7 @@
     btn.disabled = <span class="tok-kw">false</span>;
   }
 });</code></pre>
-      <p>Mainīgais <code>CF_DATA</code> (ar <code>ajax_url</code> un <code>nonce</code>) jānodod no PHP puses — tas parādīts nākamajā solī (<code>wp_localize_script</code>).</p>
+      <p>Mainīgais <code>CF_DATA</code> (ar <code>ajax_url</code> un <code>nonce</code>) jānodod no PHP puses — tas parādīts nākamajā solī (<code>wp_localize_script</code>). <code>fetch()</code>, <code>await</code> un <code>res.json()</code> darbojas tieši tāpat kā <a href="#lang-google">skaidrots iepriekš</a> — vienīgā atšķirība ir <code>FormData</code>, kas šeit automātiski savāc visus formas lauku, ieskaitot failus, ja tādi būtu.</p>
     </section>
 
     <section class="doc-section" id="contact-form-php">

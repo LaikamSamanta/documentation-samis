@@ -45,7 +45,7 @@
     </div>
     <h1 style="margin-bottom:0;">PHP Cheatsheet</h1>
   </div>
-  <p class="doc-lead">Blīva ātrās uzziņas lapa — sintakse bez garajiem skaidrojumiem. Pilnus piemērus un paskaidrojumus skaties <a href="php.html">pilnajā PHP dokumentācijā</a>.</p>
+  <p class="doc-lead">Ātrās uzziņas lapa — katrai kartiņai īss skaidrojums, ko tā dara un kam domāta, plus sintakses fragments. Pilnus piemērus un paskaidrojumus skaties <a href="php.html">pilnajā PHP dokumentācijā</a>.</p>
 
   <nav class="cheat-jump">
     <a href="#ct-syntax">Sintakse &amp; tipi</a>
@@ -68,16 +68,16 @@
   <section class="cheat-section" id="ct-syntax">
     <h2>Sintakse &amp; tipi</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>Atvēršanas tags</h4><pre><code>&lt;?php
+      <div class="cheat-card"><h4>Atvēršanas tags</h4><p>Viss PHP kods jāieskauj šajos tagos — bez tiem serveris rādītu kodu kā parastu tekstu, nevis izpildītu to.</p><pre><code>&lt;?php
 // kods
 ?&gt;</code></pre></div>
-      <div class="cheat-card"><h4>echo / print</h4><pre><code>echo "Sveiks";
+      <div class="cheat-card"><h4>echo / print</h4><p>Izvada tekstu tieši uz lapu — echo pieņem vairākus argumentus uzreiz, print vienmēr atgriež 1 un pieņem tikai vienu.</p><pre><code>echo "Sveiks";
 echo "A", "B";</code></pre></div>
-      <div class="cheat-card"><h4>gettype() / var_dump()</h4><pre><code>gettype($x);
+      <div class="cheat-card"><h4>gettype() / var_dump()</h4><p>gettype() atgriež mainīgā tipu kā tekstu; var_dump() izvada gan tipu, gan vērtību — noder atkļūdošanai.</p><pre><code>gettype($x);
 var_dump($x);</code></pre></div>
-      <div class="cheat-card"><h4>Tipi</h4><pre><code>string, int, float, bool,
+      <div class="cheat-card"><h4>Tipi</h4><p>PHP pamata datu tipi — mainīgais pats par sevi nav "tipizēts", tips ir tai vērtībai, ko tas satur konkrētajā brīdī.</p><pre><code>string, int, float, bool,
 array, object, null</code></pre></div>
-      <div class="cheat-card"><h4>Tipa konvertācija</h4><pre><code>(int) "5"; (string) 5;
+      <div class="cheat-card"><h4>Tipa konvertācija</h4><p>Piespiedu kārtā pārveido vērtību par citu tipu — (int)/(string) ir īsā sintakse, intval()/strval() to pašu dara ar funkciju.</p><pre><code>(int) "5"; (string) 5;
 intval($x); strval($x);</code></pre></div>
     </div>
   </section>
@@ -85,13 +85,13 @@ intval($x); strval($x);</code></pre></div>
   <section class="cheat-section" id="ct-vars">
     <h2>Mainīgie &amp; konstantes</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>Mainīgais</h4><pre><code>$vards = "Anna";</code></pre></div>
-      <div class="cheat-card"><h4>define() / const</h4><pre><code>define('VERSIJA', '1.0');
+      <div class="cheat-card"><h4>Mainīgais</h4><p>PHP mainīgie vienmēr sākas ar $ zīmi — tips netiek norādīts, PHP to nosaka automātiski pēc piešķirtās vērtības.</p><pre><code>$vards = "Anna";</code></pre></div>
+      <div class="cheat-card"><h4>define() / const</h4><p>Izveido nemainīgu vērtību, ko nevar pārrakstīt vēlāk — define() strādā jebkurā vietā, const parasti izmanto klases iekšpusē vai globāli.</p><pre><code>define('VERSIJA', '1.0');
 const MAX = 100;</code></pre></div>
-      <div class="cheat-card"><h4>Interpolācija</h4><pre><code>echo "Sveiks, $vards!";
+      <div class="cheat-card"><h4>Interpolācija</h4><p>Dubultpēdiņu teksta iekšienē mainīgie tiek automātiski aizvietoti ar savu vērtību — vienpēdiņu tekstā tas nenotiek.</p><pre><code>echo "Sveiks, $vards!";
 echo "Sveiks, {$obj-&gt;vards}!";</code></pre></div>
-      <div class="cheat-card"><h4>isset() / empty() / is_null()</h4><pre><code>isset($x); empty($x); is_null($x);</code></pre></div>
-      <div class="cheat-card"><h4>null coalescing</h4><pre><code>$v = $x ?? "noklusējums";
+      <div class="cheat-card"><h4>isset() / empty() / is_null()</h4><p>isset() pārbauda, vai mainīgais eksistē un nav null; empty() vai tas ir "tukšs" (arī 0, "", false); is_null() — vai tieši null.</p><pre><code>isset($x); empty($x); is_null($x);</code></pre></div>
+      <div class="cheat-card"><h4>null coalescing</h4><p>?? atgriež labo pusi, ja kreisā ir null vai neeksistē (bez brīdinājuma); ??= piešķir vērtību tikai tad, ja mainīgais vēl nav iestatīts.</p><pre><code>$v = $x ?? "noklusējums";
 $x ??= "noklusējums";</code></pre></div>
     </div>
   </section>
@@ -99,80 +99,80 @@ $x ??= "noklusējums";</code></pre></div>
   <section class="cheat-section" id="ct-ops">
     <h2>Operatori</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>===</h4><p>Stingra salīdzināšana</p><pre><code>"5" === 5 // false</code></pre></div>
-      <div class="cheat-card"><h4>&lt;=&gt;</h4><p>Spaceship, kārtošanai</p><pre><code>usort($a, fn($x,$y) =&gt; $x &lt;=&gt; $y);</code></pre></div>
-      <div class="cheat-card"><h4>Ternārais / short ternary</h4><pre><code>$x ? "jā" : "nē";
+      <div class="cheat-card"><h4>===</h4><p>Salīdzina gan vērtību, gan tipu, bez automātiskas konvertācijas — droši lietojams, vienmēr izvēlies šo, nevis ==.</p><pre><code>"5" === 5 // false</code></pre></div>
+      <div class="cheat-card"><h4>&lt;=&gt;</h4><p>"Spaceship" operators — atgriež -1, 0 vai 1 atkarībā no salīdzinājuma, tieši tas, ko sagaida kārtošanas (usort) funkcijas.</p><pre><code>usort($a, fn($x,$y) =&gt; $x &lt;=&gt; $y);</code></pre></div>
+      <div class="cheat-card"><h4>Ternārais / short ternary</h4><p>Ternārais ir īss if/else, kas atgriež vērtību; short ternary (?:) atgriež kreiso pusi, ja tā ir patiesa, citādi labo.</p><pre><code>$x ? "jā" : "nē";
 $x ?: "noklusējums";</code></pre></div>
-      <div class="cheat-card"><h4>. (konkatenācija)</h4><pre><code>$pilns = $vards . " " . $uzvards;</code></pre></div>
-      <div class="cheat-card"><h4>&amp;&amp; / || / !</h4><pre><code>if ($a &amp;&amp; !$b) {}</code></pre></div>
+      <div class="cheat-card"><h4>. (konkatenācija)</h4><p>Savieno (saliek kopā) divus vai vairākus tekstus vienā — PHP tekstu savienošanai lieto punktu, nevis +.</p><pre><code>$pilns = $vards . " " . $uzvards;</code></pre></div>
+      <div class="cheat-card"><h4>&amp;&amp; / || / !</h4><p>Loģiskie operatori — UN (abi patiesi), VAI (vismaz viens patiess), NE (apgriež pretējā virzienā).</p><pre><code>if ($a &amp;&amp; !$b) {}</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-flow">
     <h2>Vadības struktūras</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>if / elseif / else</h4><pre><code>if ($a) {} elseif ($b) {} else {}</code></pre></div>
-      <div class="cheat-card"><h4>match (PHP 8+)</h4><pre><code>$r = match($x) {
+      <div class="cheat-card"><h4>if / elseif / else</h4><p>Pamata sazarošanās — izpilda atšķirīgu koda bloku atkarībā no nosacījuma patiesumvērtības.</p><pre><code>if ($a) {} elseif ($b) {} else {}</code></pre></div>
+      <div class="cheat-card"><h4>match (PHP 8+)</h4><p>Modernāka switch alternatīva, kas atgriež vērtību un salīdzina stingri (===) — nav vajadzīgs break, nav "izkrišanas" riska.</p><pre><code>$r = match($x) {
   1, 2 =&gt; "mazs",
   default =&gt; "cits",
 };</code></pre></div>
-      <div class="cheat-card"><h4>switch</h4><pre><code>switch ($x) {
+      <div class="cheat-card"><h4>switch</h4><p>Salīdzina vienu vērtību ar vairākiem iespējamiem variantiem — break apstādina "izkrišanu" uz nākamo case.</p><pre><code>switch ($x) {
   case 1: break;
   default: break;
 }</code></pre></div>
-      <div class="cheat-card"><h4>for / foreach</h4><pre><code>for ($i=0; $i&lt;5; $i++) {}
+      <div class="cheat-card"><h4>for / foreach</h4><p>for — cikls ar zināmu iterāciju skaitu un skaitītāju; foreach — iziet cauri masīva elementiem (un/vai atslēgām) tieši.</p><pre><code>for ($i=0; $i&lt;5; $i++) {}
 foreach ($arr as $k =&gt; $v) {}</code></pre></div>
-      <div class="cheat-card"><h4>while / do...while</h4><pre><code>while ($x &lt; 5) { $x++; }</code></pre></div>
+      <div class="cheat-card"><h4>while / do...while</h4><p>Cikls, kas turpinās, kamēr nosacījums patiess — do...while vienmēr izpilda ķermeni vismaz vienreiz.</p><pre><code>while ($x &lt; 5) { $x++; }</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-func">
     <h2>Funkcijas</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>function</h4><pre><code>function saskaitit($a, $b) {
+      <div class="cheat-card"><h4>function</h4><p>Pamata funkcijas deklarācija — pieņem argumentus un (neobligāti) atgriež vērtību ar return.</p><pre><code>function saskaitit($a, $b) {
   return $a + $b;
 }</code></pre></div>
-      <div class="cheat-card"><h4>Noklusējuma parametrs</h4><pre><code>function f($x = 10) {}</code></pre></div>
-      <div class="cheat-card"><h4>Tipizēti parametri</h4><pre><code>function f(int $x): string {
+      <div class="cheat-card"><h4>Noklusējuma parametrs</h4><p>Piešķir vērtību parametram, ja izsaucot funkciju tas netiek nodots.</p><pre><code>function f($x = 10) {}</code></pre></div>
+      <div class="cheat-card"><h4>Tipizēti parametri</h4><p>Norāda sagaidāmo parametru un atgriežamās vērtības tipu — PHP izmet kļūdu, ja tips nesakrīt (strict_types režīmā).</p><pre><code>function f(int $x): string {
   return (string) $x;
 }</code></pre></div>
-      <div class="cheat-card"><h4>Anonīma / arrow function</h4><pre><code>$f = function($x) { return $x * 2; };
+      <div class="cheat-card"><h4>Anonīma / arrow function</h4><p>Funkcija bez nosaukuma, ko var saglabāt mainīgajā vai nodot kā argumentu — fn() (arrow) automātiski "redz" ārējos mainīgos.</p><pre><code>$f = function($x) { return $x * 2; };
 $f = fn($x) =&gt; $x * 2;</code></pre></div>
-      <div class="cheat-card"><h4>Variadiskie parametri</h4><pre><code>function f(...$args) {}</code></pre></div>
+      <div class="cheat-card"><h4>Variadiskie parametri</h4><p>... pirms parametra savāc jebkādu skaitu nodoto argumentu vienā masīvā funkcijas iekšpusē.</p><pre><code>function f(...$args) {}</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-arrays">
     <h2>Masīvi</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>array_map()</h4><pre><code>array_map(fn($n) =&gt; $n * 2, $arr);</code></pre></div>
-      <div class="cheat-card"><h4>array_filter()</h4><pre><code>array_filter($arr, fn($n) =&gt; $n &gt; 0);</code></pre></div>
-      <div class="cheat-card"><h4>array_reduce()</h4><pre><code>array_reduce($arr, fn($c,$n) =&gt; $c+$n, 0);</code></pre></div>
-      <div class="cheat-card"><h4>array_merge()</h4><pre><code>array_merge($a, $b);</code></pre></div>
-      <div class="cheat-card"><h4>in_array() / array_search()</h4><pre><code>in_array(3, $arr);
+      <div class="cheat-card"><h4>array_map()</h4><p>Atgriež jaunu masīvu, katru elementu pārveidojot ar norādīto funkciju — oriģinālais masīvs netiek mainīts.</p><pre><code>array_map(fn($n) =&gt; $n * 2, $arr);</code></pre></div>
+      <div class="cheat-card"><h4>array_filter()</h4><p>Atgriež jaunu masīvu tikai ar elementiem, kas iztur nosacījumu (callback funkciju).</p><pre><code>array_filter($arr, fn($n) =&gt; $n &gt; 0);</code></pre></div>
+      <div class="cheat-card"><h4>array_reduce()</h4><p>Sareducē visu masīvu vienā vērtībā, izpildot funkciju secīgi katram elementam ar uzkrāto rezultātu.</p><pre><code>array_reduce($arr, fn($c,$n) =&gt; $c+$n, 0);</code></pre></div>
+      <div class="cheat-card"><h4>array_merge()</h4><p>Apvieno divus vai vairākus masīvus vienā jaunā — teksta atslēgas dublējoties tiek pārrakstītas, skaitliskās pārnumurētas.</p><pre><code>array_merge($a, $b);</code></pre></div>
+      <div class="cheat-card"><h4>in_array() / array_search()</h4><p>in_array() pārbauda, vai vērtība eksistē masīvā (true/false); array_search() atgriež tās atslēgu (vai false).</p><pre><code>in_array(3, $arr);
 array_search(3, $arr);</code></pre></div>
-      <div class="cheat-card"><h4>count() / sort()</h4><pre><code>count($arr);
+      <div class="cheat-card"><h4>count() / sort()</h4><p>count() atgriež elementu skaitu; sort()/rsort() sakārto masīvu augošā/dilstošā secībā, PĀRRAKSTOT atslēgas ar jaunu numerāciju.</p><pre><code>count($arr);
 sort($arr); rsort($arr);</code></pre></div>
-      <div class="cheat-card"><h4>array_keys() / array_values()</h4><pre><code>array_keys($arr);
+      <div class="cheat-card"><h4>array_keys() / array_values()</h4><p>Atgriež masīva atslēgas vai vērtības kā jaunu, atsevišķu (skaitliski indeksētu) masīvu.</p><pre><code>array_keys($arr);
 array_values($arr);</code></pre></div>
-      <div class="cheat-card"><h4>array_slice()</h4><pre><code>array_slice($arr, 1, 2);</code></pre></div>
-      <div class="cheat-card"><h4>Asociatīvais masīvs</h4><pre><code>$a = ['vards' =&gt; 'Anna', 'vecums' =&gt; 30];</code></pre></div>
+      <div class="cheat-card"><h4>array_slice()</h4><p>Izgriež masīva daļu pēc sākuma pozīcijas un garuma, neko nemainot oriģinālajā masīvā.</p><pre><code>array_slice($arr, 1, 2);</code></pre></div>
+      <div class="cheat-card"><h4>Asociatīvais masīvs</h4><p>Masīvs ar teksta atslēgām (nevis secīgiem skaitļiem) — pieejai pie vērtībām izmanto atslēgas nosaukumu, nevis indeksu.</p><pre><code>$a = ['vards' =&gt; 'Anna', 'vecums' =&gt; 30];</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-strings">
     <h2>Teksti</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>strlen() / str_replace()</h4><pre><code>strlen($s);
+      <div class="cheat-card"><h4>strlen() / str_replace()</h4><p>strlen() atgriež teksta garumu (baitos); str_replace() aizvieto VISAS meklētā apakšteksta sakritības ar jaunu.</p><pre><code>strlen($s);
 str_replace("a", "x", $s);</code></pre></div>
-      <div class="cheat-card"><h4>explode() / implode()</h4><pre><code>explode(",", "a,b,c");
+      <div class="cheat-card"><h4>explode() / implode()</h4><p>explode() sadala tekstu masīvā pēc atdalītāja; implode() dara pretējo — savieno masīva elementus vienā tekstā.</p><pre><code>explode(",", "a,b,c");
 implode(", ", $arr);</code></pre></div>
-      <div class="cheat-card"><h4>trim() / substr()</h4><pre><code>trim($s);
+      <div class="cheat-card"><h4>trim() / substr()</h4><p>trim() noņem liekās atstarpes teksta malās; substr() izgriež teksta daļu pēc sākuma pozīcijas un garuma.</p><pre><code>trim($s);
 substr($s, 0, 3);</code></pre></div>
-      <div class="cheat-card"><h4>strtoupper() / strtolower()</h4><pre><code>strtoupper($s);
+      <div class="cheat-card"><h4>strtoupper() / strtolower()</h4><p>Pārvērš tekstu par lielajiem/mazajiem burtiem — noder salīdzināšanai bez reģistrjutības.</p><pre><code>strtoupper($s);
 strtolower($s);</code></pre></div>
-      <div class="cheat-card"><h4>sprintf()</h4><pre><code>sprintf("Cena: %.2f EUR", 9.5);</code></pre></div>
-      <div class="cheat-card"><h4>str_contains/starts/ends</h4><pre><code>str_contains($s, "abc");
+      <div class="cheat-card"><h4>sprintf()</h4><p>Formatē tekstu, ievietojot mainīgos noteiktā formātā (piem., decimālskaitļus ar fiksētu ciparu skaitu aiz komata).</p><pre><code>sprintf("Cena: %.2f EUR", 9.5);</code></pre></div>
+      <div class="cheat-card"><h4>str_contains/starts/ends</h4><p>Pārbauda, vai teksts satur/sākas/beidzas ar norādīto apakštekstu — atgriež true/false (PHP 8+).</p><pre><code>str_contains($s, "abc");
 str_starts_with($s, "a");</code></pre></div>
     </div>
   </section>
@@ -180,53 +180,54 @@ str_starts_with($s, "a");</code></pre></div>
   <section class="cheat-section" id="ct-oop">
     <h2>OOP</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>class / constructor</h4><pre><code>class Lietotajs {
+      <div class="cheat-card"><h4>class / constructor</h4><p>Veidne objektu izveidei — __construct() izpildās automātiski, kad izveido jaunu instanci ar new. "private string $vards" ir saīsināta konstruktora rekvizīta sintakse (PHP 8+).</p><pre><code>class Lietotajs {
   public function __construct(
     private string $vards
   ) {}
 }</code></pre></div>
-      <div class="cheat-card"><h4>extends / implements</h4><pre><code>class Admins extends Lietotajs implements Loggable {}</code></pre></div>
-      <div class="cheat-card"><h4>interface</h4><pre><code>interface Loggable {
+      <div class="cheat-card"><h4>extends / implements</h4><p>extends manto no citas klases (mantojums); implements apņemas ievērot interfeisa metodes (līgumu).</p><pre><code>class Admins extends Lietotajs implements Loggable {}</code></pre></div>
+      <div class="cheat-card"><h4>interface</h4><p>Definē metožu "līgumu" bez to realizācijas — jebkurai klasei, kas to implementē, obligāti jāraksta šīs metodes.</p><pre><code>interface Loggable {
   public function log(): void;
 }</code></pre></div>
-      <div class="cheat-card"><h4>trait</h4><pre><code>trait Sveiciens {
+      <div class="cheat-card"><h4>trait</h4><p>Koda bloks, ko var "iejaukt" (use) vairākās klasēs, kurām nav kopīga vecāka — apiet PHP ierobežojumu mantot tikai no vienas klases.</p><pre><code>trait Sveiciens {
   public function sveicini() { echo "Sveiks"; }
 }
 class X { use Sveiciens; }</code></pre></div>
-      <div class="cheat-card"><h4>static</h4><pre><code>class C { public static int $skaits = 0; }
+      <div class="cheat-card"><h4>static</h4><p>Īpašība/metode, kas pieder pašai klasei, nevis atsevišķai instancei — piekļūst caur klases nosaukumu ar ::.</p><pre><code>class C { public static int $skaits = 0; }
 C::$skaits++;</code></pre></div>
-      <div class="cheat-card"><h4>abstract</h4><pre><code>abstract class Forma {
+      <div class="cheat-card"><h4>abstract</h4><p>Klase/metode, ko nevar izveidot (instantizēt) tieši — kalpo tikai kā veidne, no kuras jāmanto un jārealizē trūkstošās metodes.</p><pre><code>abstract class Forma {
   abstract public function laukums(): float;
 }</code></pre></div>
-      <div class="cheat-card"><h4>Redzamība</h4><pre><code>public, protected, private</code></pre></div>
+      <div class="cheat-card"><h4>Redzamība</h4><p>Kontrolē, no kurienes drīkst piekļūt īpašībai/metodei — public (visur), protected (klase + mantotāji), private (tikai šī klase).</p><pre><code>public, protected, private</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-errors">
     <h2>Kļūdu apstrāde</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>try/catch/finally</h4><pre><code>try {
+      <div class="cheat-card"><h4>try/catch/finally</h4><p>try satur kodu, kas var izmest izņēmumu (Exception); catch to noķer; finally izpildās vienmēr, neatkarīgi no rezultāta.</p><pre><code>try {
   riskants();
 } catch (Exception $e) {
   echo $e-&gt;getMessage();
 } finally {}</code></pre></div>
-      <div class="cheat-card"><h4>throw</h4><pre><code>throw new InvalidArgumentException("kļūda");</code></pre></div>
-      <div class="cheat-card"><h4>Custom exception</h4><pre><code>class ManaKluda extends Exception {}</code></pre></div>
+      <div class="cheat-card"><h4>throw</h4><p>Apzināti izmet izņēmumu — apstādina tālāko koda izpildi, ja vien to neaptver try/catch augstāk izsaukumu ķēdē.</p><pre><code>throw new InvalidArgumentException("kļūda");</code></pre></div>
+      <div class="cheat-card"><h4>Custom exception</h4><p>Sava izņēmumu klase, kas manto no Exception — ļauj catch blokā atšķirt savas kļūdas no citām, pēc to tipa.</p><pre><code>class ManaKluda extends Exception {}</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-super">
     <h2>Superglobālie mainīgie</h2>
+    <p class="cheat-sub">Iebūvēti masīvi, kas pieejami jebkurā koda vietā bez papildu deklarēšanas — satur ārējos datus, kas ienāk kopā ar pieprasījumu.</p>
     <div class="cheat-table-wrap">
       <table class="cheat-table">
         <thead><tr><th>Mainīgais</th><th>Satur</th></tr></thead>
         <tbody>
-          <tr><td><code>$_GET</code></td><td>URL query parametri</td></tr>
-          <tr><td><code>$_POST</code></td><td>Formas dati (POST metode)</td></tr>
-          <tr><td><code>$_SESSION</code></td><td>Sesijas dati (pēc <code>session_start()</code>)</td></tr>
-          <tr><td><code>$_COOKIE</code></td><td>Sīkdatnes</td></tr>
-          <tr><td><code>$_SERVER</code></td><td>Servera un pieprasījuma info</td></tr>
-          <tr><td><code>$_FILES</code></td><td>Augšupielādētie faili</td></tr>
+          <tr><td><code>$_GET</code></td><td>URL query parametri (piem. ?id=5 → $_GET['id'])</td></tr>
+          <tr><td><code>$_POST</code></td><td>Formas dati, nosūtīti ar POST metodi</td></tr>
+          <tr><td><code>$_SESSION</code></td><td>Dati, kas saglabājas starp lapām vienam apmeklētājam (pēc <code>session_start()</code>)</td></tr>
+          <tr><td><code>$_COOKIE</code></td><td>Sīkdatnes, ko saglabājis pārlūks</td></tr>
+          <tr><td><code>$_SERVER</code></td><td>Servera un pieprasījuma info (URL, IP, galvenes)</td></tr>
+          <tr><td><code>$_FILES</code></td><td>Informācija par augšupielādētajiem failiem</td></tr>
         </tbody>
       </table>
     </div>
@@ -235,46 +236,46 @@ C::$skaits++;</code></pre></div>
   <section class="cheat-section" id="ct-files">
     <h2>Faili &amp; include</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>include / require</h4><p>require pārtrauc izpildi, ja fails nav atrasts</p><pre><code>require_once 'config.php';
+      <div class="cheat-card"><h4>include / require</h4><p>Abas ielādē citu PHP failu tieši šajā vietā — require pārtrauc visa skripta izpildi, ja fails nav atrasts, include tikai izmet brīdinājumu un turpina.</p><pre><code>require_once 'config.php';
 include 'header.php';</code></pre></div>
-      <div class="cheat-card"><h4>file_get_contents / put</h4><pre><code>$s = file_get_contents('fails.txt');
+      <div class="cheat-card"><h4>file_get_contents / put</h4><p>get_contents() nolasa visa faila saturu vienā tekstā; put_contents() ieraksta tekstu failā (izveidojot to, ja neeksistē).</p><pre><code>$s = file_get_contents('fails.txt');
 file_put_contents('fails.txt', $s);</code></pre></div>
-      <div class="cheat-card"><h4>file_exists()</h4><pre><code>if (file_exists('fails.txt')) {}</code></pre></div>
-      <div class="cheat-card"><h4>__DIR__ / __FILE__</h4><pre><code>require __DIR__ . '/config.php';</code></pre></div>
+      <div class="cheat-card"><h4>file_exists()</h4><p>Pārbauda, vai fails vai mape eksistē pirms mēģini to lasīt/rakstīt — izvairās no kļūdas, ja ceļš nepareizs.</p><pre><code>if (file_exists('fails.txt')) {}</code></pre></div>
+      <div class="cheat-card"><h4>__DIR__ / __FILE__</h4><p>__DIR__ ir pašreizējā faila mapes ceļš, __FILE__ — paša faila pilnais ceļš — droši lietot include ceļos neatkarīgi no tā, no kurienes skripts izsaukts.</p><pre><code>require __DIR__ . '/config.php';</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-date">
     <h2>Datums &amp; laiks</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>date()</h4><pre><code>date('Y-m-d H:i:s');</code></pre></div>
-      <div class="cheat-card"><h4>DateTime</h4><pre><code>$d = new DateTime('2026-07-25');
+      <div class="cheat-card"><h4>date()</h4><p>Formatē pašreizējo (vai norādītu) laika zīmogu kā salasāmu tekstu pēc dotā formāta.</p><pre><code>date('Y-m-d H:i:s');</code></pre></div>
+      <div class="cheat-card"><h4>DateTime</h4><p>Objektorientēts veids darbam ar datumiem — modify() ļauj ērti pieskaitīt/atņemt laika periodus.</p><pre><code>$d = new DateTime('2026-07-25');
 $d-&gt;modify('+1 day');</code></pre></div>
-      <div class="cheat-card"><h4>strtotime()</h4><pre><code>strtotime('+1 week');</code></pre></div>
+      <div class="cheat-card"><h4>strtotime()</h4><p>Pārvērš cilvēkam saprotamu teksta izteiksmi ("+1 week", "next monday") par Unix laika zīmogu (skaitli).</p><pre><code>strtotime('+1 week');</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-regex">
     <h2>Regex</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>preg_match()</h4><pre><code>preg_match('/^[a-z]+$/', $s, $m);</code></pre></div>
-      <div class="cheat-card"><h4>preg_replace()</h4><pre><code>preg_replace('/\d+/', '#', $s);</code></pre></div>
-      <div class="cheat-card"><h4>preg_match_all()</h4><pre><code>preg_match_all('/\d+/', $s, $m);</code></pre></div>
+      <div class="cheat-card"><h4>preg_match()</h4><p>Pārbauda, vai teksts atbilst regulārai izteiksmei, un ieraksta atrasto sakritību mainīgajā ($m) — atgriež 1 (atrasts) vai 0.</p><pre><code>preg_match('/^[a-z]+$/', $s, $m);</code></pre></div>
+      <div class="cheat-card"><h4>preg_replace()</h4><p>Aizvieto visas regulārajai izteiksmei atbilstošās vietas tekstā ar norādīto aizvietotāju.</p><pre><code>preg_replace('/\d+/', '#', $s);</code></pre></div>
+      <div class="cheat-card"><h4>preg_match_all()</h4><p>Tas pats, kas preg_match(), bet atrod VISAS sakritības tekstā, nevis tikai pirmo, un saglabā tās masīvā.</p><pre><code>preg_match_all('/\d+/', $s, $m);</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-pdo">
     <h2>PDO datubāze</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>Savienojums</h4><pre><code>$pdo = new PDO(
+      <div class="cheat-card"><h4>Savienojums</h4><p>Izveido savienojumu ar MySQL/MariaDB datubāzi, izmantojot PDO — universālu PHP saskarni, kas strādā ar vairākiem datubāzu tipiem.</p><pre><code>$pdo = new PDO(
   'mysql:host=localhost;dbname=db;charset=utf8mb4',
   'lietotajs', 'parole'
 );</code></pre></div>
-      <div class="cheat-card"><h4>Sagatavots vaicājums (drošs!)</h4><pre><code>$stmt = $pdo-&gt;prepare('SELECT * FROM lietotaji WHERE id = ?');
+      <div class="cheat-card"><h4>Sagatavots vaicājums (drošs!)</h4><p>? ir vietturis, ko aizpilda execute() masīvs — pasargā no SQL injection, jo dati nekad netiek tieši ielikti vaicājuma tekstā.</p><pre><code>$stmt = $pdo-&gt;prepare('SELECT * FROM lietotaji WHERE id = ?');
 $stmt-&gt;execute([$id]);
 $rinda = $stmt-&gt;fetch();</code></pre></div>
-      <div class="cheat-card"><h4>Vairākas rindas</h4><pre><code>$rindas = $stmt-&gt;fetchAll();</code></pre></div>
-      <div class="cheat-card"><h4>INSERT + lastInsertId</h4><pre><code>$stmt = $pdo-&gt;prepare(
+      <div class="cheat-card"><h4>Vairākas rindas</h4><p>fetchAll() atgriež VISAS vaicājuma atbilstošās rindas kā masīvu, atšķirībā no fetch(), kas atgriež tikai vienu.</p><pre><code>$rindas = $stmt-&gt;fetchAll();</code></pre></div>
+      <div class="cheat-card"><h4>INSERT + lastInsertId</h4><p>Pēc jaunas rindas ievietošanas lastInsertId() atgriež tikko izveidotās rindas automātiski ģenerēto ID.</p><pre><code>$stmt = $pdo-&gt;prepare(
   'INSERT INTO log (teksts) VALUES (?)'
 );
 $stmt-&gt;execute([$teksts]);
@@ -285,10 +286,10 @@ $id = $pdo-&gt;lastInsertId();</code></pre></div>
   <section class="cheat-section" id="ct-misc">
     <h2>Citas noderīgas</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>json_encode / decode</h4><pre><code>json_encode($arr);
+      <div class="cheat-card"><h4>json_encode / decode</h4><p>encode() pārvērš PHP masīvu/objektu par JSON tekstu (nosūtīšanai/saglabāšanai); decode() dara pretējo.</p><pre><code>json_encode($arr);
 json_decode($json, true);</code></pre></div>
-      <div class="cheat-card"><h4>htmlspecialchars()</h4><p>Aizsardzība pret XSS</p><pre><code>echo htmlspecialchars($lietotaja_teksts);</code></pre></div>
-      <div class="cheat-card"><h4>null safe operator</h4><pre><code>$pilseta = $lietotajs?-&gt;adrese?-&gt;pilseta;</code></pre></div>
+      <div class="cheat-card"><h4>htmlspecialchars()</h4><p>Pārvērš speciālos HTML simbolus (&lt;, &gt;, &amp;) par to drošajiem ekvivalentiem — obligāti pirms lietotāja ievadītu tekstu izvadīt lapā, lai novērstu XSS.</p><pre><code>echo htmlspecialchars($lietotaja_teksts);</code></pre></div>
+      <div class="cheat-card"><h4>null safe operator</h4><p>?-&gt; droši piekļūst iegultai objekta īpašībai — ja jebkura daļa ceļā ir null, visa izteiksme atgriež null, nevis met kļūdu (PHP 8+).</p><pre><code>$pilseta = $lietotajs?-&gt;adrese?-&gt;pilseta;</code></pre></div>
     </div>
   </section>
 

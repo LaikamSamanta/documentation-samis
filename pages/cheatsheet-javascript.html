@@ -45,7 +45,7 @@
     </div>
     <h1 style="margin-bottom:0;">JavaScript Cheatsheet</h1>
   </div>
-  <p class="doc-lead">Blīva ātrās uzziņas lapa — sintakse bez garajiem skaidrojumiem. Pilnus piemērus un paskaidrojumus skaties <a href="javascript.html">pilnajā JavaScript dokumentācijā</a>.</p>
+  <p class="doc-lead">Ātrās uzziņas lapa — katrai kartiņai īss skaidrojums, ko tā dara un kam domāta, plus sintakses fragments. Pilnus piemērus un paskaidrojumus skaties <a href="javascript.html">pilnajā JavaScript dokumentācijā</a>.</p>
 
   <nav class="cheat-jump">
     <a href="#ct-vars">Mainīgie &amp; tipi</a>
@@ -65,13 +65,13 @@
   <section class="cheat-section" id="ct-vars">
     <h2>Mainīgie &amp; tipi</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>let / const</h4><p>Mainīgs / nemainīgs</p><pre><code>let a = 1; const b = 2;</code></pre></div>
-      <div class="cheat-card"><h4>typeof</h4><p>Vērtības tips</p><pre><code>typeof "x" // "string"</code></pre></div>
-      <div class="cheat-card"><h4>Template literal</h4><p>Teksts ar mainīgajiem</p><pre><code>`Sveiks, ${vards}!`</code></pre></div>
-      <div class="cheat-card"><h4>Tipi</h4><p>Pamata datu tipi</p><pre><code>string, number, boolean,
+      <div class="cheat-card"><h4>let / const</h4><p>let deklarē mainīgu, kuru vēlāk var pārrakstīt; const deklarē nemainīgu — vērtību nevar piešķirt no jauna (bet objekta/masīva saturu joprojām var mainīt).</p><pre><code>let a = 1; const b = 2;</code></pre></div>
+      <div class="cheat-card"><h4>typeof</h4><p>Atgriež mainīgā tipu kā tekstu (piem. "string", "number") — noder pārbaudīt, ar ko strādā, pirms to izmanto.</p><pre><code>typeof "x" // "string"</code></pre></div>
+      <div class="cheat-card"><h4>Template literal</h4><p>Ar atpakaļvērstajām pēdiņām veidots teksts, kur ${} iekšpusē var tieši ievietot mainīgos, bez teksta savienošanas ar +.</p><pre><code>`Sveiks, ${vards}!`</code></pre></div>
+      <div class="cheat-card"><h4>Tipi</h4><p>JavaScript pamata (primitīvie) datu tipi — visi, izņemot object un array, ir nemainīgi paši par sevi.</p><pre><code>string, number, boolean,
 null, undefined, object, array</code></pre></div>
-      <div class="cheat-card"><h4>Array.isArray()</h4><p>Vai masīvs</p><pre><code>Array.isArray([1,2]) // true</code></pre></div>
-      <div class="cheat-card"><h4>Number() / String()</h4><p>Tipa konvertācija</p><pre><code>Number("5") // 5
+      <div class="cheat-card"><h4>Array.isArray()</h4><p>Pārbauda, vai vērtība ir masīvs — typeof masīvam maldīgi atgriež "object", tāpēc masīviem jālieto tieši šī funkcija.</p><pre><code>Array.isArray([1,2]) // true</code></pre></div>
+      <div class="cheat-card"><h4>Number() / String()</h4><p>Piespiedu kārtā pārvērš vērtību par skaitli vai tekstu — noder, piem., kad no HTML formas ienāk teksts, bet vajag ar to rēķināt.</p><pre><code>Number("5") // 5
 String(5) // "5"</code></pre></div>
     </div>
   </section>
@@ -79,116 +79,116 @@ String(5) // "5"</code></pre></div>
   <section class="cheat-section" id="ct-ops">
     <h2>Operatori</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>===</h4><p>Stingra salīdzināšana (vienmēr šo)</p><pre><code>"5" === 5 // false</code></pre></div>
-      <div class="cheat-card"><h4>??</h4><p>Tikai null/undefined</p><pre><code>0 ?? "def" // 0</code></pre></div>
-      <div class="cheat-card"><h4>?.</h4><p>Optional chaining</p><pre><code>obj?.adrese?.pilseta</code></pre></div>
-      <div class="cheat-card"><h4>...spread</h4><p>Izklāj masīvu/objektu</p><pre><code>[...arr, 4]
+      <div class="cheat-card"><h4>===</h4><p>Salīdzina gan vērtību, gan tipu, bez automātiskas konvertācijas — vienmēr lieto šo, nevis ==, kas var dot negaidītus rezultātus.</p><pre><code>"5" === 5 // false</code></pre></div>
+      <div class="cheat-card"><h4>??</h4><p>Atgriež labo pusi tikai tad, ja kreisā ir tieši null vai undefined — atšķirībā no ||, neaizvieto arī 0, "" vai false.</p><pre><code>0 ?? "def" // 0</code></pre></div>
+      <div class="cheat-card"><h4>?.</h4><p>Droši piekļūst iegultai īpašībai — ja jebkura daļa ceļā ir null/undefined, izteiksme atgriež undefined, nevis met kļūdu.</p><pre><code>obj?.adrese?.pilseta</code></pre></div>
+      <div class="cheat-card"><h4>...spread</h4><p>Izklāj (izpleš) masīva vai objekta saturu atsevišķos elementos — noder kopēšanai vai apvienošanai, neietekmējot oriģinālu.</p><pre><code>[...arr, 4]
 {...obj, x: 1}</code></pre></div>
-      <div class="cheat-card"><h4>...rest</h4><p>Savāc argumentus</p><pre><code>function f(...args) {}</code></pre></div>
-      <div class="cheat-card"><h4>Ternārais</h4><p>Īss if/else</p><pre><code>vecums &gt;= 18 ? "jā" : "nē"</code></pre></div>
-      <div class="cheat-card"><h4>&&= / ||= / ??=</h4><p>Piešķiršana ar nosacījumu</p><pre><code>x ??= "noklusējums";</code></pre></div>
+      <div class="cheat-card"><h4>...rest</h4><p>Savāc visus atlikušos, nenosauktos argumentus vienā masīvā funkcijas iekšpusē.</p><pre><code>function f(...args) {}</code></pre></div>
+      <div class="cheat-card"><h4>Ternārais</h4><p>Īsāks veids if/else izteiksmei, kas atgriež vērtību — noder, kad ātri jāizvēlas starp divām vērtībām.</p><pre><code>vecums &gt;= 18 ? "jā" : "nē"</code></pre></div>
+      <div class="cheat-card"><h4>&&= / ||= / ??=</h4><p>Piešķir jaunu vērtību mainīgajam tikai tad, ja izpildās attiecīgais nosacījums — īsāka forma nekā x = x ?? "y".</p><pre><code>x ??= "noklusējums";</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-flow">
     <h2>Vadības struktūras</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>if / else if / else</h4><pre><code>if (a) {} else if (b) {} else {}</code></pre></div>
-      <div class="cheat-card"><h4>switch</h4><pre><code>switch (x) {
+      <div class="cheat-card"><h4>if / else if / else</h4><p>Pamata sazarošanās — izpilda atšķirīgu koda bloku atkarībā no nosacījuma patiesumvērtības.</p><pre><code>if (a) {} else if (b) {} else {}</code></pre></div>
+      <div class="cheat-card"><h4>switch</h4><p>Alternatīva vairākiem if/else if, kad viena vērtība jāsalīdzina ar daudzām iespējamām — break apstādina "izkrišanu" uz nākamo case.</p><pre><code>switch (x) {
   case 1: break;
   default: break;
 }</code></pre></div>
-      <div class="cheat-card"><h4>for</h4><pre><code>for (let i = 0; i &lt; 5; i++) {}</code></pre></div>
-      <div class="cheat-card"><h4>for...of</h4><p>Masīva vērtības</p><pre><code>for (const x of arr) {}</code></pre></div>
-      <div class="cheat-card"><h4>for...in</h4><p>Objekta atslēgas</p><pre><code>for (const k in obj) {}</code></pre></div>
-      <div class="cheat-card"><h4>while / do...while</h4><pre><code>while (x &lt; 5) { x++; }</code></pre></div>
+      <div class="cheat-card"><h4>for</h4><p>Klasiskais cikls ar zināmu iterāciju skaitu — noder, kad jāzina precīzs indekss katrā solī.</p><pre><code>for (let i = 0; i &lt; 5; i++) {}</code></pre></div>
+      <div class="cheat-card"><h4>for...of</h4><p>Iziet cauri masīva (vai citas iterējamas kolekcijas) vērtībām tieši, bez indeksa.</p><pre><code>for (const x of arr) {}</code></pre></div>
+      <div class="cheat-card"><h4>for...in</h4><p>Iziet cauri objekta atslēgu (īpašību) nosaukumiem — masīviem parasti labāk lietot for...of vai .forEach().</p><pre><code>for (const k in obj) {}</code></pre></div>
+      <div class="cheat-card"><h4>while / do...while</h4><p>Cikls, kas turpinās, kamēr nosacījums ir patiess — do...while vienmēr izpilda ķermeni vismaz vienreiz, pat ja nosacījums uzreiz nepatiess.</p><pre><code>while (x &lt; 5) { x++; }</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-func">
     <h2>Funkcijas</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>function</h4><pre><code>function f(a, b) { return a + b; }</code></pre></div>
-      <div class="cheat-card"><h4>Arrow function</h4><p>Nesaista savu this</p><pre><code>const f = (a, b) =&gt; a + b;</code></pre></div>
-      <div class="cheat-card"><h4>Noklusējuma parametrs</h4><pre><code>function f(x = 10) {}</code></pre></div>
-      <div class="cheat-card"><h4>Destrukturēšana parametros</h4><pre><code>function f({ vards, vecums }) {}</code></pre></div>
+      <div class="cheat-card"><h4>function</h4><p>Klasiska funkcijas deklarācija — pieejama pat pirms tās definīcijas vietas kodā ("hoisting").</p><pre><code>function f(a, b) { return a + b; }</code></pre></div>
+      <div class="cheat-card"><h4>Arrow function</h4><p>Īsāka sintakse funkcijai, kas nesaista savu this — this iekšpusē nozīmē to pašu, ko ārpusē, kas noder callback funkcijās.</p><pre><code>const f = (a, b) =&gt; a + b;</code></pre></div>
+      <div class="cheat-card"><h4>Noklusējuma parametrs</h4><p>Piešķir vērtību parametram, ja izsaucot funkciju tas netiek nodots (vai nodots kā undefined).</p><pre><code>function f(x = 10) {}</code></pre></div>
+      <div class="cheat-card"><h4>Destrukturēšana parametros</h4><p>Tieši funkcijas parametros izvelk konkrētas objekta īpašības — noder, kad funkcijai nodod vienu opciju objektu.</p><pre><code>function f({ vards, vecums }) {}</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-arrays">
     <h2>Masīvi</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>.map()</h4><p>Pārveido katru</p><pre><code>arr.map(n =&gt; n * 2)</code></pre></div>
-      <div class="cheat-card"><h4>.filter()</h4><p>Atlasa atbilstošos</p><pre><code>arr.filter(n =&gt; n &gt; 0)</code></pre></div>
-      <div class="cheat-card"><h4>.reduce()</h4><p>Sasummē vienā vērtībā</p><pre><code>arr.reduce((a,b) =&gt; a+b, 0)</code></pre></div>
-      <div class="cheat-card"><h4>.find()</h4><p>Pirmais atbilstošais</p><pre><code>arr.find(n =&gt; n &gt; 5)</code></pre></div>
-      <div class="cheat-card"><h4>.some() / .every()</h4><p>Vismaz viens / visi</p><pre><code>arr.some(n =&gt; n &gt; 5)</code></pre></div>
-      <div class="cheat-card"><h4>.includes()</h4><p>Vai satur vērtību</p><pre><code>arr.includes(3) // true</code></pre></div>
-      <div class="cheat-card"><h4>.sort()</h4><p>Kārto (mutē oriģinālu!)</p><pre><code>arr.sort((a,b) =&gt; a - b)</code></pre></div>
-      <div class="cheat-card"><h4>.slice() / .splice()</h4><p>Izgriež daļu / maina oriģinālu</p><pre><code>arr.slice(1, 3)</code></pre></div>
-      <div class="cheat-card"><h4>push/pop/shift/unshift</h4><p>Pievieno/noņem galos</p><pre><code>arr.push(4); arr.pop();</code></pre></div>
-      <div class="cheat-card"><h4>.join() / .flat()</h4><p>Par tekstu / izlīdzina</p><pre><code>arr.join(", ")</code></pre></div>
+      <div class="cheat-card"><h4>.map()</h4><p>Izveido JAUNU masīvu, katru elementu pārveidojot ar norādīto funkciju — oriģinālais masīvs netiek mainīts.</p><pre><code>arr.map(n =&gt; n * 2)</code></pre></div>
+      <div class="cheat-card"><h4>.filter()</h4><p>Izveido jaunu masīvu tikai ar elementiem, kas iztur nosacījumu — noder atlasei pēc kritērija.</p><pre><code>arr.filter(n =&gt; n &gt; 0)</code></pre></div>
+      <div class="cheat-card"><h4>.reduce()</h4><p>Sareducē visu masīvu vienā vērtībā (summa, vidējais u.c.), izpildot funkciju secīgi katram elementam.</p><pre><code>arr.reduce((a,b) =&gt; a+b, 0)</code></pre></div>
+      <div class="cheat-card"><h4>.find()</h4><p>Atgriež pirmo elementu, kas atbilst nosacījumam, vai undefined, ja neviens neatbilst.</p><pre><code>arr.find(n =&gt; n &gt; 5)</code></pre></div>
+      <div class="cheat-card"><h4>.some() / .every()</h4><p>some() pārbauda, vai vismaz viens elements atbilst nosacījumam; every() — vai visi elementi atbilst.</p><pre><code>arr.some(n =&gt; n &gt; 5)</code></pre></div>
+      <div class="cheat-card"><h4>.includes()</h4><p>Vienkārša pārbaude, vai masīvs satur konkrētu vērtību — atgriež true/false.</p><pre><code>arr.includes(3) // true</code></pre></div>
+      <div class="cheat-card"><h4>.sort()</h4><p>Sakārto masīvu — uzmanību: maina oriģinālo masīvu, nevis atgriež jaunu. Bez salīdzināšanas funkcijas kārto kā tekstu, kas skaitļiem var dot negaidītus rezultātus.</p><pre><code>arr.sort((a,b) =&gt; a - b)</code></pre></div>
+      <div class="cheat-card"><h4>.slice() / .splice()</h4><p>slice() atgriež jaunu masīva daļu, neko nemainot; splice() izgriež/ievieto elementus tieši oriģinālajā masīvā.</p><pre><code>arr.slice(1, 3)</code></pre></div>
+      <div class="cheat-card"><h4>push/pop/shift/unshift</h4><p>Pievieno/noņem elementus masīva galos — push/pop strādā ar beigām, shift/unshift ar sākumu. Visi maina oriģinālo masīvu.</p><pre><code>arr.push(4); arr.pop();</code></pre></div>
+      <div class="cheat-card"><h4>.join() / .flat()</h4><p>join() pārvērš masīvu par tekstu ar norādīto atdalītāju; flat() izlīdzina ligzdotus masīvus vienā līmenī.</p><pre><code>arr.join(", ")</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-objects">
     <h2>Objekti</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>Destrukturēšana</h4><pre><code>const { vards, epasts = "nav" } = obj;</code></pre></div>
-      <div class="cheat-card"><h4>Object.keys/values/entries</h4><pre><code>Object.keys(obj)
+      <div class="cheat-card"><h4>Destrukturēšana</h4><p>Izvelk konkrētas īpašības no objekta atsevišķos mainīgajos vienā rindā — var uzreiz norādīt arī noklusējuma vērtību.</p><pre><code>const { vards, epasts = "nav" } = obj;</code></pre></div>
+      <div class="cheat-card"><h4>Object.keys/values/entries</h4><p>Atgriež objekta atslēgas, vērtības vai [atslēga, vērtība] pārus kā masīvu — noder objekta apstrādei ciklā.</p><pre><code>Object.keys(obj)
 Object.entries(obj)</code></pre></div>
-      <div class="cheat-card"><h4>Object.assign()</h4><p>Sapludina objektus</p><pre><code>Object.assign({}, a, b)</code></pre></div>
-      <div class="cheat-card"><h4>Property shorthand</h4><pre><code>const obj = { vards, vecums };</code></pre></div>
+      <div class="cheat-card"><h4>Object.assign()</h4><p>Sapludina vairāku objektu īpašības vienā jaunā objektā — vēlāk pievienotie objekti pārraksta agrāko vērtības.</p><pre><code>Object.assign({}, a, b)</code></pre></div>
+      <div class="cheat-card"><h4>Property shorthand</h4><p>Ja mainīgā nosaukums sakrīt ar vēlamo objekta atslēgu, var izlaist atkārtošanu — { vards } nozīmē { vards: vards }.</p><pre><code>const obj = { vards, vecums };</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-strings">
     <h2>Teksti</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>.split() / .trim()</h4><pre><code>"a,b".split(",")
+      <div class="cheat-card"><h4>.split() / .trim()</h4><p>split() sadala tekstu masīvā pēc norādītā atdalītāja; trim() noņem liekās atstarpes teksta sākumā/beigās.</p><pre><code>"a,b".split(",")
 " x ".trim()</code></pre></div>
-      <div class="cheat-card"><h4>.replace()</h4><pre><code>"abc".replace("a", "x")</code></pre></div>
-      <div class="cheat-card"><h4>.includes/startsWith/endsWith</h4><pre><code>"abc".startsWith("a")</code></pre></div>
-      <div class="cheat-card"><h4>.slice() / .padStart()</h4><pre><code>"abc".slice(0, 2)
+      <div class="cheat-card"><h4>.replace()</h4><p>Aizvieto pirmo sakritību ar jaunu tekstu — visu sakritību aizvietošanai izmanto regulāru izteiksmi ar "g" karodziņu.</p><pre><code>"abc".replace("a", "x")</code></pre></div>
+      <div class="cheat-card"><h4>.includes/startsWith/endsWith</h4><p>Pārbauda, vai teksts satur/sākas/beidzas ar norādīto apakštekstu — atgriež true/false.</p><pre><code>"abc".startsWith("a")</code></pre></div>
+      <div class="cheat-card"><h4>.slice() / .padStart()</h4><p>slice() izgriež teksta daļu pēc indeksiem; padStart() papildina tekstu no kreisās puses līdz vēlamajam garumam (piem., "05" formātam).</p><pre><code>"abc".slice(0, 2)
 "5".padStart(2, "0")</code></pre></div>
-      <div class="cheat-card"><h4>.toUpperCase/LowerCase()</h4><pre><code>"abc".toUpperCase()</code></pre></div>
+      <div class="cheat-card"><h4>.toUpperCase/LowerCase()</h4><p>Pārvērš tekstu par lielajiem/mazajiem burtiem — noder salīdzināšanai bez reģistrjutības.</p><pre><code>"abc".toUpperCase()</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-classes">
     <h2>Klases</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>class</h4><pre><code>class Lietotajs {
+      <div class="cheat-card"><h4>class</h4><p>Veidne objektu izveidei ar kopīgu struktūru — constructor izpildās automātiski, kad izveido jaunu instanci ar new.</p><pre><code>class Lietotajs {
   constructor(v) { this.vards = v; }
 }</code></pre></div>
-      <div class="cheat-card"><h4>extends / super</h4><p>Mantojums</p><pre><code>class Admins extends Lietotajs {
+      <div class="cheat-card"><h4>extends / super</h4><p>extends izveido mantojumu no citas klases; super(v) izsauc vecākklases konstruktoru — obligāti pirms this lietošanas bērnu klasē.</p><pre><code>class Admins extends Lietotajs {
   constructor(v) { super(v); }
 }</code></pre></div>
-      <div class="cheat-card"><h4>static</h4><p>Metode uz klases, ne objekta</p><pre><code>static create() { return new this(); }</code></pre></div>
-      <div class="cheat-card"><h4>get / set</h4><p>Getteri/setteri</p><pre><code>get pilnsVards() { return this.v; }</code></pre></div>
+      <div class="cheat-card"><h4>static</h4><p>Metode, kas pieder pašai klasei, nevis atsevišķai instancei — izsauc caur klases nosaukumu, nevis izveidotu objektu.</p><pre><code>static create() { return new this(); }</code></pre></div>
+      <div class="cheat-card"><h4>get / set</h4><p>get definē "virtuālu" īpašību, kas aprēķinās katru reizi, kad to nolasa; set — funkciju, kas izpildās, kad īpašībai piešķir vērtību.</p><pre><code>get pilnsVards() { return this.v; }</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-async">
     <h2>Async</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>async / await</h4><pre><code>async function f() {
+      <div class="cheat-card"><h4>async / await</h4><p>async pirms funkcijas ļauj tās iekšpusē lietot await, kas "pagaida" Promise atrisināšanos, nebloķējot pārējo lapu.</p><pre><code>async function f() {
   const r = await fetch(url);
 }</code></pre></div>
-      <div class="cheat-card"><h4>Promise</h4><pre><code>new Promise((resolve, reject) =&gt; {});</code></pre></div>
-      <div class="cheat-card"><h4>Promise.all()</h4><p>Vairāki paralēli</p><pre><code>await Promise.all([p1, p2]);</code></pre></div>
-      <div class="cheat-card"><h4>try/catch ar await</h4><pre><code>try { await f(); } catch (e) {}</code></pre></div>
+      <div class="cheat-card"><h4>Promise</h4><p>Objekts, kas apzīmē vēl nezināmu, nākotnē pienākošu rezultātu — resolve/reject nosaka, vai tas beidzas veiksmīgi vai ar kļūdu.</p><pre><code>new Promise((resolve, reject) =&gt; {});</code></pre></div>
+      <div class="cheat-card"><h4>Promise.all()</h4><p>Gaida, kamēr visi nodotie Promise atrisinās paralēli — ātrāk nekā gaidīt katru pēc kārtas ar atsevišķiem await.</p><pre><code>await Promise.all([p1, p2]);</code></pre></div>
+      <div class="cheat-card"><h4>try/catch ar await</h4><p>Ja await gaidītais Promise noraidās, tas izmet kļūdu, ko var noķert ar try/catch — tāpat kā sinhronā kodā.</p><pre><code>try { await f(); } catch (e) {}</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-dom">
     <h2>DOM</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>querySelector()</h4><pre><code>document.querySelector(".klase")</code></pre></div>
-      <div class="cheat-card"><h4>addEventListener()</h4><pre><code>el.addEventListener("click", fn);</code></pre></div>
-      <div class="cheat-card"><h4>classList</h4><pre><code>el.classList.toggle("aktivs");</code></pre></div>
-      <div class="cheat-card"><h4>textContent / innerHTML</h4><pre><code>el.textContent = "teksts";</code></pre></div>
-      <div class="cheat-card"><h4>createElement / appendChild</h4><pre><code>const d = document.createElement("div");
+      <div class="cheat-card"><h4>querySelector()</h4><p>Atrod pirmo HTML elementu, kas atbilst CSS selektoram — atgriež null, ja nekas nav atrasts.</p><pre><code>document.querySelector(".klase")</code></pre></div>
+      <div class="cheat-card"><h4>addEventListener()</h4><p>Pieskaita funkciju, kas izpildīsies, kad uz elementa notiek norādītais notikums (klikšķis, ievade u.c.).</p><pre><code>el.addEventListener("click", fn);</code></pre></div>
+      <div class="cheat-card"><h4>classList</h4><p>Ļauj pievienot/noņemt/pārslēgt CSS klases elementam bez manuālas teksta manipulācijas ar className.</p><pre><code>el.classList.toggle("aktivs");</code></pre></div>
+      <div class="cheat-card"><h4>textContent / innerHTML</h4><p>textContent iestata/nolasa tikai tekstu (droši); innerHTML iestata/nolasa HTML kodu — uzmanīgi ar lietotāja ievadi (XSS risks).</p><pre><code>el.textContent = "teksts";</code></pre></div>
+      <div class="cheat-card"><h4>createElement / appendChild</h4><p>createElement izveido jaunu, vēl neredzamu HTML elementu; appendChild pievieno to kā bērnu esošam elementam lapā.</p><pre><code>const d = document.createElement("div");
 parent.appendChild(d);</code></pre></div>
     </div>
   </section>
@@ -196,21 +196,21 @@ parent.appendChild(d);</code></pre></div>
   <section class="cheat-section" id="ct-errors">
     <h2>Kļūdu apstrāde</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>try/catch/finally</h4><pre><code>try {} catch (e) {} finally {}</code></pre></div>
-      <div class="cheat-card"><h4>throw</h4><pre><code>throw new Error("kļūda");</code></pre></div>
+      <div class="cheat-card"><h4>try/catch/finally</h4><p>try satur kodu, kas var izmest kļūdu; catch to noķer un apstrādā; finally izpildās vienmēr, neatkarīgi no tā, vai kļūda bija.</p><pre><code>try {} catch (e) {} finally {}</code></pre></div>
+      <div class="cheat-card"><h4>throw</h4><p>Apzināti izmet (rada) kļūdu — apstādina tālāko koda izpildi, ja vien to neaptver try/catch.</p><pre><code>throw new Error("kļūda");</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-misc">
     <h2>Citas noderīgas</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>JSON.stringify/parse</h4><pre><code>JSON.stringify(obj)
+      <div class="cheat-card"><h4>JSON.stringify/parse</h4><p>stringify() pārvērš JS objektu par tekstu (saglabāšanai/nosūtīšanai); parse() dara pretējo — tekstu pārvērš atpakaļ par objektu.</p><pre><code>JSON.stringify(obj)
 JSON.parse(teksts)</code></pre></div>
-      <div class="cheat-card"><h4>localStorage</h4><pre><code>localStorage.setItem("k", "v");
+      <div class="cheat-card"><h4>localStorage</h4><p>Saglabā datus pārlūkā starp lapas atsvaidzināšanas reizēm un pat pēc pārlūka aizvēršanas — dati paliek, kamēr tos manuāli neizdzēš.</p><pre><code>localStorage.setItem("k", "v");
 localStorage.getItem("k");</code></pre></div>
-      <div class="cheat-card"><h4>setTimeout / setInterval</h4><pre><code>setTimeout(fn, 1000);
+      <div class="cheat-card"><h4>setTimeout / setInterval</h4><p>setTimeout izpilda funkciju vienreiz pēc norādītā laika; setInterval atkārto to ik pēc intervāla, kamēr to neaptur ar clearInterval.</p><pre><code>setTimeout(fn, 1000);
 clearInterval(id);</code></pre></div>
-      <div class="cheat-card"><h4>import / export</h4><pre><code>export function f() {}
+      <div class="cheat-card"><h4>import / export</h4><p>ES modulu sintakse koda sadalīšanai vairākos failos — export padara funkciju/mainīgo pieejamu citiem failiem, import to ielādē.</p><pre><code>export function f() {}
 import { f } from "./f.js";</code></pre></div>
     </div>
   </section>

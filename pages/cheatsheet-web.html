@@ -45,7 +45,7 @@
     </div>
     <h1 style="margin-bottom:0;">IP, DNS &amp; SSL Cheatsheet</h1>
   </div>
-  <p class="doc-lead">Blīva ātrās uzziņas lapa — komandas, ierakstu tipi un kodu tabulas bez garajiem skaidrojumiem. Pilnus skaidrojumus un kļūdu risinājumus skaties <a href="web-izveide.html">pilnajā dokumentācijā</a>.</p>
+  <p class="doc-lead">Ātrās uzziņas lapa — katrai kartiņai īss skaidrojums, ko tā nozīmē un kam domāta, plus komanda vai kods. Pilnus skaidrojumus skaties <a href="web-izveide.html">pilnajā dokumentācijā</a>.</p>
 
   <nav class="cheat-jump">
     <a href="#ct-ip">IP pamati</a>
@@ -62,31 +62,32 @@
   <section class="cheat-section" id="ct-ip">
     <h2>IP pamati</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>IPv4</h4><p>4 bloki, 0-255</p><pre><code>192.168.1.1</code></pre></div>
-      <div class="cheat-card"><h4>IPv6</h4><p>8 bloki, hex</p><pre><code>2001:0db8:85a3::8a2e:0370:7334</code></pre></div>
-      <div class="cheat-card"><h4>Loopback</h4><p>Šī pati mašīna</p><pre><code>127.0.0.1 / localhost</code></pre></div>
-      <div class="cheat-card"><h4>Privātie diapazoni</h4><p>Nav sasniedzami no interneta</p><pre><code>10.0.0.0/8
+      <div class="cheat-card"><h4>IPv4</h4><p>Visbiežāk sastopamais adrešu formāts — 4 skaitļi (0-255), atdalīti ar punktiem. Katrai internetam pieslēgtai ierīcei ir sava.</p><pre><code>192.168.1.1</code></pre></div>
+      <div class="cheat-card"><h4>IPv6</h4><p>Jaunāks, praktiski neierobežota apjoma formāts — ieviests, jo IPv4 adrešu skaits pasaulē ir izsīcis.</p><pre><code>2001:0db8:85a3::8a2e:0370:7334</code></pre></div>
+      <div class="cheat-card"><h4>Loopback</h4><p>Speciāla adrese, ar kuru dators "runā pats ar sevi" — izmanto, testējot serveri lokāli, bez reāla tīkla.</p><pre><code>127.0.0.1 / localhost</code></pre></div>
+      <div class="cheat-card"><h4>Privātie diapazoni</h4><p>Adreses, kas strādā tikai vietējā tīklā (piem., mājas WiFi) un nav tieši sasniedzamas no interneta.</p><pre><code>10.0.0.0/8
 172.16.0.0/12
 192.168.0.0/16</code></pre></div>
-      <div class="cheat-card"><h4>0.0.0.0</h4><p>Visi tīkla interfeisi</p><pre><code>server klausās uz 0.0.0.0:80</code></pre></div>
+      <div class="cheat-card"><h4>0.0.0.0</h4><p>Nozīmē "visi pieejamie tīkla interfeisi" — serveris, kas klausās uz šīs adreses, pieņem savienojumus no jebkura tīkla, ne tikai lokāli.</p><pre><code>server klausās uz 0.0.0.0:80</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-ports">
     <h2>Bieži lietotie porti</h2>
+    <p class="cheat-sub">Viena IP adrese var apkalpot vairākus pakalpojumus vienlaikus — ports pasaka, kuram tieši pakalpojumam adresēts pieprasījums.</p>
     <div class="cheat-table-wrap">
       <table class="cheat-table">
         <thead><tr><th>Ports</th><th>Serviss</th></tr></thead>
         <tbody>
-          <tr><td><code>21</code></td><td>FTP</td></tr>
-          <tr><td><code>22</code></td><td>SSH</td></tr>
-          <tr><td><code>25</code></td><td>SMTP (e-pasta sūtīšana)</td></tr>
-          <tr><td><code>53</code></td><td>DNS</td></tr>
-          <tr><td><code>80</code></td><td>HTTP</td></tr>
-          <tr><td><code>443</code></td><td>HTTPS</td></tr>
-          <tr><td><code>3306</code></td><td>MySQL</td></tr>
-          <tr><td><code>5432</code></td><td>PostgreSQL</td></tr>
-          <tr><td><code>3000 / 8080</code></td><td>Bieži izstrādes serveri</td></tr>
+          <tr><td><code>21</code></td><td>FTP — failu pārsūtīšana</td></tr>
+          <tr><td><code>22</code></td><td>SSH — drošs attālinātais pieslēgums serverim</td></tr>
+          <tr><td><code>25</code></td><td>SMTP — e-pasta sūtīšana</td></tr>
+          <tr><td><code>53</code></td><td>DNS — domēnu vārdu atrisināšana</td></tr>
+          <tr><td><code>80</code></td><td>HTTP — nešifrēta tīmekļa satiksme</td></tr>
+          <tr><td><code>443</code></td><td>HTTPS — šifrēta tīmekļa satiksme</td></tr>
+          <tr><td><code>3306</code></td><td>MySQL — datubāzes savienojumi</td></tr>
+          <tr><td><code>5432</code></td><td>PostgreSQL — datubāzes savienojumi</td></tr>
+          <tr><td><code>3000 / 8080</code></td><td>Bieži izmantoti izstrādes (dev) serveru porti</td></tr>
         </tbody>
       </table>
     </div>
@@ -94,20 +95,21 @@
 
   <section class="cheat-section" id="ct-dns-records">
     <h2>DNS ieraksti</h2>
+    <p class="cheat-sub">Domēnam pieder vairāki dažāda tipa ieraksti — katrs pasaka DNS sistēmai kaut ko citu par šo domēnu.</p>
     <div class="cheat-table-wrap">
       <table class="cheat-table">
         <thead><tr><th>Tips</th><th>Nozīme</th></tr></thead>
         <tbody>
-          <tr><td><code>A</code></td><td>Domēns → IPv4 adrese</td></tr>
-          <tr><td><code>AAAA</code></td><td>Domēns → IPv6 adrese</td></tr>
-          <tr><td><code>CNAME</code></td><td>Domēns → cits domēns (alias)</td></tr>
-          <tr><td><code>MX</code></td><td>E-pasta serveris (ar prioritāti)</td></tr>
-          <tr><td><code>TXT</code></td><td>Brīvs teksts (SPF, verifikācija)</td></tr>
-          <tr><td><code>NS</code></td><td>Domēna nameserveri</td></tr>
-          <tr><td><code>SOA</code></td><td>Zonas galvenā informācija</td></tr>
-          <tr><td><code>SRV</code></td><td>Serviss + ports konkrētam protokolam</td></tr>
-          <tr><td><code>CAA</code></td><td>Kuras CA drīkst izsniegt sertifikātus</td></tr>
-          <tr><td><code>PTR</code></td><td>IP → domēns (reverse DNS)</td></tr>
+          <tr><td><code>A</code></td><td>Domēns → konkrēta IPv4 adrese</td></tr>
+          <tr><td><code>AAAA</code></td><td>Domēns → konkrēta IPv6 adrese</td></tr>
+          <tr><td><code>CNAME</code></td><td>Domēns → alias uz citu domēnu</td></tr>
+          <tr><td><code>MX</code></td><td>Kurš serveris apstrādā šī domēna e-pastu (ar prioritāti)</td></tr>
+          <tr><td><code>TXT</code></td><td>Brīvs teksts — bieži domēna verifikācijai vai SPF e-pasta drošībai</td></tr>
+          <tr><td><code>NS</code></td><td>Kurš serveris ir "atbildīgais" (autoritatīvais) par šo domēnu</td></tr>
+          <tr><td><code>SOA</code></td><td>Zonas galvenā informācija (administrators, atjaunošanas intervāli)</td></tr>
+          <tr><td><code>SRV</code></td><td>Norāda konkrētu servisu + portu konkrētam protokolam</td></tr>
+          <tr><td><code>CAA</code></td><td>Ierobežo, kuras sertifikācijas iestādes (CA) drīkst izsniegt sertifikātus šim domēnam</td></tr>
+          <tr><td><code>PTR</code></td><td>Pretējais virziens — IP adrese → domēna vārds (reverse DNS)</td></tr>
         </tbody>
       </table>
     </div>
@@ -116,34 +118,35 @@
   <section class="cheat-section" id="ct-dns-cmd">
     <h2>DNS komandas</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>dig</h4><p>DNS uzziņa (Linux/Mac)</p><pre><code>dig example.com
+      <div class="cheat-card"><h4>dig</h4><p>DNS uzziņas komanda (Linux/Mac) — parāda, uz kādu IP domēns norāda un citus ierakstus.</p><pre><code>dig example.com
 dig example.com MX</code></pre></div>
-      <div class="cheat-card"><h4>nslookup</h4><p>DNS uzziņa (Windows)</p><pre><code>nslookup example.com</code></pre></div>
-      <div class="cheat-card"><h4>whois</h4><p>Domēna reģistrācijas info</p><pre><code>whois example.com</code></pre></div>
-      <div class="cheat-card"><h4>ping</h4><p>Pārbauda sasniedzamību</p><pre><code>ping example.com</code></pre></div>
-      <div class="cheat-card"><h4>ipconfig /flushdns</h4><p>Notīra lokālo DNS kešu (Win)</p><pre><code>ipconfig /flushdns</code></pre></div>
-      <div class="cheat-card"><h4>traceroute / tracert</h4><p>Ceļš līdz serverim</p><pre><code>tracert example.com</code></pre></div>
+      <div class="cheat-card"><h4>nslookup</h4><p>Tas pats, kas dig, bet Windows sistēmām — pārbauda domēna DNS ierakstus.</p><pre><code>nslookup example.com</code></pre></div>
+      <div class="cheat-card"><h4>whois</h4><p>Parāda domēna reģistrācijas informāciju — kam pieder, kad reģistrēts, kad beidzas termiņš.</p><pre><code>whois example.com</code></pre></div>
+      <div class="cheat-card"><h4>ping</h4><p>Pārbauda, vai serveris vispār atbild tīklā, un cik ilgi aizņem "aiziet un atnākt" (latency).</p><pre><code>ping example.com</code></pre></div>
+      <div class="cheat-card"><h4>ipconfig /flushdns</h4><p>Notīra Windows lokālo DNS kešu — noder, ja pārlūks joprojām rāda vecu, novecojušu IP adresi pēc DNS izmaiņām.</p><pre><code>ipconfig /flushdns</code></pre></div>
+      <div class="cheat-card"><h4>traceroute / tracert</h4><p>Parāda visu ceļu (visus starpposma serverus/maršrutētājus), caur kuriem pieprasījums iet līdz mērķa serverim.</p><pre><code>tracert example.com</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-http-codes">
     <h2>HTTP statusa kodi</h2>
+    <p class="cheat-sub">Katra servera atbilde nāk kopā ar trīsciparu kodu, kas pasaka, kas tieši notika ar pieprasījumu.</p>
     <div class="cheat-table-wrap">
       <table class="cheat-table">
         <thead><tr><th>Kods</th><th>Nozīme</th></tr></thead>
         <tbody>
-          <tr><td><code>200</code></td><td>OK — veiksmīgi</td></tr>
-          <tr><td><code>301 / 302</code></td><td>Pastāvīgs / pagaidu redirekts</td></tr>
-          <tr><td><code>304</code></td><td>Not Modified (kešs derīgs)</td></tr>
-          <tr><td><code>400</code></td><td>Bad Request — nepareizs pieprasījums</td></tr>
-          <tr><td><code>401</code></td><td>Unauthorized — nav autorizēts</td></tr>
-          <tr><td><code>403</code></td><td>Forbidden — pieejas liegums</td></tr>
-          <tr><td><code>404</code></td><td>Not Found — nav atrasts</td></tr>
-          <tr><td><code>429</code></td><td>Too Many Requests</td></tr>
-          <tr><td><code>500</code></td><td>Internal Server Error</td></tr>
-          <tr><td><code>502</code></td><td>Bad Gateway</td></tr>
-          <tr><td><code>503</code></td><td>Service Unavailable</td></tr>
-          <tr><td><code>504</code></td><td>Gateway Timeout</td></tr>
+          <tr><td><code>200</code></td><td>OK — pieprasījums izdevās, šeit ir saturs</td></tr>
+          <tr><td><code>301 / 302</code></td><td>Pastāvīgs / pagaidu redirekts uz citu adresi</td></tr>
+          <tr><td><code>304</code></td><td>Not Modified — pārlūka kešotā versija joprojām derīga</td></tr>
+          <tr><td><code>400</code></td><td>Bad Request — serveris nesaprot pieprasījumu</td></tr>
+          <tr><td><code>401</code></td><td>Unauthorized — nepieciešama autentifikācija</td></tr>
+          <tr><td><code>403</code></td><td>Forbidden — serveris saprot, bet atsaka piekļuvi</td></tr>
+          <tr><td><code>404</code></td><td>Not Found — šāda adrese/lapa neeksistē</td></tr>
+          <tr><td><code>429</code></td><td>Too Many Requests — pārāk daudz pieprasījumu īsā laikā</td></tr>
+          <tr><td><code>500</code></td><td>Internal Server Error — neapstrādāta kļūda servera kodā</td></tr>
+          <tr><td><code>502</code></td><td>Bad Gateway — proxy nesaņem derīgu atbildi no backend</td></tr>
+          <tr><td><code>503</code></td><td>Service Unavailable — serveris pārslogots vai uzturēšanā</td></tr>
+          <tr><td><code>504</code></td><td>Gateway Timeout — backend atbild pārāk lēni</td></tr>
         </tbody>
       </table>
     </div>
@@ -151,41 +154,43 @@ dig example.com MX</code></pre></div>
 
   <section class="cheat-section" id="ct-curl">
     <h2>cURL komandas</h2>
+    <p class="cheat-sub">cURL sūta HTTP pieprasījumus tieši no komandrindas, bez pārlūka — noder ātrai serveru un API pārbaudei.</p>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>GET pieprasījums</h4><pre><code>curl https://example.com</code></pre></div>
-      <div class="cheat-card"><h4>Skatīt tikai galvenes</h4><pre><code>curl -I https://example.com</code></pre></div>
-      <div class="cheat-card"><h4>POST ar JSON</h4><pre><code>curl -X POST https://example.com/api \
+      <div class="cheat-card"><h4>GET pieprasījums</h4><p>Vienkāršākais cURL izsaukums — lejupielādē un izvada lapas HTML/atbildi terminālī.</p><pre><code>curl https://example.com</code></pre></div>
+      <div class="cheat-card"><h4>Skatīt tikai galvenes</h4><p>Parāda tikai atbildes galvenes (statusa kodu, satura tipu u.c.), bez pilna satura — ātrai diagnostikai.</p><pre><code>curl -I https://example.com</code></pre></div>
+      <div class="cheat-card"><h4>POST ar JSON</h4><p>Nosūta POST pieprasījumu ar JSON datiem — noder API testēšanai bez atsevišķas programmas.</p><pre><code>curl -X POST https://example.com/api \
   -H "Content-Type: application/json" \
   -d '{"key":"value"}'</code></pre></div>
-      <div class="cheat-card"><h4>Sekot redirektiem</h4><pre><code>curl -L https://example.com</code></pre></div>
-      <div class="cheat-card"><h4>Ignorēt SSL kļūdas (tests!)</h4><pre><code>curl -k https://example.com</code></pre></div>
+      <div class="cheat-card"><h4>Sekot redirektiem</h4><p>Pēc noklusējuma cURL neseko 301/302 pāradresācijām — šis karodziņš liek to darīt, tāpat kā pārlūkam.</p><pre><code>curl -L https://example.com</code></pre></div>
+      <div class="cheat-card"><h4>Ignorēt SSL kļūdas (tests!)</h4><p>Apiet sertifikāta pārbaudi — noder tikai lokālai testēšanai ar pašparakstītu sertifikātu, nekad ražošanā.</p><pre><code>curl -k https://example.com</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-ssl">
     <h2>SSL / TLS komandas</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>Skatīt sertifikātu</h4><pre><code>openssl s_client -connect example.com:443</code></pre></div>
-      <div class="cheat-card"><h4>Derīguma termiņš</h4><pre><code>echo | openssl s_client -connect example.com:443 2&gt;/dev/null \
+      <div class="cheat-card"><h4>Skatīt sertifikātu</h4><p>Izveido TLS savienojumu ar serveri un parāda pilnu informāciju par tā izmantoto sertifikātu.</p><pre><code>openssl s_client -connect example.com:443</code></pre></div>
+      <div class="cheat-card"><h4>Derīguma termiņš</h4><p>Ātri parāda tikai sertifikāta derīguma sākuma un beigu datumu, bez pārējās informācijas.</p><pre><code>echo | openssl s_client -connect example.com:443 2&gt;/dev/null \
   | openssl x509 -noout -dates</code></pre></div>
-      <div class="cheat-card"><h4>Certbot (Let's Encrypt)</h4><pre><code>certbot certonly --standalone -d example.com</code></pre></div>
-      <div class="cheat-card"><h4>Sertifikāta atjaunošana</h4><pre><code>certbot renew</code></pre></div>
+      <div class="cheat-card"><h4>Certbot (Let's Encrypt)</h4><p>Iegūst bezmaksas SSL sertifikātu no Let's Encrypt tieši no servera komandrindas.</p><pre><code>certbot certonly --standalone -d example.com</code></pre></div>
+      <div class="cheat-card"><h4>Sertifikāta atjaunošana</h4><p>Let's Encrypt sertifikāti derīgi tikai 90 dienas — šī komanda pārbauda un atjauno tos, kam termiņš tuvojas.</p><pre><code>certbot renew</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-headers">
     <h2>HTTP galvenes</h2>
+    <p class="cheat-sub">Papildu informācija, ko pārlūks un serveris apmainās kopā ar pašu pieprasījumu/atbildi.</p>
     <div class="cheat-table-wrap">
       <table class="cheat-table">
         <thead><tr><th>Galvene</th><th>Nozīme</th></tr></thead>
         <tbody>
-          <tr><td><code>Content-Type</code></td><td>Satura veids (json, html, ...)</td></tr>
-          <tr><td><code>Authorization</code></td><td>Autentifikācijas dati (Bearer token u.c.)</td></tr>
-          <tr><td><code>Cache-Control</code></td><td>Kešošanas noteikumi</td></tr>
-          <tr><td><code>Set-Cookie</code></td><td>Servera nosūtīta sīkdatne</td></tr>
-          <tr><td><code>Access-Control-Allow-Origin</code></td><td>CORS atļaujas</td></tr>
-          <tr><td><code>Location</code></td><td>Redirekta mērķa adrese</td></tr>
-          <tr><td><code>User-Agent</code></td><td>Klienta/pārlūka identifikācija</td></tr>
+          <tr><td><code>Content-Type</code></td><td>Kāda veida saturs tiek nosūtīts (json, html, ...)</td></tr>
+          <tr><td><code>Authorization</code></td><td>Autentifikācijas dati (piem., Bearer token)</td></tr>
+          <tr><td><code>Cache-Control</code></td><td>Noteikumi, cik ilgi un kā atbildi drīkst kešot</td></tr>
+          <tr><td><code>Set-Cookie</code></td><td>Servera nosūtīta sīkdatne, ko pārlūks saglabā</td></tr>
+          <tr><td><code>Access-Control-Allow-Origin</code></td><td>Kuriem domēniem atļauts piekļūt (CORS)</td></tr>
+          <tr><td><code>Location</code></td><td>Redirekta mērķa adrese (kopā ar 301/302 kodu)</td></tr>
+          <tr><td><code>User-Agent</code></td><td>Identificē pieprasījuma sūtītāju (pārlūku, ierīci)</td></tr>
         </tbody>
       </table>
     </div>
@@ -194,14 +199,14 @@ dig example.com MX</code></pre></div>
   <section class="cheat-section" id="ct-browser-errors">
     <h2>Pārlūka kļūdas (ātrā uzziņa)</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>DNS_PROBE_FINISHED_NXDOMAIN</h4><p>Domēns neeksistē vai DNS vēl neizplatījies</p></div>
-      <div class="cheat-card"><h4>CONNECTION_REFUSED</h4><p>Serveris nestrādā vai ports slēgts</p></div>
-      <div class="cheat-card"><h4>CONNECTION_TIMED_OUT</h4><p>Serveris nesniedz atbildi (ugunsmūris?)</p></div>
-      <div class="cheat-card"><h4>TOO_MANY_REDIRECTS</h4><p>Redirektu cikls (bieži http↔https konflikts)</p></div>
-      <div class="cheat-card"><h4>NET::ERR_CERT_*</h4><p>SSL sertifikāta problēma</p></div>
-      <div class="cheat-card"><h4>CORS error</h4><p>Trūkst Access-Control-Allow-Origin galvenes</p></div>
+      <div class="cheat-card"><h4>DNS_PROBE_FINISHED_NXDOMAIN</h4><p>Domēns DNS acīs vispār neeksistē — vai nu vēl nav reģistrēts/iestatīts, vai izmaiņas vēl nav izplatījušās.</p></div>
+      <div class="cheat-card"><h4>CONNECTION_REFUSED</h4><p>DNS atrisinājās veiksmīgi, bet serveris aktīvi atsaka savienojumu — serviss nestrādā vai ports slēgts.</p></div>
+      <div class="cheat-card"><h4>CONNECTION_TIMED_OUT</h4><p>Pieprasījums pazūd klusumā bez atbildes — parasti ugunsmūris nomet paketes vai IP vairs nav aktīva.</p></div>
+      <div class="cheat-card"><h4>TOO_MANY_REDIRECTS</h4><p>Vietne novirza pati uz sevi bezgalīgā ciklā — bieži http↔https konfigurācijas konflikts.</p></div>
+      <div class="cheat-card"><h4>NET::ERR_CERT_*</h4><p>Problēma ar SSL sertifikātu — beidzies termiņš, nesakrīt domēns vai neuzticams izdevējs.</p></div>
+      <div class="cheat-card"><h4>CORS error</h4><p>JS mēģina piekļūt citam domēnam, bet tas serveris nav skaidri atļāvis šādus pieprasījumus.</p></div>
     </div>
-    <p class="cheat-sub" style="margin-top:14px;">Pilnus soli-pa-solim risinājumus katrai kļūdai skaties <a href="web-izveide.html#err-overview">pilnajā dokumentācijā</a>.</p>
+    <p class="cheat-sub" style="margin-top:14px;">Pilnus soli-pa-solim risinājumus katrai kļūdai (SSH un failu alternatīvas) skaties <a href="web-problemas.html">Servera problēmas un risinājumi</a> lapā.</p>
   </section>
 
   <div class="doc-pager">
