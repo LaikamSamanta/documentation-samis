@@ -605,6 +605,7 @@ footer.site-footer a:hover {
   align-self: start;
   height: calc(100vh - 65px);
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 28px 18px 40px;
   border-right: 1px solid var(--border-soft);
 }
@@ -631,6 +632,7 @@ footer.site-footer a:hover {
   font-weight: 500;
   transition: all 0.18s var(--ease);
   border: 1px solid transparent;
+  overflow-wrap: anywhere;
 }
 .doc-sidebar-group a:hover {
   background: var(--bg-card);
@@ -710,6 +712,7 @@ footer.site-footer a:hover {
   font-weight: 500;
   transition: all 0.18s var(--ease);
   border: 1px solid transparent;
+  overflow-wrap: anywhere;
 }
 .doc-accordion-body a:hover {
   background: var(--bg-card);
