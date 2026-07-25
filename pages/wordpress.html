@@ -46,8 +46,7 @@
   <aside class="doc-sidebar">
     <div class="doc-sidebar-group">
       <h4>Pamati</h4>
-      <a href="#temas-vs-spraudni" class="active"><span class="bullet"></span>Tēmas vs spraudņi</a>
-      <a href="#temas"><span class="bullet"></span>Tēmu izveide</a>
+      <a href="#temas" class="active"><span class="bullet"></span>Tēmu izveide</a>
       <a href="#child-tema"><span class="bullet"></span>Bērnu tēmas (Child Themes)</a>
       <a href="#wpconfig"><span class="bullet"></span>wp-config.php</a>
       <a href="#spraudnis"><span class="bullet"></span>Spraudņa pamatstruktūra</a>
@@ -105,12 +104,6 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
       <p><strong>Kur likt PHP kodu:</strong> ja vien nav norādīts citādi, visi šīs lapas PHP piemēri jāievieto aktīvās tēmas <code>functions.php</code> failā (Izskats → Tēmas redaktors, vai tieši failā serverī) un jāsaglabā — izmaiņas parasti redzamas uzreiz pēc lapas atsvaidzināšanas. Meklē ātru sintakses uzziņu? Skaties <a href="cheatsheet-wordpress.html">WordPress Cheatsheet</a>. Vēlies gatavas, kopējamas integrācijas (valodas, kontaktforma)? Tās dzīvo <a href="integracijas.html">Integrācijas</a> kategorijā. Kaut kas salūzis? Skaties <a href="wordpress-problemas.html">WordPress kļūdas un problēmu risinājumi</a>.</p>
     </div>
-
-    <section class="doc-section" id="temas-vs-spraudni">
-      <h2>Tēmas vs spraudņi</h2>
-      <p>WordPress funkcionalitāti paplašina divos veidos, un iesācējiem tos bieži sajauc: <strong>Tēma</strong> nosaka vietnes izskatu un izkārtojumu — krāsas, fontus, to, kā izskatās lapa un ieraksts. <strong>Spraudnis</strong> pievieno jaunu funkcionalitāti (kontaktformu, veikalu, SEO rīkus), kas turpina darboties arī pēc tēmas nomaiņas.</p>
-      <p>Praktisks jautājums, ko sev uzdot: "Ja rīt nomainīšu vietnes dizainu, vai šai funkcijai jāpazūd?" Ja atbilde ir "nē" (piem., ziņu abonēšana, kalkulators), tā pieder spraudnī, nevis tēmā.</p>
-    </section>
 
     <section class="doc-section" id="temas">
       <h2>Tēmu izveide</h2>
@@ -182,22 +175,65 @@ Version: 1.0
       <h2>wp-config.php</h2>
       <p>Galvenais konfigurācijas fails, kas atrodas WordPress saknes mapē (blakus <code>wp-admin</code>, <code>wp-content</code>) — satur datubāzes pieejas datus un svarīgākos globālos iestatījumus. Šo failu neveido pats — to automātiski izveido WordPress instalācijas laikā, bet vēlāk to var rediģēt.</p>
       <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-com">// --- Datubāze ---</span>
 <span class="tok-kw">define</span>(<span class="tok-str">'DB_NAME'</span>, <span class="tok-str">'mana_datubaze'</span>);
 <span class="tok-kw">define</span>(<span class="tok-str">'DB_USER'</span>, <span class="tok-str">'root'</span>);
 <span class="tok-kw">define</span>(<span class="tok-str">'DB_PASSWORD'</span>, <span class="tok-str">'secret'</span>);
 <span class="tok-kw">define</span>(<span class="tok-str">'DB_HOST'</span>, <span class="tok-str">'localhost'</span>);
+<span class="tok-kw">define</span>(<span class="tok-str">'DB_CHARSET'</span>, <span class="tok-str">'utf8mb4'</span>);
+<span class="tok-kw">define</span>(<span class="tok-str">'DB_COLLATE'</span>, <span class="tok-str">''</span>);
 
-<span class="tok-com">// Rāda kļūdas ekrānā — noder izstrādes laikā</span>
-<span class="tok-kw">define</span>(<span class="tok-str">'WP_DEBUG'</span>, <span class="tok-kw">true</span>);</code></pre>
+<span class="tok-com">// Tabulu prefikss — maini no noklusējuma "wp_" drošības apsvērumu dēļ</span>
+<span class="tok-fn">$table_prefix</span> = <span class="tok-str">'wp_'</span>;
+
+<span class="tok-com">// --- Autentifikācijas atslēgas un "sāls" (salts) ---
+// Ģenerē unikālas katrai instalācijai: https://api.wordpress.org/secret-key/1.1/salt/
+// Maiņa šeit uzreiz atslēdz visus esošos pieteikšanās sesiju "cookies"</span>
+<span class="tok-kw">define</span>(<span class="tok-str">'AUTH_KEY'</span>,         <span class="tok-str">'ievieto-unikālu-virkni-šeit'</span>);
+<span class="tok-kw">define</span>(<span class="tok-str">'SECURE_AUTH_KEY'</span>,  <span class="tok-str">'ievieto-unikālu-virkni-šeit'</span>);
+<span class="tok-com">// ... un tā tālāk visām 8 atslēgām</span>
+
+<span class="tok-com">// --- Vides tips (WordPress 5.5+) — ietekmē, kā daži spraudņi/tēmas uzvedas ---</span>
+<span class="tok-kw">define</span>(<span class="tok-str">'WP_ENVIRONMENT_TYPE'</span>, <span class="tok-str">'production'</span>); <span class="tok-com">// local | development | staging | production</span>
+
+<span class="tok-com">// --- Atkļūdošana (izstrādes vidē) ---</span>
+<span class="tok-kw">define</span>(<span class="tok-str">'WP_DEBUG'</span>, <span class="tok-kw">true</span>);          <span class="tok-com">// ieslēdz kļūdu apstrādi kopumā</span>
+<span class="tok-kw">define</span>(<span class="tok-str">'WP_DEBUG_LOG'</span>, <span class="tok-kw">true</span>);      <span class="tok-com">// raksta kļūdas failā wp-content/debug.log</span>
+<span class="tok-kw">define</span>(<span class="tok-str">'WP_DEBUG_DISPLAY'</span>, <span class="tok-kw">false</span>); <span class="tok-com">// bet neizvada tās ekrānā apmeklētājiem</span>
+<span class="tok-kw">define</span>(<span class="tok-str">'SCRIPT_DEBUG'</span>, <span class="tok-kw">true</span>);      <span class="tok-com">// ielādē nesaspiestās (.js/.css) kodola versijas</span>
+
+<span class="tok-com">// --- Drošība (ražošanas vidē) ---</span>
+<span class="tok-kw">define</span>(<span class="tok-str">'DISALLOW_FILE_EDIT'</span>, <span class="tok-kw">true</span>);   <span class="tok-com">// izslēdz tēmas/spraudņu redaktoru admin panelī</span>
+<span class="tok-kw">define</span>(<span class="tok-str">'DISALLOW_FILE_MODS'</span>, <span class="tok-kw">true</span>);   <span class="tok-com">// bloķē spraudņu/tēmu instalēšanu un atjaunināšanu no admin paneļa</span>
+<span class="tok-kw">define</span>(<span class="tok-str">'FORCE_SSL_ADMIN'</span>, <span class="tok-kw">true</span>);      <span class="tok-com">// piespiedu HTTPS admin panelim un pieteikšanās lapai</span>
+
+<span class="tok-com">// --- Veiktspēja ---</span>
+<span class="tok-kw">define</span>(<span class="tok-str">'WP_MEMORY_LIMIT'</span>, <span class="tok-str">'256M'</span>);  <span class="tok-com">// PHP atmiņas limits, ko WordPress drīkst izmantot</span>
+<span class="tok-kw">define</span>(<span class="tok-str">'WP_POST_REVISIONS'</span>, 5);   <span class="tok-com">// ierobežo revīziju skaitu (noklusējumā neierobežots)</span>
+<span class="tok-kw">define</span>(<span class="tok-str">'AUTOSAVE_INTERVAL'</span>, 120); <span class="tok-com">// automātiskās saglabāšanas intervāls sekundēs</span>
+
+<span class="tok-com">// --- Automātiskie atjauninājumi ---</span>
+<span class="tok-kw">define</span>(<span class="tok-str">'WP_AUTO_UPDATE_CORE'</span>, <span class="tok-str">'minor'</span>); <span class="tok-com">// true | false | 'minor' (tikai drošības ielāpi)</span>
+
+<span class="tok-kw">if</span> ( ! <span class="tok-kw">defined</span>( <span class="tok-str">'ABSPATH'</span> ) ) {
+    <span class="tok-kw">define</span>( <span class="tok-str">'ABSPATH'</span>, __DIR__ . <span class="tok-str">'/'</span> );
+}
+<span class="tok-fn">require_once</span> ABSPATH . <span class="tok-str">'wp-settings.php'</span>;</code></pre>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4><code>WP_ENVIRONMENT_TYPE</code></h4><p>Kopš WP 5.5 ļauj kodam/spraudņiem uzvesties atšķirīgi lokālajā, staging un production vidē (<code>wp_get_environment_type()</code>).</p></div>
+        <div class="doc-mini-card"><h4>Autentifikācijas atslēgas</h4><p>8 nejaušas virknes, kas šifrē pieteikšanās "cookies" — ģenerē ar WordPress.org rīku, nevis izdomā pašrocīgi.</p></div>
+        <div class="doc-mini-card"><h4><code>DISALLOW_FILE_EDIT</code></h4><p>Ražošanas vietnē vienmēr izslēdz iebūvēto koda redaktoru — bieži izmantots uzbrukuma vektors, ja admin konts tiek kompromitēts.</p></div>
+        <div class="doc-mini-card"><h4>Tabulu prefikss</h4><p>Maiņa no noklusējuma <code>wp_</code> uz kaut ko unikālu apgrūtina automatizētus SQL injection uzbrukumus, kas pieņem noklusējuma nosaukumu.</p></div>
+      </div>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Pirms vietnes publicēšanas obligāti iestati <code>WP_DEBUG</code> uz <code>false</code> — kļūdu izvade ražošanas vietnē var atklāt failu ceļus un citu jutīgu informāciju apmeklētājiem.</p>
+        <p>Pirms vietnes publicēšanas obligāti iestati <code>WP_DEBUG_DISPLAY</code> uz <code>false</code> (vai vienkārši <code>WP_DEBUG</code> uz <code>false</code>) — kļūdu izvade ražošanas vietnē var atklāt failu ceļus un citu jutīgu informāciju apmeklētājiem. Izmanto <code>WP_DEBUG_LOG</code>, lai kļūdas tik un tā redzētu failā, neparādot tās apmeklētājiem.</p>
       </div>
     </section>
 
     <section class="doc-section" id="spraudnis">
       <h2>Spraudņa pamatstruktūra</h2>
-      <p>Ja funkcionalitātei jāpaliek neatkarīgai no tēmas (skat. "Tēmas vs spraudņi" augstāk), to noformē kā spraudni, nevis <code>functions.php</code>. Minimāls spraudnis ir viens PHP fails ar galvenes komentāru — WordPress to atpazīst pēc šī komentāra formāta, nevis pēc faila nosaukuma.</p>
+      <p>Ja funkcionalitātei jāpaliek neatkarīgai no tēmas (nemainās, kad nomaina dizainu — piem., kontaktforma, ziņu abonēšana), to noformē kā spraudni, nevis <code>functions.php</code>. Minimāls spraudnis ir viens PHP fails ar galvenes komentāru — WordPress to atpazīst pēc šī komentāra formāta, nevis pēc faila nosaukuma.</p>
       <p>Izveido <code>wp-content/plugins/mans-spraudnis/mans-spraudnis.php</code>:</p>
       <pre class="code-block"><span class="lang">php</span><code>&lt;?php
 <span class="tok-com">/**
@@ -274,21 +310,47 @@ Kļūda 404:         404.php → index.php</code></pre>
     <section class="doc-section" id="conditional-tags">
       <h2>Conditional Tags</h2>
       <p>Funkcijas, kas atgriež <code>true</code>/<code>false</code>, lai noteiktu, kāda veida lapa pašlaik tiek rādīta — īpaši noderīgas koplietotos failos (<code>header.php</code>, <code>footer.php</code>), kur jāizvada dažāds saturs atkarībā no lapas.</p>
-      <pre class="code-block"><span class="lang">text</span><code>is_front_page()      → vai šī ir sākumlapa
-is_home()             → vai šī ir ierakstu plūsmas lapa
-is_single()           → vai šis ir viens ieraksts/CPT
-is_page()             → vai šī ir statiska lapa
-is_archive()          → vai šī ir jebkāds arhīvs
+      <p><strong>Lapas veids:</strong></p>
+      <pre class="code-block"><span class="lang">text</span><code>is_front_page()       → vai šī ir sākumlapa
+is_home()              → vai šī ir ierakstu plūsmas lapa
+is_single()            → vai šis ir viens ieraksts (post vai CPT ar atbalstu)
+is_singular()          → tas pats, bet plašāk — ietver arī lapas un pielikumus
+is_page()              → vai šī ir statiska lapa
+is_page_template()     → vai lapa izmanto konkrētu lapas veidni
+is_archive()           → vai šī ir jebkāds arhīvs
 is_category() / is_tag() → vai konkrēta kategorija/birka
-is_search()           → vai šī ir meklēšanas rezultātu lapa
-is_404()              → vai šī ir "nav atrasts" lapa
-is_user_logged_in()   → vai apmeklētājs ir pieteicies
-is_admin()            → vai atrodamies admin panelī</code></pre>
+is_tax()               → vai pielāgotas taksonomijas arhīva lapa
+is_author()            → vai autora arhīva lapa
+is_date() / is_year() / is_month() / is_day() → vai datuma arhīvs (un cik precīzs)
+is_search()            → vai šī ir meklēšanas rezultātu lapa
+is_404()               → vai šī ir "nav atrasts" lapa
+is_paged()             → vai tā ir 2. vai tālāka arhīva/saraksta lapa
+is_attachment()        → vai atsevišķa pielikuma (attēla/faila) lapa</code></pre>
+      <p><strong>Lietotājs &amp; vide:</strong></p>
+      <pre class="code-block"><span class="lang">text</span><code>is_user_logged_in()   → vai apmeklētājs ir pieteicies
+is_admin()            → vai atrodamies admin panelī (nevis publiskajā daļā)
+is_super_admin()      → vai lietotājam ir tīkla superadmina tiesības (multisite)
+is_multisite()        → vai instalācija ir WordPress Multisite tīkls
+is_main_site()        → vai šī ir Multisite tīkla galvenā vietne
+is_ssl()              → vai pašreizējais pieprasījums notiek pa HTTPS
+wp_is_mobile()        → rupjš mobilās ierīces "guess" pēc User-Agent (ne 100% precīzs)
+is_customize_preview() → vai skats tiek rādīts Customizer priekšskatījumā</code></pre>
+      <p><strong>Ieraksta stāvoklis</strong> (izsauc The Loop iekšpusē, konkrētam ierakstam):</p>
+      <pre class="code-block"><span class="lang">text</span><code>has_excerpt()         → vai ierakstam ir manuāli uzrakstīts izvilkums
+has_post_thumbnail()  → vai ierakstam ir iestatīts izcēlattēls
+comments_open()       → vai komentāri šim ierakstam ir atvērti
+pings_open()          → vai pingback/trackback ir atvērti šim ierakstam</code></pre>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">if</span> (<span class="tok-fn">is_front_page</span>()) {
     <span class="tok-kw">echo</span> <span class="tok-str">'Laipni lūdzam sākumlapā!'</span>;
-} <span class="tok-kw">elseif</span> (<span class="tok-fn">is_single</span>()) {
-    <span class="tok-kw">echo</span> <span class="tok-str">'Skaties vienu ierakstu.'</span>;
+} <span class="tok-kw">elseif</span> (<span class="tok-fn">is_singular</span>(<span class="tok-str">'produkts'</span>)) {
+    <span class="tok-kw">echo</span> <span class="tok-str">'Skaties vienu produktu.'</span>;
+} <span class="tok-kw">elseif</span> (!<span class="tok-fn">is_user_logged_in</span>()) {
+    <span class="tok-kw">echo</span> <span class="tok-str">'Lūdzu, piesakies, lai redzētu vairāk.'</span>;
 }</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>is_single()</code> pēc noklusējuma aptver arī pielāgotos ierakstu tipus (CPT), bet <strong>ne</strong> lapas — ja nepieciešams pārbaudīt "vai šis ir viens ieraksts, jebkāds tips, ieskaitot lapas", izmanto plašāko <code>is_singular()</code> tā vietā.</p>
+      </div>
     </section>
 
     <section class="doc-section" id="wp-query">
