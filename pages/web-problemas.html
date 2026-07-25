@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="lv" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Servera problēmas un risinājumi — Documentation Samis</title>
+<link rel="stylesheet" href="../css/style.css?v=2" />
+<script>
+  (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
+</script>
+</head>
+<body>
+<div class="bg-glow"></div>
+<div class="bg-grid"></div>
+
+<header class="topbar">
+  <a class="brand" href="../index.html">
+    <span class="mark">DS</span>
+    Documentation Samis
+  </a>
+  <div class="topbar-actions">
+    <a class="btn-back" href="web-izveide.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M5 12h14"/></svg>
+      IP, DNS &amp; SSL
+    </a>
+    <a class="btn-back" href="../index.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M5 12h14"/></svg>
+      Kategorijas
+    </a>
+    <button class="icon-btn" id="theme-toggle" title="Pārslēgt tēmu" aria-label="Pārslēgt tēmu">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="doc-shell">
+  <aside class="doc-sidebar">
+    <div class="doc-sidebar-group">
+      <h4>Pārskats</h4>
+      <a href="#err-overview" class="active"><span class="bullet"></span>Kur meklēt vainīgo</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>DNS problēmas</h4>
+      <a href="#err-nxdomain"><span class="bullet"></span>DNS_PROBE_FINISHED_NXDOMAIN</a>
+      <a href="#err-hosts-fix"><span class="bullet"></span>Hosts fails (ātrais labojums)</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Savienojuma problēmas</h4>
+      <a href="#err-connection"><span class="bullet"></span>CONNECTION_REFUSED / TIMED_OUT</a>
+      <a href="#err-server-down"><span class="bullet"></span>Vietne pilnībā nesasniedzama</a>
+      <a href="#err-firewall-ports"><span class="bullet"></span>Ports bloķēts ugunsmūrī</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>SSL / TLS problēmas</h4>
+      <a href="#err-ssl"><span class="bullet"></span>SSL kļūdas</a>
+      <a href="#err-cert-renew-fail"><span class="bullet"></span>certbot renew neizdodas</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Servera &amp; backend problēmas</h4>
+      <a href="#err-5xx"><span class="bullet"></span>502 / 503 / 504</a>
+      <a href="#err-disk-full"><span class="bullet"></span>Disks pilns</a>
+      <a href="#err-permissions"><span class="bullet"></span>Permission denied</a>
+      <a href="#err-htaccess-500"><span class="bullet"></span>.htaccess → 500 kļūda</a>
+      <a href="#err-php-version"><span class="bullet"></span>PHP versijas neatbilstība</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Konfigurācijas problēmas</h4>
+      <a href="#err-redirect"><span class="bullet"></span>TOO_MANY_REDIRECTS</a>
+      <a href="#err-panel-welcome"><span class="bullet"></span>Redzu paneļa sveiciena lapu</a>
+      <a href="#err-cors"><span class="bullet"></span>CORS kļūda</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Uzziņa</h4>
+      <a href="#err-http-codes"><span class="bullet"></span>HTTP statusa kodi</a>
+    </div>
+  </aside>
+
+  <main class="doc-main">
+    <div class="doc-breadcrumb">
+      <a href="../index.html">Sākums</a>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <a href="web-izveide.html">IP, DNS &amp; SSL</a>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span>Problēmas</span>
+    </div>
+
+    <div class="doc-header">
+      <div class="icon" style="background: var(--c-web-soft); color: var(--c-web);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+      </div>
+      <h1 style="margin-bottom:0;">Servera problēmas un risinājumi</h1>
+    </div>
+    <p class="doc-lead">Kad vietne nestrādā, pirmais jautājums ir <strong>kurā slānī</strong> problēma radusies. Katrai kļūdai zemāk — iespējamie cēloņi un pilns risinājums, galvenokārt <strong>caur SSH</strong> (tiešu piekļuvi serverim), ar alternatīvu risinājumu <strong>caur failiem</strong> (FTP/paneli), ja SSH piekļuves nav. Pamatus par IP/DNS/SSL skaties <a href="web-izveide.html">IP, DNS &amp; SSL dokumentācijā</a>.</p>
+
+    <section class="doc-section" id="err-overview">
+      <h2>Kur meklēt vainīgo</h2>
+      <p>Ceļš no domēna ieraksta līdz redzamai vietnei iet cauri četriem posmiem: (1) <strong>DNS</strong> — domēns jāpārvērš IP adresē; (2) <strong>savienojums</strong> — pārlūkam jāizveido tīkla savienojums ar šo IP; (3) <strong>šifrēšana (TLS/SSL)</strong> — jāizveido drošs kanāls; (4) <strong>serveris/aplikācija</strong> — serverim jāatgriež pati lapa. Kļūdas ziņojums parasti pasaka, kurā no šiem posmiem process apstājās.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>DNS_PROBE_FINISHED_NXDOMAIN</h4><p>Domēns vispār neeksistē DNS acīs — apstājās posmā (1).</p></div>
+        <div class="doc-mini-card"><h4>CONNECTION_REFUSED / TIMED_OUT</h4><p>Serveris nesasniedzams vai neatbild — apstājās posmā (2).</p></div>
+        <div class="doc-mini-card"><h4>SSL_PROTOCOL_ERROR / CERT_*</h4><p>Problēma ar HTTPS/sertifikātu — apstājās posmā (3).</p></div>
+        <div class="doc-mini-card"><h4>502 / 503 / 504</h4><p>Serveris strādā, bet backend — nē — apstājās posmā (4).</p></div>
+      </div>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Lielākā daļa risinājumu zemāk pieņem, ka tev ir SSH piekļuve serverim (<code>ssh lietotajs@servera-ip</code>). Ja pieejams tikai koplietošanas (shared) hostings bez SSH, katrā sadaļā ir norādīta arī alternatīva caur failu pārvaldnieku/FTP vai vadības paneli.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="err-nxdomain">
+      <h2>DNS_PROBE_FINISHED_NXDOMAIN</h2>
+      <p>Šī Chrome/Edge kļūda nozīmē, ka pārlūks mēģināja izšķirt (atrisināt) domēnu, taču DNS sistēma atbildēja, ka tāda domēna <strong>vispār nav</strong> (NXDOMAIN = "Non-Existent Domain"). Svarīgi saprast: tā <em>nav</em> servera problēma — process apstājās vēl pirms pārlūks vispār mēģināja pieslēgties jebkuram serverim, tāpēc servera pusē neko labot nevar, kamēr nav atrisināts pats DNS ieraksts.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>📅 Domēns nav reģistrēts / beidzies</h4><p>Reģistrācijas termiņš beidzies vai domēns vēl nemaz nav iegādāts.</p></div>
+        <div class="doc-mini-card"><h4>⏳ DNS vēl nav iestatīts</h4><p>Jaunam domēnam/serverim A/NS ieraksti vēl nav pievienoti vai nav propagējušies.</p></div>
+        <div class="doc-mini-card"><h4>✏️ Pareizrakstības kļūda</h4><p>Pārbaudi, vai domēna nosaukums ierakstīts pareizi — pārsteidzoši bieži tas ir vainīgais.</p></div>
+        <div class="doc-mini-card"><h4>💻 Lokāla DNS/hosts problēma</h4><p>Vecs kešotais ieraksts vai nepareiza rinda operētājsistēmas <code>hosts</code> failā.</p></div>
+      </div>
+      <p><strong>Risinājums caur SSH</strong> (vai lokālo termināli) — diagnostikas secība pēc kārtas, nomainot <code>piemers.lv</code> uz savu domēnu:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># 1. Vai domēns vispār reģistrēts un derīgs</span>
+whois piemers.lv
+
+<span class="tok-com"># 2. Vai domēnam iestatīti nameserveri</span>
+dig piemers.lv NS
+
+<span class="tok-com"># 3. Vai eksistē A ieraksts (IP adrese)</span>
+dig piemers.lv A
+
+<span class="tok-com"># 4. Pamēģini citu DNS resolveri, lai izslēgtu sava ISP problēmu</span>
+dig @8.8.8.8 piemers.lv</code></pre>
+      <p><strong>Alternatīva caur failiem:</strong> ja SSH nav pieejams, DNS ierakstus pārbauda un labo domēna reģistrētāja vai DNS pārvaldnieka (piem. Cloudflare) tīmekļa panelī — jāatrod A ieraksts un jāpārliecinās, ka tas norāda uz pareizo servera IP adresi.</p>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Ja <code>dig</code> no <strong>cita</strong> tīkla vai ierīces (piem., telefona ar mobilo internetu) arī nerāda nekādu ierakstu, tas apstiprina, ka problēma ir DNS/servera pusē, nevis tavā konkrētajā datorā.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="err-hosts-fix">
+      <h2>Hosts fails (ātrais labojums)</h2>
+      <p>Ja zini servera IP adresi, bet DNS vēl nestrādā, vari "piespiest" savu datoru izmantot konkrēto IP šim domēnam, apejot DNS pilnībā. Šis paņēmiens maina rezultātu <strong>tikai tavā datorā</strong>.</p>
+      <p><strong>Windows:</strong></p>
+      <pre class="code-block"><span class="lang">cmd</span><code><span class="tok-com">1. Atver Command Prompt kā administrators</span>
+<span class="tok-com">2. Atver hosts failu Notepad:</span>
+notepad C:\Windows\System32\drivers\etc\hosts
+
+<span class="tok-com">3. Pievieno rindu faila beigās:</span>
+81.198.171.19   piemers.lv
+
+<span class="tok-com">4. Saglabā un notīri DNS kešu:</span>
+ipconfig /flushdns</code></pre>
+      <p><strong>Mac/Linux (SSH vai lokāli):</strong></p>
+      <pre class="code-block"><span class="lang">bash</span><code>sudo nano /etc/hosts
+<span class="tok-com"># pievieno: 81.198.171.19   piemers.lv</span></code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Kad testēšana pabeigta, <strong>neaizmirsti izdzēst</strong> pievienoto rindu — pretējā gadījumā pēc mēnešiem tavā datorā vietne var izskatīties savādāk nekā visiem citiem.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="err-connection">
+      <h2>CONNECTION_REFUSED / TIMED_OUT</h2>
+      <p>Abas šīs kļūdas nozīmē, ka DNS <strong>jau ir atrisinājies</strong> veiksmīgi, bet neizdodas izveidot tīkla savienojumu ar pašu serveri.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>🚫 REFUSED</h4><p>Serveris <strong>aktīvi atsaka</strong> savienojumu. Cēlonis: pakalpojums nav palaists, vai neviens serviss neklausās uz šī porta.</p></div>
+        <div class="doc-mini-card"><h4>⏱️ TIMED_OUT</h4><p>Pieprasījums <strong>pazūd klusumā</strong>. Cēlonis: ugunsmūris klusi nomet paketes, vai IP adrese nepareiza.</p></div>
+      </div>
+      <p><strong>Risinājums caur SSH</strong> — pieslēdzies serverim un pārbaudi:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Serverī — vai serviss vispār darbojas un klausās</span>
+sudo systemctl status nginx
+sudo ss -tulpn | grep :443
+
+<span class="tok-com"># No sava datora — vai ports vispār sasniedzams no ārpuses</span>
+telnet piemers.lv 443</code></pre>
+      <p><strong>Alternatīva caur failiem/paneli:</strong> ja SSH nav, hostinga vadības panelī parasti ir sadaļa "Service Status" vai "Restart Server", kur var pārstartēt tīmekļa servisu bez komandrindas.</p>
+    </section>
+
+    <section class="doc-section" id="err-server-down">
+      <h2>Vietne pilnībā nesasniedzama (serveris "guļ")</h2>
+      <p>Vietne bija strādājusi, bet pēkšņi nekas neatbild — nedz DNS, nedz savienojums, nedz kļūdas lapa. Visbiežāk pats serveris ir apstājies vai kritisks serviss uz tā nav palaists.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>💥 Serviss avarējis</h4><p>Nginx/Apache/PHP-FPM process negaidīti apstājies (kļūda, OOM killer nogalinājis).</p></div>
+        <div class="doc-mini-card"><h4>🔄 Serveris restartējies</h4><p>Pēc VPS pārstartēšanas serviss nav iestatīts automātiski startēties.</p></div>
+        <div class="doc-mini-card"><h4>🧠 Trūkst atmiņas (RAM)</h4><p>Serveris pārslogots, operētājsistēma piespiedu kārtā aptur procesus.</p></div>
+      </div>
+      <p><strong>Risinājums caur SSH:</strong></p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Pārbaudi servisa statusu</span>
+sudo systemctl status nginx
+sudo systemctl status php8.1-fpm
+
+<span class="tok-com"># Pēdējie 50 žurnāla ieraksti — kāpēc process apstājās</span>
+sudo journalctl -u nginx -n 50 --no-pager
+
+<span class="tok-com"># Restartē servisu</span>
+sudo systemctl restart nginx
+
+<span class="tok-com"># Pārliecinies, ka serviss startēsies arī pēc nākamās pārstartēšanas</span>
+sudo systemctl enable nginx
+
+<span class="tok-com"># Pārbaudi brīvo/aizņemto atmiņu</span>
+free -h</code></pre>
+      <p><strong>Alternatīva caur failiem/paneli:</strong> ja SSH piekļuves nav (koplietošanas hostings), jāsazinās ar hostinga tehnisko atbalstu vai jāizmanto vadības paneļa (cPanel/Plesk) poga servisa restartēšanai.</p>
+    </section>
+
+    <section class="doc-section" id="err-firewall-ports">
+      <h2>Ports bloķēts ugunsmūrī</h2>
+      <p>Serveris strādā un serviss klausās uz porta, bet ārējie pieprasījumi tik un tā "karājas" vai tiek atteikti — vainīgs parasti ir ugunsmūris, kas nomet paketes klusi, neatgriežot skaidru kļūdu.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>🧱 OS ugunsmūris (ufw/iptables)</h4><p>Servera operētājsistēmas ugunsmūris bloķē portu tieši serverī.</p></div>
+        <div class="doc-mini-card"><h4>☁️ Mākoņa drošības grupa</h4><p>AWS Security Group / DigitalOcean Firewall bloķē portu ārpus paša servera — bieži aizmirsta vieta.</p></div>
+      </div>
+      <p><strong>Risinājums caur SSH:</strong></p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Pārbaudi ufw statusu un atļautos portus</span>
+sudo ufw status
+
+<span class="tok-com"># Atļauj HTTP un HTTPS trafiku</span>
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw reload</code></pre>
+      <p><strong>Alternatīva caur failiem/paneli:</strong> mākoņa nodrošinātāja (AWS/DigitalOcean/Hetzner) tīmekļa panelī jāatrod "Firewall" vai "Security Group" sadaļa un manuāli jāpievieno noteikums, kas atļauj ienākošo trafiku uz portiem 80 un 443 — šī darbība notiek ārpus paša servera un SSH šeit nepalīdzēs, ja bloķēšana ir tieši šajā slānī.</p>
+    </section>
+
+    <section class="doc-section" id="err-ssl">
+      <h2>SSL kļūdas</h2>
+      <p><code>ERR_SSL_PROTOCOL_ERROR</code> parādās, kad TCP savienojums izveidojas veiksmīgi, bet TLS "sarunas" (handshake) neizdodas pabeigt. Biežākais iemesls — pārlūks mēģina runāt HTTPS ar portu, kas TLS vispār nesatur.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>🔌 Nepareizs ports</h4><p>HTTPS mēģina savienoties ar portu, kur serveris runā tikai parasto HTTP.</p></div>
+        <div class="doc-mini-card"><h4>🧓 Novecojis TLS</h4><p>Serveris atbalsta tikai novecojušas, jau izslēgtas TLS versijas.</p></div>
+        <div class="doc-mini-card"><h4>🔀 Reverse proxy konflikts</h4><p>Cloudflare/Nginx priekšā sagaida HTTPS, bet backend serveris to nenodrošina.</p></div>
+      </div>
+      <p><strong>Risinājums caur SSH</strong> — pārbaudi, ko tieši serveris atbild:</p>
+      <pre class="code-block"><span class="lang">bash</span><code>echo | openssl s_client -connect piemers.lv:443 -servername piemers.lv 2>/dev/null | openssl x509 -noout -dates -subject</code></pre>
+      <p>Ja kļūda saistīta ar sertifikāta <strong>saturu</strong> (domēns nesakrīt, neuzticams izdevējs, beidzies termiņš) — skat. <a href="#err-cert-renew-fail">"certbot renew neizdodas"</a> zemāk.</p>
+    </section>
+
+    <section class="doc-section" id="err-cert-renew-fail">
+      <h2>certbot renew neizdodas</h2>
+      <p>Let's Encrypt sertifikāti derīgi tikai 90 dienas, un atjaunošanai jānotiek automātiski. Ja process neizdodas, sertifikāts beidzas un pārlūks sāk rādīt drošības brīdinājumu.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>🔌 Ports 80 aizņemts</h4><p>Cits serviss klausās uz porta 80, kas nepieciešams HTTP-01 validācijai.</p></div>
+        <div class="doc-mini-card"><h4>🌐 DNS izmaiņas</h4><p>Domēns vairs nenorāda uz šo serveri — validācija neizdodas.</p></div>
+        <div class="doc-mini-card"><h4>⏳ Rate limit</h4><p>Let's Encrypt ierobežo pieprasījumu skaitu vienam domēnam noteiktā laika periodā.</p></div>
+      </div>
+      <p><strong>Risinājums caur SSH:</strong></p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Pārbauda, kas tieši atjaunošanā nogāja greizi</span>
+sudo certbot renew --dry-run
+
+<span class="tok-com"># Uzskaita esošos sertifikātus un to termiņus</span>
+sudo certbot certificates
+
+<span class="tok-com"># Pārliecinies, ka nginx klausās uz porta 80 validācijai</span>
+sudo systemctl status nginx</code></pre>
+      <p><strong>Alternatīva caur failiem/paneli:</strong> ja HTTP-01 validācija nav iespējama (ports 80 nepieejams no interneta), var izmantot DNS-01 validāciju — pievienojot certbot norādīto TXT ierakstu domēna DNS panelī manuāli, bez SSH piekļuves serverim šajā solī.</p>
+    </section>
+
+    <section class="doc-section" id="err-5xx">
+      <h2>502 / 503 / 504</h2>
+      <p>Šīs kļūdas nozīmē, ka pats serveris <strong>ir</strong> sasniedzams, bet kaut kas nogāja greizi backend (PHP-FPM, Node.js, datubāze) līmenī.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>502 Bad Gateway</h4><p>Reverse proxy nesaņem derīgu atbildi no backend — visbiežāk nokritis PHP-FPM.</p></div>
+        <div class="doc-mini-card"><h4>503 Service Unavailable</h4><p>Serveris pārslogots vai apzināti pārslēgts uzturēšanas režīmā.</p></div>
+        <div class="doc-mini-card"><h4>504 Gateway Timeout</h4><p>Backend atbild pārāk lēni — smags vaicājums vai resursu trūkums.</p></div>
+      </div>
+      <p><strong>Risinājums caur SSH</strong> — precīzu iemeslu gandrīz vienmēr atklāj žurnāli tiešraidē:</p>
+      <pre class="code-block"><span class="lang">bash</span><code>sudo tail -f /var/log/nginx/error.log
+sudo systemctl status php8.1-fpm
+sudo systemctl restart php8.1-fpm</code></pre>
+    </section>
+
+    <section class="doc-section" id="err-disk-full">
+      <h2>Disks pilns (No space left on device)</h2>
+      <p>Kad serverim beidzas brīvā vieta, saraujas viss — datubāze nevar rakstīt, augšupielādes neizdodas, žurnāli pārtrauc pierakstīšanos, dažreiz pat pati vietne kļūst nesasniedzama.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>📜 Uzkrājušies žurnāli</h4><p>Servera/aplikācijas log faili gadu gaitā sasniedz gigabaitus.</p></div>
+        <div class="doc-mini-card"><h4>🗄️ Vecas dublējumkopijas</h4><p>Automātiskie backups netiek dzēsti un uzkrājas.</p></div>
+        <div class="doc-mini-card"><h4>📁 Augšupielādes</h4><p>Attēli/faili <code>uploads</code> mapē aug bez ierobežojuma.</p></div>
+      </div>
+      <p><strong>Risinājums caur SSH:</strong></p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Vispārējs diska lietojums</span>
+df -h
+
+<span class="tok-com"># 10 lielākās mapes /var/log iekšienē</span>
+du -sh /var/log/* | sort -rh | head -10
+
+<span class="tok-com"># Iztīri veco žurnālu vēsturi (piem. journald)</span>
+sudo journalctl --vacuum-time=7d</code></pre>
+      <p><strong>Alternatīva caur failiem:</strong> FTP/failu pārvaldniekā ("File Manager" hostinga panelī) manuāli jāapskata lielākās mapes (parasti <code>wp-content/uploads</code>, backup mapes) un jāizdzēš nevajadzīgais.</p>
+    </section>
+
+    <section class="doc-section" id="err-permissions">
+      <h2>Permission denied kļūdas</h2>
+      <p>Serveris atsakās lasīt vai rakstīt failus, jo tiem ir nepareizs īpašnieks vai piekļuves tiesības — bieži rodas pēc migrācijas, manuālas augšupielādes ar <code>root</code> tiesībām, vai backup atjaunošanas.</p>
+      <p><strong>Risinājums caur SSH</strong> — atgriež standarta WordPress/web tiesības:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Iestata pareizo īpašnieku (lietotājs, ar kuru strādā web serveris)</span>
+sudo chown -R www-data:www-data /var/www/piemers.lv
+
+<span class="tok-com"># Mapēm — 755, failiem — 644</span>
+find /var/www/piemers.lv -type d -exec chmod 755 {} \;
+find /var/www/piemers.lv -type f -exec chmod 644 {} \;</code></pre>
+      <p><strong>Alternatīva caur failiem:</strong> FTP klientā (piem. FileZilla) labais klikšķis uz mapi/failu → "File permissions" → ievadi <code>755</code> mapēm un <code>644</code> failiem manuāli, ar iespēju piemērot rekursīvi visai mapei.</p>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Nekad neiestati <code>777</code> tiesības kā "ātru labojumu" — tas ļauj rakstīt failus jebkuram serverī esošam procesam, tostarp ļaunprātīgam kodam, ja serveris tiek kompromitēts.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="err-htaccess-500">
+      <h2>.htaccess sintakses kļūda → 500</h2>
+      <p>Apache lasa <code>.htaccess</code> failu katrā pieprasījumā — ja tajā ir sintakses kļūda (bieži pēc manuālas rediģēšanas vai spraudņa pievienota noteikuma), rezultāts ir tūlītēja 500 kļūda visai vietnei.</p>
+      <p><strong>Risinājums caur SSH:</strong></p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Pārbauda Apache konfigurācijas sintaksi</span>
+sudo apache2ctl configtest
+
+<span class="tok-com"># Pārdēvē .htaccess, lai izslēgtu to pilnībā un pārbaudītu, vai tas ir vainīgais</span>
+cd /var/www/piemers.lv
+mv .htaccess .htaccess.bak
+
+<span class="tok-com"># Ja vietne tagad strādā — problēma bija .htaccess iekšpusē,</span>
+<span class="tok-com"># atver .htaccess.bak un salīdzini ar WordPress noklusējuma versiju</span></code></pre>
+      <p><strong>Alternatīva caur failiem:</strong> FTP klientā lejupielādē <code>.htaccess</code>, pārsauc/izdzēs to serverī un WordPress admin panelī atver "Iestatījumi → Pastāvīgās saites" un tikai nospied "Saglabāt izmaiņas" — WordPress automātiski uzģenerēs jaunu, korektu <code>.htaccess</code> failu.</p>
+    </section>
+
+    <section class="doc-section" id="err-php-version">
+      <h2>PHP versijas neatbilstība</h2>
+      <p>Pēc hostinga automātiskas PHP versijas atjaunināšanas vecāks kods (novecojis spraudnis, pašrakstīts skripts) var pārtraukt darboties, jo lieto sintaksi vai funkcijas, kas jaunākajā PHP versijā ir noņemtas vai mainījušas uzvedību.</p>
+      <p><strong>Risinājums caur SSH:</strong></p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Pārbauda aktīvo PHP versiju</span>
+php -v
+
+<span class="tok-com"># Ubuntu/Debian serverī ar vairākām instalētām versijām — pārslēdz</span>
+sudo update-alternatives --set php /usr/bin/php8.1
+
+<span class="tok-com"># Skaties kļūdas tiešraidē, kamēr atsvaidzini vietni pārlūkā</span>
+sudo tail -f /var/log/php8.1-fpm.log</code></pre>
+      <p><strong>Alternatīva caur failiem/paneli:</strong> koplietošanas hostingā PHP versiju parasti maina caur vadības paneli (cPanel "MultiPHP Manager", Plesk "PHP Settings"), izvēloties konkrētam domēnam vecāku, saderīgu PHP versiju no saraksta — bez SSH piekļuves.</p>
+    </section>
+
+    <section class="doc-section" id="err-redirect">
+      <h2>TOO_MANY_REDIRECTS</h2>
+      <p>Šī kļūda nozīmē, ka vietne novirza pati uz sevi bezgalīgā ciklā — pārlūks pēc noteikta skaita pāradresāciju padodas un parāda kļūdu.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>⚙️ WordPress Address/Site Address</h4><p>Iestatījumos viens ir <code>http://</code>, otrs <code>https://</code> — rodas cikls.</p></div>
+        <div class="doc-mini-card"><h4>☁️ Cloudflare "Flexible" SSL</h4><p>Cloudflare sūta pieprasījumu pa HTTP, serveris piespiedu kārtā novirza atpakaļ uz HTTPS. Risinājums: pārslēgt SSL/TLS režīmu uz "Full (strict)".</p></div>
+        <div class="doc-mini-card"><h4>📄 .htaccess redirect cikls</h4><p>Pretrunīgi <code>RewriteRule</code> noteikumi paši sevi "ķeksē" bezgalīgi.</p></div>
+      </div>
+      <p><strong>Risinājums caur SSH</strong> — pārbaudi, cik reižu un uz kurieni notiek pāradresācija:</p>
+      <pre class="code-block"><span class="lang">bash</span><code>curl -IL https://piemers.lv</code></pre>
+      <p><strong>Alternatīva caur failiem:</strong> ja cēlonis ir WordPress iestatījumos, tos var labot arī tieši datubāzē (phpMyAdmin) <code>wp_options</code> tabulā, mainot <code>siteurl</code> un <code>home</code> vērtības, ja admin panelis pats nav pieejams redirektu cikla dēļ.</p>
+    </section>
+
+    <section class="doc-section" id="err-panel-welcome">
+      <h2>Redzu hostinga paneļa sveiciena lapu, nevis savu vietni</h2>
+      <p>Domēns pareizi ved uz servera IP, savienojums izveidojas — taču tā vietā, lai redzētu paredzēto vietni, parādās hostinga <strong>vadības paneļa</strong> (VestaCP, cPanel, Plesk) noklusējuma "Welcome" lapa.</p>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><strong>Pareizs IP ≠ pareiza vietne.</strong> Viens fizisks serveris var apkalpot desmitiem domēnu — kuru rādīt, tīmekļa serveris izvēlas pēc pieprasījuma <code>Host</code> galvenes (<strong>virtual host</strong> mehānisms). Ja domēnam serverī vēl nav izveidots ieraksts, serveris parāda savu noklusējuma vietni.</p>
+      </div>
+      <p><strong>Risinājums caur SSH</strong> (Nginx virtual host piemērs):</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Pārbauda esošos virtual host konfigurācijas failus</span>
+ls /etc/nginx/sites-available/
+
+<span class="tok-com"># Izveido jaunu, ja domēnam vēl nav sava ieraksta, tad:</span>
+sudo ln -s /etc/nginx/sites-available/piemers.lv /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl reload nginx</code></pre>
+      <p><strong>Alternatīva caur paneli:</strong> pieslēdzies hostinga vadības panelim → atrodi sadaļu domēnu pārvaldībai → izveido/pievieno šo domēnu kā "Web Domain" ar pareizu DocumentRoot norādi uz vietnes failu mapi.</p>
+    </section>
+
+    <section class="doc-section" id="err-cors">
+      <h2>CORS kļūda</h2>
+      <p>CORS kļūda parādās, kad lapā ielādēts JavaScript no viena domēna mēģina ar <code>fetch()</code> piekļūt datiem no <strong>cita</strong> domēna, un tas serveris skaidri nav atļāvis šādus pieprasījumus.</p>
+      <pre class="code-block"><span class="lang">text</span><code>Access to fetch at 'https://api.citssrverits.lv/dati' from origin
+'https://mana-app.lv' has been blocked by CORS policy: No
+'Access-Control-Allow-Origin' header is present on the requested resource.</code></pre>
+      <p><strong>Risinājums vienmēr ir servera pusē</strong> — SSH pieslēdzoties serverim, jārediģē Nginx konfigurācija vai backend kods:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Nginx konfigurācijā (piem. /etc/nginx/sites-available/api.conf)</span>
+sudo nano /etc/nginx/sites-available/api.conf
+<span class="tok-com"># pievieno: add_header 'Access-Control-Allow-Origin' 'https://mana-app.lv';</span>
+sudo nginx -t && sudo systemctl reload nginx</code></pre>
+      <p><strong>Alternatīva caur failiem:</strong> ja backend ir PHP/WordPress bez SSH, galveni var pievienot arī tieši aplikācijas kodā (piem. <code>functions.php</code> caur <code>header()</code> funkciju) un augšupielādēt caur FTP.</p>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>CORS kļūdu <strong>nevar</strong> apiet, mainot kodu pārlūka pusē — ja tas nav "tavs" API, jāsazinās ar tā uzturētāju.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="err-http-codes">
+      <h2>HTTP statusa kodi</h2>
+      <p>Katra servera atbilde nāk kopā ar trīsciparu kodu, kas pasaka, kas tieši notika.</p>
+      <pre class="code-block"><span class="lang">text</span><code>200 OK                    → pieprasījums izdevās, šeit ir saturs
+301 Moved Permanently     → resurss pastāvīgi pārvietots (piem., http → https)
+302 Found                 → pagaidu pāradresācija
+400 Bad Request           → serveris nesaprot pieprasījumu
+401 Unauthorized          → nepieciešama autentifikācija
+403 Forbidden             → serveris saprot pieprasījumu, bet atsaka piekļuvi
+404 Not Found             → šāda adrese/lapa neeksistē
+429 Too Many Requests     → pārāk daudz pieprasījumu īsā laikā
+500 Internal Server Error → neapstrādāta kļūda servera/aplikācijas kodā
+502 Bad Gateway           → proxy nesaņem derīgu atbildi no backend
+503 Service Unavailable   → serveris pārslogots vai uzturēšanas režīmā
+504 Gateway Timeout       → backend atbild pārāk lēni</code></pre>
+      <p>Kodu var pārbaudīt tieši no komandrindas, neatverot pārlūku:</p>
+      <pre class="code-block"><span class="lang">bash</span><code>curl -I https://piemers.lv
+<span class="tok-com"># Pirmā izvada rinda būs, piem.: HTTP/2 200</span></code></pre>
+    </section>
+
+    <div class="doc-pager">
+      <a href="web-izveide.html"><span class="lbl">← Atpakaļ</span>IP, DNS &amp; SSL dokumentācija</a>
+      <a class="to-next" href="../index.html"><span class="lbl">Atpakaļ →</span>Visas kategorijas</a>
+    </div>
+  </main>
+</div>
+
+<script src="../js/theme.js?v=2"></script>
+<script src="../js/main.js?v=2"></script>
+</body>
+</html>

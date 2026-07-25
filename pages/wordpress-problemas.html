@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="lv" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WordPress kļūdas un problēmu risinājumi — Documentation Samis</title>
+<link rel="stylesheet" href="../css/style.css?v=2" />
+<script>
+  (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
+</script>
+</head>
+<body>
+<div class="bg-glow"></div>
+<div class="bg-grid"></div>
+
+<header class="topbar">
+  <a class="brand" href="../index.html">
+    <span class="mark">DS</span>
+    Documentation Samis
+  </a>
+  <div class="topbar-actions">
+    <a class="btn-back" href="wordpress.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M5 12h14"/></svg>
+      WordPress
+    </a>
+    <a class="btn-back" href="../index.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M5 12h14"/></svg>
+      Kategorijas
+    </a>
+    <button class="icon-btn" id="theme-toggle" title="Pārslēgt tēmu" aria-label="Pārslēgt tēmu">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="doc-shell">
+  <aside class="doc-sidebar">
+    <div class="doc-sidebar-group">
+      <h4>Pieejas problēmas</h4>
+      <a href="#wp-admin-nepieejams" class="active"><span class="bullet"></span>Nevar pieslēgties wp-admin</a>
+      <a href="#balta-lapa"><span class="bullet"></span>Balta lapa (WSOD)</a>
+      <a href="#kritiska-kluda"><span class="bullet"></span>"There has been a critical error"</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Datubāzes problēmas</h4>
+      <a href="#db-connection"><span class="bullet"></span>Error establishing a database connection</a>
+      <a href="#db-bojata"><span class="bullet"></span>Bojāta datubāze / tabulu prefikss</a>
+      <a href="#meklet-aizvietot"><span class="bullet"></span>Domēna maiņa datubāzē</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Failu &amp; tiesību problēmas</h4>
+      <a href="#failu-tiesibas"><span class="bullet"></span>Nepareizas failu tiesības</a>
+      <a href="#htaccess-500"><span class="bullet"></span>Bojāts .htaccess</a>
+      <a href="#wp-config-kluda"><span class="bullet"></span>wp-config.php sintakses kļūda</a>
+      <a href="#atminas-limits"><span class="bullet"></span>Allowed memory size exhausted</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Spraudņu &amp; tēmu problēmas</h4>
+      <a href="#spraudna-konflikts"><span class="bullet"></span>Spraudņa/tēmas konflikts</a>
+      <a href="#wp-cli-uzstadisana"><span class="bullet"></span>WP-CLI uzstādīšana</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Citas problēmas</h4>
+      <a href="#jauktais-saturs"><span class="bullet"></span>Mixed content pēc SSL</a>
+      <a href="#epasti-netiek-sutiti"><span class="bullet"></span>E-pasti netiek nosūtīti</a>
+      <a href="#lena-vietne"><span class="bullet"></span>Lēna WordPress vietne</a>
+    </div>
+  </aside>
+
+  <main class="doc-main">
+    <div class="doc-breadcrumb">
+      <a href="../index.html">Sākums</a>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <a href="wordpress.html">WordPress</a>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span>Problēmas</span>
+    </div>
+
+    <div class="doc-header">
+      <div class="icon" style="background: var(--c-wordpress-soft); color: var(--c-wordpress);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+      </div>
+      <h1 style="margin-bottom:0;">WordPress kļūdas un problēmu risinājumi</h1>
+    </div>
+    <p class="doc-lead">Biežākās WordPress kļūdas — iespējamie cēloņi un pilns risinājums katrai, galvenokārt <strong>caur SSH</strong> (WP-CLI, MySQL, failu tiesības), ar alternatīvu risinājumu <strong>caur failiem</strong> (FTP, phpMyAdmin), ja SSH piekļuves nav. Pamatus par tēmām, hooks un WP_Query skaties <a href="wordpress.html">pilnajā WordPress dokumentācijā</a>.</p>
+
+    <div class="callout tip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+      <p>Lielākā daļa SSH risinājumu šajā lapā izmanto <strong><a href="#wp-cli-uzstadisana">WP-CLI</a></strong> — WordPress oficiālo komandrindas rīku. Ja tas serverī vēl nav uzstādīts, sāc ar sadaļu <a href="#wp-cli-uzstadisana">"WP-CLI uzstādīšana"</a> zemāk.</p>
+    </div>
+
+    <section class="doc-section" id="wp-admin-nepieejams">
+      <h2>Nevar pieslēgties wp-admin</h2>
+      <p>Aizmirsta parole vai bloķēts konts nozīmē, ka nevar izmantot parastu "Aizmirsu paroli" plūsmu admin panelī, jo tas pats admin panelis nav pieejams. Risinājums ir mainīt paroli tieši, apejot pieteikšanās formu.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>🔑 Aizmirsta parole</h4><p>E-pasts ar atiestatīšanas saiti nepienāk vai konts nav zināms.</p></div>
+        <div class="doc-mini-card"><h4>🚫 Konts bloķēts</h4><p>Drošības spraudnis (piem., pēc vairākiem neveiksmīgiem mēģinājumiem) bloķējis IP vai lietotāju.</p></div>
+      </div>
+      <p><strong>Risinājums caur SSH</strong> — ar WP-CLI parole tiek nomainīta uzreiz, bez e-pasta:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Pieslēdzies serverim un pāriet uz WordPress mapi</span>
+cd /var/www/piemers.lv
+
+<span class="tok-com"># Uzskaita lietotājus, lai atrastu pareizo lietotājvārdu</span>
+wp user list
+
+<span class="tok-com"># Iestata jaunu paroli konkrētam lietotājam</span>
+wp user update admins --user_pass="JaunaDrosaParole123!"
+
+<span class="tok-com"># Ja bloķēts drošības spraudņa dēļ — deaktivizē to pagaidām</span>
+wp plugin deactivate wordfence</code></pre>
+      <p><strong>Alternatīva caur failiem</strong> (bez SSH, ar phpMyAdmin): datubāzē atver <code>wp_users</code> tabulu, atrodi lietotāja rindu, laukā <code>user_pass</code> ievadi jaunu paroli un izvēlies funkciju <code>MD5</code> nolaižamajā sarakstā pirms saglabāšanas — WordPress šifrē paroles ar MD5 apvalkotu hash, tāpēc tekstu nedrīkst ierakstīt "kā ir".</p>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Ja arī phpMyAdmin/datubāze nav pieejama, pievieno pagaidu kodu <code>wp-config.php</code> failam: <code>wp_set_password('JaunaParole', 1);</code> — izpilda vienreiz jebkurā WordPress lapā, tad <strong>uzreiz izdzēs</strong> šo rindu, citādi parole tiks atiestatīta katru reizi.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="balta-lapa">
+      <h2>Balta lapa (White Screen of Death)</h2>
+      <p>Vietne rāda pilnīgi tukšu, baltu lapu — bez jebkādas kļūdas, bez satura. Tas nozīmē PHP fatālu kļūdu, kas noticis pirms izvades sākuma, un WordPress noklusējuma iestatījumi kļūdu paziņojumus paslēpj apmeklētājiem drošības apsvērumu dēļ.</p>
+      <p><strong>Risinājums caur SSH</strong> — vispirms padari kļūdas redzamas žurnālā:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># wp-config.php — pārliecinies, ka ir šīs rindas (parasti jau ir tuvu faila beigām)</span>
+grep WP_DEBUG wp-config.php
+
+<span class="tok-com"># Skaties kļūdu žurnālu tiešraidē, kamēr atsvaidzini lapu pārlūkā</span>
+tail -f wp-content/debug.log</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// wp-config.php — ieslēdz kļūdu pierakstīšanu failā (nevis rādīšanu apmeklētājiem)</span>
+<span class="tok-kw">define</span>(<span class="tok-str">'WP_DEBUG'</span>, <span class="tok-kw">true</span>);
+<span class="tok-kw">define</span>(<span class="tok-str">'WP_DEBUG_LOG'</span>, <span class="tok-kw">true</span>);
+<span class="tok-kw">define</span>(<span class="tok-str">'WP_DEBUG_DISPLAY'</span>, <span class="tok-kw">false</span>);</code></pre>
+      <p>Žurnālā redzamā kļūda gandrīz vienmēr norāda tieši uz vainīgo failu un rindu — visbiežāk tas ir spraudnis vai tēma, kas lieto novecojušu PHP funkciju vai kuram trūkst atkarības.</p>
+      <p><strong>Alternatīva caur failiem</strong> (bez SSH): FTP klientā pārsauc <code>wp-content/plugins</code> mapi par, piem., <code>plugins-old</code> — WordPress automātiski deaktivizē visus spraudņus, ja to mape nav atrodama. Ja lapa atkal parādās, pārsauc mapi atpakaļ un deaktivizē spraudņus pa vienam admin panelī, lai atrastu vainīgo.</p>
+    </section>
+
+    <section class="doc-section" id="kritiska-kluda">
+      <h2>"There has been a critical error"</h2>
+      <p>Jaunākas WordPress versijas (5.2+) baltās lapas vietā rāda šo ziņojumu ar norādi pārbaudīt e-pastu vai admin paneli — tas ir uzlabojums pār pilnīgi tukšo lapu, bet pati diagnostika ir tāda pati kā WSOD gadījumā.</p>
+      <p><strong>Risinājums caur SSH</strong> — atrodi konkrēto spraudni ar WP-CLI, neatslēdzot visus uzreiz:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Uzskaita aktīvos spraudņus</span>
+wp plugin list --status=active
+
+<span class="tok-com"># Deaktivizē visus uzreiz (drošākais pirmais solis)</span>
+wp plugin deactivate --all
+
+<span class="tok-com"># Tad aktivizē pa vienam, pārbaudot vietni pēc katra</span>
+wp plugin activate <span class="tok-fn">nosaukums</span></code></pre>
+      <p><strong>Alternatīva caur failiem:</strong> tāpat kā ar balto lapu — pārsauc <code>wp-content/plugins</code> mapi caur FTP, lai deaktivizētu visus, tad testē pa vienam, atgriežot failus mapē un aktivizējot spraudņus admin panelī.</p>
+    </section>
+
+    <section class="doc-section" id="db-connection">
+      <h2>Error establishing a database connection</h2>
+      <p>Šī kļūda nozīmē, ka WordPress PHP kods darbojas, bet nevar izveidot savienojumu ar MySQL/MariaDB datubāzi — problēma ir vai nu nepareizos pieslēgšanās datos, vai pašā datubāzes serverī.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>🔑 Nepareizi dati wp-config.php</h4><p>Lietotājvārds, parole vai datubāzes nosaukums nesakrīt ar reālo.</p></div>
+        <div class="doc-mini-card"><h4>💤 MySQL serviss nestrādā</h4><p>Datubāzes serveris avarējis vai apturēts.</p></div>
+        <div class="doc-mini-card"><h4>📈 Pārāk daudz savienojumu</h4><p>Sasniegts servera maksimālais atļauto savienojumu skaits.</p></div>
+      </div>
+      <p><strong>Risinājums caur SSH:</strong></p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Vai MySQL serviss vispār darbojas</span>
+sudo systemctl status mysql
+
+<span class="tok-com"># Pārbauda pieslēgšanos ar tieši tiem datiem, kas ir wp-config.php</span>
+mysql -u lietotajvards -p -h localhost datubazes_nosaukums
+
+<span class="tok-com"># Ja serviss nokritis — restartē to</span>
+sudo systemctl restart mysql
+
+<span class="tok-com"># Pārbauda pašreizējo savienojumu skaitu un limitu</span>
+mysql -u root -p -e "SHOW STATUS LIKE 'Threads_connected'; SHOW VARIABLES LIKE 'max_connections';"</code></pre>
+      <p>Salīdzini pieslēgšanās datus ar to, kas faktiski norādīts konfigurācijas failā:</p>
+      <pre class="code-block"><span class="lang">bash</span><code>grep -A1 "DB_NAME\|DB_USER\|DB_PASSWORD\|DB_HOST" wp-config.php</code></pre>
+      <p><strong>Alternatīva caur failiem:</strong> ja SSH nav, hostinga vadības panelī (cPanel "MySQL Databases") pārbaudi, vai lietotājam ir piešķirtas tiesības konkrētajai datubāzei, un salīdzini datus ar <code>wp-config.php</code>, ko atver caur failu pārvaldnieku vai FTP.</p>
+    </section>
+
+    <section class="doc-section" id="db-bojata">
+      <h2>Bojāta datubāze / tabulu prefikss</h2>
+      <p>Pēc neveiksmīgas migrācijas vai importa WordPress var uzrādīt kļūdas par trūkstošām tabulām — visbiežāk tāpēc, ka <code>wp-config.php</code> norādītais tabulu prefikss (<code>$table_prefix</code>) nesakrīt ar to, kāds tabulām faktiski ir datubāzē.</p>
+      <p><strong>Risinājums caur SSH:</strong></p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Palaiž WordPress iebūvēto datubāzes labošanas rīku</span>
+wp db repair
+
+<span class="tok-com"># Uzskaita reālās tabulas un to prefiksu datubāzē</span>
+wp db query "SHOW TABLES;"</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// wp-config.php — prefiksam jāsakrīt ar to, kas redzams "SHOW TABLES" izvadā</span>
+$table_prefix = <span class="tok-str">'wp_'</span>;</code></pre>
+      <p><strong>Alternatīva caur failiem:</strong> phpMyAdmin sadaļā "Repair table" var izvēlēties visas tabulas un palaist labošanu no saskarnes, bez komandrindas — noderīgi, ja SSH nav pieejams.</p>
+    </section>
+
+    <section class="doc-section" id="meklet-aizvietot">
+      <h2>Domēna/URL maiņa datubāzē (search-replace)</h2>
+      <p>Pārvietojot WordPress vietni uz jaunu domēnu vai no localhost uz production, dati par veco adresi paliek iekodēti datubāzē — tostarp serializētos PHP masīvos, kur vienkāršs teksta meklēt/aizvietot var sabojāt datus, ja izmaiņa maina teksta garumu.</p>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Nekad neizmanto parastu SQL <code>UPDATE ... REPLACE()</code> vai phpMyAdmin "Find and replace" serializētiem laukiem (piem., tēmas iestatījumi, Elementor/Divi dati) — tas sabojās datus, jo serializācijā ir iekodēts teksta garums.</p>
+      </div>
+      <p><strong>Risinājums caur SSH</strong> — WP-CLI <code>search-replace</code> apstrādā serializāciju pareizi:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Vispirms "sausais palaidiens" — parāda, kas tiktu mainīts, bet neko nemaina</span>
+wp search-replace 'http://vecais-domens.lv' 'https://jauns-domens.lv' --dry-run
+
+<span class="tok-com"># Kad pārliecināts — palaiž reāli, ieskaitot serializētos laukus</span>
+wp search-replace 'http://vecais-domens.lv' 'https://jauns-domens.lv' --all-tables</code></pre>
+      <p><strong>Alternatīva caur failiem</strong> (bez SSH): izmanto specializētu WordPress spraudni, piem. "Better Search Replace", kas iestatāms admin panelī un veic to pašu serializācijai drošo aizvietošanu bez komandrindas.</p>
+    </section>
+
+    <section class="doc-section" id="failu-tiesibas">
+      <h2>Nepareizas failu tiesības</h2>
+      <p>Nevar augšupielādēt attēlus, atjaunināt spraudņus vai rediģēt tēmu tieši no admin paneļa ("HTTP error" augšupielādei, vai lūgums ievadīt FTP datus atjaunināšanai) — parasti nozīmē, ka failu īpašnieks vai tiesības neatbilst tam, ar kuru strādā web serveris.</p>
+      <p><strong>Risinājums caur SSH</strong> — WordPress ieteiktās standarta tiesības:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Īpašnieks — lietotājs, ar kuru strādā web serveris (bieži www-data)</span>
+sudo chown -R www-data:www-data /var/www/piemers.lv
+
+<span class="tok-com"># Mapēm 755, failiem 644</span>
+find /var/www/piemers.lv -type d -exec chmod 755 {} \;
+find /var/www/piemers.lv -type f -exec chmod 644 {} \;
+
+<span class="tok-com"># wp-config.php drīkst būt stingrāks, jo tajā ir paroles</span>
+chmod 600 /var/www/piemers.lv/wp-config.php</code></pre>
+      <p><strong>Alternatīva caur failiem:</strong> FTP klientā (FileZilla) labais klikšķis uz <code>wp-content</code> mapi → "File permissions" → <code>755</code>, atzīmējot "Recurse into subdirectories" un "Apply to directories only", tad atkārto ar <code>644</code> tikai failiem.</p>
+    </section>
+
+    <section class="doc-section" id="htaccess-500">
+      <h2>Bojāts .htaccess → 500 kļūda</h2>
+      <p>WordPress izmanto <code>.htaccess</code> pastāvīgo saišu (permalinks) darbībai — manuāli pievienots vai spraudņa sabojāts noteikums šajā failā uzreiz padara visu vietni nesasniedzamu ar 500 kļūdu.</p>
+      <p><strong>Risinājums caur SSH:</strong></p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Pārdēvē .htaccess, lai pilnībā izslēgtu un pārbaudītu, vai tas ir vainīgais</span>
+cd /var/www/piemers.lv
+mv .htaccess .htaccess.bak
+
+<span class="tok-com"># Ja vietne tagad strādā, izveido jaunu noklusējuma WordPress .htaccess</span>
+wp rewrite flush --hard</code></pre>
+      <p><strong>Alternatīva caur failiem:</strong> ja SSH nav, admin panelī atver "Iestatījumi → Pastāvīgās saites" un nospied "Saglabāt izmaiņas" bez papildu rediģēšanas — WordPress automātiski pārraksta <code>.htaccess</code> ar pareizu, noklusējuma saturu (ja vien admin panelis vispār ir pieejams; ja arī tas rāda 500, jāizmanto FTP, lai izdzēstu/pārsauktu failu manuāli).</p>
+    </section>
+
+    <section class="doc-section" id="wp-config-kluda">
+      <h2>wp-config.php sintakses kļūda</h2>
+      <p>Manuāli rediģējot <code>wp-config.php</code> (piemēram, pievienojot <code>WP_DEBUG</code> vai mainot datubāzes datus) un aizmirstot semikolu vai pēdiņu, rezultāts ir tūlītēja "Parse error" visai vietnei, tostarp admin panelim.</p>
+      <p><strong>Risinājums caur SSH</strong> — PHP pati parāda precīzu rindas numuru, kur kļūda:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Pārbauda sintaksi bez vietnes ielādēšanas pārlūkā</span>
+php -l wp-config.php
+
+<span class="tok-com"># Izvads norāda precīzu rindu, piem.:</span>
+<span class="tok-com"># PHP Parse error: syntax error, unexpected ';' in wp-config.php on line 42</span></code></pre>
+      <p><strong>Alternatīva caur failiem:</strong> FTP klientā lejupielādē <code>wp-config.php</code>, atver ar teksta redaktoru, salīdzini ar oficiālo <a href="https://wordpress.org/support/article/editing-wp-config-php/" target="_blank" rel="noopener">wp-config-sample.php</a> struktūru un pārbaudi, vai katra <code>define()</code> rinda beidzas ar semikolu un vai pēdiņas ir pareizi aizvērtas.</p>
+    </section>
+
+    <section class="doc-section" id="atminas-limits">
+      <h2>Allowed memory size exhausted</h2>
+      <p>PHP kļūda, kas parādās, kad skripts (bieži smags spraudnis, attēlu apstrāde vai plaša datubāzes izguve) mēģina izmantot vairāk atmiņas, nekā PHP konfigurācijā atļauts.</p>
+      <p><strong>Risinājums caur SSH</strong> — atmiņas limitu var palielināt vairākās vietās:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// wp-config.php — WordPress specifiskais limits</span>
+<span class="tok-kw">define</span>(<span class="tok-str">'WP_MEMORY_LIMIT'</span>, <span class="tok-str">'256M'</span>);</code></pre>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Servera līmenī — atrod un rediģē php.ini</span>
+php --ini
+sudo nano /etc/php/8.1/fpm/php.ini
+<span class="tok-com"># maini: memory_limit = 256M</span>
+sudo systemctl restart php8.1-fpm</code></pre>
+      <p><strong>Alternatīva caur failiem:</strong> daudzos koplietošanas hostingos atmiņas limitu var iestatīt caur <code>.user.ini</code> failu vietnes saknes mapē (satur, piem., <code>memory_limit = 256M</code>) — augšupielādē to caur FTP, izmaiņas stājas spēkā bez servera restartēšanas.</p>
+    </section>
+
+    <section class="doc-section" id="spraudna-konflikts">
+      <h2>Spraudņa/tēmas konflikts</h2>
+      <p>Vietne strādāja, bet pēc jauna spraudņa/tēmas instalēšanas vai atjaunināšanas parādās kļūdas, izlauzts izkārtojums vai balta lapa — divi spraudņi var arī konfliktēt savā starpā, ne tikai atsevišķi lauzt vietni.</p>
+      <p><strong>Risinājums caur SSH</strong> — sistemātiska bināra meklēšana ar WP-CLI:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Uzskaita visus spraudņus un to statusu</span>
+wp plugin list
+
+<span class="tok-com"># Deaktivizē visus, pārbaudi vai vietne atkal strādā</span>
+wp plugin deactivate --all
+
+<span class="tok-com"># Aktivizē pa vienam, pārbaudot vietni pēc katras darbības</span>
+wp plugin activate akismet
+wp plugin activate contact-form-7
+<span class="tok-com"># ... turpini, līdz atrodi to, kas salauž vietni</span>
+
+<span class="tok-com"># Ja vainīgs tēma — pārslēdz uz noklusējuma WordPress tēmu</span>
+wp theme activate twentytwentyfour</code></pre>
+      <p><strong>Alternatīva caur failiem:</strong> FTP klientā mapē <code>wp-content/plugins</code> pārdēvē katru spraudņa apakšmapi pa vienai (pievienojot, piem., <code>-off</code> nosaukuma beigās), pārbaudot vietni pēc katras — WordPress automātiski deaktivizē spraudni, ja tā mape nav atrodama sagaidītajā vietā.</p>
+    </section>
+
+    <section class="doc-section" id="wp-cli-uzstadisana">
+      <h2>WP-CLI uzstādīšana</h2>
+      <p>WP-CLI ir oficiāls WordPress komandrindas rīks, kas nepieciešams lielākajai daļai iepriekšējo SSH risinājumu. Tas ļauj pārvaldīt spraudņus, lietotājus, datubāzi un daudz ko citu bez admin paneļa.</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Lejupielādē WP-CLI</span>
+curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+
+<span class="tok-com"># Pārbauda, vai strādā</span>
+php wp-cli.phar --info
+
+<span class="tok-com"># Padara globāli izsaucamu kā "wp"</span>
+chmod +x wp-cli.phar
+sudo mv wp-cli.phar /usr/local/bin/wp
+
+<span class="tok-com"># Pārbauda no jebkuras WordPress mapes</span>
+cd /var/www/piemers.lv
+wp core version</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>WP-CLI komandas jāizpilda tajā pašā serverī, tajā pašā mapē, kur atrodas <code>wp-config.php</code> — pretējā gadījumā tas nezinās, ar kuru WordPress instalāciju strādāt.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="jauktais-saturs">
+      <h2>Mixed content pēc SSL migrācijas</h2>
+      <p>Pēc pārejas no HTTP uz HTTPS pārlūks parāda brīdinājumu "Not fully secure" vai bloķē daļu satura — jo daži resursi (attēli, skripti) datubāzē joprojām ir saglabāti ar veco <code>http://</code> adresi, nevis <code>https://</code>.</p>
+      <p><strong>Risinājums caur SSH</strong> — tas pats <code>search-replace</code> mehānisms kā domēna maiņai:</p>
+      <pre class="code-block"><span class="lang">bash</span><code>wp search-replace 'http://piemers.lv' 'https://piemers.lv' --all-tables --dry-run
+wp search-replace 'http://piemers.lv' 'https://piemers.lv' --all-tables</code></pre>
+      <p><strong>Alternatīva caur failiem:</strong> spraudnis "Better Search Replace" (skat. <a href="#meklet-aizvietot">iepriekš</a>) veic to pašu bez SSH — svarīgi aizvietot tieši ar pilnu domēnu (<code>http://piemers.lv</code> → <code>https://piemers.lv</code>), nevis tikai protokolu, lai izvairītos no daļējām sakritībām citos laukos.</p>
+    </section>
+
+    <section class="doc-section" id="epasti-netiek-sutiti">
+      <h2>E-pasti netiek nosūtīti</h2>
+      <p>WordPress noklusējuma <code>wp_mail()</code> funkcija izmanto servera vietējo <code>mail()</code> funkciju, ko daudzi hostingi un mākoņa serveri (piem., AWS, DigitalOcean) bloķē vai neuzskata par uzticamu — e-pasti (paroles atiestatīšana, veidlapu paziņojumi) vienkārši pazūd bez kļūdas.</p>
+      <p><strong>Risinājums caur SSH</strong> — pārbaudi, vai serveris vispār var sūtīt pastu, un pāriet uz SMTP:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Pārbauda, vai vietējais mail serviss vispār darbojas</span>
+echo "Testa ziņojums" | mail -s "Tests" tavs@epasts.lv
+
+<span class="tok-com"># Uzstāda un konfigurē SMTP spraudni caur WP-CLI</span>
+wp plugin install wp-mail-smtp --activate</code></pre>
+      <p>Pēc uzstādīšanas spraudnis jākonfigurē admin panelī ar reāla SMTP servera datiem (piem., SendGrid, Mailgun vai Gmail SMTP) — tas garantē piegādi, atšķirībā no servera <code>mail()</code> funkcijas.</p>
+      <p><strong>Alternatīva caur failiem:</strong> ja SSH nav, spraudni "WP Mail SMTP" instalē tieši admin panelī (Spraudņi → Pievienot jaunu) bez komandrindas.</p>
+    </section>
+
+    <section class="doc-section" id="lena-vietne">
+      <h2>Lēna WordPress vietne</h2>
+      <p>Lapas ielādējas manāmi lēni — cēlonis parasti ir kāds no trim: neoptimizēta datubāze, trūkstoša kešošana vai pārāk smagi/nesaspiesti attēli.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>🗄️ Neoptimizēta datubāze</h4><p>Gadu gaitā uzkrājušies revīziju ieraksti, spam komentāri, transients.</p></div>
+        <div class="doc-mini-card"><h4>🔁 Nav kešošanas</h4><p>Katrs pieprasījums no jauna izpilda visus datubāzes vaicājumus.</p></div>
+        <div class="doc-mini-card"><h4>🖼️ Nesaspiesti attēli</h4><p>Augšupielādēti pilna izmēra attēli bez optimizācijas.</p></div>
+      </div>
+      <p><strong>Risinājums caur SSH:</strong></p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Iztīra vecās ziņu revīzijas un spam komentārus</span>
+wp post delete $(wp post list --post_type='revision' --format=ids) --force
+wp comment delete $(wp comment list --status=spam --format=ids) --force
+
+<span class="tok-com"># Optimizē datubāzes tabulas</span>
+wp db optimize
+
+<span class="tok-com"># Uzstāda kešošanas spraudni</span>
+wp plugin install w3-total-cache --activate</code></pre>
+      <p><strong>Alternatīva caur failiem/paneli:</strong> daudziem hostingiem (piem., ar LiteSpeed serveri) ir iebūvēts kešošanas mehānisms, ko ieslēdz vadības panelī bez papildu spraudņa — jāatrod sadaļa "Cache" vai "Performance" hostinga panelī.</p>
+    </section>
+
+    <div class="doc-pager">
+      <a href="wordpress.html"><span class="lbl">← Atpakaļ</span>Pilnā WordPress dokumentācija</a>
+      <a class="to-next" href="../index.html"><span class="lbl">Atpakaļ →</span>Visas kategorijas</a>
+    </div>
+  </main>
+</div>
+
+<script src="../js/theme.js?v=2"></script>
+<script src="../js/main.js?v=2"></script>
+</body>
+</html>
