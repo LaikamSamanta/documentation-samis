@@ -69,6 +69,25 @@
         <a href="#contact-usage"><span class="bullet"></span>Kā ielikt citā projektā</a>
       </div>
     </div>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>💳 Stripe maksājumi</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#stripe-overview"><span class="bullet"></span>Pārskats &amp; jēdzieni</a>
+        <a href="#stripe-setup"><span class="bullet"></span>1. Stripe konta sagatavošana</a>
+        <a href="#stripe-keys"><span class="bullet"></span>2. Kur glabāt atslēgas</a>
+        <a href="#stripe-checkout-session"><span class="bullet"></span>3. Checkout Session izveide</a>
+        <a href="#stripe-redirect"><span class="bullet"></span>4. Pāradresācija uz Stripe (JS)</a>
+        <a href="#stripe-webhooks-why"><span class="bullet"></span>5. Kāpēc vajadzīgi webhooks</a>
+        <a href="#stripe-webhook-setup"><span class="bullet"></span>6. Webhook uzstādīšana Stripe panelī</a>
+        <a href="#stripe-webhook-handler"><span class="bullet"></span>7. Webhook apstrāde &amp; paraksta pārbaude</a>
+        <a href="#stripe-fulfillment"><span class="bullet"></span>8. Piekļuves piešķiršana pēc apmaksas</a>
+        <a href="#stripe-testing"><span class="bullet"></span>Testēšana ar Stripe testa kartēm</a>
+        <a href="#stripe-usage"><span class="bullet"></span>Kā ielikt citā projektā</a>
+      </div>
+    </div>
   </aside>
 
   <main class="doc-main">
@@ -821,6 +840,347 @@
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
         <p>Vēlies to pašu formu izmantot vairākās lapās (kontakti, footer, popup)? Nekas jāmaina nav — HTML/JS/PHP paliek identisks, jāpārliecinās tikai, ka katrā lapā ir unikāls elementa <code>id</code>, ja vienā lapā ir vairākas formas vienlaikus.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="stripe-overview">
+      <h2>Pārskats &amp; jēdzieni</h2>
+      <p>Šī integrācija ļauj apmeklētājam samaksāt par produktu/kursu/pakalpojumu, izmantojot <strong>Stripe Checkout</strong> — Stripe gatavu, hostinga lapu maksājuma ievadei. Tavai vietnei nekad nav jāredz vai jāapstrādā reālas kartes numuri (to dara Stripe pats, kas vienkāršo drošības/atbilstības prasības). Plūsma: apmeklētājs spiež "Pirkt" → tava vietne izveido <strong>Checkout Session</strong> → apmeklētājs tiek pāradresēts uz Stripe lapu → pēc apmaksas Stripe pāradresē atpakaļ UN paziņo tavam serverim par notikušo caur <strong>webhook</strong>.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>Kas ir API</h4><p>Veids, kā divas programmas sazinās pēc noteiktiem noteikumiem. Stripe API ir HTTP adreses, uz kurām tava servera PHP kods sūta pieprasījumus (piem., "izveido maksājuma sesiju") un saņem atbildi JSON formātā.</p></div>
+        <div class="doc-mini-card"><h4>API atslēgas (keys)</h4><p><strong>Secret key</strong> (<code>sk_...</code>) drīkst izmantot <strong>tikai serverī</strong> — ar to var izveidot maksājumus tavā vārdā. <strong>Publishable key</strong> (<code>pk_...</code>) ir droši publiskot pārlūkā, bet šai integrācijai (hostinga Checkout) tā pat nav vajadzīga.</p></div>
+        <div class="doc-mini-card"><h4>Test vs Live režīms</h4><p>Katram Stripe kontam ir divas atslēgu kopas: <code>sk_test_...</code> testēšanai (nauda nekad reāli nepāriet) un <code>sk_live_...</code> reāliem maksājumiem. Pārslēdz Stripe panelī augšējā labajā stūrī.</p></div>
+        <div class="doc-mini-card"><h4>Checkout Session</h4><p>Objekts, ko tavs serveris izveido pirms katra pirkuma — apraksta, ko pērk un par cik. Stripe atbildē atgriež URL, uz kuru pāradresē apmeklētāju.</p></div>
+        <div class="doc-mini-card"><h4>Webhook</h4><p>Stripe sūtīts HTTP pieprasījums <strong>uz tavu serveri</strong>, kad kaut kas notiek (piem., apmaksa izdevās). Nepieciešams, jo pāradresācija atpakaļ uz tavu vietni <strong>nav uzticama</strong> — apmeklētājs var aizvērt cilni pirms tam.</p></div>
+        <div class="doc-mini-card"><h4>Webhook paraksts (signing secret)</h4><p>Unikāla atslēga (<code>whsec_...</code>), ar kuru pārbauda, ka webhook pieprasījums tiešām nāk no Stripe, nevis no kāda, kas mēģina viltus nosūtīt "apmaksāts" ziņu tavam serverim.</p></div>
+      </div>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><strong>Nekad nepiešķir piekļuvi/produktu tikai tāpēc, ka apmeklētājs atgriezās "success" lapā.</strong> Šo URL var apmeklēt jebkurš, arī bez maksāšanas. Vienīgais uzticamais avots, ka apmaksa tiešām notikusi, ir <strong>webhook ar pareizu parakstu</strong> — "success" lapa der tikai UI ziņai ("Paldies! Apstrādājam Jūsu pasūtījumu"), nevis piekļuves piešķiršanai.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="stripe-setup">
+      <h2>1. Stripe konta sagatavošana</h2>
+      <p>Ja vēl nav — izveido kontu <a href="https://dashboard.stripe.com/register" target="_blank" rel="noopener">dashboard.stripe.com/register</a>. Reālu maksājumu pieņemšanai vēlāk jāaizpilda uzņēmuma dati ("Activate your account"), bet <strong>izstrādei un testēšanai konts uzreiz strādā test režīmā</strong>, bez papildu apstiprināšanas.</p>
+      <pre class="code-block"><span class="lang">text</span><code>1. Stripe panelī (dashboard.stripe.com) pārliecinies, ka slēdzis
+   augšpusē labajā stūrī rāda "Test mode"
+
+2. Ej uz Developers → API keys
+
+3. Nokopē:
+   - "Secret key" (sāksies ar sk_test_...)
+   - Publishable key nav vajadzīgs šai integrācijai
+
+4. Vēlāk, gatavojoties reāliem maksājumiem, atkārto to pašu
+   "Live mode" atslēgām (sk_live_...) — tās parādās tikai
+   pēc konta aktivizācijas</code></pre>
+    </section>
+
+    <section class="doc-section" id="stripe-keys">
+      <h2>2. Kur glabāt atslēgas</h2>
+      <p>Tāpat kā ar citām šīs lapas integrācijām — atslēgas nekad neraksta tieši kodā (tas nonāktu Git vēsturē), tās definē kā konstantes <code>wp-config.php</code> failā, kas parasti nav Git repozitorijā.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// wp-config.php — pievieno pirms rindas "/* That's all, stop editing! */"</span>
+<span class="tok-kw">define</span>(<span class="tok-str">'STRIPE_SECRET_KEY'</span>, <span class="tok-str">'sk_test_...'</span>);
+<span class="tok-kw">define</span>(<span class="tok-str">'STRIPE_WEBHOOK_SECRET'</span>, <span class="tok-str">'whsec_...'</span>); <span class="tok-com">// iegūsi 6. solī</span></code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Kad pāriet uz reāliem maksājumiem, jāmaina <strong>abas</strong> konstantes uz <code>sk_live_...</code> un tam atbilstošu live webhook signing secret (katram režīmam Stripe ģenerē savu, atšķirīgu <code>whsec_</code>).</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="stripe-checkout-session">
+      <h2>3. Checkout Session izveide</h2>
+      <p>Servera puse — REST galapunkts, ko izsauc JS, kad apmeklētājs spiež "Pirkt". Tas izveido Checkout Session ar Stripe API (raw <code>wp_remote_post</code>, bez papildu bibliotēkām) un atgriež URL, uz kuru pāradresēt.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'rest_api_init'</span>, <span class="tok-kw">function</span> () {
+    <span class="tok-fn">register_rest_route</span>(<span class="tok-str">'mana-tema/v1'</span>, <span class="tok-str">'/checkout'</span>, [
+        <span class="tok-str">'methods'</span>             => <span class="tok-str">'POST'</span>,
+        <span class="tok-str">'callback'</span>            => <span class="tok-str">'stripe_create_checkout_session'</span>,
+        <span class="tok-str">'permission_callback'</span> => <span class="tok-str">'__return_true'</span>,
+    ]);
+});
+
+<span class="tok-kw">function</span> <span class="tok-fn">stripe_create_checkout_session</span>(WP_REST_Request <span class="tok-fn">$req</span>): WP_REST_Response|WP_Error {
+    <span class="tok-fn">$produkts</span> = <span class="tok-fn">sanitize_key</span>(<span class="tok-fn">$req</span>->get_param(<span class="tok-str">'produkts'</span>));
+
+    <span class="tok-com">// Cenas nosaka SERVERĪ, nevis pieņem no pārlūka — pretējā gadījumā</span>
+    <span class="tok-com">// jebkurš varētu nosūtīt savu cenu tieši ar izmainītu pieprasījumu</span>
+    <span class="tok-fn">$produkti</span> = [
+        <span class="tok-str">'kurss-a'</span> => [<span class="tok-str">'nosaukums'</span> => <span class="tok-str">'A kurss'</span>, <span class="tok-str">'cena_eur'</span> => 49.00],
+        <span class="tok-str">'kurss-b'</span> => [<span class="tok-str">'nosaukums'</span> => <span class="tok-str">'B kurss'</span>, <span class="tok-str">'cena_eur'</span> => 99.00],
+    ];
+
+    <span class="tok-kw">if</span> (!<span class="tok-fn">isset</span>(<span class="tok-fn">$produkti</span>[<span class="tok-fn">$produkts</span>])) {
+        <span class="tok-kw">return</span> <span class="tok-kw">new</span> WP_Error(<span class="tok-str">'invalid_product'</span>, <span class="tok-str">'Nederīgs produkts'</span>, [<span class="tok-str">'status'</span> => 400]);
+    }
+
+    <span class="tok-fn">$izvele</span> = <span class="tok-fn">$produkti</span>[<span class="tok-fn">$produkts</span>];
+
+    <span class="tok-fn">$body</span> = [
+        <span class="tok-str">'mode'</span> => <span class="tok-str">'payment'</span>, <span class="tok-com">// vienreizējs maksājums (nevis abonements)</span>
+
+        <span class="tok-com">// Produkta apraksts — Stripe pats izveido "cenu" no šiem datiem</span>
+        <span class="tok-str">'line_items[0][price_data][currency]'</span>          => <span class="tok-str">'eur'</span>,
+        <span class="tok-str">'line_items[0][price_data][unit_amount]'</span>       => <span class="tok-fn">$izvele</span>[<span class="tok-str">'cena_eur'</span>] * 100, <span class="tok-com">// centos!</span>
+        <span class="tok-str">'line_items[0][price_data][product_data][name]'</span> => <span class="tok-fn">$izvele</span>[<span class="tok-str">'nosaukums'</span>],
+        <span class="tok-str">'line_items[0][quantity]'</span>                       => 1,
+
+        <span class="tok-com">// Uz šejieni Stripe pāradresē pēc veiksmīgas/atceltas apmaksas.
+        // {CHECKOUT_SESSION_ID} ir Stripe rezervēts vietturis — Stripe to
+        // pats aizvieto ar reālo sesijas ID pirms pāradresācijas.</span>
+        <span class="tok-str">'success_url'</span> => <span class="tok-fn">home_url</span>(<span class="tok-str">'/paldies/?session_id={CHECKOUT_SESSION_ID}'</span>),
+        <span class="tok-str">'cancel_url'</span>  => <span class="tok-fn">home_url</span>(<span class="tok-str">'/cenas/'</span>),
+
+        <span class="tok-com">// Pielāgoti dati, ko Stripe "atceras" un atdod atpakaļ webhook — šeit
+        // liek visu, kas vajadzīgs, lai zinātu, KAM un KO piešķirt pēc apmaksas</span>
+        <span class="tok-str">'metadata[produkts]'</span> => <span class="tok-fn">$produkts</span>,
+        <span class="tok-str">'metadata[user_id]'</span>  => <span class="tok-fn">get_current_user_id</span>(),
+    ];
+
+    <span class="tok-fn">$response</span> = <span class="tok-fn">wp_remote_post</span>(<span class="tok-str">'https://api.stripe.com/v1/checkout/sessions'</span>, [
+        <span class="tok-str">'headers'</span> => [
+            <span class="tok-str">'Authorization'</span> => <span class="tok-str">'Bearer '</span> . STRIPE_SECRET_KEY,
+            <span class="tok-str">'Content-Type'</span>  => <span class="tok-str">'application/x-www-form-urlencoded'</span>,
+        ],
+        <span class="tok-str">'body'</span>    => <span class="tok-fn">$body</span>,
+        <span class="tok-str">'timeout'</span> => 15,
+    ]);
+
+    <span class="tok-kw">if</span> (<span class="tok-fn">is_wp_error</span>(<span class="tok-fn">$response</span>)) {
+        <span class="tok-kw">return</span> <span class="tok-kw">new</span> WP_Error(<span class="tok-str">'stripe_error'</span>, <span class="tok-fn">$response</span>->get_error_message(), [<span class="tok-str">'status'</span> => 500]);
+    }
+
+    <span class="tok-fn">$dati</span> = <span class="tok-fn">json_decode</span>(<span class="tok-fn">wp_remote_retrieve_body</span>(<span class="tok-fn">$response</span>), <span class="tok-kw">true</span>);
+
+    <span class="tok-kw">if</span> (<span class="tok-fn">empty</span>(<span class="tok-fn">$dati</span>[<span class="tok-str">'url'</span>])) {
+        <span class="tok-kw">return</span> <span class="tok-kw">new</span> WP_Error(<span class="tok-str">'stripe_no_url'</span>, <span class="tok-str">'Stripe neatgrieza checkout adresi'</span>, [<span class="tok-str">'status'</span> => 500]);
+    }
+
+    <span class="tok-kw">return</span> <span class="tok-kw">new</span> WP_REST_Response([<span class="tok-str">'checkout_url'</span> => <span class="tok-fn">$dati</span>[<span class="tok-str">'url'</span>]], 200);
+}</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Stripe API pieņem datus <code>application/x-www-form-urlencoded</code> formātā ar "kvadrātiekavu" sintaksi (<code>line_items[0][price_data][currency]</code>) — nevis JSON. Tas ir tāpēc, ka Stripe API ir vecāks par plašo JSON pieņemšanu, un šī sintakse joprojām ir oficiāli atbalstītais veids arī bez SDK.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="stripe-redirect">
+      <h2>4. Pāradresācija uz Stripe (JS)</h2>
+      <p>Frontend puse — poga izsauc iepriekšējā soļa REST galapunktu un pāradresē apmeklētāju uz atbildē saņemto URL.</p>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// js/stripe-checkout.js</span>
+document.querySelectorAll(<span class="tok-str">'.pirkt-poga[data-produkts]'</span>).forEach(poga => {
+  poga.addEventListener(<span class="tok-str">'click'</span>, <span class="tok-kw">async</span> <span class="tok-kw">function</span>() {
+    <span class="tok-kw">this</span>.disabled = <span class="tok-kw">true</span>;
+    <span class="tok-kw">const</span> sakotnejaisTeksts = <span class="tok-kw">this</span>.textContent;
+    <span class="tok-kw">this</span>.textContent = <span class="tok-str">'Notiek pāradresācija...'</span>;
+
+    <span class="tok-kw">try</span> {
+      <span class="tok-kw">const</span> atbilde = <span class="tok-kw">await</span> fetch(<span class="tok-str">'/wp-json/mana-tema/v1/checkout'</span>, {
+        method: <span class="tok-str">'POST'</span>,
+        headers: { <span class="tok-str">'Content-Type'</span>: <span class="tok-str">'application/json'</span> },
+        body: JSON.stringify({ produkts: <span class="tok-kw">this</span>.dataset.produkts }),
+      });
+      <span class="tok-kw">const</span> dati = <span class="tok-kw">await</span> atbilde.json();
+
+      <span class="tok-kw">if</span> (dati.checkout_url) {
+        window.location.href = dati.checkout_url; <span class="tok-com">// pāradresē uz Stripe</span>
+      } <span class="tok-kw">else</span> {
+        alert(<span class="tok-str">'Kļūda: '</span> + (dati.message || <span class="tok-str">'Nezināma kļūda'</span>));
+        <span class="tok-kw">this</span>.disabled = <span class="tok-kw">false</span>;
+        <span class="tok-kw">this</span>.textContent = sakotnejaisTeksts;
+      }
+    } <span class="tok-kw">catch</span> (err) {
+      alert(<span class="tok-str">'Neizdevās izveidot maksājumu. Mēģini vēlreiz.'</span>);
+      <span class="tok-kw">this</span>.disabled = <span class="tok-kw">false</span>;
+      <span class="tok-kw">this</span>.textContent = sakotnejaisTeksts;
+    }
+  });
+});</code></pre>
+      <p>Atbilstošā HTML poga jebkurā veidnē:</p>
+      <pre class="code-block"><span class="lang">text</span><code>&lt;button class="pirkt-poga" data-produkts="kurss-a"&gt;Pirkt A kursu — 49€&lt;/button&gt;</code></pre>
+    </section>
+
+    <section class="doc-section" id="stripe-webhooks-why">
+      <h2>5. Kāpēc vajadzīgi webhooks</h2>
+      <p>Pēc apmaksas Stripe pāradresē apmeklētāju atpakaļ uz <code>success_url</code> — bet <strong>paļauties tikai uz to nedrīkst</strong>, vairāku iemeslu dēļ:</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>🔌 Pārlūks var aizvērties</h4><p>Apmeklētājs samaksā, tad aizver cilni pirms pāradresācija paspēj notikt — tava vietne par apmaksu neuzzinātu nekad.</p></div>
+        <div class="doc-mini-card"><h4>🔗 URL var apmeklēt bez maksāšanas</h4><p>"Success" lapas adrese nav noslēpums — jebkurš var to atvērt tieši, neveicot nekādu maksājumu, un izlikties par pircēju.</p></div>
+        <div class="doc-mini-card"><h4>⏳ Asinhroni maksājumu veidi</h4><p>Dažas apmaksas metodes (bankas pārskaitījumi u.c.) apstiprinās tikai pēc minūtēm/dienām — pāradresācija notiek uzreiz, pirms apmaksa faktiski ir apstiprināta.</p></div>
+      </div>
+      <p>Tāpēc <strong>webhook ir vienīgais uzticamais signāls</strong>, ka apmaksa tiešām notikusi — Stripe to nosūta tieši no sava servera uz tavu serveri, neatkarīgi no tā, ko dara apmeklētāja pārlūks.</p>
+    </section>
+
+    <section class="doc-section" id="stripe-webhook-setup">
+      <h2>6. Webhook uzstādīšana Stripe panelī</h2>
+      <pre class="code-block"><span class="lang">text</span><code>1. Stripe panelī ej uz Developers → Webhooks → Add endpoint
+
+2. Endpoint URL ievadi:
+   https://tavadomena.lv/wp-json/mana-tema/v1/stripe-webhook
+
+3. "Select events to listen to" izvēlies:
+   - checkout.session.completed   (apmaksa izdevās)
+   - checkout.session.expired     (apmeklētājs nepabeidza,
+                                    sesija beidzās)
+
+4. Saglabā — Stripe parādīs "Signing secret" (whsec_...),
+   ko ievieto wp-config.php kā STRIPE_WEBHOOK_SECRET (2. solis)</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Webhook endpoints jāuzstāda <strong>atsevišķi</strong> test un live režīmam (katram sava adrese var būt vienāda, bet katrā Stripe panelī — Test mode un Live mode ir pilnīgi atsevišķi webhook saraksti ar atšķirīgu signing secret).</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="stripe-webhook-handler">
+      <h2>7. Webhook apstrāde &amp; paraksta pārbaude</h2>
+      <p>Šis galapunkts saņem Stripe paziņojumus. <strong>Vispirms vienmēr pārbauda parakstu</strong> — bez tā jebkurš internetā varētu nosūtīt viltus "apmaksāts" pieprasījumu un saņemt produktu par velti.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'rest_api_init'</span>, <span class="tok-kw">function</span> () {
+    <span class="tok-fn">register_rest_route</span>(<span class="tok-str">'mana-tema/v1'</span>, <span class="tok-str">'/stripe-webhook'</span>, [
+        <span class="tok-str">'methods'</span>             => <span class="tok-str">'POST'</span>,
+        <span class="tok-str">'callback'</span>            => <span class="tok-str">'stripe_webhook_handler'</span>,
+        <span class="tok-com">// Stripe nevar nosūtīt WordPress nonce — drošību šeit nodrošina
+        // TIKAI paraksta pārbaude funkcijas iekšpusē, nevis permission_callback</span>
+        <span class="tok-str">'permission_callback'</span> => <span class="tok-str">'__return_true'</span>,
+    ]);
+});
+
+<span class="tok-kw">function</span> <span class="tok-fn">stripe_webhook_handler</span>(WP_REST_Request <span class="tok-fn">$req</span>): WP_REST_Response|WP_Error {
+    <span class="tok-fn">$payload</span>           = <span class="tok-fn">$req</span>->get_body();
+    <span class="tok-fn">$signature_header</span> = <span class="tok-fn">$req</span>->get_header(<span class="tok-str">'stripe-signature'</span>);
+
+    <span class="tok-kw">if</span> (!<span class="tok-fn">stripe_verify_signature</span>(<span class="tok-fn">$payload</span>, <span class="tok-fn">$signature_header</span>, STRIPE_WEBHOOK_SECRET)) {
+        <span class="tok-kw">return</span> <span class="tok-kw">new</span> WP_Error(<span class="tok-str">'invalid_signature'</span>, <span class="tok-str">'Nepareizs paraksts'</span>, [<span class="tok-str">'status'</span> => 400]);
+    }
+
+    <span class="tok-fn">$event</span> = <span class="tok-fn">json_decode</span>(<span class="tok-fn">$payload</span>, <span class="tok-kw">true</span>);
+
+    <span class="tok-kw">if</span> (<span class="tok-fn">$event</span>[<span class="tok-str">'type'</span>] === <span class="tok-str">'checkout.session.completed'</span>) {
+        <span class="tok-fn">$session</span>    = <span class="tok-fn">$event</span>[<span class="tok-str">'data'</span>][<span class="tok-str">'object'</span>];
+        <span class="tok-fn">$session_id</span> = <span class="tok-fn">$session</span>[<span class="tok-str">'id'</span>] ?? <span class="tok-str">''</span>;
+
+        <span class="tok-com">// Aizsardzība pret dubultapstrādi — Stripe var nosūtīt to pašu
+        // notikumu vairākas reizes (tīkla atkārtojumi, laika limiti u.c.)</span>
+        <span class="tok-fn">$apstrades_atzime</span> = <span class="tok-str">'stripe_apstradats_'</span> . <span class="tok-fn">md5</span>(<span class="tok-fn">$session_id</span>);
+        <span class="tok-kw">if</span> (<span class="tok-fn">get_transient</span>(<span class="tok-fn">$apstrades_atzime</span>)) {
+            <span class="tok-kw">return</span> <span class="tok-kw">new</span> WP_REST_Response([<span class="tok-str">'received'</span> => <span class="tok-kw">true</span>, <span class="tok-str">'duplicate'</span> => <span class="tok-kw">true</span>], 200);
+        }
+        <span class="tok-fn">set_transient</span>(<span class="tok-fn">$apstrades_atzime</span>, <span class="tok-kw">true</span>, MONTH_IN_SECONDS);
+
+        <span class="tok-com">// Reālo piekļuves piešķiršanu dara āķī — skat. 8. soli</span>
+        <span class="tok-fn">do_action</span>(<span class="tok-str">'stripe_payment_completed'</span>, <span class="tok-fn">$session</span>);
+    }
+
+    <span class="tok-kw">return</span> <span class="tok-kw">new</span> WP_REST_Response([<span class="tok-str">'received'</span> => <span class="tok-kw">true</span>], 200);
+}
+
+<span class="tok-kw">function</span> <span class="tok-fn">stripe_verify_signature</span>(<span class="tok-kw">string</span> <span class="tok-fn">$payload</span>, ?<span class="tok-kw">string</span> <span class="tok-fn">$signature_header</span>, <span class="tok-kw">string</span> <span class="tok-fn">$secret</span>): <span class="tok-kw">bool</span> {
+    <span class="tok-kw">if</span> (!<span class="tok-fn">$signature_header</span>) {
+        <span class="tok-kw">return</span> <span class="tok-kw">false</span>;
+    }
+
+    <span class="tok-com">// Stripe galvene izskatās kā: "t=1712345678,v1=abc123...,v1=def456..."</span>
+    <span class="tok-fn">$dalas</span>        = <span class="tok-fn">explode</span>(<span class="tok-str">','</span>, <span class="tok-fn">$signature_header</span>);
+    <span class="tok-fn">$laika_zimogs</span> = <span class="tok-str">''</span>;
+    <span class="tok-fn">$paraksti</span>     = [];
+
+    <span class="tok-kw">foreach</span> (<span class="tok-fn">$dalas</span> <span class="tok-kw">as</span> <span class="tok-fn">$dala</span>) {
+        [<span class="tok-fn">$atslega</span>, <span class="tok-fn">$vertiba</span>] = <span class="tok-fn">array_pad</span>(<span class="tok-fn">explode</span>(<span class="tok-str">'='</span>, <span class="tok-fn">$dala</span>, 2), 2, <span class="tok-str">''</span>);
+        <span class="tok-kw">if</span> (<span class="tok-fn">$atslega</span> === <span class="tok-str">'t'</span>)  <span class="tok-fn">$laika_zimogs</span> = <span class="tok-fn">$vertiba</span>;
+        <span class="tok-kw">if</span> (<span class="tok-fn">$atslega</span> === <span class="tok-str">'v1'</span>) <span class="tok-fn">$paraksti</span>[] = <span class="tok-fn">$vertiba</span>;
+    }
+
+    <span class="tok-kw">if</span> (!<span class="tok-fn">$laika_zimogs</span> || <span class="tok-fn">empty</span>(<span class="tok-fn">$paraksti</span>)) {
+        <span class="tok-kw">return</span> <span class="tok-kw">false</span>;
+    }
+
+    <span class="tok-com">// Noraida pārāk vecus pieprasījumus — aizsardzība pret "replay" uzbrukumu,
+    // kur kāds noķer vecu, derīgu pieprasījumu un nosūta to atkārtoti vēlāk</span>
+    <span class="tok-kw">if</span> (<span class="tok-fn">abs</span>(time() - (<span class="tok-kw">int</span>) <span class="tok-fn">$laika_zimogs</span>) > 5 * MINUTE_IN_SECONDS) {
+        <span class="tok-kw">return</span> <span class="tok-kw">false</span>;
+    }
+
+    <span class="tok-fn">$parakstamie_dati</span> = <span class="tok-fn">$laika_zimogs</span> . <span class="tok-str">'.'</span> . <span class="tok-fn">$payload</span>;
+    <span class="tok-fn">$sagaidamais</span>      = <span class="tok-fn">hash_hmac</span>(<span class="tok-str">'sha256'</span>, <span class="tok-fn">$parakstamie_dati</span>, <span class="tok-fn">$secret</span>);
+
+    <span class="tok-kw">foreach</span> (<span class="tok-fn">$paraksti</span> <span class="tok-kw">as</span> <span class="tok-fn">$paraksts</span>) {
+        <span class="tok-kw">if</span> (<span class="tok-fn">hash_equals</span>(<span class="tok-fn">$sagaidamais</span>, <span class="tok-fn">$paraksts</span>)) {
+            <span class="tok-kw">return</span> <span class="tok-kw">true</span>;
+        }
+    }
+
+    <span class="tok-kw">return</span> <span class="tok-kw">false</span>;
+}</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Šis piemērs pārbauda parakstu "manuāli" (bez papildu bibliotēkām), lai to varētu iekopēt bez Composer/vendor mapes uzstādīšanas. Ja projektā jau ir uzstādīts oficiālais <code>stripe/stripe-php</code> pakotne, var izmantot arī <code>\Stripe\Webhook::constructEvent($payload, $signature_header, $secret)</code>, kas dara to pašu.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="stripe-fulfillment">
+      <h2>8. Piekļuves piešķiršana pēc apmaksas</h2>
+      <p>Reālo darbību (atzīmēt pasūtījumu, piešķirt piekļuvi, nosūtīt e-pastu) dara atsevišķā funkcijā, kas "klausās" iepriekšējā solī izsaukto āķi <code>stripe_payment_completed</code> — tā webhook apstrādes funkcija paliek īsa un pati piešķiršanas loģika ir viegli pielāgojama katram projektam.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'stripe_payment_completed'</span>, <span class="tok-kw">function</span> (<span class="tok-fn">$session</span>) {
+    <span class="tok-fn">$produkts</span> = <span class="tok-fn">sanitize_key</span>(<span class="tok-fn">$session</span>[<span class="tok-str">'metadata'</span>][<span class="tok-str">'produkts'</span>] ?? <span class="tok-str">''</span>);
+    <span class="tok-fn">$user_id</span>  = (<span class="tok-kw">int</span>) (<span class="tok-fn">$session</span>[<span class="tok-str">'metadata'</span>][<span class="tok-str">'user_id'</span>] ?? 0);
+    <span class="tok-fn">$epasts</span>   = <span class="tok-fn">$session</span>[<span class="tok-str">'customer_details'</span>][<span class="tok-str">'email'</span>] ?? <span class="tok-str">''</span>;
+
+    <span class="tok-kw">if</span> (<span class="tok-fn">$user_id</span> && <span class="tok-fn">$produkts</span>) {
+        <span class="tok-com">// Piemērs: atzīmē lietotāja meta, ka viņam ir piekļuve konkrētam kursam</span>
+        <span class="tok-fn">update_user_meta</span>(<span class="tok-fn">$user_id</span>, <span class="tok-str">'nopirkts_'</span> . <span class="tok-fn">$produkts</span>, <span class="tok-kw">true</span>);
+    }
+
+    <span class="tok-kw">if</span> (<span class="tok-fn">$epasts</span>) {
+        <span class="tok-fn">wp_mail</span>(<span class="tok-fn">$epasts</span>, <span class="tok-str">'Paldies par pirkumu!'</span>, <span class="tok-str">'Jūsu pasūtījums ir apstiprināts un piekļuve aktivizēta.'</span>);
+    }
+});</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Dublikātu aizsardzība 7. solī izmanto <code>transient</code>, kas pēc mēneša automātiski izzūd — ja Stripe (retos gadījumos) atkārtoti nosūtītu to pašu, jau sen apstrādāto notikumu pēc šī termiņa, piekļuve tiktu piešķirta atkārtoti. Augstas vērtības produktiem drošāk ir glabāt apstrādāto <code>session_id</code> sarakstu pastāvīgi (piem., pielāgotā datubāzes tabulā vai kā ierakstu pie paša pasūtījuma), nevis paļauties uz pagaidu transient.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="stripe-testing">
+      <h2>Testēšana ar Stripe testa kartēm</h2>
+      <p>Test režīmā (<code>sk_test_...</code>) Stripe pieņem īpašus testa kartes numurus — reāla nauda nekad nepāriet, bet visa plūsma (Checkout lapa, webhook, piekļuves piešķiršana) strādā tieši tāpat kā ar reālu karti.</p>
+      <pre class="code-block"><span class="lang">text</span><code>Kartes numurs:  4242 4242 4242 4242   (veiksmīgs maksājums)
+Derīguma termiņš: jebkurš nākotnes datums (piem., 12/30)
+CVC:            jebkuri 3 cipari (piem., 123)
+Vārds/ZIP:      jebkura vērtība</code></pre>
+      <p>Lai testētu <strong>webhook</strong> lokāli (localhost nav sasniedzams no interneta, tāpēc Stripe tur nevar nosūtīt pieprasījumu tieši), izmanto <a href="https://stripe.com/docs/stripe-cli" target="_blank" rel="noopener">Stripe CLI</a>:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Pārsūta Stripe testa notikumus uz lokālo serveri</span>
+stripe listen --forward-to localhost:8000/wp-json/mana-tema/v1/stripe-webhook
+
+<span class="tok-com"># Izvadā parādīsies pagaidu webhook signing secret (whsec_...) tieši
+# šai sesijai — izmanto to lokālajā wp-config.php testēšanas laikā</span></code></pre>
+    </section>
+
+    <section class="doc-section" id="stripe-usage">
+      <h2>Kā ielikt citā projektā</h2>
+      <pre class="code-block"><span class="lang">text</span><code>1. Stripe panelī izveido kontu (vai izmanto esošo) un nokopē
+   Test mode Secret Key (1. sadaļa)
+
+2. wp-config.php pievieno:
+   define('STRIPE_SECRET_KEY', '...');
+   define('STRIPE_WEBHOOK_SECRET', '...');   ← no 6. soļa
+
+3. functions.php (vai izceltā failā, piem. inc/stripe.php)
+   pievieno 3., 7. un 8. sadaļas PHP kodu — pielāgo $produkti
+   sarakstu (3. sadaļa) un stripe_payment_completed loģiku
+   (8. sadaļa) savam projektam
+
+4. Izveido js/stripe-checkout.js ar 4. sadaļas kodu un
+   pievieno to ar wp_enqueue_script()
+
+5. Veidnē ievieto "Pirkt" pogu(-as) ar data-produkts atribūtu
+
+6. Stripe panelī uzstādi webhook (6. sadaļa), norādot savu
+   reālo domēnu — lokālai testēšanai izmanto Stripe CLI
+
+7. Pārbaudi ar testa karti 4242 4242 4242 4242 (skat. augstāk),
+   tad, kad viss strādā, pārslēdzies uz Live mode atslēgām</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Vairāku produktu/plānu gadījumā <code>$produkti</code> masīvu (3. sadaļa) var brīvi paplašināt — struktūra jau ir sagatavota vairākiem ierakstiem. Abonementiem (atkārtota ikmēneša maksa, nevis vienreizējs pirkums) Stripe piedāvā atsevišķu <code>mode: 'subscription'</code> un Stripe Billing sistēmu, kas šeit nav aprakstīta, bet Checkout Session/webhook pamatprincipi paliek tie paši.</p>
       </div>
     </section>
 
