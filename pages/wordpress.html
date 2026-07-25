@@ -70,17 +70,22 @@
       <a href="#shortcodes"><span class="bullet"></span>Shortcodes</a>
       <a href="#widgets"><span class="bullet"></span>Widgets &amp; Sidebars</a>
       <a href="#ajax"><span class="bullet"></span>AJAX pamati</a>
+      <a href="#gutenberg"><span class="bullet"></span>Gutenberg bloki</a>
+      <a href="#i18n"><span class="bullet"></span>Tulkošana (i18n)</a>
     </div>
     <div class="doc-sidebar-group">
       <h4>Drošība &amp; lietotāji</h4>
       <a href="#drosiba"><span class="bullet"></span>Drošība (nonce &amp; escaping)</a>
+      <a href="#sanitizacija"><span class="bullet"></span>Sanitizācija (wp_kses u.c.)</a>
       <a href="#lomas"><span class="bullet"></span>Lietotāju lomas &amp; tiesības</a>
     </div>
     <div class="doc-sidebar-group">
       <h4>Datubāze &amp; serviss</h4>
       <a href="#wpdb"><span class="bullet"></span>$wpdb vaicājumi</a>
+      <a href="#options-api"><span class="bullet"></span>Options API</a>
       <a href="#transients"><span class="bullet"></span>Transients (kešošana)</a>
       <a href="#cron"><span class="bullet"></span>Cron uzdevumi</a>
+      <a href="#http-api"><span class="bullet"></span>HTTP API (wp_remote_*)</a>
       <a href="#rest-api"><span class="bullet"></span>REST API pamati</a>
     </div>
   </aside>
@@ -572,6 +577,55 @@ fetch(MyAjax.ajax_url, {
       </div>
     </section>
 
+    <section class="doc-section" id="gutenberg">
+      <h2>Gutenberg bloki</h2>
+      <p>Kopš WordPress 5.0 satura redaktors (Gutenberg) sastāv no <strong>blokiem</strong> — katrs rindkopas, attēla vai pielāgota elementa gabals ir savs bloks. Savu bloku veido divi faili: <code>block.json</code> (bloka metadati) un JS fails, kas nosaka, kā bloks izskatās redaktorā (<code>edit</code>) un ko tas saglabā datubāzē (<code>save</code>).</p>
+      <p><strong>1. solis</strong> — izveido <code>blocks/sveiciens/block.json</code>:</p>
+      <pre class="code-block"><span class="lang">json</span><code>{
+  <span class="tok-str">"apiVersion"</span>: 3,
+  <span class="tok-str">"name"</span>: <span class="tok-str">"mana-tema/sveiciens"</span>,
+  <span class="tok-str">"title"</span>: <span class="tok-str">"Sveiciena bloks"</span>,
+  <span class="tok-str">"category"</span>: <span class="tok-str">"widgets"</span>,
+  <span class="tok-str">"icon"</span>: <span class="tok-str">"smiley"</span>,
+  <span class="tok-str">"editorScript"</span>: <span class="tok-str">"file:./index.js"</span>
+}</code></pre>
+      <p><strong>2. solis</strong> — reģistrē bloku PHP pusē (nolasa <code>block.json</code> automātiski):</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// functions.php</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'init'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-fn">register_block_type</span>(<span class="tok-fn">get_template_directory</span>() . <span class="tok-str">'/blocks/sveiciens'</span>);
+});</code></pre>
+      <p><strong>3. solis</strong> — <code>blocks/sveiciens/index.js</code> nosaka bloka uzvedību redaktorā:</p>
+      <pre class="code-block"><span class="lang">js</span><code>import { registerBlockType } from '@wordpress/blocks';
+
+registerBlockType('mana-tema/sveiciens', {
+  edit: () => 'Sveiciens (redaktora skats)',
+  save: () => 'Sveiciens (saglabātais HTML)',
+});</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>import</code> sintakse pārlūkā tieši nestrādā — reāls bloka JS jāsalaiž (build) ar <code>@wordpress/scripts</code> (komanda <code>wp-scripts build</code>), kas <code>import</code> pārvērš parastā, pārlūkam saprotamā JS failā. Tas ir vienīgais piemērs šajā lapā, kam nepieciešams papildu būvēšanas solis.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="i18n">
+      <h2>Tulkošana (i18n)</h2>
+      <p>Ja tēma vai spraudnis paredzēts izplatīšanai (arī citiem lietotājiem, ne tikai vienai vietnei), visi lietotājam redzamie teksti jāietver tulkošanas funkcijās — tas ļauj vēlāk pievienot jebkuru valodu bez koda maiņas.</p>
+      <p><strong>1. solis</strong> — reģistrē "text domain" (unikālu identifikatoru tulkojumiem):</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'after_setup_theme'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-fn">load_theme_textdomain</span>(<span class="tok-str">'mana-tema'</span>, <span class="tok-fn">get_template_directory</span>() . <span class="tok-str">'/languages'</span>);
+});</code></pre>
+      <p><strong>2. solis</strong> — ietver katru redzamo tekstu attiecīgajā funkcijā (otrais parametrs vienmēr ir text domain no 1. soļa):</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Atgriež tulkoto tekstu (jāizmanto echo/turpmākai apstrādei)</span>
+<span class="tok-fn">$teksts</span> = <span class="tok-fn">__</span>(<span class="tok-str">'Sveiki, pasaule!'</span>, <span class="tok-str">'mana-tema'</span>);
+
+<span class="tok-com">// Uzreiz izvada tulkoto tekstu (saīsinājums echo __(...))</span>
+<span class="tok-fn">_e</span>(<span class="tok-str">'Sveiki, pasaule!'</span>, <span class="tok-str">'mana-tema'</span>);
+
+<span class="tok-com">// Apvieno tulkošanu ar drošu HTML izvadi — visbiežāk lietotā kombinācija veidnēs</span>
+<span class="tok-kw">echo</span> <span class="tok-fn">esc_html__</span>(<span class="tok-str">'Sveiki, pasaule!'</span>, <span class="tok-str">'mana-tema'</span>);</code></pre>
+      <p>Pašus tulkojumus glabā <code>.po</code>/<code>.mo</code> failos <code>languages</code> mapē — tos ģenerē un rediģē ar rīkiem kā <a href="https://poedit.net/" target="_blank" rel="noopener">Poedit</a>, kas nolasa kodā izmantotos <code>__()</code>/<code>_e()</code> izsaukumus un veido no tiem tulkojamo tekstu sarakstu.</p>
+    </section>
+
     <section class="doc-section" id="drosiba">
       <h2>Drošība: nonce &amp; escaping</h2>
       <p>Divi drošības jēdzieni, kas jāzina no paša sākuma. <strong>Escaping</strong> — izvadot jebkādus datus HTML, izmanto <code>esc_html()</code>/<code>esc_attr()</code>, lai novērstu XSS (kāds ievieto ļaunprātīgu <code>&lt;script&gt;</code> tagu, kas izpildās citu apmeklētāju pārlūkos). <strong>Nonce</strong> — formas, kas maina datus, aizsargā ar vienreizēju "biļeti", kas apliecina, ka pieprasījums patiešām nāk no tavas lapas.</p>
@@ -591,6 +645,29 @@ fetch(MyAjax.ajax_url, {
     <span class="tok-kw">die</span>(<span class="tok-str">'Drošības pārbaude neizdevās'</span>);
 }
 <span class="tok-com">// ... šeit droši apstrādā $_POST['komentars']</span></code></pre>
+    </section>
+
+    <section class="doc-section" id="sanitizacija">
+      <h2>Sanitizācija: ievades attīrīšana</h2>
+      <p><strong>Escaping</strong> (iepriekš) padara datus drošus <em>izvadei</em>. <strong>Sanitizācija</strong> ir cits solis — padara lietotāja <em>ievadītos</em> datus drošus <em>saglabāšanai</em>, noņemot vai pārveidojot nevēlamu saturu, pirms tas nonāk datubāzē.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Atļauj tikai konkrētus HTML tagus/atribūtus, pārējo izfiltrē — noder,
+// kad lietotājam jāļauj neliels formatējums (piem., komentāros)</span>
+<span class="tok-fn">$atlautie_tagi</span> = [
+    <span class="tok-str">'a'</span>      => [<span class="tok-str">'href'</span> => <span class="tok-kw">true</span>, <span class="tok-str">'title'</span> => <span class="tok-kw">true</span>],
+    <span class="tok-str">'strong'</span> => [],
+    <span class="tok-str">'em'</span>     => [],
+];
+<span class="tok-kw">echo</span> <span class="tok-fn">wp_kses</span>(<span class="tok-fn">$lietotaja_html</span>, <span class="tok-fn">$atlautie_tagi</span>);
+
+<span class="tok-com">// Citas bieži lietotas sanitizācijas funkcijas pēc datu veida</span>
+<span class="tok-fn">sanitize_email</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'epasts'</span>]);
+<span class="tok-fn">sanitize_key</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'id'</span>]);            <span class="tok-com">// tikai mazie burti, cipari, "-", "_"</span>
+<span class="tok-fn">absint</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'skaits'</span>]);           <span class="tok-com">// piespiedu kārtā pozitīvs vesels skaitlis</span>
+<span class="tok-fn">sanitize_textarea_field</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'zinojums'</span>]);</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Vienkāršs likums: <strong>sanitizē pie ievades</strong> (pirms saglabā datubāzē), <strong>escapē pie izvades</strong> (tieši pirms <code>echo</code>). Dari abus — nepaļaujies, ka viens aizstāj otru.</p>
+      </div>
     </section>
 
     <section class="doc-section" id="lomas">
@@ -631,6 +708,26 @@ fetch(MyAjax.ajax_url, {
       <p><code>{$wpdb->prefix}</code> automātiski ievieto pareizo tabulu prefiksu (parasti <code>wp_</code>, bet var atšķirties) — nekad nehardkodē <code>wp_</code> tieši.</p>
     </section>
 
+    <section class="doc-section" id="options-api">
+      <h2>Options API</h2>
+      <p>Vienkāršākais un biežāk lietotais veids, kā saglabāt vietnes iestatījumus — WordPress tos glabā <code>wp_options</code> tabulā kā atslēga-vērtība pārus. Ideāli piemērots tēmas/spraudņa iestatījumiem, kur nav vajadzīga sarežģīta datu struktūra.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Saglabā vai pārraksta vērtību</span>
+<span class="tok-fn">update_option</span>(<span class="tok-str">'mana_tema_krasa'</span>, <span class="tok-str">'#ff0000'</span>);
+
+<span class="tok-com">// Nolasa vērtību — otrais parametrs ir noklusējums, ja opcija vēl neeksistē</span>
+<span class="tok-fn">$krasa</span> = <span class="tok-fn">get_option</span>(<span class="tok-str">'mana_tema_krasa'</span>, <span class="tok-str">'#000000'</span>);
+
+<span class="tok-com">// Pievieno tikai tad, ja opcija vēl neeksistē (update_option pārraksta vienmēr)</span>
+<span class="tok-fn">add_option</span>(<span class="tok-str">'mana_tema_versija'</span>, <span class="tok-str">'1.0'</span>);
+
+<span class="tok-com">// Izdzēš opciju pilnībā</span>
+<span class="tok-fn">delete_option</span>(<span class="tok-str">'mana_tema_versija'</span>);</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>update_option()</code> un <code>add_option()</code> pieņem arī trešo parametru <code>$autoload</code> (<code>true</code>/<code>false</code>). Ar <code>true</code> (noklusējums) opcija tiek ielādēta <strong>katrā</strong> lapas pieprasījumā — der biežai lietošanai. Retāk vajadzīgām, lielām vērtībām iestati <code>false</code>, lai nepalēninātu katru lapas ielādi.</p>
+      </div>
+    </section>
+
     <section class="doc-section" id="transients">
       <h2>Transients (kešošana)</h2>
       <p>Transients ir pagaidu vērtība ar derīguma termiņu — glabājas datubāzē (vai kešošanas sistēmā, ja tāda uzstādīta). Noder, lai izvairītos no smaga darba (ārējs API pieprasījums, sarežģīts vaicājums) atkārtošanas katrā lapas ielādē.</p>
@@ -663,6 +760,33 @@ fetch(MyAjax.ajax_url, {
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
         <p>Zemapmeklētai vietnei WP-Cron var kavēties (nav apmeklētāju = nav trigera). Ražošanas vietnēm bieži atspējo iebūvēto sistēmu (<code>define('DISABLE_WP_CRON', true)</code> failā <code>wp-config.php</code>) un aizstāj ar īstu servera cron, kas ik minūti izsauc <code>wp-cron.php</code>.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="http-api">
+      <h2>HTTP API (wp_remote_*)</h2>
+      <p>Kad PHP kodam jāizsauc ārējs API (maksājumu serviss, laika ziņas, cita vietne), WordPress iesaka izmantot iebūvēto HTTP API, nevis tiešu cURL — tas automātiski ievēro servera starpniekservera (proxy) iestatījumus un WordPress filtrus, un vienādi strādā visos hostingos.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// GET pieprasījums</span>
+<span class="tok-fn">$atbilde</span> = <span class="tok-fn">wp_remote_get</span>(<span class="tok-str">'https://api.piemers.lv/dati'</span>, [
+    <span class="tok-str">'timeout'</span> => 10, <span class="tok-com">// sekundes — noklusējums (5s) bieži par īsu lēnākiem API</span>
+]);
+
+<span class="tok-com">// VIENMĒR vispirms pārbauda, vai pats pieprasījums neizdevās (tīkla kļūda u.c.)</span>
+<span class="tok-kw">if</span> (<span class="tok-fn">is_wp_error</span>(<span class="tok-fn">$atbilde</span>)) {
+    <span class="tok-kw">error_log</span>(<span class="tok-fn">$atbilde</span>->get_error_message());
+    <span class="tok-kw">return</span>;
+}
+
+<span class="tok-fn">$body</span> = <span class="tok-fn">wp_remote_retrieve_body</span>(<span class="tok-fn">$atbilde</span>);
+<span class="tok-fn">$dati</span> = <span class="tok-fn">json_decode</span>(<span class="tok-fn">$body</span>, <span class="tok-kw">true</span>);</code></pre>
+      <p>POST pieprasījumam ar datiem un galvenēm:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">$atbilde</span> = <span class="tok-fn">wp_remote_post</span>(<span class="tok-str">'https://api.piemers.lv/pasutijumi'</span>, [
+    <span class="tok-str">'headers'</span> => [<span class="tok-str">'Content-Type'</span> => <span class="tok-str">'application/json'</span>],
+    <span class="tok-str">'body'</span>    => <span class="tok-fn">json_encode</span>([<span class="tok-str">'summa'</span> => 49.99]),
+]);</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>is_wp_error()</code> pārbauda tikai to, vai pieprasījums <strong>tehniski</strong> izdevās (sasniedza serveri). Pat veiksmīga savienojuma gadījumā serveris var atbildēt ar kļūdas statusa kodu (404, 500) — to pārbauda atsevišķi ar <code>wp_remote_retrieve_response_code($atbilde)</code>.</p>
       </div>
     </section>
 

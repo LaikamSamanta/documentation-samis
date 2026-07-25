@@ -61,6 +61,8 @@
     <a href="#ct-db">Datubāze</a>
     <a href="#ct-media">Media</a>
     <a href="#ct-ajax">AJAX &amp; REST</a>
+    <a href="#ct-data-api">Options &amp; HTTP API</a>
+    <a href="#ct-i18n">i18n &amp; Gutenberg</a>
     <a href="#ct-misc">Citas noderīgas</a>
   </nav>
 
@@ -197,6 +199,7 @@ saites → Saglabāt</code></pre></div>
       <div class="cheat-card"><h4>sanitize_text_field()</h4><p>Attīra lietotāja ievadītu tekstu pirms saglabāšanas — noņem HTML tagus, liekās atstarpes un nederīgus rakstzīmju kodus.</p><pre><code>$v = sanitize_text_field($_POST['x']);</code></pre></div>
       <div class="cheat-card"><h4>wp_nonce_field()</h4><p>Ievieto slēptu, unikālu drošības tokenu formā — nepieciešams, lai vēlāk pārbaudītu, ka pieprasījums patiešām nāk no šīs formas (CSRF aizsardzība).</p><pre><code>wp_nonce_field('darbiba', 'nonce_lauks');</code></pre></div>
       <div class="cheat-card"><h4>wp_verify_nonce()</h4><p>Pārbauda, vai saņemtais nonce tokens ir derīgs un sakrīt ar sagaidāmo darbību — ja nē, pieprasījums jānoraida.</p><pre><code>wp_verify_nonce($_POST['n'], 'darbiba');</code></pre></div>
+      <div class="cheat-card"><h4>wp_kses()</h4><p>Atļauj tikai norādītos HTML tagus/atribūtus lietotāja ievadītā HTML, pārējo izfiltrē — noder, kad pilnīga esc_html() būtu par stingru (piem., komentāros ar ierobežotu formatējumu).</p><pre><code>wp_kses($html, ['a' =&gt; ['href' =&gt; true], 'strong' =&gt; []]);</code></pre></div>
       <div class="cheat-card"><h4>current_user_can()</h4><p>Pārbauda, vai pašreizējam lietotājam ir konkrēta tiesība (capability) — pareizais veids kontrolēt piekļuvi, nevis pārbaudīt lomas nosaukumu tieši.</p><pre><code>if (current_user_can('edit_posts')) { }</code></pre></div>
     </div>
   </section>
@@ -256,6 +259,32 @@ add_action('wp_ajax_nopriv_x', 'fn');</code></pre></div>
   'methods' =&gt; 'GET', 'callback' =&gt; 'fn',
 ]);</code></pre></div>
       <div class="cheat-card"><h4>/wp-json/wp/v2/posts</h4><p>WordPress kodola iebūvēts REST galapunkts, kas jau strādā uzreiz — atgriež publicētos ierakstus JSON formātā bez papildu koda.</p><pre><code>GET /wp-json/wp/v2/posts</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-data-api">
+    <h2>Options &amp; HTTP API</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>get_option() / update_option()</h4><p>Nolasa/saglabā vienkāršu iestatījumu vērtību pēc atslēgas — standarta veids, kā tēmas/spraudņi glabā savus iestatījumus wp_options tabulā.</p><pre><code>update_option('krasa', '#f00');
+get_option('krasa', '#000');</code></pre></div>
+      <div class="cheat-card"><h4>add_option() / delete_option()</h4><p>add_option() pievieno tikai tad, ja opcija vēl neeksistē; delete_option() izdzēš to pilnībā.</p><pre><code>add_option('versija', '1.0');
+delete_option('versija');</code></pre></div>
+      <div class="cheat-card"><h4>wp_remote_get()</h4><p>Nosūta GET pieprasījumu uz ārēju API — WordPress ieteiktais veids, nevis tiešs cURL, jo ievēro servera proxy iestatījumus.</p><pre><code>$r = wp_remote_get('https://api.x.lv/dati');</code></pre></div>
+      <div class="cheat-card"><h4>wp_remote_post()</h4><p>Tas pats, kas wp_remote_get(), bet POST pieprasījumam ar datiem un galvenēm.</p><pre><code>wp_remote_post($url, ['body' =&gt; $dati]);</code></pre></div>
+      <div class="cheat-card"><h4>is_wp_error()</h4><p>Vienmēr jāpārbauda pēc wp_remote_*() izsaukuma — pārbauda, vai pats pieprasījums tehniski izdevās (nevis servera atbildes statusu).</p><pre><code>if (is_wp_error($r)) { /* kļūda */ }</code></pre></div>
+      <div class="cheat-card"><h4>wp_remote_retrieve_body()</h4><p>Izvelk tikai atbildes saturu (tekstu/JSON) no pilnās wp_remote_*() atbildes struktūras.</p><pre><code>$dati = json_decode(wp_remote_retrieve_body($r), true);</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-i18n">
+    <h2>i18n &amp; Gutenberg</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>__()</h4><p>Atgriež tulkotu tekstu (nevis izvada) — otrais parametrs vienmēr ir text domain, kas piesaista tekstu konkrētajai tēmai/spraudnim.</p><pre><code>$t = __('Sveiki', 'mana-tema');</code></pre></div>
+      <div class="cheat-card"><h4>_e()</h4><p>Tas pats, kas __(), bet uzreiz izvada tekstu — saīsinājums echo __(...).</p><pre><code>_e('Sveiki', 'mana-tema');</code></pre></div>
+      <div class="cheat-card"><h4>esc_html__()</h4><p>Apvieno tulkošanu ar drošu HTML izvadi vienā solī — visbiežāk lietotā kombinācija veidnēs.</p><pre><code>echo esc_html__('Sveiki', 'mana-tema');</code></pre></div>
+      <div class="cheat-card"><h4>load_theme_textdomain()</h4><p>Reģistrē text domain un norāda mapi, kur meklēt .po/.mo tulkojumu failus.</p><pre><code>load_theme_textdomain('mana-tema', get_template_directory().'/languages');</code></pre></div>
+      <div class="cheat-card"><h4>register_block_type()</h4><p>Reģistrē Gutenberg bloku, nolasot tā block.json failu — bloks pēc tam parādās redaktora bloku sarakstā.</p><pre><code>register_block_type(__DIR__ . '/blocks/x');</code></pre></div>
+      <div class="cheat-card"><h4>block.json</h4><p>Bloka metadatu fails (nosaukums, kategorija, ikona, JS/CSS faili) — WordPress to nolasa automātiski, izsaucot register_block_type() ar mapes ceļu.</p><pre><code>{ "name": "ns/x", "editorScript": "file:./index.js" }</code></pre></div>
     </div>
   </section>
 
