@@ -88,6 +88,22 @@
         <a href="#stripe-usage"><span class="bullet"></span>Kā ielikt citā projektā</a>
       </div>
     </div>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>📊 Reklāmas izsekošana</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#ads-overview"><span class="bullet"></span>Pārskats &amp; jēdzieni</a>
+        <a href="#ads-codes"><span class="bullet"></span>1. GA4, Meta Pixel &amp; Google Ads kods</a>
+        <a href="#ads-events"><span class="bullet"></span>2. Konversiju veidi &amp; notikumu kods</a>
+        <a href="#ads-cf7"><span class="bullet"></span>3. Contact Form 7 integrācija</a>
+        <a href="#ads-dtr"><span class="bullet"></span>4. Statiskā vs dinamiskā mērķlapa</a>
+        <a href="#ads-noindex"><span class="bullet"></span>5. Mērķlapu izslēgšana no indeksācijas</a>
+        <a href="#ads-testing"><span class="bullet"></span>6. Testēšana (Pixel Helper, Tag Assistant, DebugView)</a>
+        <a href="#ads-usage"><span class="bullet"></span>Kā ielikt citā projektā</a>
+      </div>
+    </div>
   </aside>
 
   <main class="doc-main">
@@ -1181,6 +1197,291 @@ stripe listen --forward-to localhost:8000/wp-json/mana-tema/v1/stripe-webhook
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
         <p>Vairāku produktu/plānu gadījumā <code>$produkti</code> masīvu (3. sadaļa) var brīvi paplašināt — struktūra jau ir sagatavota vairākiem ierakstiem. Abonementiem (atkārtota ikmēneša maksa, nevis vienreizējs pirkums) Stripe piedāvā atsevišķu <code>mode: 'subscription'</code> un Stripe Billing sistēmu, kas šeit nav aprakstīta, bet Checkout Session/webhook pamatprincipi paliek tie paši.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="ads-overview">
+      <h2>Pārskats &amp; jēdzieni</h2>
+      <p>Šī integrācija savieno reklāmas mērķlapu ar trim sistēmām — <strong>Google Analytics 4 (GA4)</strong>, <strong>Meta Pixel</strong> un <strong>Google Ads</strong> — un pievieno <strong>konversiju izsekošanu</strong> (kad apmeklētājs aizpilda formu, piezvana vai pērk), <strong>Contact Form 7</strong> integrāciju un <strong>dinamisko mērķlapu</strong> (Dynamic Text Replacement) tekstu.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>📊 GA4 — kontroles panelis</h4><p>Redz <strong>pilnu bildi</strong> par visu lapas satiksmi un lietotāju uzvedību — no kurienes atnāca, ko darīja, cik ilgi palika. Neatkarīgi no tā, caur kuru reklāmas platformu atnāca apmeklētājs.</p></div>
+        <div class="doc-mini-card"><h4>📘 Meta Pixel</h4><p>Mēra <strong>tikai</strong> to, kas notiek pēc klikšķa uz Facebook/Instagram reklāmu — cik no tiem apmeklētājiem izpildīja konversiju. Šie dati apmāca Meta algoritmu rādīt reklāmu līdzīgiem cilvēkiem.</p></div>
+        <div class="doc-mini-card"><h4>🔍 Google Ads</h4><p>Tas pats, kas Meta Pixel, bet Google reklāmām (meklēšanas un display tīklam) — mēra konversijas, kas nāk tieši no Google Ads klikšķiem.</p></div>
+      </div>
+      <p><strong>Konversija</strong> ir jebkura vērtīga darbība, ko apmeklētājs izdara mērķlapā — kad tā notiek, lapas kods uzreiz nosūta signālu reklāmas sistēmai ("mērķis sasniegts"), un tā mācās rādīt reklāmu cilvēkiem, kas biežāk konvertējas.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>📝 Kontaktforma</h4><p>Aizpilda pieteikumu vai pieprasījumu.</p></div>
+        <div class="doc-mini-card"><h4>📞 Telefona zvans</h4><p>Uzklikšķina uz tālruņa numura.</p></div>
+        <div class="doc-mini-card"><h4>💳 Pirkums</h4><p>Samaksā par preci/pakalpojumu uzreiz lapā.</p></div>
+        <div class="doc-mini-card"><h4>💬 Čats</h4><p>Uzklikšķina uz WhatsApp, Messenger vai čata pogas.</p></div>
+        <div class="doc-mini-card"><h4>📅 Rezervācija</h4><p>Pieteic laiku kalendārā (piem., Calendly).</p></div>
+        <div class="doc-mini-card"><h4>📄 Lejupielāde</h4><p>Lejupielādē PDF katalogu vai cenu lapu.</p></div>
+      </div>
+      <p>Mērķlapa var būt <strong>statiska</strong> (visi redz to pašu tekstu) vai <strong>dinamiska</strong> (teksts pielāgojas pēc tā, ko lietotājs meklēja) — abas iespējas, ar pilnu kodu, sadaļā <a href="#ads-dtr">4. Statiskā vs dinamiskā mērķlapa</a>.</p>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Reklāmas mērķlapas <strong>nekad nedrīkst</strong> būt indeksētas Google meklētājā — tās parasti dublē citu lapu saturu un ir domātas tikai reklāmas klikšķiem. Ja Google tās indeksē, tās var sākt konkurēt ar tavu īsto vietni meklēšanas rezultātos. Pilns risinājums sadaļā <a href="#ads-noindex">5. Mērķlapu izslēgšana no indeksācijas</a>.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="ads-codes">
+      <h2>1. GA4, Meta Pixel &amp; Google Ads kods</h2>
+      <p>Pirms koda vajadzīgi trīs identifikatori:</p>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Kur atrast</th><th>Izskatās kā</th></tr></thead>
+          <tbody>
+            <tr><td>GA4: Admin (zobrats) → Data Streams → tava straume</td><td><code>G-XXXXXXXXXX</code></td></tr>
+            <tr><td>Meta: Events Manager → Data Sources → Pixel iestatījumi</td><td><code>123456789012345</code> (skaitlis)</td></tr>
+            <tr><td>Google Ads: Tools → Conversions → konkrētā konversija</td><td><code>AW-XXXXXXXXX</code> + atsevišķs <code>label</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Tāpat kā ar citām šīs lapas integrācijām, ID glabā <code>wp-config.php</code>:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">define</span>(<span class="tok-str">'GA4_MEASUREMENT_ID'</span>, <span class="tok-str">'G-XXXXXXXXXX'</span>);
+<span class="tok-kw">define</span>(<span class="tok-str">'META_PIXEL_ID'</span>, <span class="tok-str">'123456789012345'</span>);
+<span class="tok-kw">define</span>(<span class="tok-str">'GOOGLE_ADS_ID'</span>, <span class="tok-str">'AW-XXXXXXXXX'</span>);</code></pre>
+      <p>Kods, kas ievieto visus trīs tagus <code>&lt;head&gt;</code> sadaļā:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'wp_head'</span>, <span class="tok-kw">function</span> () {
+    <span class="tok-kw">if</span> (!<span class="tok-fn">defined</span>(<span class="tok-str">'GA4_MEASUREMENT_ID'</span>)) <span class="tok-kw">return</span>;
+    ?&gt;
+    &lt;!-- GA4 un Google Ads izmanto TO PAŠU gtag.js skriptu —
+         ielādē to vienreiz, tad reģistrē abus ID atsevišķi ar config() --&gt;
+    &lt;script async src="https://www.googletagmanager.com/gtag/js?id=&lt;?= esc_attr(GA4_MEASUREMENT_ID) ?&gt;"&gt;&lt;/script&gt;
+    &lt;script&gt;
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', '&lt;?= esc_js(GA4_MEASUREMENT_ID) ?&gt;');
+      &lt;?php if (defined('GOOGLE_ADS_ID')): ?&gt;
+      gtag('config', '&lt;?= esc_js(GOOGLE_ADS_ID) ?&gt;');
+      &lt;?php endif; ?&gt;
+    &lt;/script&gt;
+
+    &lt;?php if (defined('META_PIXEL_ID')): ?&gt;
+    &lt;!-- Meta Pixel pamata kods --&gt;
+    &lt;script&gt;
+      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+      n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+      document,'script','https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '&lt;?= esc_js(META_PIXEL_ID) ?&gt;');
+      fbq('track', 'PageView');
+    &lt;/script&gt;
+    &lt;noscript&gt;&lt;img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=&lt;?= esc_attr(META_PIXEL_ID) ?&gt;&amp;ev=PageView&amp;noscript=1" /&gt;&lt;/noscript&gt;
+    &lt;?php endif; ?&gt;
+    &lt;?php
+});</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>GA4 un Google Ads abi izmanto <code>gtag.js</code> — bieži pieļautā kļūda ir ielādēt skriptu <strong>divreiz</strong> (reizi GA4, reizi Google Ads), kas palēnina lapu un var dublēt datus. Pareizi ir ielādēt to <strong>vienreiz</strong> un pēc tam izsaukt <code>gtag('config', ...)</code> katram ID atsevišķi, tieši kā piemērā augstāk.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="ads-events">
+      <h2>2. Konversiju veidi &amp; notikumu kods</h2>
+      <p>Kad notiek konversija, jānosūta signāls <strong>abām</strong> sistēmām — GA4/Google Ads ar <code>gtag()</code> un Meta ar <code>fbq()</code>. Ērtāk to darīt caur vienu palīgfunkciju:</p>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// js/konversijas.js — vienota funkcija, ko izsauc no visiem notikumiem</span>
+function nosutitKonversiju(ga4Notikums, fbNotikums, dati = {}) {
+  if (typeof gtag === 'function') {
+    gtag('event', ga4Notikums, dati);
+
+    <span class="tok-com">// Google Ads konversija ir ATSEVIŠĶS tags no GA4 notikuma —
+    // vajadzīgs konkrēts conversion ID + label no Google Ads paneļa</span>
+    if (window.GOOGLE_ADS_CONVERSION) {
+      gtag('event', 'conversion', { send_to: window.GOOGLE_ADS_CONVERSION });
+    }
+  }
+  if (typeof fbq === 'function') {
+    fbq('track', fbNotikums, dati);
+  }
+}</code></pre>
+      <p>Katram konversijas veidam — konkrēts izsaukums:</p>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// Telefona numura klikšķis</span>
+document.querySelectorAll('a[href^="tel:"]').forEach(a =&gt; {
+  a.addEventListener('click', () =&gt; nosutitKonversiju('phone_call_click', 'Contact'));
+});
+
+<span class="tok-com">// WhatsApp / Messenger / čata poga</span>
+document.querySelectorAll('.whatsapp-poga, a[href*="wa.me"]').forEach(a =&gt; {
+  a.addEventListener('click', () =&gt; nosutitKonversiju('chat_click', 'Contact'));
+});
+
+<span class="tok-com">// PDF/kataloga lejupielāde</span>
+document.querySelectorAll('a[href$=".pdf"]').forEach(a =&gt; {
+  a.addEventListener('click', () =&gt; nosutitKonversiju('file_download', 'Lead'));
+});
+
+<span class="tok-com">// Calendly rezervācija — Calendly iebūvējums nosūta ziņu (postMessage), kad
+// apmeklētājs pabeidz rezervāciju, tāpēc te NEVAR lietot parastu click event</span>
+window.addEventListener('message', (e) =&gt; {
+  if (e.data.event && e.data.event === 'calendly.event_scheduled') {
+    nosutitKonversiju('booking_confirmed', 'Schedule');
+  }
+});</code></pre>
+      <p>Pirkumam (piem., WooCommerce) parasti izmanto servera pusi, nevis JS klikšķi — precīzāk un neatkarīgi no reklāmu bloķētājiem:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// WooCommerce — izpildās, kad pasūtījums apstiprināts kā apmaksāts</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'woocommerce_order_status_completed'</span>, <span class="tok-kw">function</span> (<span class="tok-fn">$order_id</span>) {
+    <span class="tok-fn">$order</span> = <span class="tok-fn">wc_get_order</span>(<span class="tok-fn">$order_id</span>);
+    <span class="tok-com">// Saglabā datus, lai JS tos nolasītu un nosūtītu "paldies" lapā
+    // (piem., caur wp_localize_script vai sesijas mainīgo)</span>
+});</code></pre>
+    </section>
+
+    <section class="doc-section" id="ads-cf7">
+      <h2>3. Contact Form 7 integrācija</h2>
+      <p>Contact Form 7 pēc veiksmīgas nosūtīšanas izsauc pārlūkā notikumu <code>wpcf7mailsent</code> (uz <code>document</code> elementa) — tas ir oficiālais, dokumentētais veids, kā "noķert" veiksmīgu formas nosūtīšanu bez servera koda maiņas.</p>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// js/cf7-konversija.js</span>
+document.addEventListener('wpcf7mailsent', function (event) {
+  <span class="tok-com">// event.detail.contactFormId — noder, ja lapā ir vairākas CF7 formas
+  // un konversija jāreģistrē tikai konkrētai (piem., ID pārbaude)</span>
+  nosutitKonversiju('generate_lead', 'Lead', {
+    form_id: event.detail.contactFormId,
+  });
+});</code></pre>
+      <p>Šis JS fails jāpieslēdz <strong>pēc</strong> <code>konversijas.js</code> (1. koda blokā definētā <code>nosutitKonversiju()</code> funkcija):</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'wp_enqueue_scripts'</span>, <span class="tok-kw">function</span> () {
+    <span class="tok-fn">wp_enqueue_script</span>(<span class="tok-str">'konversijas'</span>, <span class="tok-fn">get_template_directory_uri</span>() . <span class="tok-str">'/js/konversijas.js'</span>, [], <span class="tok-str">'1.0'</span>, <span class="tok-kw">true</span>);
+    <span class="tok-fn">wp_enqueue_script</span>(<span class="tok-str">'cf7-konversija'</span>, <span class="tok-fn">get_template_directory_uri</span>() . <span class="tok-str">'/js/cf7-konversija.js'</span>, [<span class="tok-str">'konversijas'</span>, <span class="tok-str">'contact-form-7'</span>], <span class="tok-str">'1.0'</span>, <span class="tok-kw">true</span>);
+});</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Atkarība <code>['konversijas', 'contact-form-7']</code> pēdējā rindā garantē divas lietas: JS izpildās PĒC <code>konversijas.js</code> (lai <code>nosutitKonversiju</code> jau eksistētu) un PĒC paša Contact Form 7 spraudņa skripta (lai <code>wpcf7mailsent</code> notikums vispār varētu notikt).</p>
+      </div>
+      <p>Alternatīva — pāradresācija uz atsevišķu <code>/paldies/</code> lapu pēc nosūtīšanas (noder, ja konversiju sūta caur "paldies" lapas apmeklējumu, nevis JS notikumu):</p>
+      <pre class="code-block"><span class="lang">js</span><code>document.addEventListener('wpcf7mailsent', function (event) {
+  window.location.href = '/paldies/';
+});</code></pre>
+    </section>
+
+    <section class="doc-section" id="ads-dtr">
+      <h2>4. Statiskā vs dinamiskā mērķlapa</h2>
+      <p><strong>Statiska mērķlapa</strong>: 1 reklāma = 1 lapa = 1 vēstījums. Visi apmeklētāji redz vienādu tekstu (piem., "Dīvāna tīrīšana par 30€" gan reklāmā, gan lapas virsrakstā) — vienkāršākais, bet mazāk personalizēts variants.</p>
+      <p><strong>Dinamiska mērķlapa (Dynamic Text Replacement, DTR)</strong>: viena lapa pielāgo savu tekstu atkarībā no tā, ko lietotājs meklēja vai uz kuru reklāmu uzklikšķināja — augstāka konversija, jo teksts sakrīt tieši ar to, ko lietotājs tikko ierakstīja Google, un labāks Google Ads Quality Score (zemākas reklāmas izmaksas).</p>
+      <p>Loģika: <strong>URL parametrs → JS/PHP nolasa to → aizvieto tekstu.</strong> Piemērs — reklāma ved uz <code>tavalapa.lv/tirisana?city=Valmiera&amp;service=mebelu</code>:</p>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// js/dinamiska-lapa.js — nolasa URL parametrus un aizvieto tekstu</span>
+const parametri = <span class="tok-kw">new</span> URLSearchParams(window.location.search);
+const pilseta = parametri.get('city');
+const serviss = parametri.get('service');
+
+const pilsetuNosaukumi = {
+  Valmiera: 'Valmierā',
+  Riga: 'Rīgā',
+  Liepaja: 'Liepājā',
+};
+
+if (pilseta && pilsetuNosaukumi[pilseta]) {
+  document.getElementById('virsraksts').innerText =
+    `Profesionāla mēbeļu tīrīšana ${pilsetuNosaukumi[pilseta]}`;
+}</code></pre>
+      <p>Atbilstošais HTML — virsrakstam jābūt ar zināmu <code>id</code>, lai JS to atrastu, un tekstam noklusējumā jābūt jēgpilnam pat bez parametra (ja kāds atver lapu bez <code>?city=...</code>):</p>
+      <pre class="code-block"><span class="lang">text</span><code>&lt;h1 id="virsraksts"&gt;Profesionāla mēbeļu tīrīšana&lt;/h1&gt;</code></pre>
+      <p>Alternatīva servera pusē (PHP), ja teksts jārāda uzreiz, bez īsas "mirgošanas" pirms JS izpildās:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">$pilsetu_nosaukumi</span> = [
+    <span class="tok-str">'Valmiera'</span> => <span class="tok-str">'Valmierā'</span>,
+    <span class="tok-str">'Riga'</span>     => <span class="tok-str">'Rīgā'</span>,
+];
+
+<span class="tok-fn">$pilseta</span> = <span class="tok-fn">sanitize_text_field</span>(<span class="tok-fn">$_GET</span>[<span class="tok-str">'city'</span>] ?? <span class="tok-str">''</span>);
+<span class="tok-fn">$virsraksts</span> = <span class="tok-fn">isset</span>(<span class="tok-fn">$pilsetu_nosaukumi</span>[<span class="tok-fn">$pilseta</span>])
+    ? <span class="tok-str">'Profesionāla mēbeļu tīrīšana '</span> . <span class="tok-fn">$pilsetu_nosaukumi</span>[<span class="tok-fn">$pilseta</span>]
+    : <span class="tok-str">'Profesionāla mēbeļu tīrīšana'</span>;
+?&gt;
+&lt;h1&gt;&lt;?= <span class="tok-fn">esc_html</span>(<span class="tok-fn">$virsraksts</span>) ?&gt;&lt;/h1&gt;</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>PHP variants ir labāks lielākajai daļai gadījumu — SEO/social preview rīki un lēnāki savienojumi redz pareizo tekstu uzreiz, nevis īsu brīdi noklusējuma tekstu pirms JS izpildās. Bez koda rakstīšanas to pašu var panākt ar spraudņiem kā <strong>If-So Dynamic Content</strong> vai <strong>Elementor Dynamic Tags</strong>.</p>
+      </div>
+      <p>Vienmēr obligāti sanitizē (<code>sanitize_text_field</code>) un escapē (<code>esc_html</code>) URL parametrus pirms izvades — tie nāk tieši no apmeklētāja adreses joslas un ir potenciāls XSS avots, tāpat kā jebkurš cits lietotāja ievadīts dati.</p>
+    </section>
+
+    <section class="doc-section" id="ads-noindex">
+      <h2>5. Mērķlapu izslēgšana no indeksācijas</h2>
+      <p>Reklāmas mērķlapas <strong>nekad nedrīkst</strong> parādīties Google meklēšanas rezultātos — tās bieži dublē citu lapu saturu (duplicate content risks pasliktina visas vietnes SEO) un ir domātas tikai maksātas reklāmas klikšķiem, nevis organiskai atrašanai.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// functions.php — pievieno noindex konkrētām lapām pēc to slug</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'wp_head'</span>, <span class="tok-kw">function</span> () {
+    <span class="tok-fn">$reklamas_lapas</span> = [<span class="tok-str">'tirisana'</span>, <span class="tok-str">'akcija-vasara'</span>, <span class="tok-str">'promo-fb'</span>];
+
+    <span class="tok-kw">if</span> (<span class="tok-fn">is_page</span>(<span class="tok-fn">$reklamas_lapas</span>)) {
+        <span class="tok-kw">echo</span> <span class="tok-str">'&lt;meta name="robots" content="noindex, nofollow"&gt;'</span> . <span class="tok-str">"\n"</span>;
+    }
+}, 1); <span class="tok-com">// prioritāte 1 — pēc iespējas agrāk &lt;head&gt; sadaļā</span></code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Ja projektā jau ir SEO spraudnis (<strong>Yoast SEO</strong>, <strong>Rank Math</strong>), ērtāk lietot <strong>to</strong> — katrai lapai admin panelī ir "No Index" pārslēgs. Divi vienlaicīgi <code>&lt;meta name="robots"&gt;</code> tagi (viens no spraudņa, otrs no šī koda) var radīt neskaidrību — izmanto tikai <strong>vienu</strong> no diviem veidiem.</p>
+      </div>
+      <p>Papildus (neobligāti, bet ieteicami) izslēdz reklāmas lapas arī no XML sitemap, lai Google tās pat neierosinātu skenēt:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Piemērs ar Yoast SEO filtru — izslēdz konkrētus lapu ID no sitemap</span>
+<span class="tok-fn">add_filter</span>(<span class="tok-str">'wpseo_exclude_from_sitemap_by_post_ids'</span>, <span class="tok-kw">function</span> (<span class="tok-fn">$excluded_ids</span>) {
+    <span class="tok-fn">$excluded_ids</span>[] = 123; <span class="tok-com">// reklāmas lapas ieraksta ID</span>
+    <span class="tok-kw">return</span> <span class="tok-fn">$excluded_ids</span>;
+});</code></pre>
+    </section>
+
+    <section class="doc-section" id="ads-testing">
+      <h2>6. Testēšana (Pixel Helper, Tag Assistant, DebugView)</h2>
+      <p>Pēc koda ievietošanas <strong>vienmēr</strong> pārbaudi visas trīs integrācijas, pirms sāc tērēt reklāmas budžetu — kļūda izsekošanā nozīmē, ka reklāmas sistēma neredz nevienu konversiju un automātiski optimizē uz sliktākiem rezultātiem.</p>
+      <p><strong>Meta Pixel — ar Meta Pixel Helper (bezmaksas Chrome spraudnis):</strong></p>
+      <pre class="code-block"><span class="lang">text</span><code>1. Uzstādi spraudni "Meta Pixel Helper" no Chrome Web Store
+2. Atver mērķlapu — spraudņa ikona pārlūka augšā kļūst zila
+3. Aizpildi formu / izpildi konversiju un pagaidi uz /paldies lapu
+4. Uzklikšķini uz spraudņa ikonas — jāredz zaļš ķeksītis pie
+   "Lead" (vai "PageView")
+   → zaļš ķeksītis = Meta konversija strādā</code></pre>
+      <p><strong>Google Ads / GA4 — ar Tag Assistant (tagassistant.google.com):</strong></p>
+      <pre class="code-block"><span class="lang">text</span><code>1. Atver tagassistant.google.com → "Add domain"
+2. Ievadi savas mērķlapas adresi → "Start"
+   (atvērsies tava lapa ar mazu logu "Connected")
+3. Izpildi konversiju (aizpildi formu / uzklikšķini uz WhatsApp)
+4. Atgriezies Tag Assistant cilnē — kreisajā pusē redzamas
+   visas notikušās darbības
+5. Uzklikšķini uz /paldies lapas atvēršanas vai pogas klikšķa
+   → sadaļā "Tags Fired" jāredz GA4/Google Ads tagu nosaukums
+   → parādās "Tags Fired" = Google konversija strādā</code></pre>
+      <p><strong>GA4 DebugView (reāllaika pārbaude paša GA4 kontā):</strong></p>
+      <pre class="code-block"><span class="lang">text</span><code>1. GA4 kontā: Admin (zobrats) → DebugView (zem Data display)
+2. Atver mērķlapu un izpildi konversiju (vai lieto to pašu
+   Tag Assistant no iepriekšējā soļa vienlaikus)
+3. DebugView reāllaikā parādīs notikumu laika skalu — jāredz
+   tavs notikums, piem., generate_lead vai form_submit</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Parastajās GA4 atskaitēs dati parādās ar <strong>24–48 stundu</strong> aizkavēšanos — DebugView parāda datus tajā pašā sekundē, kad notiek klikšķis. Vienmēr testē ar DebugView, nevis gaidot standarta atskaites, citādi kļūdu atklāsi tikai pēc pāris dienām (un iztērēta budžeta).</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="ads-usage">
+      <h2>Kā ielikt citā projektā</h2>
+      <pre class="code-block"><span class="lang">text</span><code>1. Savāc trīs ID: GA4 Measurement ID, Meta Pixel ID,
+   Google Ads Conversion ID + label (1. sadaļa)
+
+2. wp-config.php pievieno:
+   define('GA4_MEASUREMENT_ID', '...');
+   define('META_PIXEL_ID', '...');
+   define('GOOGLE_ADS_ID', '...');
+
+3. functions.php (vai izceltā failā, piem. inc/tracking.php)
+   pievieno 1. sadaļas wp_head kodu
+
+4. Izveido js/konversijas.js (2. sadaļa) un pieslēdz to ar
+   wp_enqueue_script()
+
+5. Ja lieto Contact Form 7 — izveido js/cf7-konversija.js
+   (3. sadaļa) ar pareizajām skripta atkarībām
+
+6. Ja lapa ir dinamiska (DTR) — pievieno 4. sadaļas JS vai
+   PHP kodu un pielāgo pilsētu/pakalpojumu sarakstu
+
+7. Pievieno noindex reklāmas lapām (5. sadaļa) — PIRMS
+   pirmās reklāmas palaišanas, ne pēc
+
+8. Pārbaudi visas trīs integrācijas ar 6. sadaļas rīkiem,
+   tad palaid reklāmu</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Konversiju var piesaistīt vairākām darbībām vienlaikus, un katrai reklāmas sistēmai var būt sava — piemēram, Meta seko formas aizpildīšanai, bet Google Ads arī telefona zvaniem. Vienkārši izsauc <code>nosutitKonversiju()</code> ar atšķirīgiem parametriem katrai darbībai (2. sadaļa).</p>
       </div>
     </section>
 
