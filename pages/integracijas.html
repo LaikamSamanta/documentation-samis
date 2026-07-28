@@ -1519,6 +1519,40 @@ document.addEventListener('wpcf7mailsent', function (event) {
         <p>Tas visādā ziņā <strong>PHP variants ir labāks</strong> par JS DTR — SEO/social preview rīki, Google Ads reklāmas apstiprināšanas robots un lēnāki savienojumi visi redz pareizo tekstu uzreiz, nevis īsu brīdi noklusējuma tekstu pirms JS izpildās. Bez koda rakstīšanas to pašu var panākt ar spraudņiem kā <strong>If-So Dynamic Content</strong> vai <strong>Elementor Dynamic Tags</strong>.</p>
       </div>
       <p>Vienmēr obligāti sanitizē (<code>sanitize_key</code>/<code>sanitize_text_field</code>) un escapē (<code>esc_html</code>) URL parametrus pirms izvades — tie nāk tieši no apmeklētāja adreses joslas un ir potenciāls XSS avots, tāpat kā jebkurš cits lietotāja ievadīts dati. Tāpēc piemērā parametrs nekad netiek izvadīts tieši — vienmēr iet cauri uzmeklēšanas tabulai (<code>$pilsetas</code>/<code>$servisi</code>), kas pieņem tikai zināmas, iepriekš definētas vērtības.</p>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Tas pats, bet Elementorā (bez PHP veidnes faila)</h3>
+      <p>Ja lapu veido vizuāli ar <strong>Elementor</strong>, nevis raksti pašrocīgi <code>page-tirisana.php</code> failu — pati struktūra (hero, ieguvumi, forma) top kā parasta Elementor lapa, bet dinamiskā teksta daļai vajag kādu no diviem risinājumiem:</p>
+
+      <p><strong>Statiska lapa Elementorā</strong> — vienkārši: WP Admin → Pages → Add New → Page Attributes → Template → <code>Elementor Canvas</code> (tukša veidne bez tēmas header/footer, lai mērķlapā nekas nenovērš uzmanību no CTA) → "Edit with Elementor" → uzbūvē Heading/Text Editor/Button/Shortcode (CF7) widgetus tieši tā, kā 5. sadaļas statiskajā HTML piemērā. Nekāda koda nav vajadzīgs.</p>
+
+      <p><strong>Dinamiska lapa Elementorā, 1. veids — shortcode tilts</strong> (izmanto to pašu PHP loģiku, ko jau uzrakstīji, tikai iesaiņotu shortcode):</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// functions.php — tā pati uzmeklēšanas loģika kā augstāk, tikai atgriezta kā shortcode</span>
+<span class="tok-fn">add_shortcode</span>(<span class="tok-str">'merklapa_virsraksts'</span>, <span class="tok-kw">function</span> () {
+    <span class="tok-fn">$pilsetas</span> = [<span class="tok-str">'valmiera'</span> => <span class="tok-str">'Valmierā'</span>, <span class="tok-str">'riga'</span> => <span class="tok-str">'Rīgā'</span>];
+    <span class="tok-fn">$pilseta_kods</span> = <span class="tok-fn">sanitize_key</span>(<span class="tok-fn">$_GET</span>[<span class="tok-str">'city'</span>] ?? <span class="tok-str">''</span>);
+    <span class="tok-fn">$pilseta_teksts</span> = <span class="tok-fn">$pilsetas</span>[<span class="tok-fn">$pilseta_kods</span>] ?? <span class="tok-str">''</span>;
+
+    <span class="tok-kw">return</span> <span class="tok-fn">esc_html</span>(<span class="tok-fn">trim</span>(<span class="tok-str">"Profesionāla mēbeļu tīrīšana {$pilseta_teksts}"</span>));
+});</code></pre>
+      <pre class="code-block"><span class="lang">text</span><code>Elementor redaktorā:
+1. Pievieno "Heading" widgetu virsrakstam
+2. Uzklikšķini uz teksta lauka labajā panelī — parādīsies zila
+   zibens ikona ("Dynamic Tags")
+3. Zibens ikona → "Shortcode" → ievada: [merklapa_virsraksts]
+4. Saglabā — virsraksts tagad mainīsies pēc ?city= parametra,
+   tāpat kā PHP veidnē, bet bez atsevišķa veidnes faila</code></pre>
+      <p><strong>Dinamiska lapa Elementorā, 2. veids — bez koda vispār</strong>: spraudnis <strong>If-So Dynamic Content</strong> ļauj Elementor iekšienē uzstādīt nosacījumu ("Trigger": URL parametrs <code>city</code> vienāds ar <code>valmiera</code>) un pēc tā rādīt vienu vai otru satura bloku — visu iestata administrācijas panelī, bez PHP koda:</p>
+      <pre class="code-block"><span class="lang">text</span><code>1. Uzstāda spraudni "If-So Dynamic Content"
+2. If-So → Triggers → "+ Add New" → tips "URL Parameter" →
+   parametrs "city", vērtība "valmiera"
+3. Elementor lapā apkārt Heading widgetam (vai vairākiem
+   widgetiem) pievieno If-So "Content Switcher" bloku —
+   viena versija priekš Valmieras triggera, otra kā noklusējums
+4. Katrai pilsētai/servisam atkārto ar jaunu triggeru</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Shortcode tilts (1. veids) ir ātrāks, ja jau proti PHP — visa loģika paliek vienā vietā, viegli paplašināma. If-So (2. veids) der, ja lapu veido/uztur cilvēks bez programmēšanas pieredzes. Abos gadījumos <a href="#ads-dtr">dinamiskā lapas <code>&lt;title&gt;</code> filtrs</a> (augstāk šajā sadaļā) paliek <strong>tieši tāds pats</strong> <code>functions.php</code> failā — tas nav atkarīgs no tā, vai lapas saturu veido Elementor vai PHP veidne.</p>
+      </div>
     </section>
 
     <section class="doc-section" id="ads-google-ads-setup">
