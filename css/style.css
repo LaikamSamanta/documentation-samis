@@ -23,6 +23,15 @@
   --c-web-soft: rgba(247, 107, 168, 0.15);
   --c-integrations: #2dd4bf;
   --c-integrations-soft: rgba(45, 212, 191, 0.15);
+
+  /* page-scoped accent — falls back to the brand purple; category pages
+     override these (see .cat-* below) so navigation/headings pick up the
+     same color as that category's icon, making pages easier to tell apart
+     and long pages easier to scan. Never used for code syntax highlighting
+     (.tok-*) or callouts, which stay fixed for consistent readability. */
+  --page-accent: var(--accent);
+  --page-accent-2: var(--accent-2);
+  --page-accent-soft: var(--accent-soft);
 }
 
 /* ---------- Dark theme (default) ---------- */
@@ -42,6 +51,13 @@
   --accent-2: #c084fc;
   --accent-soft: rgba(157, 92, 255, 0.16);
   --accent-glow: rgba(157, 92, 255, 0.45);
+
+  /* lighter tints of each category color, for text/accents on dark backgrounds */
+  --c-wordpress-2: color-mix(in srgb, var(--c-wordpress), white 25%);
+  --c-js-2: color-mix(in srgb, var(--c-js), white 20%);
+  --c-php-2: color-mix(in srgb, var(--c-php), white 25%);
+  --c-web-2: color-mix(in srgb, var(--c-web), white 25%);
+  --c-integrations-2: color-mix(in srgb, var(--c-integrations), white 25%);
 
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 20px 40px -20px rgba(0, 0, 0, 0.6);
   --shadow-pop: 0 30px 60px -25px rgba(120, 60, 255, 0.35);
@@ -65,10 +81,26 @@
   --accent-soft: rgba(124, 58, 237, 0.09);
   --accent-glow: rgba(124, 58, 237, 0.25);
 
+  /* darker tints of each category color, for adequate contrast on light backgrounds
+     (percentages tuned so each hits at least ~4.5:1 against the light page background,
+     since these colors are used as body text, not just decoration) */
+  --c-wordpress-2: color-mix(in srgb, var(--c-wordpress), black 25%);
+  --c-js-2: color-mix(in srgb, var(--c-js), black 55%);
+  --c-php-2: color-mix(in srgb, var(--c-php), black 20%);
+  --c-web-2: color-mix(in srgb, var(--c-web), black 30%);
+  --c-integrations-2: color-mix(in srgb, var(--c-integrations), black 50%);
+
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 20px 40px -24px rgba(80, 60, 140, 0.25);
   --shadow-pop: 0 30px 60px -25px rgba(124, 58, 237, 0.25);
   --scrollbar: #d8d5ea;
 }
+
+/* ---------- Per-category page accent (see --page-accent above) ---------- */
+body.cat-wordpress    { --page-accent: var(--c-wordpress);    --page-accent-2: var(--c-wordpress-2);    --page-accent-soft: var(--c-wordpress-soft); }
+body.cat-js           { --page-accent: var(--c-js);           --page-accent-2: var(--c-js-2);           --page-accent-soft: var(--c-js-soft); }
+body.cat-php          { --page-accent: var(--c-php);          --page-accent-2: var(--c-php-2);          --page-accent-soft: var(--c-php-soft); }
+body.cat-web          { --page-accent: var(--c-web);          --page-accent-2: var(--c-web-2);          --page-accent-soft: var(--c-web-soft); }
+body.cat-integrations { --page-accent: var(--c-integrations); --page-accent-2: var(--c-integrations-2); --page-accent-soft: var(--c-integrations-soft); }
 
 * {
   box-sizing: border-box;
@@ -261,7 +293,7 @@ code {
 }
 .btn-back:hover {
   color: var(--text);
-  border-color: var(--accent);
+  border-color: var(--page-accent);
   transform: translateX(-2px);
 }
 
@@ -639,9 +671,9 @@ footer.site-footer a:hover {
   color: var(--text);
 }
 .doc-sidebar-group a.active {
-  background: var(--accent-soft);
-  color: var(--accent-2);
-  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+  background: var(--page-accent-soft);
+  color: var(--page-accent-2);
+  border-color: color-mix(in srgb, var(--page-accent) 30%, transparent);
   font-weight: 700;
 }
 .doc-sidebar-group a .bullet {
@@ -678,7 +710,7 @@ footer.site-footer a:hover {
   text-align: left;
 }
 .doc-accordion-toggle:hover {
-  color: var(--accent-2);
+  color: var(--page-accent-2);
 }
 .doc-accordion-toggle .chevron {
   width: 14px;
@@ -689,7 +721,7 @@ footer.site-footer a:hover {
 }
 .doc-sidebar-accordion.open .doc-accordion-toggle .chevron {
   transform: rotate(90deg);
-  color: var(--accent-2);
+  color: var(--page-accent-2);
 }
 .doc-accordion-body {
   max-height: 0;
@@ -719,9 +751,9 @@ footer.site-footer a:hover {
   color: var(--text);
 }
 .doc-accordion-body a.active {
-  background: var(--accent-soft);
-  color: var(--accent-2);
-  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+  background: var(--page-accent-soft);
+  color: var(--page-accent-2);
+  border-color: color-mix(in srgb, var(--page-accent) 30%, transparent);
   font-weight: 700;
 }
 .doc-accordion-body a .bullet {
@@ -746,7 +778,7 @@ footer.site-footer a:hover {
   color: var(--text-muted);
   margin-bottom: 22px;
 }
-.doc-breadcrumb a:hover { color: var(--accent-2); }
+.doc-breadcrumb a:hover { color: var(--page-accent-2); }
 
 .doc-header {
   display: flex;
@@ -799,7 +831,7 @@ footer.site-footer a:hover {
   width: 4px;
   height: 20px;
   border-radius: 4px;
-  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  background: linear-gradient(180deg, var(--page-accent), var(--page-accent-2));
 }
 .doc-section > p {
   color: var(--text-secondary);
@@ -824,7 +856,7 @@ footer.site-footer a:hover {
   overflow-wrap: anywhere;
 }
 .doc-mini-card:hover {
-  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+  border-color: color-mix(in srgb, var(--page-accent) 40%, var(--border));
   transform: translateY(-3px);
   box-shadow: var(--shadow-card);
 }
@@ -921,8 +953,8 @@ pre.code-block code {
   transition: all 0.25s var(--ease);
 }
 .doc-pager a:hover {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-soft);
+  border-color: var(--page-accent);
+  box-shadow: 0 0 0 3px var(--page-accent-soft);
 }
 .doc-pager .lbl {
   display: block;
@@ -953,7 +985,7 @@ pre.code-block code {
   width: 4px;
   height: 18px;
   border-radius: 4px;
-  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  background: linear-gradient(180deg, var(--page-accent), var(--page-accent-2));
 }
 .cheat-section > p.cheat-sub {
   margin: 0 0 4px;
@@ -975,13 +1007,13 @@ pre.code-block code {
   min-width: 0;
 }
 .cheat-card:hover {
-  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+  border-color: color-mix(in srgb, var(--page-accent) 40%, var(--border));
 }
 .cheat-card h4 {
   margin: 0 0 6px;
   font-size: 12.5px;
   font-family: var(--font-mono);
-  color: var(--accent-2);
+  color: var(--page-accent-2);
   font-weight: 700;
   overflow-wrap: anywhere;
 }
@@ -1023,7 +1055,7 @@ pre.code-block code {
   font-weight: 700;
 }
 .cheat-table td code {
-  color: var(--accent-2);
+  color: var(--page-accent-2);
 }
 .cheat-table-wrap {
   overflow-x: auto;
@@ -1056,7 +1088,7 @@ pre.code-block code {
 }
 .cheat-jump a:hover {
   color: var(--text);
-  border-color: var(--accent);
+  border-color: var(--page-accent);
 }
 
 @media (max-width: 980px) {
