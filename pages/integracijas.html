@@ -95,12 +95,15 @@
       </button>
       <div class="doc-accordion-body">
         <a href="#ads-overview"><span class="bullet"></span>Pārskats &amp; jēdzieni</a>
-        <a href="#ads-codes"><span class="bullet"></span>1. GA4, Meta Pixel &amp; Google Ads kods</a>
-        <a href="#ads-events"><span class="bullet"></span>2. Konversiju veidi &amp; notikumu kods</a>
-        <a href="#ads-cf7"><span class="bullet"></span>3. Contact Form 7 integrācija</a>
-        <a href="#ads-dtr"><span class="bullet"></span>4. Statiskā vs dinamiskā mērķlapa</a>
-        <a href="#ads-noindex"><span class="bullet"></span>5. Mērķlapu izslēgšana no indeksācijas</a>
-        <a href="#ads-testing"><span class="bullet"></span>6. Testēšana (Pixel Helper, Tag Assistant, DebugView)</a>
+        <a href="#ads-consent"><span class="bullet"></span>1. Sīkdatņu piekrišana (Consent Mode)</a>
+        <a href="#ads-codes"><span class="bullet"></span>2. GA4, Meta Pixel &amp; Google Ads kods</a>
+        <a href="#ads-events"><span class="bullet"></span>3. Konversiju veidi &amp; notikumu kods</a>
+        <a href="#ads-cf7"><span class="bullet"></span>4. Contact Form 7 integrācija</a>
+        <a href="#ads-dtr"><span class="bullet"></span>5. Statiskā vs dinamiskā mērķlapa</a>
+        <a href="#ads-utm"><span class="bullet"></span>6. UTM parametru saglabāšana</a>
+        <a href="#ads-noindex"><span class="bullet"></span>7. Mērķlapu izslēgšana no indeksācijas</a>
+        <a href="#ads-serverside"><span class="bullet"></span>8. Servera puses izsekošana (CAPI)</a>
+        <a href="#ads-testing"><span class="bullet"></span>9. Testēšana (Pixel Helper, Tag Assistant, DebugView)</a>
         <a href="#ads-usage"><span class="bullet"></span>Kā ielikt citā projektā</a>
       </div>
     </div>
@@ -1224,8 +1227,73 @@ stripe listen --forward-to localhost:8000/wp-json/mana-tema/v1/stripe-webhook
       </div>
     </section>
 
+    <section class="doc-section" id="ads-consent">
+      <h2>1. Sīkdatņu piekrišana (Consent Mode)</h2>
+      <p>Ja lapa domāta ES/Latvijas apmeklētājiem, GDPR prasa <strong>piekrišanu pirms</strong> GA4/Meta Pixel sāk sekot līdzi apmeklētājam — ne pēc. Kopš 2024. gada Google arī tehniski pieprasa <strong>Consent Mode v2</strong> ES trafikam: pirms lietotājs piekrīt, tagiem jāstrādā "liegtā" (denied) režīmā, un tikai pēc piekrišanas tie pāriet uz pilnu izsekošanu.</p>
+      <p><strong>1. solis</strong> — noklusējuma "liegts" stāvoklis jāiestata <strong>pirms</strong> jebkāda gtag.js/Pixel koda (prioritāte <code>1</code>, agrāk nekā 2. sadaļas kods ar noklusējuma prioritāti <code>10</code>):</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'wp_head'</span>, <span class="tok-kw">function</span> () { ?&gt;
+    &lt;script&gt;
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      <span class="tok-com">// Noklusējums PIRMS piekrišanas — droši "liegts" visam</span>
+      gtag('consent', 'default', {
+        analytics_storage: 'denied',
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+      });
+    &lt;/script&gt;
+    &lt;?php
+}, 1); <span class="tok-com">// prioritāte 1 — obligāti PIRMS 2. sadaļas koda</span></code></pre>
+      <p><strong>2. solis</strong> — vienkāršs sīkdatņu baneris, kas atjaunina piekrišanu, kad lietotājs izvēlas:</p>
+      <pre class="code-block"><span class="lang">text</span><code>&lt;div id="cookie-banner" class="cookie-banner" hidden&gt;
+  &lt;p&gt;Šī vietne izmanto sīkdatnes analītikai un reklāmu mērīšanai.&lt;/p&gt;
+  &lt;button id="cookie-accept"&gt;Piekrītu&lt;/button&gt;
+  &lt;button id="cookie-reject"&gt;Nepiekrītu&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// js/consent.js — jāielādē PIRMS 2. sadaļas koda izpildās</span>
+const baneris = document.getElementById('cookie-banner');
+const izvele = localStorage.getItem('sikdatnu_piekrisana');
+
+if (!izvele) {
+  baneris.hidden = false; <span class="tok-com">// vēl nav izvēlējies — rādām baneri</span>
+} else if (izvele === 'piekritu') {
+  atjauninatPiekrisanu(true); <span class="tok-com">// jau piekrita agrāk — atjauno statusu uzreiz</span>
+}
+
+document.getElementById('cookie-accept').addEventListener('click', () =&gt; {
+  localStorage.setItem('sikdatnu_piekrisana', 'piekritu');
+  atjauninatPiekrisanu(true);
+  baneris.hidden = true;
+});
+
+document.getElementById('cookie-reject').addEventListener('click', () =&gt; {
+  localStorage.setItem('sikdatnu_piekrisana', 'noraidits');
+  baneris.hidden = true;
+});
+
+function atjauninatPiekrisanu(piekrita) {
+  if (typeof gtag === 'function') {
+    gtag('consent', 'update', {
+      analytics_storage: piekrita ? 'granted' : 'denied',
+      ad_storage: piekrita ? 'granted' : 'denied',
+      ad_user_data: piekrita ? 'granted' : 'denied',
+      ad_personalization: piekrita ? 'granted' : 'denied',
+    });
+  }
+  if (typeof fbq === 'function' && piekrita) {
+    fbq('consent', 'grant');
+    fbq('track', 'PageView'); <span class="tok-com">// pirmais PageView bloķēts revoke() dēļ — nosūta tagad</span>
+  }
+}</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Šis ir vienkāršots, pašrakstīts baneris — der izpratnei un maziem projektiem, bet <strong>juridisks</strong> GDPR risinājums parasti prasa arī sīkdatņu politikas lapu, granulāru piekrišanu pa kategorijām (ne tikai "viss vai nekas") un piekrišanas žurnalēšanu. Nopietniem/komerciāliem projektiem apsver gatavu spraudni (piem., <strong>Complianz</strong> vai <strong>CookieYes</strong>), kas jau atbalsta Google Consent Mode v2 un ir uzturēts atbilstoši mainīgajiem noteikumiem.</p>
+      </div>
+    </section>
+
     <section class="doc-section" id="ads-codes">
-      <h2>1. GA4, Meta Pixel &amp; Google Ads kods</h2>
+      <h2>2. GA4, Meta Pixel &amp; Google Ads kods</h2>
       <p>Pirms koda vajadzīgi trīs identifikatori:</p>
       <div class="cheat-table-wrap">
         <table class="cheat-table">
@@ -1267,7 +1335,8 @@ stripe listen --forward-to localhost:8000/wp-json/mana-tema/v1/stripe-webhook
       t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
       document,'script','https://connect.facebook.net/en_US/fbevents.js');
       fbq('init', '&lt;?= esc_js(META_PIXEL_ID) ?&gt;');
-      fbq('track', 'PageView');
+      fbq('consent', 'revoke'); // bloķē notikumus, kamēr consent.js (1. sadaļa) tos neatļauj
+      fbq('track', 'PageView'); // bloķēts iepriekšējās rindas dēļ — nosūtīsies vēlreiz pēc piekrišanas
     &lt;/script&gt;
     &lt;noscript&gt;&lt;img height="1" width="1" style="display:none"
       src="https://www.facebook.com/tr?id=&lt;?= esc_attr(META_PIXEL_ID) ?&gt;&amp;ev=PageView&amp;noscript=1" /&gt;&lt;/noscript&gt;
@@ -1281,7 +1350,7 @@ stripe listen --forward-to localhost:8000/wp-json/mana-tema/v1/stripe-webhook
     </section>
 
     <section class="doc-section" id="ads-events">
-      <h2>2. Konversiju veidi &amp; notikumu kods</h2>
+      <h2>3. Konversiju veidi &amp; notikumu kods</h2>
       <p>Kad notiek konversija, jānosūta signāls <strong>abām</strong> sistēmām — GA4/Google Ads ar <code>gtag()</code> un Meta ar <code>fbq()</code>. Ērtāk to darīt caur vienu palīgfunkciju:</p>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// js/konversijas.js — vienota funkcija, ko izsauc no visiem notikumiem</span>
 function nosutitKonversiju(ga4Notikums, fbNotikums, dati = {}) {
@@ -1331,7 +1400,7 @@ window.addEventListener('message', (e) =&gt; {
     </section>
 
     <section class="doc-section" id="ads-cf7">
-      <h2>3. Contact Form 7 integrācija</h2>
+      <h2>4. Contact Form 7 integrācija</h2>
       <p>Contact Form 7 pēc veiksmīgas nosūtīšanas izsauc pārlūkā notikumu <code>wpcf7mailsent</code> (uz <code>document</code> elementa) — tas ir oficiālais, dokumentētais veids, kā "noķert" veiksmīgu formas nosūtīšanu bez servera koda maiņas.</p>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// js/cf7-konversija.js</span>
 document.addEventListener('wpcf7mailsent', function (event) {
@@ -1357,7 +1426,7 @@ document.addEventListener('wpcf7mailsent', function (event) {
     </section>
 
     <section class="doc-section" id="ads-dtr">
-      <h2>4. Statiskā vs dinamiskā mērķlapa</h2>
+      <h2>5. Statiskā vs dinamiskā mērķlapa</h2>
       <p><strong>Statiska mērķlapa</strong>: 1 reklāma = 1 lapa = 1 vēstījums. Visi apmeklētāji redz vienādu tekstu (piem., "Dīvāna tīrīšana par 30€" gan reklāmā, gan lapas virsrakstā) — vienkāršākais, bet mazāk personalizēts variants.</p>
       <p><strong>Dinamiska mērķlapa (Dynamic Text Replacement, DTR)</strong>: viena lapa pielāgo savu tekstu atkarībā no tā, ko lietotājs meklēja vai uz kuru reklāmu uzklikšķināja — augstāka konversija, jo teksts sakrīt tieši ar to, ko lietotājs tikko ierakstīja Google, un labāks Google Ads Quality Score (zemākas reklāmas izmaksas).</p>
       <p>Loģika: <strong>URL parametrs → JS/PHP nolasa to → aizvieto tekstu.</strong> Piemērs — reklāma ved uz <code>tavalapa.lv/tirisana?city=Valmiera&amp;service=mebelu</code>:</p>
@@ -1397,8 +1466,42 @@ if (pilseta && pilsetuNosaukumi[pilseta]) {
       <p>Vienmēr obligāti sanitizē (<code>sanitize_text_field</code>) un escapē (<code>esc_html</code>) URL parametrus pirms izvades — tie nāk tieši no apmeklētāja adreses joslas un ir potenciāls XSS avots, tāpat kā jebkurš cits lietotāja ievadīts dati.</p>
     </section>
 
+    <section class="doc-section" id="ads-utm">
+      <h2>6. UTM parametru saglabāšana</h2>
+      <p>Meta/Google paneļi rāda konversiju <strong>skaitu</strong>, bet ne vienmēr ērti parāda, kurš tieši pieteikums nāca no kuras konkrētas reklāmas/kampaņas, ja tev CRM vai e-pastā jāstrādā ar konkrētiem pieteikumiem. Risinājums — nolasīt UTM parametrus no URL un ierakstīt tos slēptos formas laukos, lai tie parādās pašā pieteikuma e-pastā.</p>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// js/utm-capture.js — saglabā UTM parametrus un aizpilda slēptos CF7 laukus</span>
+(function () {
+  const parametri = new URLSearchParams(window.location.search);
+  const utmLauki = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+
+  utmLauki.forEach(lauks =&gt; {
+    const vertiba = parametri.get(lauks);
+    <span class="tok-com">// saglabā sessionStorage, lai UTM "izdzīvotu" arī pāreju uz citu lapu vietnē</span>
+    if (vertiba) sessionStorage.setItem(lauks, vertiba);
+  });
+
+  document.addEventListener('DOMContentLoaded', () =&gt; {
+    utmLauki.forEach(lauks =&gt; {
+      const input = document.querySelector(`input[name="${lauks}"]`);
+      const saglabats = sessionStorage.getItem(lauks);
+      if (input &amp;&amp; saglabats) input.value = saglabats;
+    });
+  });
+})();</code></pre>
+      <p>Contact Form 7 formā pievieno slēptos laukus (redzami tikai kodā, ne apmeklētājam):</p>
+      <pre class="code-block"><span class="lang">text</span><code>[hidden utm_source]
+[hidden utm_medium]
+[hidden utm_campaign]</code></pre>
+      <p>Un CF7 "Mail" cilnē e-pasta veidnē pievieno pašus mainīgos, lai tie parādās katrā pieteikuma vēstulē:</p>
+      <pre class="code-block"><span class="lang">text</span><code>Jauns pieteikums no: [utm_source] / [utm_campaign]</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>sessionStorage</code> (nevis <code>localStorage</code>) apzināti — UTM vērtībām jāsaglabājas tikai <strong>vienas apmeklējuma sesijas</strong> laikā, nevis jāpaliek uz nedēļām, citādi vecs UTM var nepareizi "pielipt" nākamajam, nesaistītam apmeklējumam.</p>
+      </div>
+    </section>
+
     <section class="doc-section" id="ads-noindex">
-      <h2>5. Mērķlapu izslēgšana no indeksācijas</h2>
+      <h2>7. Mērķlapu izslēgšana no indeksācijas</h2>
       <p>Reklāmas mērķlapas <strong>nekad nedrīkst</strong> parādīties Google meklēšanas rezultātos — tās bieži dublē citu lapu saturu (duplicate content risks pasliktina visas vietnes SEO) un ir domātas tikai maksātas reklāmas klikšķiem, nevis organiskai atrašanai.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// functions.php — pievieno noindex konkrētām lapām pēc to slug</span>
 <span class="tok-fn">add_action</span>(<span class="tok-str">'wp_head'</span>, <span class="tok-kw">function</span> () {
@@ -1420,8 +1523,45 @@ if (pilseta && pilsetuNosaukumi[pilseta]) {
 });</code></pre>
     </section>
 
+    <section class="doc-section" id="ads-serverside">
+      <h2>8. Servera puses izsekošana (CAPI)</h2>
+      <p>Reklāmu bloķētāji, Safari ITP un iOS App Tracking Transparency var apslāpēt klienta puses Pixel/gtag notikumus — reāli var pazust 10–30% konversiju, kas patiešām notikušas. Risinājums: nosūtīt to <strong>pašu</strong> notikumu arī tieši no servera, kur bloķētāji neko nevar ietekmēt.</p>
+      <p><strong>Meta Conversions API (CAPI)</strong> — vajadzīgs papildu tokens (Events Manager → Settings → Conversions API → Generate Access Token), ko glabā tāpat kā citas atslēgas:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// wp-config.php papildus</span>
+<span class="tok-kw">define</span>(<span class="tok-str">'META_CAPI_TOKEN'</span>, <span class="tok-str">'...'</span>);</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Izsauc kopā ar (vai vietā) klienta puses fbq() izsaukumu, piem., CF7 apstrādē</span>
+<span class="tok-kw">function</span> <span class="tok-fn">nosutit_meta_serverside_konversiju</span>(<span class="tok-kw">string</span> <span class="tok-fn">$notikums</span>, <span class="tok-kw">string</span> <span class="tok-fn">$epasts</span>): <span class="tok-kw">void</span> {
+    <span class="tok-kw">if</span> (!<span class="tok-fn">defined</span>(<span class="tok-str">'META_PIXEL_ID'</span>) || !<span class="tok-fn">defined</span>(<span class="tok-str">'META_CAPI_TOKEN'</span>)) <span class="tok-kw">return</span>;
+
+    <span class="tok-com">// Meta pieprasa lietotāja datus (e-pastu) HASHOTUS, nekad tekstā</span>
+    <span class="tok-fn">$hashots_epasts</span> = <span class="tok-fn">hash</span>(<span class="tok-str">'sha256'</span>, <span class="tok-fn">strtolower</span>(<span class="tok-fn">trim</span>(<span class="tok-fn">$epasts</span>)));
+
+    <span class="tok-fn">wp_remote_post</span>(<span class="tok-str">"https://graph.facebook.com/v19.0/"</span> . META_PIXEL_ID . <span class="tok-str">"/events"</span>, [
+        <span class="tok-str">'headers'</span> => [<span class="tok-str">'Content-Type'</span> => <span class="tok-str">'application/json'</span>],
+        <span class="tok-str">'body'</span>    => <span class="tok-fn">wp_json_encode</span>([
+            <span class="tok-str">'data'</span> => [[
+                <span class="tok-str">'event_name'</span>    => <span class="tok-fn">$notikums</span>,
+                <span class="tok-str">'event_time'</span>    => time(),
+                <span class="tok-str">'action_source'</span> => <span class="tok-str">'website'</span>,
+                <span class="tok-str">'user_data'</span>      => [<span class="tok-str">'em'</span> => [<span class="tok-fn">$hashots_epasts</span>]],
+            ]],
+            <span class="tok-str">'access_token'</span> => META_CAPI_TOKEN,
+        ]),
+    ]);
+}</code></pre>
+      <p><strong>Google Enhanced Conversions</strong> — vienkāršāk: nosūta hashojamos lietotāja datus caur <code>gtag('set', ...)</code>, Google pats tos sahašo pirms nosūtīšanas:</p>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// Izsauc PIRMS konversijas notikuma, ar datiem no aizpildītās formas</span>
+gtag('set', 'user_data', {
+  email: lietotaja_epasts,
+});</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Šī sadaļa ir <strong>papildinājums</strong>, ne aizstājējs — klienta puses izsekošana (2.–4. sadaļa) joprojām jāsaglabā. Servera puse tikai "aizpilda robus", ko klienta puse palaida garām. Sākot projektu, vispirms uztaisi un notestē klienta pusi (2.–9. sadaļa); servera pusi pievieno vēlāk, kad kampaņas budžets pieaug un katrs procents precizitātes sāk reāli ietekmēt rezultātu.</p>
+      </div>
+    </section>
+
     <section class="doc-section" id="ads-testing">
-      <h2>6. Testēšana (Pixel Helper, Tag Assistant, DebugView)</h2>
+      <h2>9. Testēšana (Pixel Helper, Tag Assistant, DebugView)</h2>
       <p>Pēc koda ievietošanas <strong>vienmēr</strong> pārbaudi visas trīs integrācijas, pirms sāc tērēt reklāmas budžetu — kļūda izsekošanā nozīmē, ka reklāmas sistēma neredz nevienu konversiju un automātiski optimizē uz sliktākiem rezultātiem.</p>
       <p><strong>Meta Pixel — ar Meta Pixel Helper (bezmaksas Chrome spraudnis):</strong></p>
       <pre class="code-block"><span class="lang">text</span><code>1. Uzstādi spraudni "Meta Pixel Helper" no Chrome Web Store
@@ -1454,34 +1594,44 @@ if (pilseta && pilsetuNosaukumi[pilseta]) {
 
     <section class="doc-section" id="ads-usage">
       <h2>Kā ielikt citā projektā</h2>
-      <pre class="code-block"><span class="lang">text</span><code>1. Savāc trīs ID: GA4 Measurement ID, Meta Pixel ID,
-   Google Ads Conversion ID + label (1. sadaļa)
+      <pre class="code-block"><span class="lang">text</span><code>1. Savāc ID: GA4 Measurement ID, Meta Pixel ID,
+   Google Ads Conversion ID + label (2. sadaļa)
 
 2. wp-config.php pievieno:
    define('GA4_MEASUREMENT_ID', '...');
    define('META_PIXEL_ID', '...');
    define('GOOGLE_ADS_ID', '...');
 
-3. functions.php (vai izceltā failā, piem. inc/tracking.php)
-   pievieno 1. sadaļas wp_head kodu
+3. Pievieno 1. sadaļas Consent Mode kodu (noklusējuma
+   "liegts" stāvoklis) UN sīkdatņu baneri — PIRMS 2. sadaļas
+   koda, ne pēc
 
-4. Izveido js/konversijas.js (2. sadaļa) un pieslēdz to ar
+4. functions.php (vai izceltā failā, piem. inc/tracking.php)
+   pievieno 2. sadaļas wp_head kodu
+
+5. Izveido js/konversijas.js (3. sadaļa) un pieslēdz to ar
    wp_enqueue_script()
 
-5. Ja lieto Contact Form 7 — izveido js/cf7-konversija.js
-   (3. sadaļa) ar pareizajām skripta atkarībām
+6. Ja lieto Contact Form 7 — izveido js/cf7-konversija.js
+   (4. sadaļa) ar pareizajām skripta atkarībām
 
-6. Ja lapa ir dinamiska (DTR) — pievieno 4. sadaļas JS vai
+7. Ja lapa ir dinamiska (DTR) — pievieno 5. sadaļas JS vai
    PHP kodu un pielāgo pilsētu/pakalpojumu sarakstu
 
-7. Pievieno noindex reklāmas lapām (5. sadaļa) — PIRMS
+8. Ja jāzina, kura reklāma atnesa konkrētu pieteikumu —
+   pievieno 6. sadaļas UTM saglabāšanas kodu un slēptos
+   CF7 laukus
+
+9. Pievieno noindex reklāmas lapām (7. sadaļa) — PIRMS
    pirmās reklāmas palaišanas, ne pēc
 
-8. Pārbaudi visas trīs integrācijas ar 6. sadaļas rīkiem,
-   tad palaid reklāmu</code></pre>
+10. Neobligāti, kad kampaņas budžets pieaug — pievieno
+    servera puses izsekošanu (8. sadaļa)
+
+11. Pārbaudi visu ar 9. sadaļas rīkiem, tad palaid reklāmu</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Konversiju var piesaistīt vairākām darbībām vienlaikus, un katrai reklāmas sistēmai var būt sava — piemēram, Meta seko formas aizpildīšanai, bet Google Ads arī telefona zvaniem. Vienkārši izsauc <code>nosutitKonversiju()</code> ar atšķirīgiem parametriem katrai darbībai (2. sadaļa).</p>
+        <p>Konversiju var piesaistīt vairākām darbībām vienlaikus, un katrai reklāmas sistēmai var būt sava — piemēram, Meta seko formas aizpildīšanai, bet Google Ads arī telefona zvaniem. Vienkārši izsauc <code>nosutitKonversiju()</code> ar atšķirīgiem parametriem katrai darbībai (3. sadaļa).</p>
       </div>
     </section>
 
