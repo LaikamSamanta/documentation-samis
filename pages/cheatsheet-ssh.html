@@ -53,6 +53,9 @@
     <a href="#ct-wpcli">WP-CLI</a>
     <a href="#ct-db">Datubāze</a>
     <a href="#ct-files">Faili &amp; tiesības</a>
+    <a href="#ct-resources">Servera resursi</a>
+    <a href="#ct-network">Tīkla diagnostika</a>
+    <a href="#ct-security">Drošība</a>
     <a href="#ct-logs">Logi</a>
     <a href="#ct-transfer">Pārsūtīšana</a>
   </nav>
@@ -84,6 +87,8 @@
 wp plugin update --all</code></pre></div>
       <div class="cheat-card"><h4>Tēmas</h4><p>Aktivizēšana un atjaunināšana.</p><pre><code>wp theme activate mana-tema</code></pre></div>
       <div class="cheat-card"><h4>Lietotāji</h4><p>Jauna admin lietotāja izveide (paroles atgūšanai).</p><pre><code>wp user create adminis e@pasts.lv --role=administrator</code></pre></div>
+      <div class="cheat-card"><h4>Tikai administratori</h4><p>Drošības audits — pārbaudi, vai nav svešu admin kontu.</p><pre><code>wp user list --role=administrator</code></pre></div>
+      <div class="cheat-card"><h4>Konkrēta lietotāja info</h4><p>Visi dati par vienu lietotāju.</p><pre><code>wp user get lietotajvards --fields=all</code></pre></div>
       <div class="cheat-card"><h4>Opcijas</h4><p>Nolasa/maina jebkuru WordPress iestatījumu.</p><pre><code>wp option update blogname "Jauns nosaukums"</code></pre></div>
       <div class="cheat-card"><h4>Cache</h4><p>Notīra WordPress objektu kešu.</p><pre><code>wp cache flush</code></pre></div>
     </div>
@@ -106,6 +111,36 @@ wp plugin update --all</code></pre></div>
       <div class="cheat-card"><h4>Mapju tiesības</h4><p>Standarta drošas tiesības — 755.</p><pre><code>find . -type d -exec chmod 755 {} \;</code></pre></div>
       <div class="cheat-card"><h4>Failu tiesības</h4><p>Standarta drošas tiesības — 644.</p><pre><code>find . -type f -exec chmod 644 {} \;</code></pre></div>
       <div class="cheat-card"><h4>wp-config.php</h4><p>Stingrāk — tikai īpašniekam.</p><pre><code>chmod 600 wp-config.php</code></pre></div>
+      <div class="cheat-card"><h4>Faila datumi</h4><p>Modify laiks — svarīgākais, meklējot mainītus failus.</p><pre><code>stat fails.php</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-resources">
+    <h2>Servera resursi</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>RAM</h4><p>Atmiņas izmantojums cilvēkam lasāmā formātā.</p><pre><code>free -h</code></pre></div>
+      <div class="cheat-card"><h4>TOP procesi pēc RAM</h4><p>Kas patērē visvairāk atmiņas šobrīd.</p><pre><code>ps aux --sort=-%mem | head -10</code></pre></div>
+      <div class="cheat-card"><h4>Diska vieta</h4><p>Izmantojums pa nodalījumiem.</p><pre><code>df -h</code></pre></div>
+      <div class="cheat-card"><h4>Lielākās mapes</h4><p>Kas piepildījis disku.</p><pre><code>du -sh */ | sort -rh | head -10</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-network">
+    <h2>Tīkla diagnostika</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>Servera IP</h4><p>Piešķirtā/iekšējā adrese.</p><pre><code>hostname -I</code></pre></div>
+      <div class="cheat-card"><h4>Publiskā IP</h4><p>Tā, kā serveri redz internets.</p><pre><code>curl ifconfig.me</code></pre></div>
+      <div class="cheat-card"><h4>MX ieraksti</h4><p>Kur nonāk domēna e-pasts.</p><pre><code>dig domena.lv MX</code></pre></div>
+      <div class="cheat-card"><h4>Porta pārbaude</h4><p>Vai konkrēts ports sasniedzams (piem., SMTP).</p><pre><code>telnet domena.lv 25</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-security">
+    <h2>Drošība</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>Core integritāte</h4><p>Salīdzina failus ar oficiālo WordPress.</p><pre><code>wp core verify-checksums</code></pre></div>
+      <div class="cheat-card"><h4>Nesen mainīti faili</h4><p>Bieža pirmā pazīme, ka vietne uzlauzta.</p><pre><code>find . -name "*.php" -mtime -7</code></pre></div>
+      <div class="cheat-card"><h4>Aizdomīgs kods</h4><p>Bieži izmantots ļaunprātīga koda paraugs.</p><pre><code>grep -rl "eval(base64_decode" wp-content/</code></pre></div>
     </div>
   </section>
 

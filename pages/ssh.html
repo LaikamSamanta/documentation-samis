@@ -52,9 +52,15 @@
     <div class="doc-sidebar-group">
       <h4>Servera pārvaldība</h4>
       <a href="#failu-parvaldiba"><span class="bullet"></span>Failu pārvaldība &amp; tiesības</a>
+      <a href="#servera-resursi"><span class="bullet"></span>Servera resursi (RAM, CPU, disks)</a>
+      <a href="#tikla-diagnostika"><span class="bullet"></span>Tīkla diagnostika (IP, DNS, MX)</a>
       <a href="#logi"><span class="bullet"></span>Kļūdu logi</a>
       <a href="#datubaze-mysql"><span class="bullet"></span>MySQL &amp; dublējumi</a>
       <a href="#wp-cron"><span class="bullet"></span>WP-Cron vs īstais cron</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Drošība</h4>
+      <a href="#drosiba-virusi"><span class="bullet"></span>Vīrusu &amp; aizdomīgu failu meklēšana</a>
     </div>
     <div class="doc-sidebar-group">
       <h4>Praktiski</h4>
@@ -196,9 +202,14 @@ wp option update blogname <span class="tok-str">"Jauns Vietnes Nosaukums"</span>
 
 <span class="tok-com"># Notīra WordPress objektu kešu (ne vienmēr to pašu, ko hostinga/CDN kešs)</span>
 wp cache flush</code></pre>
+      <p><strong>Tikai administratori</strong> — noder drošības auditam, lai pārbaudītu, vai nav parādījies svešs/neatpazīts admin konts:</p>
+      <pre class="code-block"><span class="lang">bash</span><code>wp user list --role=administrator --fields=ID,user_login,user_email,user_registered</code></pre>
+      <p><strong>Info par konkrētu lietotāju</strong> — visi tā dati un atsevišķie meta lauki:</p>
+      <pre class="code-block"><span class="lang">bash</span><code>wp user get lietotajvards --fields=all
+wp user meta list lietotajvards</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>wp user create</code> ar administratora lomu ir ātrākais veids atgūt piekļuvi vietnei, ja pazaudēta gan admin parole, gan e-pasta piekļuve atiestatīšanai — tiešā datubāzes/failu piekļuve caur SSH šo situāciju atrisina pāris sekundēs.</p>
+        <p><code>wp user create</code> ar administratora lomu ir ātrākais veids atgūt piekļuvi vietnei, ja pazaudēta gan admin parole, gan e-pasta piekļuve atiestatīšanai — tiešā datubāzes/failu piekļuve caur SSH šo situāciju atrisina pāris sekundēs. <code>wp user list --role=administrator</code> der arī otrādi — regulāri pārbaudīt, vai vietnē nav parādījies admin konts, ko tu neizveidoji (bieža pazīme, ka vietne uzlauzta).</p>
       </div>
     </section>
 
@@ -223,6 +234,59 @@ chmod 600 wp-config.php</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
         <p>Nekad neuzstādi <code>chmod 777</code> "lai vienkārši strādātu" — tas dod RAKSTĪŠANAS tiesības ikvienam serverī, ieskaitot potenciāli ļaunprātīgus skriptus, ja serveris koplietots. Ja fails/mape nesaglabājas, reālais iemesls parasti ir nepareizs failu <strong>īpašnieks</strong> (owner), nevis tiesības — pārbaudi ar <code>ls -la</code> un salīdzini ar to, kā PHP process darbojas (bieži <code>www-data</code>).</p>
+      </div>
+      <p><strong>Faila datumi</strong> — kad izveidots, mainīts vai pēdējoreiz atvērts:</p>
+      <pre class="code-block"><span class="lang">bash</span><code>stat fails.php</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>stat</code> izvadā trīs laikus — <code>Access</code> (pēdējoreiz nolasīts), <code>Modify</code> (pēdējoreiz mainīts saturs — svarīgākais, meklējot ļaunprātīgi ievietotus failus) un <code>Change</code> (pēdējoreiz mainīti faila metadati, piem., tiesības). Lielākā daļa Linux failsistēmu <strong>nesaglabā</strong> reālu "izveidošanas" datumu — <code>Modify</code> ir tuvākais praktiskais aizstājējs.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="servera-resursi">
+      <h2>Servera resursi (RAM, CPU, disks)</h2>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># RAM izmantojums cilvēkam lasāmā formātā (-h = human-readable)</span>
+free -h
+
+<span class="tok-com"># Dzīvs, reāllaika procesu saraksts (q = iziet); htop ir skaistāka alternatīva, ja instalēts</span>
+top
+
+<span class="tok-com"># TOP 10 procesi pēc RAM patēriņa, bez interaktīva režīma</span>
+ps aux --sort=-%mem | head -10
+
+<span class="tok-com"># TOP 10 procesi pēc CPU patēriņa</span>
+ps aux --sort=-%cpu | head -10
+
+<span class="tok-com"># Diska vietas izmantojums pa nodalījumiem</span>
+df -h
+
+<span class="tok-com"># Kuras mapes pašreizējā vietā aizņem visvairāk vietas, sakārtots dilstoši</span>
+du -sh */ | sort -rh | head -10</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Ja WordPress vietne kļūst lēna vai serveris "karājas", <code>ps aux --sort=-%mem</code> parasti uzreiz parāda vainīgo — bieži tas ir neierobežots PHP process, aizmirsts backup skripts vai spraudnis ar atmiņas noplūdi. <code>du -sh */ | sort -rh</code> palīdz atrast, kas piepildījis disku (bieži — logi vai veci dublējumi, kas nekad netika izdzēsti).</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="tikla-diagnostika">
+      <h2>Tīkla diagnostika (IP, DNS, MX, telnet)</h2>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Servera IEKŠĒJĀ/piešķirtā IP adrese</span>
+hostname -I
+
+<span class="tok-com"># Servera PUBLISKĀ IP adrese, tā, kā to redz internets (var atšķirties no augšējās)</span>
+curl ifconfig.me
+
+<span class="tok-com"># Domēna MX ieraksti (kur nonāk e-pasts) un vispārīgs DNS</span>
+dig domena.lv MX
+dig domena.lv +short
+
+<span class="tok-com"># Pārbauda, vai konkrēts ports ir atvērts/sasniedzams no servera puses</span>
+telnet domena.lv 80
+telnet domena.lv 25
+<span class="tok-com"># Ctrl+] tad "quit", lai izietu no telnet sesijas</span></code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>telnet domena.lv 25</code> ir klasisks veids pārbaudīt, kāpēc WordPress e-pasti (paroles atiestatīšana, kontaktformas) nenonāk galā — ja savienojums uz 25. portu neizdodas, problēma ir servera/hostinga pusē (bloķēts izejošais SMTP), nevis WordPress kodā. Plašāk par DNS/MX ierakstiem — <a href="web-izveide.html#dns-records">Web izveide dokumentācijā</a>.</p>
       </div>
     </section>
 
@@ -277,6 +341,27 @@ mysql -u db_lietotajs -p db_nosaukums</code></pre>
       </div>
     </section>
 
+    <section class="doc-section" id="drosiba-virusi">
+      <h2>Vīrusu &amp; aizdomīgu failu meklēšana</h2>
+      <p><strong>Core failu integritāte</strong> — WordPress salīdzina tavus kodola failus ar oficiālajiem, nemainītajiem failiem un uzreiz parāda, kuri atšķiras:</p>
+      <pre class="code-block"><span class="lang">bash</span><code>wp core verify-checksums</code></pre>
+      <p><strong>Nesen mainīti faili</strong> — bieži pirmā pazīme, ka vietne uzlauzta, ir faili, kas mainīti brīdī, kad tu pats neko nedarīji:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Visi .php faili, kas mainīti pēdējo 7 dienu laikā</span>
+find . -name <span class="tok-str">"*.php"</span> -mtime -7
+
+<span class="tok-com"># Tas pats, bet ar precīzu datumu/laiku katram failam, sakārtots pēc laika</span>
+find . -name <span class="tok-str">"*.php"</span> -mtime -7 -printf <span class="tok-str">"%T@ %p\n"</span> | sort -n</code></pre>
+      <p><strong>Aizdomīgi koda paraugi</strong> — ļaunprātīgs WordPress kods bieži izmanto konkrētas, atpazīstamas PHP funkcijas, lai paslēptu/izpildītu injicētu kodu:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Meklē failus ar bieži ļaunprātīgi izmantotiem paraugiem visā wp-content</span>
+grep -rl <span class="tok-str">"eval(base64_decode"</span> wp-content/ --include=<span class="tok-str">"*.php"</span>
+grep -rl <span class="tok-str">"eval(gzinflate"</span> wp-content/ --include=<span class="tok-str">"*.php"</span>
+grep -rl <span class="tok-str">"eval(\$_POST"</span> wp-content/ --include=<span class="tok-str">"*.php"</span></code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Šīs komandas <strong>norāda uz aizdomām</strong>, ne pierāda vīrusu — daži leģitīmi spraudņi arī izmanto <code>eval()</code> vai <code>base64</code> nešķīstiem mērķiem (piem., licenču pārbaudei). Katru atrasto sakritību pārbaudi manuāli, salīdzinot ar to, kas failā bija PIRMS aizdomīgā perioda (skat. <a href="git.html">Git vēsturi</a>, ja tēma/spraudnis versionēts). Nopietnākai, automatizētai skenēšanai der specializēts rīks — <code>clamscan</code> (ClamAV) vai hostinga/WordPress drošības spraudnis (Wordfence, Sucuri).</p>
+      </div>
+    </section>
+
     <section class="doc-section" id="failu-parsutisana">
       <h2>Failu pārsūtīšana (scp/rsync)</h2>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># scp — vienkārša kopēšana caur SSH, bez papildu FTP servera</span>
@@ -312,7 +397,23 @@ find . -type d -exec chmod 755 {} \;
 find . -type f -exec chmod 644 {} \;
 
 <span class="tok-com"># Datubāze bez WP-CLI</span>
-mysqldump -u lietotajs -p db_nosaukums &gt; dublejums.sql</code></pre>
+mysqldump -u lietotajs -p db_nosaukums &gt; dublejums.sql
+
+<span class="tok-com"># Servera resursi</span>
+free -h
+ps aux --sort=-%mem | head -10
+df -h
+
+<span class="tok-com"># Tīkla diagnostika</span>
+hostname -I
+dig domena.lv MX
+telnet domena.lv 25
+
+<span class="tok-com"># Drošība</span>
+wp core verify-checksums
+wp user list --role=administrator
+find . -name <span class="tok-str">"*.php"</span> -mtime -7
+grep -rl <span class="tok-str">"eval(base64_decode"</span> wp-content/ --include=<span class="tok-str">"*.php"</span></code></pre>
     </section>
 
     <div class="doc-pager">
