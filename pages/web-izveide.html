@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>IP, DNS & SSL — Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=9" />
+<link rel="stylesheet" href="../css/style.css?v=10" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -56,6 +56,7 @@
     </div>
     <div class="doc-sidebar-group">
       <h4>Praktiski</h4>
+      <a href="#ssh"><span class="bullet"></span>SSH pieslēgšanās serverim</a>
       <a href="#tools"><span class="bullet"></span>Noderīgas komandas</a>
     </div>
   </aside>
@@ -165,6 +166,52 @@ sudo certbot renew --dry-run</code></pre>
       <p>Šī komanda izvadīs divas rindas — <code>notBefore</code> (kopš kura brīža sertifikāts derīgs) un <code>notAfter</code> (kad tas beidzas).</p>
     </section>
 
+    <section class="doc-section" id="ssh">
+      <h2>SSH pieslēgšanās serverim</h2>
+      <p><strong>SSH</strong> (Secure Shell) ir šifrēts protokols attālinātai pieslēgšanās serverim caur termināli — tā vietā, lai serverim piekļūtu fiziski, nosūti komandas pa tīklu, un tās izpildās tieši tur, ar pilnu šifrēšanu starp tavu datoru un serveri. Strādā pāri portam <strong>22</strong> (skat. <a href="#ports">Porti</a> augstāk).</p>
+      <pre class="code-block"><span class="lang">bash</span><code>ssh lietotajvards@servera-ip-vai-domens.lv
+
+<span class="tok-com"># Ja serveris klausās nestandarta portā (ne 22)</span>
+ssh -p 2222 lietotajvards@servera-ip-vai-domens.lv</code></pre>
+      <p>Pirmajā reizē pieslēdzoties konkrētam serverim, terminālis parādīs servera "pirkstu nospiedumu" (fingerprint) un jautās, vai uzticies tam — tas pasargā no <em>man-in-the-middle</em> uzbrukuma, kad kāds cits izliekas par tavu serveri. Apstiprini tikai tad, ja esi pārliecināts, ka adrese ir pareiza.</p>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Pēc pirmās apstiprināšanas servera pirkstu nospiedums saglabājas failā <code>~/.ssh/known_hosts</code> — ja tas kādreiz pēkšņi mainās (bez tam, ka tu pats pārinstalēji serveri), terminālis parādīs brīdinājumu ar lieliem burtiem. Tas <strong>nav</strong> jāignorē — tā var būt reāla uzbrukuma pazīme.</p>
+      </div>
+      <p><strong>Paroles autentifikācija vs atslēgu autentifikācija</strong> — parole strādā, bet katru reizi jāievada no jauna un ir jutīgāka pret uzminēšanu (brute-force). Praksē gandrīz vienmēr izmanto <strong>SSH atslēgu pāri</strong>: privātā atslēga paliek tavā datorā (nekad nekur nesūti), publiskā atslēga tiek ielikta serverī — serveris pielaiž tikai tos, kam ir atbilstošā privātā atslēga.</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Izveido jaunu atslēgu pāri (ed25519 — modernāks un ātrāks par veco RSA)</span>
+ssh-keygen -t ed25519 -C <span class="tok-str">"tavs@epasts.lv"</span>
+
+<span class="tok-com"># Izveido divus failus:</span>
+<span class="tok-com">#   ~/.ssh/id_ed25519      — PRIVĀTĀ atslēga, paliek tikai šeit</span>
+<span class="tok-com">#   ~/.ssh/id_ed25519.pub  — PUBLISKĀ atslēga, drīkst kopīgot</span>
+
+<span class="tok-com"># Nokopē publisko atslēgu uz serveri (viens komands, dara visu automātiski)</span>
+ssh-copy-id lietotajvards@servera-ip-vai-domens.lv</code></pre>
+      <p>Ja <code>ssh-copy-id</code> nav pieejams (piem., Windows bez WSL), publisko atslēgu var pievienot arī pašrocīgi — nokopē <code>id_ed25519.pub</code> satura tekstu un pievieno to servera failam <code>~/.ssh/authorized_keys</code> (katra atslēga savā rindā).</p>
+      <p>Ja regulāri pieslēdzies vairākiem serveriem, ērtāk ir izveidot saīsinājumus failā <code>~/.ssh/config</code>:</p>
+      <pre class="code-block"><span class="lang">text</span><code><span class="tok-com"># ~/.ssh/config</span>
+Host mansserveris
+    HostName servera-ip-vai-domens.lv
+    User lietotajvards
+    Port 22
+    IdentityFile ~/.ssh/id_ed25519</code></pre>
+      <p>Pēc tam pieslēgšanās saīsinās līdz <code>ssh mansserveris</code> — bez lietotājvārda, IP un porta katru reizi rakstīšanas.</p>
+      <p><strong>Failu pārsūtīšana</strong> caur to pašu SSH savienojumu, bez papildu FTP servera:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Kopē failu NO datora UZ serveri</span>
+scp fails.zip lietotajvards@serveris.lv:/mapes/celjs/
+
+<span class="tok-com"># Kopē failu NO servera uz datoru</span>
+scp lietotajvards@serveris.lv:/mapes/celjs/fails.zip .
+
+<span class="tok-com"># Visu mapi (-r = rekursīvi)</span>
+scp -r mana-mape/ lietotajvards@serveris.lv:/mapes/celjs/</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Visbiežākā kļūda — <code>Permission denied (publickey)</code> — nozīmē, ka serveris nesaņēma vai neatpazina tavu publisko atslēgu (nepareizi ielikta <code>authorized_keys</code>, nepareizas failu tiesības uz serverī, vai izmanto citu atslēgu nekā domāts). Nekad neglabā un nesūti privāto atslēgu (<code>id_ed25519</code> bez <code>.pub</code>) nekur citur, tikai savā datorā — tā ir līdzvērtīga parolei.</p>
+      </div>
+    </section>
+
     <section class="doc-section" id="tools">
       <h2>Noderīgas komandas</h2>
       <p>Kopsavilkums — visas komandas, kas parādījās šajā lapā, vienuviet ātrai uzziņai. Visas darbojas jebkura moderna operētājsistēmas terminālī (Windows: CMD/PowerShell ar <code>ipconfig</code>, Mac/Linux ar attiecīgajiem ekvivalentiem):</p>
@@ -194,7 +241,7 @@ ipconfig /flushdns</code></pre>
   </main>
 </div>
 
-<script src="../js/theme.js?v=9"></script>
-<script src="../js/main.js?v=9"></script>
+<script src="../js/theme.js?v=10"></script>
+<script src="../js/main.js?v=10"></script>
 </body>
 </html>

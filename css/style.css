@@ -25,6 +25,8 @@
   --c-integrations-soft: rgba(45, 212, 191, 0.15);
   --c-api: #f2994a;
   --c-api-soft: rgba(242, 153, 74, 0.15);
+  --c-git: #ef4444;
+  --c-git-soft: rgba(239, 68, 68, 0.15);
 
   /* page-scoped accent — falls back to the brand purple; category pages
      override these (see .cat-* below) so navigation/headings pick up the
@@ -61,6 +63,7 @@
   --c-web-2: color-mix(in srgb, var(--c-web), white 25%);
   --c-integrations-2: color-mix(in srgb, var(--c-integrations), white 25%);
   --c-api-2: color-mix(in srgb, var(--c-api), white 15%);
+  --c-git-2: color-mix(in srgb, var(--c-git), white 15%);
 
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 20px 40px -20px rgba(0, 0, 0, 0.6);
   --shadow-pop: 0 30px 60px -25px rgba(120, 60, 255, 0.35);
@@ -93,6 +96,7 @@
   --c-web-2: color-mix(in srgb, var(--c-web), black 30%);
   --c-integrations-2: color-mix(in srgb, var(--c-integrations), black 50%);
   --c-api-2: color-mix(in srgb, var(--c-api), black 50%);
+  --c-git-2: color-mix(in srgb, var(--c-git), black 15%);
 
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 20px 40px -24px rgba(80, 60, 140, 0.25);
   --shadow-pop: 0 30px 60px -25px rgba(124, 58, 237, 0.25);
@@ -106,6 +110,7 @@ body.cat-php          { --page-accent: var(--c-php);          --page-accent-2: v
 body.cat-web          { --page-accent: var(--c-web);          --page-accent-2: var(--c-web-2);          --page-accent-soft: var(--c-web-soft); }
 body.cat-integrations { --page-accent: var(--c-integrations); --page-accent-2: var(--c-integrations-2); --page-accent-soft: var(--c-integrations-soft); }
 body.cat-api           { --page-accent: var(--c-api);          --page-accent-2: var(--c-api-2);          --page-accent-soft: var(--c-api-soft); }
+body.cat-git           { --page-accent: var(--c-git);          --page-accent-2: var(--c-git-2);          --page-accent-soft: var(--c-git-soft); }
 
 * {
   box-sizing: border-box;
@@ -572,6 +577,7 @@ code {
 .card.web       { --card-color: var(--c-web);        --card-soft: var(--c-web-soft); }
 .card.integrations { --card-color: var(--c-integrations); --card-soft: var(--c-integrations-soft); }
 .card.api       { --card-color: var(--c-api);       --card-soft: var(--c-api-soft); }
+.card.git       { --card-color: var(--c-git);       --card-soft: var(--c-git-soft); }
 
 /* ---------- Stats strip ---------- */
 .stats {

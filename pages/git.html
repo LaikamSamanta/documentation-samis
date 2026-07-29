@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="lv" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Git dokumentācija — Documentation Samis</title>
+<link rel="stylesheet" href="../css/style.css?v=10" />
+<script>
+  (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
+</script>
+</head>
+<body class="cat-git">
+<div class="bg-glow"></div>
+<div class="bg-grid"></div>
+
+<header class="topbar">
+  <a class="brand" href="../index.html">
+    <span class="mark">DS</span>
+    Documentation Samis
+  </a>
+  <div class="topbar-actions">
+    <a class="btn-back" href="cheatsheet-git.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-6-6z"/><path d="M13 2v6h6M9 13h6M9 17h6M9 9h1"/></svg>
+      Cheatsheet
+    </a>
+    <a class="btn-back" href="../index.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M5 12h14"/></svg>
+      Kategorijas
+    </a>
+    <button class="icon-btn" id="theme-toggle" title="Pārslēgt tēmu" aria-label="Pārslēgt tēmu">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="doc-shell">
+  <aside class="doc-sidebar">
+    <div class="doc-sidebar-group">
+      <h4>Pamati</h4>
+      <a href="#ievads" class="active"><span class="bullet"></span>Kas ir Git?</a>
+      <a href="#instalacija"><span class="bullet"></span>Instalācija &amp; konfigurācija</a>
+      <a href="#pirmais-repo"><span class="bullet"></span>Pirmais repozitorijs</a>
+      <a href="#vesture"><span class="bullet"></span>Vēsture (log, diff)</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Zari &amp; apvienošana</h4>
+      <a href="#zari"><span class="bullet"></span>Zari (branches)</a>
+      <a href="#apvienosana"><span class="bullet"></span>Apvienošana (merge)</a>
+      <a href="#konflikti"><span class="bullet"></span>Merge konflikti</a>
+      <a href="#rebase"><span class="bullet"></span>Rebase</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Attālie repozitoriji</h4>
+      <a href="#remotes"><span class="bullet"></span>Remotes &amp; clone</a>
+      <a href="#push-pull"><span class="bullet"></span>push / pull / fetch</a>
+      <a href="#ssh-atslegas"><span class="bullet"></span>SSH atslēgas GitHub</a>
+      <a href="#pull-requests"><span class="bullet"></span>Pull requesti</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Praktiski</h4>
+      <a href="#gitignore"><span class="bullet"></span>.gitignore</a>
+      <a href="#atsaukt-izmainas"><span class="bullet"></span>Izmaiņu atsaukšana</a>
+      <a href="#stash"><span class="bullet"></span>git stash</a>
+      <a href="#labas-prakses"><span class="bullet"></span>Labas prakses</a>
+    </div>
+  </aside>
+
+  <main class="doc-main">
+    <div class="doc-breadcrumb">
+      <a href="../index.html">Sākums</a>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span>Git</span>
+    </div>
+
+    <div class="doc-header">
+      <div class="icon" style="background: var(--c-git-soft); color: var(--c-git);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M6 8.5v7M8.5 6H14a4 4 0 0 1 4 4v2.5"/></svg>
+      </div>
+      <h1 style="margin-bottom:0;">Git</h1>
+    </div>
+    <p class="doc-lead">Pilns iesācēja ceļvedis: kas ir versiju kontrole, kā strādāt ar Git ikdienā un kā droši sadarboties ar citiem caur GitHub — ar reāliem, darbojošos komandu piemēriem.</p>
+
+    <section class="doc-section" id="ievads">
+      <h2>Kas ir Git?</h2>
+      <p><strong>Git</strong> ir <strong>versiju kontroles sistēma</strong> — programma, kas saglabā katras faila izmaiņas kā atsevišķu, laikā izsekojamu "momentuzņēmumu" (snapshot). Tā vietā, lai glabātu failus <code>projekts_final.zip</code>, <code>projekts_final_v2.zip</code>, <code>projekts_TIESAM_final.zip</code>, Git saglabā katru jēgpilnu izmaiņu soli ar aprakstu, un jebkurā brīdī var atgriezties pie jebkura iepriekšējā stāvokļa.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>📸 Commit</h4><p>Viens "momentuzņēmums" — konkrēts izmaiņu kopums ar aprakstošu ziņojumu, kāpēc tas izdarīts.</p></div>
+        <div class="doc-mini-card"><h4>🌿 Branch (zars)</h4><p>Neatkarīga izstrādes līnija — ļauj strādāt pie jaunas funkcijas, neietekmējot galveno kodu.</p></div>
+        <div class="doc-mini-card"><h4>🔀 Merge</h4><p>Apvieno viena zara izmaiņas atpakaļ citā (parasti galvenajā) zarā.</p></div>
+        <div class="doc-mini-card"><h4>☁️ Remote</h4><p>Attālināta repozitorija kopija (piem., GitHub) — ļauj dalīties ar citiem un veidot dublējumu.</p></div>
+      </div>
+      <p>Git ir <strong>izplatīta</strong> (distributed) sistēma — katram izstrādātājam datorā ir <strong>pilna</strong> projekta vēsture, ne tikai pašreizējā versija. Tāpēc lielākā daļa darbību (skatīties vēsturi, izveidot commit, salīdzināt versijas) strādā bez interneta savienojuma — tas vajadzīgs tikai, lai sinhronizētos ar citiem (skat. <a href="#remotes">Remotes &amp; clone</a>).</p>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><strong>Git</strong> (programma/rīks) un <strong>GitHub</strong> (mitināšanas serviss internetā) nav tas pats — Git strādā lokāli tavā datorā pat bez GitHub konta. GitHub (vai GitLab, Bitbucket) ir tikai vieta, kur glabāt attālinātu repozitorija kopiju un sadarboties ar citiem. Šī lapa apraksta gan Git pašu, gan GitHub darbam ar to.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="instalacija">
+      <h2>Instalācija &amp; konfigurācija</h2>
+      <pre class="code-block"><span class="lang">text</span><code>Windows: lejupielādē no git-scm.com (iekļauj arī Git Bash termināli)
+Mac:     brew install git   (vai jau iepriekš instalēts)
+Linux:   sudo apt install git   (Debian/Ubuntu)</code></pre>
+      <p>Pēc instalēšanas jāiestata vārds un e-pasts — tie parādīsies pie katra tavis izveidotā commit kā autors:</p>
+      <pre class="code-block"><span class="lang">bash</span><code>git config --global user.name <span class="tok-str">"Tavs Vārds"</span>
+git config --global user.email <span class="tok-str">"tavs@epasts.lv"</span>
+
+<span class="tok-com"># Pārbauda, kas tieši ir iestatīts</span>
+git config --list</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>--global</code> nozīmē — šie iestatījumi der visiem repozitorijiem tavā datorā. Ja konkrētam projektam vajag citu e-pastu (piem., darba projektam), palaid to pašu komandu <strong>bez</strong> <code>--global</code>, atrodoties tā projekta mapē — tas pārraksta iestatījumu tikai tur.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="pirmais-repo">
+      <h2>Pirmais repozitorijs</h2>
+      <p><strong>Repozitorijs</strong> (repository, saīsināti "repo") ir mape, ko Git izseko — tā satur slēptu apakšmapi <code>.git</code>, kurā glabājas visa vēsture. Divi veidi, kā to sākt:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># 1. variants — jauns, tukšs repo esošā mapē</span>
+<span class="tok-kw">cd</span> mans-projekts
+git init
+
+<span class="tok-com"># 2. variants — lejupielādē jau esošu repo no GitHub (skat. #remotes)</span>
+git clone https://github.com/lietotajs/repo.git</code></pre>
+      <p>Trīs pamata komandas, kas veido ikdienas ciklu:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Parāda, kuri faili mainīti, jauni vai gatavi commit'am</span>
+git status
+
+<span class="tok-com"># "Sagatavo" konkrētus failus nākamajam commit — konkrētu failu vai visus</span>
+git add index.html
+git add .
+
+<span class="tok-com"># Saglabā sagatavotās izmaiņas kā jaunu momentuzņēmumu ar aprakstu</span>
+git commit -m <span class="tok-str">"Pievieno lietotāja reģistrācijas formu"</span></code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>"Sagatavošana" (<code>git add</code>) ir savs, atsevišķs solis — Git NEsaglabā izmaiņas commit'ā automātiski, tikai tās, kuras skaidri pievienoji ar <code>add</code>. Tas ļauj izvēlēties, kuras no vairākām vienlaicīgi izdarītām izmaiņām iet vienā commit'ā, kuras citā — <code>git status</code> vienmēr rāda, kas tieši ir "sagatavots" un kas vēl nav.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="vesture">
+      <h2>Vēsture (log, diff)</h2>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Visu commit'u saraksts, jaunākais augšā</span>
+git log
+
+<span class="tok-com"># Kompaktāks, viena rinda katram commit</span>
+git log --oneline
+
+<span class="tok-com"># Kas tieši mainījās konkrētā commit</span>
+git show a1b2c3d
+
+<span class="tok-com"># Kas mainījies kopš pēdējā commit (bet vēl nav "add"-ots)</span>
+git diff
+
+<span class="tok-com"># Kas mainījies un JAU ir "add"-ots (gatavs commit'am)</span>
+git diff --staged</code></pre>
+      <p>Katram commit ir unikāls identifikators (piem., <code>a1b2c3d...</code>) — pietiek ar pirmajiem 7 simboliem, lai uz to atsauktos jebkurā komandā.</p>
+    </section>
+
+    <section class="doc-section" id="zari">
+      <h2>Zari (branches)</h2>
+      <p><strong>Zars</strong> ir neatkarīga izstrādes līnija — ļauj strādāt pie jaunas funkcijas vai labojuma, neietekmējot galveno (<code>main</code> vai <code>master</code>) zaru, kamēr darbs nav pabeigts un pārbaudīts.</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Parāda visus zarus, zvaigznīte pie pašreizējā</span>
+git branch
+
+<span class="tok-com"># Izveido jaunu zaru (bet vēl nepārslēdzas uz to)</span>
+git branch jauna-funkcija
+
+<span class="tok-com"># Pārslēdzas uz esošu zaru</span>
+git checkout jauna-funkcija
+git switch jauna-funkcija    <span class="tok-com">// jaunāka, skaidrāka alternatīva checkout</span>
+
+<span class="tok-com"># Izveido UN uzreiz pārslēdzas — visbiežāk lietotais variants</span>
+git checkout -b jauna-funkcija
+git switch -c jauna-funkcija
+
+<span class="tok-com"># Izdzēš zaru (tikai, ja tas jau apvienots — droši)</span>
+git branch -d jauna-funkcija</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Prakses standarts — <code>main</code> zars vienmēr satur stabilu, strādājošu kodu. Katrai jaunai funkcijai vai labojumam izveido jaunu zaru (piem., <code>funkcija/pieteiksanas-forma</code> vai <code>fix/salauzta-navigacija</code>), strādā tur, un apvieno atpakaļ <code>main</code> tikai tad, kad darbs pabeigts un pārbaudīts.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="apvienosana">
+      <h2>Apvienošana (merge)</h2>
+      <p>Kad darbs zarā pabeigts, tā izmaiņas jāapvieno atpakaļ galvenajā zarā:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Vispirms pārslēdzies UZ to zaru, kurā izmaiņas jāievieto</span>
+git checkout main
+
+<span class="tok-com"># Tad apvieno otra zara izmaiņas šeit</span>
+git merge jauna-funkcija</code></pre>
+      <p>Ja kopš zara atdalīšanas <code>main</code> nav mainījies, Git veic <strong>fast-forward</strong> apvienošanu — vienkārši pārvieto <code>main</code> rādītāju uz priekšu, bez jauna commit. Ja abi zari mainījušies neatkarīgi, Git izveido jaunu <strong>merge commit</strong>, kas apvieno abas vēstures līnijas.</p>
+    </section>
+
+    <section class="doc-section" id="konflikti">
+      <h2>Merge konflikti</h2>
+      <p><strong>Konflikts</strong> rodas, ja divi zari maina <strong>tās pašas koda rindas</strong> atšķirīgi — Git nevar pats izlemt, kura versija pareiza, un aptur apvienošanu, gaidot cilvēka lēmumu.</p>
+      <pre class="code-block"><span class="lang">text</span><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+&lt;h1&gt;Sveiki, pasaule!&lt;/h1&gt;
+=======
+&lt;h1&gt;Laipni lūdzam!&lt;/h1&gt;
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; jauna-funkcija</code></pre>
+      <p>Konflikta failā Git iezīmē abas versijas — augšējā (starp <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> un <code>=======</code>) ir tava pašreizējā zara versija, apakšējā (starp <code>=======</code> un <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>) — otra zara versija. Risinājums:</p>
+      <pre class="code-block"><span class="lang">text</span><code>1. Atver failu redaktorā
+2. Izvēlies pareizo tekstu (vienu, otru, vai apvieno abus pēc jēgas)
+3. Izdzēs VISAS marķējuma rindas (&lt;&lt;&lt;&lt;&lt;&lt;&lt;, =======, &gt;&gt;&gt;&gt;&gt;&gt;&gt;)
+4. git add [fails]
+5. git commit   (Git jau sagatavojis merge commit ziņojumu)</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Ja konflikts izskatās pārāk sarežģīts vai sāc apjukt, droši var atcelt visu mēģinājumu ar <code>git merge --abort</code> un sākt no jauna ar mierīgu prātu — tas atgriež visu tieši tādā stāvoklī, kāds bija pirms <code>merge</code> komandas, neko nezaudējot.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="rebase">
+      <h2>Rebase</h2>
+      <p><strong>Rebase</strong> ir alternatīva <code>merge</code> — tā vietā, lai izveidotu jaunu "apvienošanas" commit, tā <strong>pārliek</strong> tavus commit'us tā, it kā tu tos būtu uzrakstījis, sākot no jaunākās <code>main</code> versijas. Rezultāts — lineāra, tīrāka vēsture bez merge commit "mezgliem".</p>
+      <pre class="code-block"><span class="lang">bash</span><code>git checkout jauna-funkcija
+git rebase main</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><strong>Zelta likums</strong> — nekad nedari rebase zaram, ko jau nosūtījis (push) un ko lieto/lejupielādējis kāds cits. Rebase pārraksta commit vēsturi (jauni ID katram commit); ja kāds cits jau strādā ar veco versiju, viņa Git nespēs to salīdzināt ar tavu jauno, un rodas sajukums. Iesācējam drošāk sākumā palikt pie <code>merge</code> un rebase izmantot tikai lokāliem, vēl nenosūtītiem zariem.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="remotes">
+      <h2>Remotes &amp; clone</h2>
+      <p><strong>Remote</strong> ir saite uz attālinātu repozitorija kopiju — visbiežāk GitHub. <code>origin</code> ir standarta nosaukums galvenajam remote.</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Lejupielādē jau esošu repo, ar VISU vēsturi, savā datorā</span>
+git clone https://github.com/lietotajs/repo.git
+
+<span class="tok-com"># Pievieno remote esošam, lokāli izveidotam repo (git init)</span>
+git remote add origin https://github.com/lietotajs/repo.git
+
+<span class="tok-com"># Parāda, kādi remotes ir pievienoti</span>
+git remote -v</code></pre>
+    </section>
+
+    <section class="doc-section" id="push-pull">
+      <h2>push / pull / fetch</h2>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Nosūta tavus lokālos commit'us uz remote</span>
+git push origin main
+
+<span class="tok-com"># Pirmajai push reizei jaunam zaram — iestata sekošanas saiti,</span>
+<span class="tok-com"># lai turpmāk pietiek ar vienkāršu "git push"</span>
+git push -u origin jauna-funkcija
+
+<span class="tok-com"># Lejupielādē UN uzreiz apvieno citu jaunās izmaiņas no remote</span>
+git pull
+
+<span class="tok-com"># Tikai lejupielādē jaunāko info par remote, NEAPVIENO neko</span>
+git fetch</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>git pull</code> ir īsumā <code>git fetch</code> + <code>git merge</code> vienā komandā. Ja gribi vispirms redzēt, KAS tieši mainījies attālinātajā versijā, pirms to apvieno ar savu darbu, izmanto <code>fetch</code> atsevišķi un pārbaudi ar <code>git log origin/main</code>, tad lem, vai <code>merge</code> vai <code>rebase</code>.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="ssh-atslegas">
+      <h2>SSH atslēgas GitHub autentifikācijai</h2>
+      <p>Pieslēdzoties GitHub caur <code>https://</code> adresi, katru <code>push</code> reizi jāievada lietotājvārds/tokens. Ērtāk — izveidot <strong>SSH atslēgu pāri</strong> un pieslēgties caur <code>git@github.com:...</code> adresi, kur autentifikācija notiek automātiski (skat. arī <a href="web-izveide.html#ssh">vispārīgo SSH skaidrojumu</a> par pašu protokolu):</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># 1. Izveido atslēgu pāri (ja vēl nav)</span>
+ssh-keygen -t ed25519 -C <span class="tok-str">"tavs@epasts.lv"</span>
+
+<span class="tok-com"># 2. Nokopē PUBLISKĀS atslēgas saturu (Windows piemērs)</span>
+type <span class="tok-str">%USERPROFILE%\.ssh\id_ed25519.pub</span> | clip
+
+<span class="tok-com"># 3. GitHub → Settings → SSH and GPG keys → New SSH key → ielīmē</span>
+
+<span class="tok-com"># 4. Pārbauda, vai savienojums strādā</span>
+ssh -T git@github.com</code></pre>
+      <p>Pēc atslēgas pievienošanas jauniem repo klonē ar SSH adresi (nevis <code>https://</code>):</p>
+      <pre class="code-block"><span class="lang">bash</span><code>git clone git@github.com:lietotajs/repo.git</code></pre>
+      <p>Repo, kas jau klonēts ar <code>https://</code>, var pārslēgt uz SSH bez atkārtotas klonēšanas:</p>
+      <pre class="code-block"><span class="lang">bash</span><code>git remote set-url origin git@github.com:lietotajs/repo.git</code></pre>
+    </section>
+
+    <section class="doc-section" id="pull-requests">
+      <h2>Pull requesti (PR)</h2>
+      <p><strong>Pull request</strong> (GitLab sauc to par Merge Request) nav Git komanda — tā ir GitHub/GitLab funkcija virs Git: pieprasījums apvienot izmaiņas no viena zara citā, ar iebūvētu vietu diskusijai, koda pārskatīšanai (code review) un automātiskām pārbaudēm (CI), <strong>pirms</strong> izmaiņas nonāk galvenajā zarā.</p>
+      <pre class="code-block"><span class="lang">text</span><code>1. Izveido jaunu zaru, izdari izmaiņas, nosūti (push) uz GitHub
+2. GitHub lapā parādās poga "Compare & pull request"
+3. Uzraksti aprakstu — KO un KĀPĒC šī izmaiņa dara
+4. Pieprasi pārskatīšanu (review) no komandas biedra
+5. Pēc apstiprinājuma — "Merge pull request"</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Daudzi projekti iestata <strong>branch protection</strong> — noteikumu, ka <code>main</code> zarā nevar nosūtīt (push) tieši, tikai caur apstiprinātu pull request. Tas pasargā no nejaušām, nepārbaudītām izmaiņām galvenajā, vienmēr strādājošajā kodā.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="gitignore">
+      <h2>.gitignore</h2>
+      <p>Fails <code>.gitignore</code> projekta saknē pasaka Git, kurus failus/mapes <strong>nekad</strong> nesekot un neieteikt pievienot — parasti ģenerētus failus, atkarības un slepenus datus, kam nav vietas versiju kontrolē.</p>
+      <pre class="code-block"><span class="lang">text</span><code><span class="tok-com"># .gitignore</span>
+node_modules/
+vendor/
+.env
+*.log
+.DS_Store
+/dist</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>.gitignore</code> darbojas <strong>tikai</strong> failiem, kas Git vēl NAV izsekojis. Ja fails (piem., <code>.env</code> ar slepenām atslēgām) kādreiz jau tika pievienots ar <code>git add</code> un commit'ots, tas paliks vēsturē pat pēc pievienošanas <code>.gitignore</code> — jāizmanto <code>git rm --cached fails</code>, lai to izņemtu no izsekošanas (bet tas <strong>nedzēš</strong> no vēstures — jau nosūtītas atslēgas jāuzskata par kompromitētām un jānomaina).</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="atsaukt-izmainas">
+      <h2>Izmaiņu atsaukšana</h2>
+      <p>Vairāki līmeņi, atkarībā no tā, cik "dziļi" jāatsaucas:</p>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Komanda</th><th>Ko dara</th></tr></thead>
+          <tbody>
+            <tr><td><code>git restore fails.txt</code></td><td>Atceļ nesaglabātas izmaiņas failā, atgriežot to uz pēdējo commit</td></tr>
+            <tr><td><code>git reset --soft HEAD~1</code></td><td>Atceļ pēdējo commit, bet SAGLABĀ izmaiņas kā "sagatavotas"</td></tr>
+            <tr><td><code>git reset HEAD~1</code></td><td>Atceļ pēdējo commit, izmaiņas paliek, bet vairs nav "sagatavotas"</td></tr>
+            <tr><td><code>git reset --hard HEAD~1</code></td><td>Atceļ pēdējo commit UN pilnībā izdzēš izmaiņas — neatgriezeniski</td></tr>
+            <tr><td><code>git revert a1b2c3d</code></td><td>Izveido JAUNU commit, kas atceļ norādītā commit izmaiņas — vēsture paliek neskarta</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>git reset --hard</code> neatgriezeniski dzēš nesaglabātu darbu — pirms to lietot, pārliecinies, ka tiešām neko nevajag. Ja commit jau nosūtīts (push) uz remote, ko lieto citi, izmanto <code>git revert</code> nevis <code>reset</code> — <code>revert</code> nemaina vēsturi, tikai pievieno "labojošu" commit, tāpēc nesajauc citu izstrādātāju kopijas.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="stash">
+      <h2>git stash</h2>
+      <p>Kad darbs vidū, bet steidzami jāpārslēdzas uz citu zaru (piem., steidzams labojums), <code>git stash</code> īslaicīgi "noliek plauktā" nesaglabātās izmaiņas, atgriežot darba mapi tīru:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Noliek pašreizējās nesaglabātās izmaiņas plauktā</span>
+git stash
+
+<span class="tok-com"># ... pārslēdzies, izdari steidzamo labojumu, commit, push ...</span>
+
+<span class="tok-com"># Atgriež pēdējo noliktās izmaiņas atpakaļ un izņem no plaukta</span>
+git stash pop
+
+<span class="tok-com"># Parāda visu, kas šobrīd atrodas plauktā</span>
+git stash list</code></pre>
+    </section>
+
+    <section class="doc-section" id="labas-prakses">
+      <h2>Labas prakses</h2>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>✍️ Skaidri commit ziņojumi</h4><p>"Labo bugu" pastāsta neko; "Labo datuma formātu pasūtījumu sarakstā" pastāsta visu.</p></div>
+        <div class="doc-mini-card"><h4>📦 Mazi, atomiski commit</h4><p>Katrs commit — viena loģiska izmaiņa. Vieglāk pārskatīt, vieglāk atsaukt tikai to vienu, ja vajag.</p></div>
+        <div class="doc-mini-card"><h4>🔄 Bieža sinhronizācija</h4><p>Regulārs pull/push mazina konfliktu risku — jo ilgāk zars atdalīts, jo vairāk tas atšķiras.</p></div>
+        <div class="doc-mini-card"><h4>🚫 Nekad secrets Git</h4><p>Atslēgas/paroles Git vēsturē paliek uz visiem laikiem, pat pēc izdzēšanas no faila (skat. <a href="#gitignore">.gitignore</a>).</p></div>
+      </div>
+    </section>
+
+    <div class="doc-pager">
+      <a href="api.html"><span class="lbl">← Iepriekšējais</span>API</a>
+      <a class="to-next" href="../index.html"><span class="lbl">Atpakaļ →</span>Visas kategorijas</a>
+    </div>
+  </main>
+</div>
+
+<script src="../js/theme.js?v=10"></script>
+<script src="../js/main.js?v=10"></script>
+</body>
+</html>
