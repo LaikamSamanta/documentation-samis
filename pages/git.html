@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Git dokumentācija — Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=10" />
+<link rel="stylesheet" href="../css/style.css?v=12" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -260,7 +260,7 @@ git fetch</code></pre>
 
     <section class="doc-section" id="ssh-atslegas">
       <h2>SSH atslēgas GitHub autentifikācijai</h2>
-      <p>Pieslēdzoties GitHub caur <code>https://</code> adresi, katru <code>push</code> reizi jāievada lietotājvārds/tokens. Ērtāk — izveidot <strong>SSH atslēgu pāri</strong> un pieslēgties caur <code>git@github.com:...</code> adresi, kur autentifikācija notiek automātiski (skat. arī <a href="web-izveide.html#ssh">vispārīgo SSH skaidrojumu</a> par pašu protokolu):</p>
+      <p>Pieslēdzoties GitHub caur <code>https://</code> adresi, katru <code>push</code> reizi jāievada lietotājvārds/tokens. Ērtāk — izveidot <strong>SSH atslēgu pāri</strong> un pieslēgties caur <code>git@github.com:...</code> adresi, kur autentifikācija notiek automātiski (skat. arī <a href="ssh.html#pieslegsanas">vispārīgo SSH skaidrojumu</a> par pašu protokolu):</p>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># 1. Izveido atslēgu pāri (ja vēl nav)</span>
 ssh-keygen -t ed25519 -C <span class="tok-str">"tavs@epasts.lv"</span>
 
@@ -355,12 +355,12 @@ git stash list</code></pre>
 
     <div class="doc-pager">
       <a href="api.html"><span class="lbl">← Iepriekšējais</span>API</a>
-      <a class="to-next" href="../index.html"><span class="lbl">Atpakaļ →</span>Visas kategorijas</a>
+      <a class="to-next" href="ssh.html"><span class="lbl">Tālāk →</span>SSH</a>
     </div>
   </main>
 </div>
 
-<script src="../js/theme.js?v=10"></script>
-<script src="../js/main.js?v=10"></script>
+<script src="../js/theme.js?v=12"></script>
+<script src="../js/main.js?v=12"></script>
 </body>
 </html>

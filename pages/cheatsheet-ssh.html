@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="lv" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SSH Cheatsheet — Documentation Samis</title>
+<link rel="stylesheet" href="../css/style.css?v=12" />
+<script>
+  (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
+</script>
+</head>
+<body class="cat-ssh">
+<div class="bg-glow"></div>
+<div class="bg-grid"></div>
+
+<header class="topbar">
+  <a class="brand" href="../index.html">
+    <span class="mark">DS</span>
+    Documentation Samis
+  </a>
+  <div class="topbar-actions">
+    <a class="btn-back" href="ssh.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M5 12h14"/></svg>
+      Pilnā dokumentācija
+    </a>
+    <button class="icon-btn" id="theme-toggle" title="Pārslēgt tēmu" aria-label="Pārslēgt tēmu">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main class="doc-main" style="max-width:1300px; margin:0 auto;">
+  <div class="doc-breadcrumb">
+    <a href="../index.html">Sākums</a>
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    <a href="ssh.html">SSH</a>
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    <span>Cheatsheet</span>
+  </div>
+
+  <div class="doc-header">
+    <div class="icon" style="background: var(--c-ssh-soft); color: var(--c-ssh);">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m6 9 4 3-4 3M12 15h6"/></svg>
+    </div>
+    <h1 style="margin-bottom:0;">SSH Cheatsheet</h1>
+  </div>
+  <p class="doc-lead">Ātrās uzziņas lapa — katrai kartiņai īss skaidrojums un komandas fragments. Pilnus piemērus un paskaidrojumus skaties <a href="ssh.html">pilnajā SSH dokumentācijā</a>.</p>
+
+  <nav class="cheat-jump">
+    <a href="#ct-connect">Pieslēgšanās</a>
+    <a href="#ct-keys">SSH atslēgas</a>
+    <a href="#ct-wpcli">WP-CLI</a>
+    <a href="#ct-db">Datubāze</a>
+    <a href="#ct-files">Faili &amp; tiesības</a>
+    <a href="#ct-logs">Logi</a>
+    <a href="#ct-transfer">Pārsūtīšana</a>
+  </nav>
+
+  <section class="cheat-section" id="ct-connect">
+    <h2>Pieslēgšanās</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>ssh</h4><p>Pamata pieslēgšanās komanda.</p><pre><code>ssh lietotajs@serveris.lv</code></pre></div>
+      <div class="cheat-card"><h4>Nestandarta ports</h4><p>Ja serveris klausās citā portā, ne 22.</p><pre><code>ssh -p 2222 lietotajs@serveris.lv</code></pre></div>
+      <div class="cheat-card"><h4>Atrast WordPress</h4><p>Meklē wp-config.php visā serverī.</p><pre><code>find / -name wp-config.php 2>/dev/null</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-keys">
+    <h2>SSH atslēgas</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>Ģenerē atslēgu</h4><p>Modernais, ieteicamais tips.</p><pre><code>ssh-keygen -t ed25519 -C "e@pasts.lv"</code></pre></div>
+      <div class="cheat-card"><h4>Nokopē uz serveri</h4><p>Automātiski pievieno authorized_keys failam.</p><pre><code>ssh-copy-id lietotajs@serveris.lv</code></pre></div>
+      <div class="cheat-card"><h4>~/.ssh/config saīsinājums</h4><p>Ļauj pieslēgties ar "ssh vārds" bez pilnas adreses.</p><pre><code>Host vards
+  HostName serveris.lv
+  User lietotajs</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-wpcli">
+    <h2>WP-CLI</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>Spraudņi</h4><p>Saraksts, uzstādīšana, masveida atjaunināšana.</p><pre><code>wp plugin list
+wp plugin update --all</code></pre></div>
+      <div class="cheat-card"><h4>Tēmas</h4><p>Aktivizēšana un atjaunināšana.</p><pre><code>wp theme activate mana-tema</code></pre></div>
+      <div class="cheat-card"><h4>Lietotāji</h4><p>Jauna admin lietotāja izveide (paroles atgūšanai).</p><pre><code>wp user create adminis e@pasts.lv --role=administrator</code></pre></div>
+      <div class="cheat-card"><h4>Opcijas</h4><p>Nolasa/maina jebkuru WordPress iestatījumu.</p><pre><code>wp option update blogname "Jauns nosaukums"</code></pre></div>
+      <div class="cheat-card"><h4>Cache</h4><p>Notīra WordPress objektu kešu.</p><pre><code>wp cache flush</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-db">
+    <h2>Datubāze</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>Eksports</h4><p>Pilns datubāzes dublējums vienā failā.</p><pre><code>wp db export dublejums.sql</code></pre></div>
+      <div class="cheat-card"><h4>Imports</h4><p>Atjaunošana no dublējuma faila.</p><pre><code>wp db import dublejums.sql</code></pre></div>
+      <div class="cheat-card"><h4>Domēna maiņa</h4><p>Vienmēr vispirms ar --dry-run, tad bez tā.</p><pre><code>wp search-replace 'vecs.lv' 'jauns.lv' --dry-run</code></pre></div>
+      <div class="cheat-card"><h4>mysqldump (bez WP-CLI)</h4><p>Tiešs MySQL dublējums.</p><pre><code>mysqldump -u lietotajs -p db > dublejums.sql</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-files">
+    <h2>Faili &amp; tiesības</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>Rediģēt failu</h4><p>nano — vienkāršākais termināļa redaktors.</p><pre><code>nano wp-config.php</code></pre></div>
+      <div class="cheat-card"><h4>Mapju tiesības</h4><p>Standarta drošas tiesības — 755.</p><pre><code>find . -type d -exec chmod 755 {} \;</code></pre></div>
+      <div class="cheat-card"><h4>Failu tiesības</h4><p>Standarta drošas tiesības — 644.</p><pre><code>find . -type f -exec chmod 644 {} \;</code></pre></div>
+      <div class="cheat-card"><h4>wp-config.php</h4><p>Stingrāk — tikai īpašniekam.</p><pre><code>chmod 600 wp-config.php</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-logs">
+    <h2>Logi</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>WordPress debug log</h4><p>Reāllaika kļūdu pārraudzība.</p><pre><code>tail -f wp-content/debug.log</code></pre></div>
+      <div class="cheat-card"><h4>Ieslēdz debug logu</h4><p>wp-config.php konstantes.</p><pre><code>define('WP_DEBUG', true);
+define('WP_DEBUG_LOG', true);</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-transfer">
+    <h2>Pārsūtīšana</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>scp uz serveri</h4><p>Vienkārša kopēšana caur SSH.</p><pre><code>scp fails.zip lietotajs@serveris.lv:/celjs/</code></pre></div>
+      <div class="cheat-card"><h4>rsync</h4><p>Kopē tikai mainītos failus — ātrāk regulāram deploy.</p><pre><code>rsync -avz ./mape/ lietotajs@serveris.lv:/celjs/</code></pre></div>
+    </div>
+  </section>
+
+  <div class="doc-pager">
+    <a href="ssh.html"><span class="lbl">← Atpakaļ</span>Pilnā SSH dokumentācija</a>
+    <a class="to-next" href="../index.html"><span class="lbl">Atpakaļ →</span>Visas kategorijas</a>
+  </div>
+</main>
+
+<script src="../js/theme.js?v=12"></script>
+<script src="../js/main.js?v=12"></script>
+</body>
+</html>
