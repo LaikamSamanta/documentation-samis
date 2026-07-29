@@ -1532,8 +1532,11 @@ function atjauninatPiekrisanu(piekrita) {
 
     <section class="doc-section" id="ads-events">
       <h2>6. Konversiju veidi &amp; notikumu kods</h2>
-      <p>Kad notiek konversija, jānosūta signāls <strong>abām</strong> sistēmām — GA4/Google Ads ar <code>gtag()</code> un Meta ar <code>fbq()</code>. Ērtāk to darīt caur vienu palīgfunkciju:</p>
-      <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// js/konversijas.js — vienota funkcija, ko izsauc no visiem notikumiem</span>
+      <p>Kad notiek konversija, jānosūta signāls <strong>abām</strong> sistēmām — GA4/Google Ads ar <code>gtag()</code> un Meta ar <code>fbq()</code>. Bet ne visas konversijas ir vienādas: <strong>Lead</strong> tipa konversijām (forma, zvans, čats) parasti nav naudas summas, bet <strong>Sale</strong> tipa konversijām (pirkums) summa ir <strong>obligāta</strong> — bez tās Google Ads/Meta nevar rēķināt ROAS (Return on Ad Spend) un nevar optimizēt uz vērtīgākiem pirkumiem, tikai uz skaitu. Tāpēc katram tipam — sava pieeja.</p>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Lead tipa konversijas (bez naudas summas)</h3>
+      <p>Kontaktforma, telefona zvans, čats, rezervācija, lejupielāde — visas izmanto vienu vienkāršu palīgfunkciju:</p>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// js/konversijas.js — vienota funkcija Lead tipa notikumiem</span>
 function nosutitKonversiju(ga4Notikums, fbNotikums, dati = {}) {
   if (typeof gtag === 'function') {
     gtag('event', ga4Notikums, dati);
@@ -1571,13 +1574,139 @@ window.addEventListener('message', (e) =&gt; {
     nosutitKonversiju('booking_confirmed', 'Schedule');
   }
 });</code></pre>
-      <p>Pirkumam (piem., WooCommerce) parasti izmanto servera pusi, nevis JS klikšķi — precīzāk un neatkarīgi no reklāmu bloķētājiem:</p>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// WooCommerce — izpildās, kad pasūtījums apstiprināts kā apmaksāts</span>
-<span class="tok-fn">add_action</span>(<span class="tok-str">'woocommerce_order_status_completed'</span>, <span class="tok-kw">function</span> (<span class="tok-fn">$order_id</span>) {
+      <p>Contact Form 7 konversija (<code>generate_lead</code>/<code>Lead</code>) parādīta atsevišķi 7. sadaļā — tā izmanto to pašu <code>nosutitKonversiju()</code> funkciju.</p>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Sale tipa konversijas (pirkumi — vienmēr ar vērtību)</h3>
+      <p>Pirkuma konversija atšķiras divos veidos: (1) jānosūta <strong>vērtība un valūta</strong>, ne tikai fakts, ka pirkums noticis; (2) jānodrošina, ka konversija tiek skaitīta <strong>tikai vienu reizi</strong> katram pasūtījumam — pretējā gadījumā klienta "paldies" lapas atsvaidzināšana radītu dublētu, mākslīgi paceltu ieņēmumu skaitli reklāmas atskaitēs.</p>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// js/pirkuma-konversija.js</span>
+function nosutitPirkumaKonversiju(pasutijumaId, summa, valuta = 'EUR') {
+  <span class="tok-com">// Dublēšanās aizsardzība — ja šis pasutijumaId jau nosūtīts šajā pārlūkā, otrreiz nesūta</span>
+  const atzime = 'pirkums_nosutits_' + pasutijumaId;
+  if (sessionStorage.getItem(atzime)) return;
+  sessionStorage.setItem(atzime, '1');
+
+  if (typeof gtag === 'function') {
+    <span class="tok-com">// 'purchase' ir GA4 IEBŪVĒTS (nevis pašizdomāts) e-komercijas notikums —
+    // GA4 to automātiski atpazīst un rāda ieņēmumu atskaitēs</span>
+    gtag('event', 'purchase', {
+      transaction_id: pasutijumaId,
+      value: summa,
+      currency: valuta,
+    });
+    if (window.GOOGLE_ADS_CONVERSION) {
+      gtag('event', 'conversion', {
+        send_to: window.GOOGLE_ADS_CONVERSION,
+        value: summa,
+        currency: valuta,
+        transaction_id: pasutijumaId,
+      });
+    }
+  }
+  if (typeof fbq === 'function') {
+    fbq('track', 'Purchase', { value: summa, currency: valuta });
+  }
+}</code></pre>
+      <p><strong>A) Ar WooCommerce</strong> — servera puse sagatavo datus, klienta puse "paldies" lapā tos nolasa un izsauc funkciju:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// functions.php — izpildās, kad pasūtījums apstiprināts kā apmaksāts</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'woocommerce_thankyou'</span>, <span class="tok-kw">function</span> (<span class="tok-fn">$order_id</span>) {
+    <span class="tok-kw">if</span> (!<span class="tok-fn">$order_id</span>) <span class="tok-kw">return</span>;
     <span class="tok-fn">$order</span> = <span class="tok-fn">wc_get_order</span>(<span class="tok-fn">$order_id</span>);
-    <span class="tok-com">// Saglabā datus, lai JS tos nolasītu un nosūtītu "paldies" lapā
-    // (piem., caur wp_localize_script vai sesijas mainīgo)</span>
+    <span class="tok-kw">if</span> (!<span class="tok-fn">$order</span> || <span class="tok-fn">$order</span>->get_meta(<span class="tok-str">'_konversija_nosutita'</span>)) <span class="tok-kw">return</span>; <span class="tok-com">// servera puses dublēšanās aizsardzība</span>
+
+    <span class="tok-fn">$order</span>->update_meta_data(<span class="tok-str">'_konversija_nosutita'</span>, <span class="tok-kw">true</span>);
+    <span class="tok-fn">$order</span>->save();
+    ?&gt;
+    &lt;script&gt;
+      window.addEventListener('DOMContentLoaded', function () {
+        nosutitPirkumaKonversiju(
+          '&lt;?= esc_js($order->get_id()) ?&gt;',
+          &lt;?= (float) $order-&gt;get_total() ?&gt;,
+          '&lt;?= esc_js($order->get_currency()) ?&gt;'
+        );
+      });
+    &lt;/script&gt;
+    &lt;?php
 });</code></pre>
+      <p><strong>B) Ar MakeCommerce</strong> (Maksekeskus/Montonio Baltijas maksājumu vārti, bez WooCommerce) — plūsma līdzīga <a href="#stripe-overview">Stripe integrācijai</a> augstāk: tavs serveris izveido transakciju, pāradresē klientu, MakeCommerce paziņo par statusa maiņu, un tu apstiprini to caur API:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// wp-config.php</span>
+<span class="tok-kw">define</span>(<span class="tok-str">'MAKECOMMERCE_SHOP_ID'</span>, <span class="tok-str">'...'</span>);
+<span class="tok-kw">define</span>(<span class="tok-str">'MAKECOMMERCE_SECRET_KEY'</span>, <span class="tok-str">'...'</span>); <span class="tok-com">// Merchant Portal → API settings</span></code></pre>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 1) Izveido transakciju un pāradresē uz maksājuma lapu</span>
+<span class="tok-kw">function</span> <span class="tok-fn">makecommerce_izveidot_transakciju</span>(<span class="tok-kw">float</span> <span class="tok-fn">$summa</span>, <span class="tok-kw">string</span> <span class="tok-fn">$pasutijuma_nr</span>, <span class="tok-kw">string</span> <span class="tok-fn">$epasts</span>): ?<span class="tok-kw">string</span> {
+    <span class="tok-fn">$dati</span> = [
+        <span class="tok-str">'transaction'</span> => [
+            <span class="tok-str">'amount'</span>       => <span class="tok-fn">number_format</span>(<span class="tok-fn">$summa</span>, 2, <span class="tok-str">'.'</span>, <span class="tok-str">''</span>),
+            <span class="tok-str">'currency'</span>     => <span class="tok-str">'EUR'</span>,
+            <span class="tok-str">'reference'</span>    => <span class="tok-fn">$pasutijuma_nr</span>,
+            <span class="tok-str">'transaction_url'</span> => [
+                <span class="tok-str">'return_url'</span>       => [<span class="tok-str">'url'</span> => <span class="tok-fn">home_url</span>(<span class="tok-str">'/paldies/'</span>), <span class="tok-str">'method'</span> => <span class="tok-str">'GET'</span>],
+                <span class="tok-str">'cancel_url'</span>       => [<span class="tok-str">'url'</span> => <span class="tok-fn">home_url</span>(<span class="tok-str">'/grozs/'</span>), <span class="tok-str">'method'</span> => <span class="tok-str">'GET'</span>],
+                <span class="tok-str">'notification_url'</span> => [<span class="tok-str">'url'</span> => <span class="tok-fn">rest_url</span>(<span class="tok-str">'mana-tema/v1/makecommerce-webhook'</span>), <span class="tok-str">'method'</span> => <span class="tok-str">'POST'</span>],
+            ],
+            <span class="tok-str">'customer'</span> => [<span class="tok-str">'email'</span> => <span class="tok-fn">$epasts</span>, <span class="tok-str">'country'</span> => <span class="tok-str">'LV'</span>, <span class="tok-str">'locale'</span> => <span class="tok-str">'LV'</span>],
+        ],
+    ];
+
+    <span class="tok-fn">$response</span> = <span class="tok-fn">wp_remote_post</span>(<span class="tok-str">'https://api.maksekeskus.ee/v1/transactions'</span>, [
+        <span class="tok-str">'headers'</span> => [
+            <span class="tok-str">'Content-Type'</span>  => <span class="tok-str">'application/json'</span>,
+            <span class="tok-str">'Authorization'</span> => <span class="tok-str">'Basic '</span> . <span class="tok-fn">base64_encode</span>(MAKECOMMERCE_SHOP_ID . <span class="tok-str">':'</span> . MAKECOMMERCE_SECRET_KEY),
+        ],
+        <span class="tok-str">'body'</span>    => <span class="tok-fn">wp_json_encode</span>(<span class="tok-fn">$dati</span>),
+        <span class="tok-str">'timeout'</span> => 15,
+    ]);
+
+    <span class="tok-kw">if</span> (<span class="tok-fn">is_wp_error</span>(<span class="tok-fn">$response</span>)) <span class="tok-kw">return</span> <span class="tok-kw">null</span>;
+
+    <span class="tok-fn">$rezultats</span> = <span class="tok-fn">json_decode</span>(<span class="tok-fn">wp_remote_retrieve_body</span>(<span class="tok-fn">$response</span>), <span class="tok-kw">true</span>);
+    <span class="tok-com">// paymentMethods[0].url ir konkrētā bankas/kartes maksājuma adrese —
+    // reālā integrācijā parasti rāda lietotājam izvēli starp vairākām bankām</span>
+    <span class="tok-kw">return</span> <span class="tok-fn">$rezultats</span>[<span class="tok-str">'payment_methods'</span>][<span class="tok-str">'banklinks'</span>][0][<span class="tok-str">'url'</span>] ?? <span class="tok-kw">null</span>;
+}</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 2) Notification galapunkts — MakeCommerce paziņo, ka statuss mainījies,
+// bet NEKAD neuzticies pašam payload — vienmēr pārbaudi statusu ar atsevišķu API izsaukumu</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'rest_api_init'</span>, <span class="tok-kw">function</span> () {
+    <span class="tok-fn">register_rest_route</span>(<span class="tok-str">'mana-tema/v1'</span>, <span class="tok-str">'/makecommerce-webhook'</span>, [
+        <span class="tok-str">'methods'</span>             => <span class="tok-str">'POST'</span>,
+        <span class="tok-str">'callback'</span>            => <span class="tok-str">'makecommerce_webhook_handler'</span>,
+        <span class="tok-str">'permission_callback'</span> => <span class="tok-str">'__return_true'</span>,
+    ]);
+});
+
+<span class="tok-kw">function</span> <span class="tok-fn">makecommerce_webhook_handler</span>(WP_REST_Request <span class="tok-fn">$req</span>): WP_REST_Response {
+    <span class="tok-fn">$payload</span> = <span class="tok-fn">json_decode</span>(<span class="tok-fn">$req</span>->get_param(<span class="tok-str">'json'</span>), <span class="tok-kw">true</span>);
+    <span class="tok-fn">$transaction_id</span> = <span class="tok-fn">$payload</span>[<span class="tok-str">'transaction'</span>] ?? <span class="tok-str">''</span>;
+    <span class="tok-kw">if</span> (!<span class="tok-fn">$transaction_id</span>) <span class="tok-kw">return</span> <span class="tok-kw">new</span> WP_REST_Response([<span class="tok-str">'ok'</span> => <span class="tok-kw">false</span>], 400);
+
+    <span class="tok-com">// Pārbauda reālo statusu API, nevis paļaujas uz notification tekstu</span>
+    <span class="tok-fn">$statusa_atbilde</span> = <span class="tok-fn">wp_remote_get</span>(<span class="tok-str">"https://api.maksekeskus.ee/v1/transactions/{$transaction_id}"</span>, [
+        <span class="tok-str">'headers'</span> => [<span class="tok-str">'Authorization'</span> => <span class="tok-str">'Basic '</span> . <span class="tok-fn">base64_encode</span>(MAKECOMMERCE_SHOP_ID . <span class="tok-str">':'</span> . MAKECOMMERCE_SECRET_KEY)],
+    ]);
+    <span class="tok-fn">$transakcija</span> = <span class="tok-fn">json_decode</span>(<span class="tok-fn">wp_remote_retrieve_body</span>(<span class="tok-fn">$statusa_atbilde</span>), <span class="tok-kw">true</span>);
+
+    <span class="tok-kw">if</span> ((<span class="tok-fn">$transakcija</span>[<span class="tok-str">'status'</span>] ?? <span class="tok-str">''</span>) === <span class="tok-str">'COMPLETED'</span>) {
+        <span class="tok-com">// Servera puses konversija (Meta CAPI, skat. 11. sadaļu) — strādā
+        // pat tad, ja klients aizver cilni pirms "paldies" lapa paspēj ielādēties</span>
+        <span class="tok-fn">nosutit_meta_serverside_konversiju</span>(<span class="tok-str">'Purchase'</span>, <span class="tok-fn">$transakcija</span>[<span class="tok-str">'customer_email'</span>] ?? <span class="tok-str">''</span>);
+        <span class="tok-com">// ... šeit arī atzīmē pasūtījumu kā apmaksātu savā datubāzē/CPT</span>
+    }
+
+    <span class="tok-kw">return</span> <span class="tok-kw">new</span> WP_REST_Response([<span class="tok-str">'ok'</span> => <span class="tok-kw">true</span>], 200);
+}</code></pre>
+      <p>Un "paldies" lapā (kur klients nonāk pēc <code>return_url</code>) — klienta puses konversija, tāpat kā WooCommerce piemērā, izmantojot URL parametrus vai sesijas datus, lai zinātu pasūtījuma summu:</p>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// lapā /paldies/, ja pasūtījuma dati pieejami (piem., no PHP ielikti data-* atribūtos)</span>
+const dati = document.getElementById('pasutijuma-dati');
+if (dati) {
+  nosutitPirkumaKonversiju(dati.dataset.id, parseFloat(dati.dataset.summa), dati.dataset.valuta);
+}</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>MakeCommerce piemērs parāda <strong>arhitektūru</strong> (transakcija → pāradresācija → paziņojums → statusa pārbaude → konversija), kas ir identiska jebkuram šāda tipa maksājumu vārtejai. Precīzus lauku nosaukumus, autentifikācijas formātu un paraksta pārbaudi <strong>obligāti pārbaudi pret aktuālo MakeCommerce API dokumentāciju</strong> (<a href="https://docs.maksekeskus.ee" target="_blank" rel="noopener">docs.maksekeskus.ee</a>) pirms palaišanas ražošanā — maksājumu API detaļas laika gaitā mainās, un šeit tās nav pārbaudītas pret reālu, aktīvu MakeCommerce kontu.</p>
+      </div>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><strong>Lead vs Sale ietekmē arī 8./9. sadaļu</strong> — veidojot kampaņu Google Ads/Meta Ads panelī, izvēlies mērķi ("Leads" vai "Sales") atbilstoši tam, kāda tipa konversiju tā mēra. "Sales" mērķis ar vērtību ļauj izmantot vērtību-balstītu automātisko likmju noteikšanu (value-based bidding), kas optimizē uz augstākas vērtības pirkumiem — tas <strong>nestrādā</strong>, ja konversijas notikumam nav nosūtīta vērtība.</p>
+      </div>
     </section>
 
     <section class="doc-section" id="ads-cf7">
