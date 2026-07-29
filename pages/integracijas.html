@@ -1359,6 +1359,10 @@ stripe listen --forward-to localhost:8000/wp-json/mana-tema/v1/stripe-webhook
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
         <p>Shortcode tilts (1. veids) ir ātrāks, ja jau proti PHP — visa loģika paliek vienā vietā, viegli paplašināma. If-So (2. veids) der, ja lapu veido/uztur cilvēks bez programmēšanas pieredzes. Abos gadījumos <a href="#ads-dtr">dinamiskā lapas <code>&lt;title&gt;</code> filtrs</a> (augstāk šajā sadaļā) paliek <strong>tieši tāds pats</strong> <code>functions.php</code> failā — tas nav atkarīgs no tā, vai lapas saturu veido Elementor vai PHP veidne.</p>
       </div>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Ja vietnei ir kešatmiņas spraudnis (WP Rocket, LiteSpeed Cache u.c.), tas var saglabāt mērķlapas HTML un rādīt <strong>vienu un to pašu kešēto versiju visiem</strong> — apmeklētājs ar <code>?city=riga</code> pēkšņi redz Valmieras tekstu. Kļūda ir klusa, bez brīdinājuma. Risinājums — mērķlapas veidnē pievieno <code>if (!defined('DONOTCACHEPAGE')) define('DONOTCACHEPAGE', true);</code>, vai kešatmiņas spraudņa iestatījumos izslēdz šo konkrēto lapu no kešošanas.</p>
+      </div>
     </section>
 
     <section class="doc-section" id="ads-noindex">
@@ -1527,6 +1531,10 @@ function atjauninatPiekrisanu(piekrita) {
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
         <p>GA4 un Google Ads abi izmanto <code>gtag.js</code> — bieži pieļautā kļūda ir ielādēt skriptu <strong>divreiz</strong> (reizi GA4, reizi Google Ads), kas palēnina lapu un var dublēt datus. Pareizi ir ielādēt to <strong>vienreiz</strong> un pēc tam izsaukt <code>gtag('config', ...)</code> katram ID atsevišķi, tieši kā piemērā augstāk.</p>
+      </div>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Ja hostings vai drošības spraudnis vietnei pievieno <strong>Content-Security-Policy</strong> galveni, tā var klusi bloķēt <code>googletagmanager.com</code> vai <code>connect.facebook.net</code> skriptus — Network cilnē izskatās, ka viss ielādējās, bet tagi neizpildās. Ja kods ir pareizs, bet nekas nestrādā, pārbaudi pārlūka konsolē kļūdas ar vārdu "Content Security Policy" un pievieno trūkstošos domēnus CSP baltajam sarakstam.</p>
       </div>
     </section>
 
@@ -1855,7 +1863,7 @@ utm_source=google&amp;utm_medium=cpc&amp;utm_campaign={campaignid}&amp;utm_conte
     <span class="tok-com">// Meta pieprasa lietotāja datus (e-pastu) HASHOTUS, nekad tekstā</span>
     <span class="tok-fn">$hashots_epasts</span> = <span class="tok-fn">hash</span>(<span class="tok-str">'sha256'</span>, <span class="tok-fn">strtolower</span>(<span class="tok-fn">trim</span>(<span class="tok-fn">$epasts</span>)));
 
-    <span class="tok-fn">wp_remote_post</span>(<span class="tok-str">"https://graph.facebook.com/v19.0/"</span> . META_PIXEL_ID . <span class="tok-str">"/events"</span>, [
+    <span class="tok-fn">$atbilde</span> = <span class="tok-fn">wp_remote_post</span>(<span class="tok-str">"https://graph.facebook.com/v19.0/"</span> . META_PIXEL_ID . <span class="tok-str">"/events"</span>, [
         <span class="tok-str">'headers'</span> => [<span class="tok-str">'Content-Type'</span> => <span class="tok-str">'application/json'</span>],
         <span class="tok-str">'body'</span>    => <span class="tok-fn">wp_json_encode</span>([
             <span class="tok-str">'data'</span> => [[
@@ -1867,6 +1875,11 @@ utm_source=google&amp;utm_medium=cpc&amp;utm_campaign={campaignid}&amp;utm_conte
             <span class="tok-str">'access_token'</span> => META_CAPI_TOKEN,
         ]),
     ]);
+
+    <span class="tok-com">// Bez šī bloka neveiksmīgs pieprasījums pazustu klusi, bez jebkādas pēdas, kāpēc konversiju trūkst</span>
+    <span class="tok-kw">if</span> (<span class="tok-fn">is_wp_error</span>(<span class="tok-fn">$atbilde</span>)) {
+        <span class="tok-fn">error_log</span>(<span class="tok-str">'Meta CAPI kļūda: '</span> . <span class="tok-fn">$atbilde</span>-&gt;<span class="tok-fn">get_error_message</span>());
+    }
 }</code></pre>
       <p><strong>Google Enhanced Conversions</strong> — vienkāršāk: nosūta hashojamos lietotāja datus caur <code>gtag('set', ...)</code>, Google pats tos sahašo pirms nosūtīšanas:</p>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// Izsauc PIRMS konversijas notikuma, ar datiem no aizpildītās formas</span>
@@ -1882,6 +1895,10 @@ gtag('set', 'user_data', {
     <section class="doc-section" id="ads-testing">
       <h2>12. Testēšana (Pixel Helper, Tag Assistant, DebugView)</h2>
       <p>Pēc koda ievietošanas <strong>vienmēr</strong> pārbaudi visas trīs integrācijas, pirms sāc tērēt reklāmas budžetu — kļūda izsekošanā nozīmē, ka reklāmas sistēma neredz nevienu konversiju un automātiski optimizē uz sliktākiem rezultātiem.</p>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Reklāmbloķētāji (uBlock, Brave, Safari) daļai apmeklētāju pilnībā bloķē Pixel/gtag kodu — tas ir normāli, ne kļūda tavā kodā. Tāpēc GA4/Meta skaitļi <strong>nekad</strong> nesakritīs 100% ar reālo apmeklētāju skaitu — tam arī domāta <a href="#ads-serverside">servera puses izsekošana (11. sadaļa)</a>.</p>
+      </div>
       <p><strong>Meta Pixel — ar Meta Pixel Helper (bezmaksas Chrome spraudnis):</strong></p>
       <pre class="code-block"><span class="lang">text</span><code>1. Uzstādi spraudni "Meta Pixel Helper" no Chrome Web Store
 2. Atver mērķlapu — spraudņa ikona pārlūka augšā kļūst zila
@@ -1908,6 +1925,10 @@ gtag('set', 'user_data', {
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
         <p>Parastajās GA4 atskaitēs dati parādās ar <strong>24–48 stundu</strong> aizkavēšanos — DebugView parāda datus tajā pašā sekundē, kad notiek klikšķis. Vienmēr testē ar DebugView, nevis gaidot standarta atskaites, citādi kļūdu atklāsi tikai pēc pāris dienām (un iztērēta budžeta).</p>
+      </div>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Netestē ar tiem pašiem GA4/Pixel ID, ko izmanto reālā kampaņa — katrs tavs testa klikšķis piesārņo produkcijas datus un maldina reklāmas sistēmas optimizāciju. Testēšanai izveido atsevišķu GA4 datu straumi/Pixel vai vismaz testē uz staging vietnes ar saviem ID.</p>
       </div>
     </section>
 
