@@ -157,6 +157,9 @@ const dati = await r.json();</code></pre></div>
   body: JSON.stringify(dati),
 });</code></pre></div>
       <div class="cheat-card"><h4>try/catch</h4><p>Noķer tīkla kļūdas (nav interneta) UN pašrocīgi izmestās kļūdas no atbilde.ok pārbaudes.</p><pre><code>try { ... } catch (e) { console.error(e); }</code></pre></div>
+      <div class="cheat-card"><h4>AbortController (timeout)</h4><p>fetch() pēc noklusējuma negaida bezgalīgi — bez šī karājas, ja serveris klusē.</p><pre><code>const c = new AbortController();
+setTimeout(() => c.abort(), 5000);
+fetch(url, { signal: c.signal });</code></pre></div>
     </div>
   </section>
 
@@ -184,6 +187,7 @@ $dati = json_decode(wp_remote_retrieve_body($r), true);</code></pre></div>
 ]);</code></pre></div>
       <div class="cheat-card"><h4>WP_REST_Response</h4><p>Atgriež datus ar skaidru statusa kodu WordPress REST endpointā.</p><pre><code>return new WP_REST_Response($dati, 200);</code></pre></div>
       <div class="cheat-card"><h4>permission_callback</h4><p>Obligāts — nosaka, kam drīkst piekļūt. __return_true = publiski visiem.</p></div>
+      <div class="cheat-card"><h4>$wpdb->prepare()</h4><p>Obligāti jebkuram datubāzes vaicājumam ar no ārpuses nākošu vērtību — pasargā no SQL injection.</p><pre><code>$wpdb->prepare("SELECT * FROM t WHERE id = %d", $id);</code></pre></div>
       <div class="cheat-card"><h4>OpenAPI/Swagger</h4><p>Standartizēts YAML/JSON API apraksts, no kura automātiski uzģenerē interaktīvu dokumentāciju.</p></div>
     </div>
   </section>

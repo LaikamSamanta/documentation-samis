@@ -418,6 +418,23 @@ resource.</code></pre>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
         <p><code>fetch()</code> noraida (reject) Promise <strong>tikai</strong> tīkla kļūdas gadījumā (piem., nav interneta) — <code>404</code> vai <code>500</code> atbildes tas uzskata par "veiksmīgu" pieprasījumu ar sliktu saturu. Tāpēc <strong>vienmēr</strong> pārbaudi <code>atbilde.ok</code> pašrocīgi, kā piemērā augstāk — pretējā gadījumā kļūdas paliks nepamanītas.</p>
       </div>
+      <p><code>fetch()</code> pēc noklusējuma <strong>negaida bezgalīgi</strong> — ja serveris karājas un neatbild vispār (nevis atgriež kļūdu, bet vienkārši klusē), pieprasījums var palikt "iekārts" uz nenoteiktu laiku, iesaldējot arī pārējo koda izpildi, kas gaida uz to. To risina <code>AbortController</code> — piespiedu kārtā atceļ pieprasījumu pēc noteikta laika:</p>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">async</span> <span class="tok-kw">function</span> <span class="tok-fn">ieguvValuArTimeoutu</span>(url, laiksMs = 5000) {
+    <span class="tok-kw">const</span> kontrolieris = <span class="tok-kw">new</span> <span class="tok-fn">AbortController</span>();
+    <span class="tok-kw">const</span> taimeris = <span class="tok-fn">setTimeout</span>(() => kontrolieris.<span class="tok-fn">abort</span>(), laiksMs);
+
+    <span class="tok-kw">try</span> {
+        <span class="tok-kw">const</span> atbilde = <span class="tok-kw">await</span> <span class="tok-fn">fetch</span>(url, { signal: kontrolieris.signal });
+        <span class="tok-kw">return</span> <span class="tok-kw">await</span> atbilde.<span class="tok-fn">json</span>();
+    } <span class="tok-kw">catch</span> (kluda) {
+        <span class="tok-kw">if</span> (kluda.name === <span class="tok-str">'AbortError'</span>) {
+            <span class="tok-kw">throw</span> <span class="tok-kw">new</span> <span class="tok-fn">Error</span>(<span class="tok-str">`Pieprasījums pārsniedza ${laiksMs}ms`</span>);
+        }
+        <span class="tok-kw">throw</span> kluda;
+    } <span class="tok-kw">finally</span> {
+        <span class="tok-fn">clearTimeout</span>(taimeris);
+    }
+}</code></pre>
     </section>
 
     <section class="doc-section" id="php-curl">
@@ -509,6 +526,10 @@ resource.</code></pre>
         <span class="tok-str">'vards'</span> => <span class="tok-str">'Anna'</span>,
     ], 200);
 }</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>intval()</code> šeit pasargā <code>$id</code>, jo skaitli nevar padarīt par SQL kodu. Bet <strong>jebkurš</strong> cits no ārpuses nākošs dati — teksta lauki, meklēšanas frāzes, filtri — pirms nokļūšanas datubāzes vaicājumā vienmēr jāiet cauri <code>$wpdb->prepare()</code>, nekad tieši jāieliek vaicājuma tekstā ar konkatenāciju. Pretējā gadījumā endpoints ir atvērts SQL injection uzbrukumam — apmeklētājs var nosūtīt SQL kodu URL parametra vietā, un tas izpildīsies tavā datubāzē.</p>
+      </div>
       <p>Pēc pievienošanas endpoints ir sasniedzams zem <code>/wp-json/</code>:</p>
       <pre class="code-block"><span class="lang">bash</span><code>curl https://tavavietne.lv/wp-json/mana-vietne/v1/lietotajs/5</code></pre>
       <div class="callout warn">
