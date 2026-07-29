@@ -1934,21 +1934,37 @@ gtag('set', 'user_data', {
 
     <section class="doc-section" id="ads-usage">
       <h2>Kā ielikt citā projektā</h2>
-      <p>Sadaļas šajā integrācijā jau ir sakārtotas <strong>reālā izpildes secībā</strong> — vienkārši ej cauri 1.–12. sadaļai no augšas uz leju:</p>
-      <pre class="code-block"><span class="lang">text</span><code>1.  Uztaisi mērķlapu — statisku vai dinamisku
-2.  Pievieno tai noindex — PIRMS reklāmas palaišanas, ne pēc
-3.  Izveido GA4 īpašumu un datu plūsmu — iegūsti GA4_MEASUREMENT_ID
-4.  Pievieno Consent Mode kodu UN sīkdatņu baneri
-5.  wp-config.php pievieno visus ID; functions.php pievieno
-    GA4/Meta Pixel/Google Ads wp_head kodu
-6.  Izveido js/konversijas.js ar nosutitKonversiju() un
-    piesaisti to katram konversijas veidam
-7.  Ja lieto Contact Form 7 — izveido js/cf7-konversija.js
-8.  Google Ads: izveido kampaņu/reklāmu grupu/reklāmas un
+      <p>Soļi 1.–5. der <strong>jebkuram</strong> projektam. Pēc tiem izvēlies <strong>TIKAI VIENU</strong> ceļu — Lead vai Sale — atkarībā no tā, ko mērķlapa dara, un otru pavisam izlaid:</p>
+      <pre class="code-block"><span class="lang">text</span><code>KOPĪGIE SOĻI (vienmēr, neatkarīgi no konversijas veida):
+1. Uztaisi mērķlapu — statisku vai dinamisku
+2. Pievieno tai noindex — PIRMS reklāmas palaišanas, ne pēc
+3. Izveido GA4 īpašumu un datu plūsmu — iegūsti GA4_MEASUREMENT_ID
+4. Pievieno Consent Mode kodu UN sīkdatņu baneri
+5. wp-config.php pievieno visus ID; functions.php pievieno
+   GA4/Meta Pixel/Google Ads wp_head kodu</code></pre>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">📝 A ceļš — Lead konversija (forma, zvans, čats, rezervācija)</h3>
+      <p>Izvēlies šo, ja mērķis ir <strong>pieteikums vai kontakts</strong>, nevis tiešs pirkums lapā — konversijai nav naudas summas.</p>
+      <pre class="code-block"><span class="lang">text</span><code>6. Izveido js/konversijas.js ar nosutitKonversiju() (6. sadaļa,
+   "Lead tipa konversijas") un piesaisti to katram konversijas
+   veidam — formai, zvana pogai, čata pogai u.c.
+7. Ja lieto Contact Form 7 — izveido js/cf7-konversija.js ar
+   wpcf7mailsent klausītāju (7. sadaļa)</code></pre>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">💳 B ceļš — Sale konversija (tiešs pirkums lapā)</h3>
+      <p>Izvēlies šo, ja lapā notiek <strong>reāla apmaksa</strong> — konversijai <strong>vienmēr</strong> jāsūta arī naudas summa, lai varētu rēķināt ROAS.</p>
+      <pre class="code-block"><span class="lang">text</span><code>6. Izveido nosutitPirkumaKonversiju() (6. sadaļa, "Sale tipa
+   konversijas") un pievieno to VAI NU WooCommerce
+   woocommerce_thankyou āķim, VAI MakeCommerce webhook
+   apstrādātājam — atkarībā no tā, kuru no abiem izmanto
+   tavs projekts (nekad abus vienlaikus)</code></pre>
+
+      <p>No šejienes abi ceļi turpinās <strong>vienādi</strong>:</p>
+      <pre class="code-block"><span class="lang">text</span><code>8.  Google Ads: izveido kampaņu/reklāmu grupu/reklāmas un
     savieno Final URL ar mērķlapu
 9.  Meta Ads: izveido kampaņu/Ad Set/reklāmu un pievieno
     URL parametrus
-10. Ja jāzina, kura reklāma atnesa konkrētu pieteikumu —
+10. Ja jāzina, kura reklāma atnesa konkrētu konversiju —
     pievieno UTM saglabāšanas kodu un slēptos CF7 laukus
 11. Neobligāti, kad kampaņas budžets pieaug — pievieno
     servera puses izsekošanu (CAPI)
