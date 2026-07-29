@@ -19,6 +19,10 @@
     Documentation Samis
   </a>
   <div class="topbar-actions">
+    <a class="btn-back" href="cheatsheet-api.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-6-6z"/><path d="M13 2v6h6M9 13h6M9 17h6M9 9h1"/></svg>
+      Cheatsheet
+    </a>
     <a class="btn-back" href="../index.html">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M5 12h14"/></svg>
       Kategorijas
@@ -361,6 +365,21 @@ resource.</code></pre>
     }
     <span class="tok-kw">return</span> atbilde;
 }</code></pre>
+      <p>Kods augstāk atkārto pieprasījumu, ja tas neizdodas — bet atkārtot <code>POST</code> ir bīstami (skat. <a href="#http-pamati">1. sadaļu</a>, <code>POST</code> nav idempotenta). Ja tīkla kļūda notiek <strong>pēc</strong> tam, kad serveris jau paspēja apstrādāt maksājumu vai citu "notiek tikai vienreiz" darbību, atkārtots <code>POST</code> var to izpildīt divreiz. Risinājums — <strong>Idempotency-Key</strong> galvene: klients pats ģenerē unikālu ID katram "loģiskajam" pieprasījumam un sūta to katrā mēģinājumā; serveris atceras, kuri ID jau apstrādāti, un otrreiz atgriež to pašu iepriekšējo rezultātu, neizpildot darbību atkārtoti.</p>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">const</span> unikalsId = <span class="tok-fn">crypto.randomUUID</span>(); <span class="tok-com">// ģenerē VIENU reizi šim mēģinājumam</span>
+
+<span class="tok-kw">await</span> <span class="tok-fn">fetch</span>(<span class="tok-str">'https://api.piemers.lv/pirkumi'</span>, {
+    method: <span class="tok-str">'POST'</span>,
+    headers: {
+        <span class="tok-str">'Content-Type'</span>: <span class="tok-str">'application/json'</span>,
+        <span class="tok-str">'Idempotency-Key'</span>: unikalsId, <span class="tok-com">// tas pats ID visos atkārtotajos mēģinājumos</span>
+    },
+    body: <span class="tok-fn">JSON.stringify</span>({ summa: 25 }),
+});</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Šī nav pašsaprotama funkcionalitāte — API <strong>serverim</strong> jābūt to skaidri implementējušam (kā, piemēram, Stripe dara reālajā <a href="integracijas.html#stripe-checkout-session">Checkout Session izveidē</a>). Ja API dokumentācija nemin <code>Idempotency-Key</code>, tas, visticamāk, netiek atbalstīts, un atkārtoti mēģinājumi maksājumu/pasūtījumu endpointiem jāveic ar īpašu piesardzību.</p>
+      </div>
     </section>
 
     <section class="doc-section" id="js-fetch">
@@ -496,6 +515,19 @@ resource.</code></pre>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
         <p><code>permission_callback</code> ir <strong>obligāts</strong> parametrs — WordPress met brīdinājumu, ja to izlaiž. <code>__return_true</code> nozīmē "publiski pieejams visiem"; ja endpoints atgriež sensitīvus vai lietotājam specifiskus datus, tur jāliek reāla pārbaude, piem., <code>fn() => current_user_can('read')</code>, nevis vienmēr <code>true</code>.</p>
       </div>
+      <p>Kad savam API ir vairāki endpointi, tos aprakstīt ērtāk ir standartizēti, nevis brīvā tekstā — tam domāts <strong>OpenAPI</strong> (agrāk saukts Swagger). Tas ir YAML/JSON fails, kas apraksta katru endpointu, tā parametrus un iespējamās atbildes; no šī faila rīki (piem., Swagger UI) automātiski uzģenerē interaktīvu, testējamu dokumentācijas lapu — nav jāraksta atsevišķi.</p>
+      <pre class="code-block"><span class="lang">yaml</span><code><span class="tok-com"># openapi.yaml — fragments</span>
+/lietotajs/{id}:
+  get:
+    summary: Iegūst lietotāju pēc ID
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema: { type: integer }
+    responses:
+      '200': { description: Veiksmīga atbilde }
+      '404': { description: Lietotājs nav atrasts }</code></pre>
     </section>
 
     <section class="doc-section" id="testesana">
