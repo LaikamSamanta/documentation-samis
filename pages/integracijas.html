@@ -91,6 +91,24 @@
     </div>
     <div class="doc-sidebar-accordion">
       <button class="doc-accordion-toggle" type="button">
+        <span>🔐 Autentifikācija &amp; abonementi</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#auth-overview"><span class="bullet"></span>Pārskats</a>
+        <a href="#auth-login"><span class="bullet"></span>1. Pieteikšanās (rate limit + Turnstile)</a>
+        <a href="#auth-register"><span class="bullet"></span>2. Reģistrācija</a>
+        <a href="#auth-forgot-password"><span class="bullet"></span>3. Paroles atjaunošana</a>
+        <a href="#auth-dashboard"><span class="bullet"></span>4. Aizsargāta konta lapa</a>
+        <a href="#sub-plans"><span class="bullet"></span>5. Laika-ierobežoti abonementa plāni</a>
+        <a href="#sub-checkout-link"><span class="bullet"></span>6. Savienojums ar Stripe apmaksu</a>
+        <a href="#sub-access"><span class="bullet"></span>7. Satura piekļuves kontrole</a>
+        <a href="#sub-reminders"><span class="bullet"></span>8. Atjaunošanas atgādinājumi (cron)</a>
+        <a href="#auth-usage"><span class="bullet"></span>Kā ielikt citā projektā</a>
+      </div>
+    </div>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
         <span>📊 Reklāmas izsekošana</span>
         <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
       </button>
@@ -1357,6 +1375,430 @@ stripe listen --forward-to localhost:8000/wp-json/mana-tema/v1/stripe-webhook
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
         <p>Vairāku produktu/plānu gadījumā <code>$produkti</code> masīvu (3. sadaļa) var brīvi paplašināt — struktūra jau ir sagatavota vairākiem ierakstiem. Abonementiem (atkārtota ikmēneša maksa, nevis vienreizējs pirkums) Stripe piedāvā atsevišķu <code>mode: 'subscription'</code> un Stripe Billing sistēmu, kas šeit nav aprakstīta, bet Checkout Session/webhook pamatprincipi paliek tie paši.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="auth-overview">
+      <h2>Autentifikācija &amp; abonementi — pārskats</h2>
+      <p>Šī integrācija aizstāj WordPress noklusējuma <code>wp-login.php</code> ar pilnībā pielāgotu, uz tavas vietnes stila balstītu pieteikšanās/reģistrācijas plūsmu, un pievieno <strong>laika-ierobežotu abonementa</strong> sistēmu — noderīgu jebkurai vietnei, kur piekļuve saturam (kursi, materiāli, rīki) jāpiešķir tikai uz noteiktu periodu pēc apmaksas.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>🔑 Auth</h4><p>Custom pieteikšanās, reģistrācija un paroles atjaunošana — ar rate limiting un Turnstile pret bruteforce/botiem.</p></div>
+        <div class="doc-mini-card"><h4>⏳ Abonementi</h4><p>Nevis īsta Stripe Subscriptions API, bet gudrāks paņēmiens — viena maksājuma "plāni" (1/6/12 mēn.), kas pagarina lietotāja piekļuves termiņu.</p></div>
+        <div class="doc-mini-card"><h4>🚪 Piekļuves kontrole</h4><p>Lapas/saturs, kas automātiski bloķējas, kad abonements beidzas — bez manuālas pārbaudes katrā vietā.</p></div>
+        <div class="doc-mini-card"><h4>📧 Atgādinājumi</h4><p>Automātisks e-pasts 7 dienas pirms termiņa beigām un tieši beigu brīdī, caur reālu servera cron.</p></div>
+      </div>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Šī sistēma izmanto to pašu <a href="#stripe-overview">Stripe Checkout Session</a> mehānismu, kas jau aprakstīts augstāk — tā <strong>nav</strong> īsta atkārtota rēķina (recurring billing) sistēma ar Stripe Subscriptions API. Tā vietā katrs "plāns" ir vienreizējs maksājums, kas servera pusē pagarina lietotāja piekļuves termiņu par attiecīgo mēnešu skaitu. Vienkāršāk uzstādīt un pietiek lielākajai daļai projektu, kur nav vajadzīga automātiska atkārtota norakstīšana.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="auth-login">
+      <h2>1. Pieteikšanās (rate limit + Turnstile)</h2>
+      <p>Custom pieteikšanās veidne, kas izmanto WordPress iebūvēto <code>wp_signon()</code> autentifikācijai, bet pievieno divus papildu drošības slāņus: <strong>Turnstile</strong> pret botiem un <strong>mēģinājumu ierobežojumu</strong> pret paroles minēšanu (bruteforce).</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_shortcode</span>(<span class="tok-str">'mem_login'</span>, <span class="tok-str">'mem_login_shortcode'</span>);
+
+<span class="tok-kw">function</span> <span class="tok-fn">mem_login_shortcode</span>(): <span class="tok-kw">string</span> {
+    <span class="tok-kw">if</span> (<span class="tok-fn">is_user_logged_in</span>()) {
+        <span class="tok-kw">return</span> <span class="tok-str">'&lt;p&gt;Tu jau esi ielogojies. &lt;a href="'</span> . <span class="tok-fn">esc_url</span>(<span class="tok-fn">home_url</span>(<span class="tok-str">'/dashboard/'</span>)) . <span class="tok-str">'"&gt;Uz kontu&lt;/a&gt;&lt;/p&gt;'</span>;
+    }
+
+    <span class="tok-fn">$error</span> = <span class="tok-str">''</span>;
+
+    <span class="tok-kw">if</span> (<span class="tok-fn">$_SERVER</span>[<span class="tok-str">'REQUEST_METHOD'</span>] === <span class="tok-str">'POST'</span> && <span class="tok-fn">isset</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'mem_login_nonce'</span>])) {
+        <span class="tok-kw">if</span> (!<span class="tok-fn">wp_verify_nonce</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'mem_login_nonce'</span>], <span class="tok-str">'mem_login'</span>)) {
+            <span class="tok-fn">$error</span> = <span class="tok-str">'Drošības kļūda. Atsvaidzini lapu.'</span>;
+        } <span class="tok-kw">else</span> {
+
+            <span class="tok-com">// — Turnstile pārbaude (tāpat kā kontaktformā, skat. Kontaktforma sadaļu) —</span>
+            <span class="tok-fn">$turnstile_token</span> = <span class="tok-fn">$_POST</span>[<span class="tok-str">'cf-turnstile-response'</span>] ?? <span class="tok-str">''</span>;
+            <span class="tok-kw">if</span> (<span class="tok-fn">empty</span>(<span class="tok-fn">$turnstile_token</span>)) {
+                <span class="tok-fn">$error</span> = <span class="tok-str">'Lūdzu, pabeidz drošības pārbaudi.'</span>;
+            } <span class="tok-kw">else</span> {
+                <span class="tok-fn">$verify</span> = <span class="tok-fn">wp_remote_post</span>(<span class="tok-str">'https://challenges.cloudflare.com/turnstile/v0/siteverify'</span>, [
+                    <span class="tok-str">'body'</span> => [<span class="tok-str">'secret'</span> => TURNSTILE_SECRET_KEY, <span class="tok-str">'response'</span> => <span class="tok-fn">$turnstile_token</span>],
+                ]);
+                <span class="tok-fn">$outcome</span> = <span class="tok-fn">json_decode</span>(<span class="tok-fn">wp_remote_retrieve_body</span>(<span class="tok-fn">$verify</span>), <span class="tok-kw">true</span>);
+                <span class="tok-kw">if</span> (<span class="tok-fn">empty</span>(<span class="tok-fn">$outcome</span>[<span class="tok-str">'success'</span>])) <span class="tok-fn">$error</span> = <span class="tok-str">'Drošības pārbaude neizdevās.'</span>;
+            }
+
+            <span class="tok-kw">if</span> (!<span class="tok-fn">$error</span>) {
+                <span class="tok-fn">$email</span>    = <span class="tok-fn">sanitize_email</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'email'</span>] ?? <span class="tok-str">''</span>);
+                <span class="tok-fn">$password</span> = <span class="tok-fn">wp_unslash</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'password'</span>] ?? <span class="tok-str">''</span>);
+
+                <span class="tok-com">// — Mēģinājumu skaitītājs pēc IP adreses —</span>
+                <span class="tok-fn">$ip</span>            = <span class="tok-fn">sanitize_text_field</span>(<span class="tok-fn">$_SERVER</span>[<span class="tok-str">'REMOTE_ADDR'</span>] ?? <span class="tok-str">''</span>);
+                <span class="tok-fn">$attempts_key</span>  = <span class="tok-str">'mem_login_attempts_'</span> . <span class="tok-fn">md5</span>(<span class="tok-fn">$ip</span>);
+                <span class="tok-fn">$attempts</span>      = (<span class="tok-kw">int</span>) <span class="tok-fn">get_transient</span>(<span class="tok-fn">$attempts_key</span>);
+
+                <span class="tok-kw">if</span> (<span class="tok-fn">$attempts</span> >= 5) {
+                    <span class="tok-fn">$error</span> = <span class="tok-str">'Pārāk daudz mēģinājumu. Mēģini pēc 15 minūtēm.'</span>;
+                } <span class="tok-kw">elseif</span> (!<span class="tok-fn">is_email</span>(<span class="tok-fn">$email</span>)) {
+                    <span class="tok-fn">$error</span> = <span class="tok-str">'Nederīgs e-pasts.'</span>;
+                } <span class="tok-kw">else</span> {
+                    <span class="tok-fn">$user</span> = <span class="tok-fn">get_user_by</span>(<span class="tok-str">'email'</span>, <span class="tok-fn">$email</span>);
+
+                    <span class="tok-kw">if</span> (<span class="tok-fn">$user</span>) {
+                        <span class="tok-fn">$result</span> = <span class="tok-fn">wp_signon</span>([
+                            <span class="tok-str">'user_login'</span>    => <span class="tok-fn">$user</span>->user_login,
+                            <span class="tok-str">'user_password'</span> => <span class="tok-fn">$password</span>,
+                            <span class="tok-str">'remember'</span>      => !<span class="tok-fn">empty</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'remember'</span>]),
+                        ], <span class="tok-kw">false</span>);
+
+                        <span class="tok-kw">if</span> (<span class="tok-fn">is_wp_error</span>(<span class="tok-fn">$result</span>)) {
+                            <span class="tok-fn">set_transient</span>(<span class="tok-fn">$attempts_key</span>, <span class="tok-fn">$attempts</span> + 1, 15 * MINUTE_IN_SECONDS);
+                            <span class="tok-fn">$error</span> = <span class="tok-str">'Nepareizs e-pasts vai parole.'</span>;
+                        } <span class="tok-kw">else</span> {
+                            <span class="tok-fn">delete_transient</span>(<span class="tok-fn">$attempts_key</span>);
+                            <span class="tok-fn">wp_redirect</span>(<span class="tok-fn">mem_has_active_subscription</span>(<span class="tok-fn">$result</span>->ID) ? <span class="tok-fn">home_url</span>(<span class="tok-str">'/dashboard/'</span>) : <span class="tok-fn">home_url</span>(<span class="tok-str">'/pricing/'</span>));
+                            <span class="tok-kw">exit</span>;
+                        }
+                    } <span class="tok-kw">else</span> {
+                        <span class="tok-fn">$error</span> = <span class="tok-str">'Konts ar šo e-pastu neeksistē.'</span>;
+                    }
+                }
+            }
+        }
+    }
+
+    <span class="tok-fn">ob_start</span>(); ?&gt;
+    &lt;form method="post"&gt;
+        &lt;?php wp_nonce_field('mem_login', 'mem_login_nonce'); ?&gt;
+        &lt;?php if ($error): ?&gt;&lt;div class="alert"&gt;&lt;?= esc_html($error) ?&gt;&lt;/div&gt;&lt;?php endif; ?&gt;
+        &lt;input type="email" name="email" placeholder="tavs@epasts.lv" required&gt;
+        &lt;input type="password" name="password" required&gt;
+        &lt;label&gt;&lt;input type="checkbox" name="remember"&gt; Atcerēties mani&lt;/label&gt;
+        &lt;div class="cf-turnstile" data-sitekey="&lt;?= esc_attr(TURNSTILE_SITE_KEY) ?&gt;"&gt;&lt;/div&gt;
+        &lt;button type="submit"&gt;Pieteikties&lt;/button&gt;
+    &lt;/form&gt;
+    &lt;?php <span class="tok-kw">return</span> <span class="tok-fn">ob_get_clean</span>();
+}</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>wp_signon()</code> ir WordPress iebūvēta funkcija, kas veic pilnu pieteikšanās procesu (pārbauda paroli, iestata sesijas sīkdatnes) — tā ir pareizais veids, kā ielogot lietotāju no pielāgota koda, nevis pašrocīgi rakstīt autentifikācijas loģiku. Novirzīšana pēc pieteikšanās ir <strong>atkarīga no abonementa statusa</strong> — aktīviem lietotājiem uz <code>/dashboard/</code>, pārējiem uz <code>/pricing/</code> (skat. 5. sadaļu zemāk).</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="auth-register">
+      <h2>2. Reģistrācija</h2>
+      <p>Vienkāršota, viena-soļa reģistrācija — reāls projekts, kas pārdod abonementus, bieži paplašina to par vairāku soļu vedni (dati → noteikumi → plāna izvēle → apmaksa), bet <strong>kodols</strong> paliek tas pats: izveidot lietotāju, uzreiz ielogot, nosūtīt apsveikuma e-pastu.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_shortcode</span>(<span class="tok-str">'mem_register'</span>, <span class="tok-str">'mem_register_shortcode'</span>);
+
+<span class="tok-kw">function</span> <span class="tok-fn">mem_register_shortcode</span>(): <span class="tok-kw">string</span> {
+    <span class="tok-kw">if</span> (<span class="tok-fn">is_user_logged_in</span>()) {
+        <span class="tok-kw">return</span> <span class="tok-str">'&lt;p&gt;Tu jau esi reģistrējies.&lt;/p&gt;'</span>;
+    }
+
+    <span class="tok-fn">$error</span> = <span class="tok-str">''</span>;
+
+    <span class="tok-kw">if</span> (<span class="tok-fn">$_SERVER</span>[<span class="tok-str">'REQUEST_METHOD'</span>] === <span class="tok-str">'POST'</span> && <span class="tok-fn">wp_verify_nonce</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'mem_register_nonce'</span>] ?? <span class="tok-str">''</span>, <span class="tok-str">'mem_register'</span>)) {
+        <span class="tok-fn">$email</span>    = <span class="tok-fn">sanitize_email</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'email'</span>] ?? <span class="tok-str">''</span>);
+        <span class="tok-fn">$password</span> = <span class="tok-fn">wp_unslash</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'password'</span>] ?? <span class="tok-str">''</span>);
+        <span class="tok-fn">$name</span>     = <span class="tok-fn">sanitize_text_field</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'name'</span>] ?? <span class="tok-str">''</span>);
+
+        <span class="tok-kw">if</span> (!<span class="tok-fn">is_email</span>(<span class="tok-fn">$email</span>)) {
+            <span class="tok-fn">$error</span> = <span class="tok-str">'Nederīgs e-pasts.'</span>;
+        } <span class="tok-kw">elseif</span> (<span class="tok-fn">strlen</span>(<span class="tok-fn">$password</span>) &lt; 8) {
+            <span class="tok-fn">$error</span> = <span class="tok-str">'Parolei jābūt vismaz 8 simboliem.'</span>;
+        } <span class="tok-kw">elseif</span> (<span class="tok-fn">email_exists</span>(<span class="tok-fn">$email</span>)) {
+            <span class="tok-fn">$error</span> = <span class="tok-str">'Šis e-pasts jau reģistrēts. '</span>;
+        } <span class="tok-kw">else</span> {
+            <span class="tok-fn">$user_id</span> = <span class="tok-fn">wp_insert_user</span>([
+                <span class="tok-str">'user_login'</span> => <span class="tok-fn">$email</span>, <span class="tok-com">// e-pastu droši var lietot kā lietotājvārdu</span>
+                <span class="tok-str">'user_email'</span> => <span class="tok-fn">$email</span>,
+                <span class="tok-str">'user_pass'</span>  => <span class="tok-fn">$password</span>, <span class="tok-com">// wp_insert_user PATS to sahashos, nekad nesaglabā tīrā tekstā</span>
+                <span class="tok-str">'display_name'</span> => <span class="tok-fn">$name</span>,
+                <span class="tok-str">'role'</span>       => <span class="tok-str">'subscriber'</span>,
+            ]);
+
+            <span class="tok-kw">if</span> (<span class="tok-fn">is_wp_error</span>(<span class="tok-fn">$user_id</span>)) {
+                <span class="tok-fn">$error</span> = <span class="tok-fn">$user_id</span>->get_error_message();
+            } <span class="tok-kw">else</span> {
+                <span class="tok-com">// Uzreiz ielogojam jauno lietotāju, lai nav jāpiesakās atsevišķi</span>
+                <span class="tok-fn">wp_set_current_user</span>(<span class="tok-fn">$user_id</span>);
+                <span class="tok-fn">wp_set_auth_cookie</span>(<span class="tok-fn">$user_id</span>);
+
+                <span class="tok-fn">wp_mail</span>(<span class="tok-fn">$email</span>, <span class="tok-str">'Laipni lūdzam!'</span>, <span class="tok-str">"Sveiki, {$name}! Tavs konts ir izveidots."</span>);
+
+                <span class="tok-fn">wp_redirect</span>(<span class="tok-fn">home_url</span>(<span class="tok-str">'/pricing/'</span>));
+                <span class="tok-kw">exit</span>;
+            }
+        }
+    }
+
+    <span class="tok-fn">ob_start</span>(); ?&gt;
+    &lt;form method="post"&gt;
+        &lt;?php wp_nonce_field('mem_register', 'mem_register_nonce'); ?&gt;
+        &lt;?php if ($error): ?&gt;&lt;div class="alert"&gt;&lt;?= esc_html($error) ?&gt;&lt;/div&gt;&lt;?php endif; ?&gt;
+        &lt;input type="text" name="name" placeholder="Vārds" required&gt;
+        &lt;input type="email" name="email" placeholder="tavs@epasts.lv" required&gt;
+        &lt;input type="password" name="password" minlength="8" required&gt;
+        &lt;button type="submit"&gt;Reģistrēties&lt;/button&gt;
+    &lt;/form&gt;
+    &lt;?php <span class="tok-kw">return</span> <span class="tok-fn">ob_get_clean</span>();
+}</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>wp_set_current_user()</code> <strong>viens pats</strong> nepietiek "īstai" ielogošanai — tas iestata lietotāju TIKAI pašreizējā pieprasījuma ietvaros. <code>wp_set_auth_cookie()</code> ir tas, kas iestata pārlūka sīkdatni, lai lietotājs paliktu ielogojies arī nākamajā lapas ielādē. Vienmēr izsauc <strong>abas</strong> kopā.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="auth-forgot-password">
+      <h2>3. Paroles atjaunošana</h2>
+      <p>Divi soļi: (a) lietotājs pieprasa atjaunošanas saiti pēc e-pasta, (b) noklikšķinot saiti, nonāk pie jaunas paroles formas. Abi izmanto WordPress iebūvētās, jau gatavās drošības funkcijas — nekas nav jāizgudro no jauna.</p>
+      <p><strong>a) Pieprasījums — ģenerē atslēgu un nosūta e-pastu:</strong></p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">function</span> <span class="tok-fn">mem_send_password_reset_email</span>(WP_User <span class="tok-fn">$user</span>): <span class="tok-kw">void</span> {
+    <span class="tok-com">// WordPress iebūvēta funkcija — ģenerē drošu, vienreiz lietojamu atslēgu</span>
+    <span class="tok-fn">$key</span> = <span class="tok-fn">get_password_reset_key</span>(<span class="tok-fn">$user</span>);
+    <span class="tok-kw">if</span> (<span class="tok-fn">is_wp_error</span>(<span class="tok-fn">$key</span>)) <span class="tok-kw">return</span>;
+
+    <span class="tok-com">// Saite uz PAŠU lapu (nevis WordPress noklusējuma wp-login.php)</span>
+    <span class="tok-fn">$reset_url</span> = <span class="tok-fn">add_query_arg</span>([
+        <span class="tok-str">'action'</span> => <span class="tok-str">'mem_reset'</span>,
+        <span class="tok-str">'key'</span>    => <span class="tok-fn">$key</span>,
+        <span class="tok-str">'login'</span>  => <span class="tok-fn">rawurlencode</span>(<span class="tok-fn">$user</span>->user_login),
+    ], <span class="tok-fn">home_url</span>(<span class="tok-str">'/login/'</span>));
+
+    <span class="tok-fn">wp_mail</span>(
+        <span class="tok-fn">$user</span>->user_email,
+        <span class="tok-str">'Paroles atjaunošana'</span>,
+        <span class="tok-str">"Klikšķini, lai iestatītu jaunu paroli: {$reset_url}"</span>
+    );
+}</code></pre>
+      <p><strong>b) Atslēgas pārbaude un jaunas paroles saglabāšana</strong> — parasti pievieno tai pašai pieteikšanās lapai, pārbaudot URL parametrus:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Šo pārbauda pieteikšanās lapas sākumā, PIRMS parastās login formas rādīšanas</span>
+<span class="tok-kw">if</span> ((<span class="tok-fn">$_SERVER</span>[<span class="tok-str">'REQUEST_METHOD'</span>] ?? <span class="tok-str">''</span>) === <span class="tok-str">'POST'</span> && <span class="tok-fn">isset</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'mem_reset_key'</span>])) {
+    <span class="tok-fn">$user</span> = <span class="tok-fn">check_password_reset_key</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'mem_reset_key'</span>], <span class="tok-fn">$_POST</span>[<span class="tok-str">'mem_reset_login'</span>] ?? <span class="tok-str">''</span>);
+
+    <span class="tok-kw">if</span> (<span class="tok-fn">is_wp_error</span>(<span class="tok-fn">$user</span>)) {
+        <span class="tok-fn">$error</span> = <span class="tok-str">'Saite nav derīga vai ir novecojusi. Pieprasi jaunu.'</span>;
+    } <span class="tok-kw">else</span> {
+        <span class="tok-fn">$new_password</span> = <span class="tok-fn">wp_unslash</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'new_password'</span>] ?? <span class="tok-str">''</span>);
+
+        <span class="tok-kw">if</span> (<span class="tok-fn">strlen</span>(<span class="tok-fn">$new_password</span>) &lt; 8) {
+            <span class="tok-fn">$error</span> = <span class="tok-str">'Parolei jābūt vismaz 8 simboliem.'</span>;
+        } <span class="tok-kw">else</span> {
+            <span class="tok-fn">reset_password</span>(<span class="tok-fn">$user</span>, <span class="tok-fn">$new_password</span>); <span class="tok-com">// WordPress iebūvēta — droši saglabā jauno paroli</span>
+            <span class="tok-fn">wp_redirect</span>(<span class="tok-fn">add_query_arg</span>(<span class="tok-str">'reset'</span>, <span class="tok-str">'success'</span>, <span class="tok-fn">home_url</span>(<span class="tok-str">'/login/'</span>)));
+            <span class="tok-kw">exit</span>;
+        }
+    }
+}</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>get_password_reset_key()</code>, <code>check_password_reset_key()</code> un <code>reset_password()</code> ir WordPress kodola funkcijas — tās pašas, ko izmanto noklusējuma <code>wp-login.php</code>. Izmantojot tās (nevis izgudrojot savu atslēgu sistēmu), atslēgas automātiski beidzas pēc noteikta laika un tiek droši glabātas — nav jāuztraucas par šo drošības daļu pašiem.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="auth-dashboard">
+      <h2>4. Aizsargāta konta lapa</h2>
+      <p>Vienkāršs, vispārināts paraugs "manam kontam" lapai — parāda lietotāja datus un abonementa statusu, ar izrakstīšanās pogu. Reālā projektā šeit parasti pievieno arī kursu progresu, rēķinus u.tml., bet pati aizsardzības un pamatinfo daļa paliek tāda pati.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_shortcode</span>(<span class="tok-str">'mem_dashboard'</span>, <span class="tok-str">'mem_dashboard_shortcode'</span>);
+
+<span class="tok-kw">function</span> <span class="tok-fn">mem_dashboard_shortcode</span>(): <span class="tok-kw">string</span> {
+    <span class="tok-kw">if</span> (!<span class="tok-fn">is_user_logged_in</span>()) {
+        <span class="tok-kw">return</span> <span class="tok-str">'&lt;p&gt;Lūdzu, &lt;a href="'</span> . <span class="tok-fn">esc_url</span>(<span class="tok-fn">home_url</span>(<span class="tok-str">'/login/'</span>)) . <span class="tok-str">'"&gt;piesakies&lt;/a&gt;.&lt;/p&gt;'</span>;
+    }
+
+    <span class="tok-fn">$user</span>           = <span class="tok-fn">wp_get_current_user</span>();
+    <span class="tok-fn">$has_sub</span>        = <span class="tok-fn">mem_has_active_subscription</span>(<span class="tok-fn">$user</span>->ID);
+    <span class="tok-fn">$expires_label</span>  = <span class="tok-fn">mem_subscription_expires_label</span>(<span class="tok-fn">$user</span>->ID);
+
+    <span class="tok-fn">ob_start</span>(); ?&gt;
+    &lt;div class="mem-dashboard"&gt;
+        &lt;h2&gt;Sveiks, &lt;?= esc_html($user-&gt;display_name) ?&gt;!&lt;/h2&gt;
+        &lt;p&gt;E-pasts: &lt;?= esc_html($user-&gt;user_email) ?&gt;&lt;/p&gt;
+
+        &lt;?php if ($has_sub): ?&gt;
+            &lt;div class="alert alert-success"&gt;Abonements aktīvs līdz &lt;?= esc_html($expires_label) ?&gt;&lt;/div&gt;
+        &lt;?php else: ?&gt;
+            &lt;div class="alert alert-warning"&gt;
+                Tavam abonementam beidzies termiņš.
+                &lt;a href="&lt;?= esc_url(home_url('/pricing/')) ?&gt;"&gt;Atjaunot&lt;/a&gt;
+            &lt;/div&gt;
+        &lt;?php endif; ?&gt;
+
+        &lt;a href="&lt;?= esc_url(wp_logout_url(home_url('/login/'))) ?&gt;"&gt;Izrakstīties&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;?php <span class="tok-kw">return</span> <span class="tok-fn">ob_get_clean</span>();
+}
+
+<span class="tok-com">// Aizsargā /dashboard/ lapu — novirza uz login, ja apmeklētājs nav ielogojies</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'template_redirect'</span>, <span class="tok-kw">function</span> (): <span class="tok-kw">void</span> {
+    <span class="tok-kw">if</span> (<span class="tok-fn">is_page</span>(<span class="tok-str">'dashboard'</span>) && !<span class="tok-fn">is_user_logged_in</span>()) {
+        <span class="tok-fn">wp_redirect</span>(<span class="tok-fn">home_url</span>(<span class="tok-str">'/login/'</span>));
+        <span class="tok-kw">exit</span>;
+    }
+});</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>wp_logout_url()</code> ģenerē pareizu izrakstīšanās saiti ar iebūvētu drošības pārbaudi (nonce) un ļauj norādīt, uz kuru lapu novirzīt pēc izrakstīšanās — nekad nebūvē šo URL pašrocīgi ar <code>?action=logout</code>.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="sub-plans">
+      <h2>5. Laika-ierobežoti abonementa plāni</h2>
+      <p>Plānu saraksts + trīs galvenās funkcijas: pārbaudīt, vai abonements aktīvs, aktivizēt to pēc apmaksas, un parādīt beigu datumu.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">define</span>(<span class="tok-str">'MEM_PLANS'</span>, [
+    <span class="tok-str">'1m'</span>  => [<span class="tok-str">'label'</span> => <span class="tok-str">'1 mēnesis'</span>,   <span class="tok-str">'months'</span> => 1,  <span class="tok-str">'price_eur'</span> => 29],
+    <span class="tok-str">'6m'</span>  => [<span class="tok-str">'label'</span> => <span class="tok-str">'6 mēneši'</span>,    <span class="tok-str">'months'</span> => 6,  <span class="tok-str">'price_eur'</span> => 49],
+    <span class="tok-str">'12m'</span> => [<span class="tok-str">'label'</span> => <span class="tok-str">'12 mēneši'</span>,   <span class="tok-str">'months'</span> => 12, <span class="tok-str">'price_eur'</span> => 79],
+]);
+
+<span class="tok-kw">function</span> <span class="tok-fn">mem_has_active_subscription</span>(<span class="tok-kw">int</span> <span class="tok-fn">$user_id</span> = 0): <span class="tok-kw">bool</span> {
+    <span class="tok-fn">$user_id</span> = <span class="tok-fn">$user_id</span> ?: <span class="tok-fn">get_current_user_id</span>();
+    <span class="tok-kw">if</span> (!<span class="tok-fn">$user_id</span>) <span class="tok-kw">return</span> <span class="tok-kw">false</span>;
+
+    <span class="tok-fn">$expires</span> = (<span class="tok-kw">int</span>) <span class="tok-fn">get_user_meta</span>(<span class="tok-fn">$user_id</span>, <span class="tok-str">'mem_subscription_expires'</span>, <span class="tok-kw">true</span>);
+    <span class="tok-kw">return</span> <span class="tok-fn">$expires</span> > time();
+}
+
+<span class="tok-com">// Izsauc PĒC veiksmīga Stripe maksājuma (skat. 6. sadaļu) — pagarina, nevis aizvieto,</span>
+<span class="tok-com">// ja abonements vēl nebija beidzies (lietotājs atjauno PIRMS termiņa beigām)</span>
+<span class="tok-kw">function</span> <span class="tok-fn">mem_activate_subscription</span>(<span class="tok-kw">int</span> <span class="tok-fn">$user_id</span>, <span class="tok-kw">string</span> <span class="tok-fn">$plan_key</span>): <span class="tok-kw">void</span> {
+    <span class="tok-kw">if</span> (!<span class="tok-fn">isset</span>(MEM_PLANS[<span class="tok-fn">$plan_key</span>])) <span class="tok-kw">return</span>;
+    <span class="tok-fn">$months</span> = MEM_PLANS[<span class="tok-fn">$plan_key</span>][<span class="tok-str">'months'</span>];
+
+    <span class="tok-fn">$current_expires</span> = (<span class="tok-kw">int</span>) <span class="tok-fn">get_user_meta</span>(<span class="tok-fn">$user_id</span>, <span class="tok-str">'mem_subscription_expires'</span>, <span class="tok-kw">true</span>);
+    <span class="tok-fn">$base</span>    = (<span class="tok-fn">$current_expires</span> > time()) ? <span class="tok-fn">$current_expires</span> : time();
+    <span class="tok-fn">$expires</span> = <span class="tok-fn">strtotime</span>(<span class="tok-str">"+{$months} months"</span>, <span class="tok-fn">$base</span>);
+
+    <span class="tok-fn">update_user_meta</span>(<span class="tok-fn">$user_id</span>, <span class="tok-str">'mem_subscription_plan'</span>,    <span class="tok-fn">$plan_key</span>);
+    <span class="tok-fn">update_user_meta</span>(<span class="tok-fn">$user_id</span>, <span class="tok-str">'mem_subscription_expires'</span>, <span class="tok-fn">$expires</span>);
+    <span class="tok-fn">delete_user_meta</span>(<span class="tok-fn">$user_id</span>, <span class="tok-str">'mem_reminder_sent_7d'</span>);      <span class="tok-com">// skat. 8. sadaļu</span>
+    <span class="tok-fn">delete_user_meta</span>(<span class="tok-fn">$user_id</span>, <span class="tok-str">'mem_reminder_sent_expired'</span>);
+}
+
+<span class="tok-kw">function</span> <span class="tok-fn">mem_subscription_expires_label</span>(<span class="tok-kw">int</span> <span class="tok-fn">$user_id</span> = 0): <span class="tok-kw">string</span> {
+    <span class="tok-fn">$user_id</span> = <span class="tok-fn">$user_id</span> ?: <span class="tok-fn">get_current_user_id</span>();
+    <span class="tok-fn">$expires</span> = (<span class="tok-kw">int</span>) <span class="tok-fn">get_user_meta</span>(<span class="tok-fn">$user_id</span>, <span class="tok-str">'mem_subscription_expires'</span>, <span class="tok-kw">true</span>);
+    <span class="tok-kw">return</span> <span class="tok-fn">$expires</span> ? <span class="tok-fn">date_i18n</span>(<span class="tok-str">'j. F, Y'</span>, <span class="tok-fn">$expires</span>) : <span class="tok-str">''</span>;
+}</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Pamanāms triks <code>mem_activate_subscription()</code> funkcijā: <code>$base</code> paņem <strong>lielāko</strong> no pašreizējā beigu datuma un šī brīža — ja lietotājs atjauno pirms termiņa beigām, jaunais periods <strong>pieskaitās</strong> pie vecā (nezaudē atlikušās dienas), nevis pārraksta to. Ja atjauno pēc termiņa beigām, periods sākas no šī brīža.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="sub-checkout-link">
+      <h2>6. Savienojums ar Stripe apmaksu</h2>
+      <p>Izmanto <a href="#stripe-checkout-session">jau aprakstīto Checkout Session</a> mehānismu, tikai <code>metadata</code> laukā liek plāna atslēgu un lietotāja ID, lai webhook zinātu, KAM un KURU plānu aktivizēt pēc apmaksas.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Checkout Session izveidē (3. sadaļa Stripe grupā) pievieno:</span>
+<span class="tok-str">'metadata[plan]'</span>    => <span class="tok-fn">$plan_key</span>,          <span class="tok-com">// piem. '6m'</span>
+<span class="tok-str">'metadata[user_id]'</span> => <span class="tok-fn">get_current_user_id</span>(),
+
+<span class="tok-com">// Webhook apstrādē (7. sadaļa Stripe grupā), pēc checkout.session.completed:</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'stripe_payment_completed'</span>, <span class="tok-kw">function</span> (<span class="tok-fn">$session</span>) {
+    <span class="tok-fn">$plan_key</span> = <span class="tok-fn">sanitize_key</span>(<span class="tok-fn">$session</span>[<span class="tok-str">'metadata'</span>][<span class="tok-str">'plan'</span>] ?? <span class="tok-str">''</span>);
+    <span class="tok-fn">$user_id</span>  = (<span class="tok-kw">int</span>) (<span class="tok-fn">$session</span>[<span class="tok-str">'metadata'</span>][<span class="tok-str">'user_id'</span>] ?? 0);
+
+    <span class="tok-kw">if</span> (<span class="tok-fn">$user_id</span> && <span class="tok-fn">$plan_key</span>) {
+        <span class="tok-fn">mem_activate_subscription</span>(<span class="tok-fn">$user_id</span>, <span class="tok-fn">$plan_key</span>);
+    }
+});</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Abonementu aktivizē <strong>tikai</strong> webhook (servera puse), nekad klienta puses "paldies" lapa vien — tas ir tas pats iemesls, kas jau izskaidrots <a href="#stripe-webhooks-why">"Kāpēc vajadzīgi webhooks"</a>: apmeklētājs var aizvērt cilni pirms atgriešanās, vai atvērt "paldies" URL bez maksāšanas.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="sub-access">
+      <h2>7. Satura piekļuves kontrole</h2>
+      <p>Bloķē lapas vai konkrētu saturu tiem, kam nav aktīva abonementa — pārbauda ar to pašu <code>mem_has_active_subscription()</code> no 5. sadaļas.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Bloķē visu "kursi" lapu grupu, ja nav aktīva abonementa</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'template_redirect'</span>, <span class="tok-kw">function</span> (): <span class="tok-kw">void</span> {
+    <span class="tok-kw">if</span> (<span class="tok-fn">is_singular</span>(<span class="tok-str">'course'</span>) && !<span class="tok-fn">mem_has_active_subscription</span>()) {
+        <span class="tok-fn">wp_redirect</span>(<span class="tok-fn">home_url</span>(<span class="tok-str">'/pricing/'</span>));
+        <span class="tok-kw">exit</span>;
+    }
+});</code></pre>
+      <p>Vai iekļaušanai VIENĀ lapā, konkrētam saturam (piem., video atskaņotājam), nevis visai lapai:</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php <span class="tok-kw">if</span> (<span class="tok-fn">mem_has_active_subscription</span>()): ?&gt;
+    &lt;video src="kursa-video.mp4" controls&gt;&lt;/video&gt;
+&lt;?php <span class="tok-kw">else</span>: ?&gt;
+    &lt;p&gt;Šis saturs pieejams tikai abonentiem. &lt;a href="/pricing/"&gt;Skaties plānus&lt;/a&gt;&lt;/p&gt;
+&lt;?php <span class="tok-kw">endif</span>; ?&gt;</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Reāls projekts bieži paplašina šo ar smalkāku granularitāti — piem., taksonomijas tēgu katram kursam ("manuālā" vs "automātiskā" pārnesumkārba), lai dažādi abonementa plāni dotu piekļuvi dažādām kursu grupām, nevis "viss vai nekas". Pamatprincips paliek tas pats: viena <code>bool</code> funkcija, ko izsauc pirms satura rādīšanas.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="sub-reminders">
+      <h2>8. Atjaunošanas atgādinājumi (cron)</h2>
+      <p>Automātisks e-pasts 7 dienas pirms abonementa beigām un tieši beigu brīdī — palaižas caur <a href="ssh.html#wp-cron">reālu servera cron</a> (nevis WordPress pseido-cron), jo šai funkcijai jāizpildās katru dienu neatkarīgi no tā, vai kāds apmeklē vietni.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">function</span> <span class="tok-fn">mem_run_subscription_reminders</span>(): <span class="tok-kw">array</span> {
+    <span class="tok-fn">$sent_7d</span> = 0; <span class="tok-fn">$sent_expired</span> = 0; <span class="tok-fn">$now</span> = time();
+
+    <span class="tok-com">// Atrod VISUS lietotājus, kam ir abonementa beigu datuma lauks</span>
+    <span class="tok-fn">$users</span> = <span class="tok-fn">get_users</span>([
+        <span class="tok-str">'meta_key'</span>     => <span class="tok-str">'mem_subscription_expires'</span>,
+        <span class="tok-str">'meta_compare'</span> => <span class="tok-str">'EXISTS'</span>,
+    ]);
+
+    <span class="tok-kw">foreach</span> (<span class="tok-fn">$users</span> <span class="tok-kw">as</span> <span class="tok-fn">$user</span>) {
+        <span class="tok-fn">$expires</span>    = (<span class="tok-kw">int</span>) <span class="tok-fn">get_user_meta</span>(<span class="tok-fn">$user</span>->ID, <span class="tok-str">'mem_subscription_expires'</span>, <span class="tok-kw">true</span>);
+        <span class="tok-fn">$days_left</span>  = (<span class="tok-kw">int</span>) <span class="tok-fn">ceil</span>((<span class="tok-fn">$expires</span> - <span class="tok-fn">$now</span>) / DAY_IN_SECONDS);
+
+        <span class="tok-kw">if</span> (<span class="tok-fn">$days_left</span> === 7 && <span class="tok-fn">mem_send_reminder</span>(<span class="tok-fn">$user</span>, <span class="tok-fn">$expires</span>, <span class="tok-str">'7d'</span>))      <span class="tok-fn">$sent_7d</span>++;
+        <span class="tok-kw">if</span> (<span class="tok-fn">$days_left</span> === 0 && <span class="tok-fn">mem_send_reminder</span>(<span class="tok-fn">$user</span>, <span class="tok-fn">$expires</span>, <span class="tok-str">'expired'</span>)) <span class="tok-fn">$sent_expired</span>++;
+    }
+
+    <span class="tok-kw">return</span> [<span class="tok-str">'parstrada'</span> => <span class="tok-fn">count</span>(<span class="tok-fn">$users</span>), <span class="tok-str">'nosutiti_7d'</span> => <span class="tok-fn">$sent_7d</span>, <span class="tok-str">'nosutiti_beigusies'</span> => <span class="tok-fn">$sent_expired</span>];
+}
+
+<span class="tok-kw">function</span> <span class="tok-fn">mem_send_reminder</span>(WP_User <span class="tok-fn">$user</span>, <span class="tok-kw">int</span> <span class="tok-fn">$expires</span>, <span class="tok-kw">string</span> <span class="tok-fn">$type</span>): <span class="tok-kw">bool</span> {
+    <span class="tok-com">// Dublēšanās aizsardzība — sasaista "nosūtīts" atzīmi ar KONKRĒTO beigu datumu.</span>
+    <span class="tok-com">// Ja lietotājs atjauno (datums mainās), atzīme kļūst novecojusi automātiski.</span>
+    <span class="tok-fn">$sent_key</span> = <span class="tok-str">"mem_reminder_sent_{$type}"</span>;
+    <span class="tok-kw">if</span> ((<span class="tok-kw">int</span>) <span class="tok-fn">get_user_meta</span>(<span class="tok-fn">$user</span>->ID, <span class="tok-fn">$sent_key</span>, <span class="tok-kw">true</span>) === <span class="tok-fn">$expires</span>) <span class="tok-kw">return</span> <span class="tok-kw">false</span>;
+
+    <span class="tok-fn">$subject</span> = (<span class="tok-fn">$type</span> === <span class="tok-str">'7d'</span>) ? <span class="tok-str">'Tavs abonements drīz beigsies'</span> : <span class="tok-str">'Tavs abonements ir beidzies'</span>;
+    <span class="tok-fn">wp_mail</span>(<span class="tok-fn">$user</span>->user_email, <span class="tok-fn">$subject</span>, <span class="tok-str">'Atjauno šeit: '</span> . <span class="tok-fn">home_url</span>(<span class="tok-str">'/pricing/'</span>));
+
+    <span class="tok-fn">update_user_meta</span>(<span class="tok-fn">$user</span>->ID, <span class="tok-fn">$sent_key</span>, <span class="tok-fn">$expires</span>);
+    <span class="tok-kw">return</span> <span class="tok-kw">true</span>;
+}</code></pre>
+      <p>Un standarta cron bootstrap fails (skat. <a href="ssh.html#wp-cron">SSH dokumentāciju</a> par Plesk uzstādīšanu):</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// mem-cron.php — Plesk Scheduled Task izsauc šo failu tieši (bez wget/URL)</span>
+<span class="tok-fn">require_once</span> <span class="tok-fn">dirname</span>(__FILE__, 4) . <span class="tok-str">'/wp-load.php'</span>; <span class="tok-com">// ielādē visu WordPress</span>
+<span class="tok-fn">$rezultats</span> = <span class="tok-fn">mem_run_subscription_reminders</span>();
+<span class="tok-kw">echo</span> <span class="tok-str">"Apstrādāti: {$rezultats['parstrada']}, 7d: {$rezultats['nosutiti_7d']}, beigušies: {$rezultats['nosutiti_beigusies']}"</span>;</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>dirname(__FILE__, 4)</code> uzkāpj 4 mapes uz augšu no faila atrašanās vietas (piem., no <code>wp-content/themes/tava-tema/mem-cron.php</code> līdz WordPress saknei, kur atrodas <code>wp-load.php</code>) — pielāgo skaitli <code>4</code> atbilstoši tavai faila atrašanās vietai. Šis paņēmiens ir ērtāks par <code>wp-cron.php</code> URL izsaukšanu ar <code>wget</code>, jo Plesk (un citi paneļi) var palaist PHP failu <strong>tieši</strong>, bez HTTP pieprasījuma vispār.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="auth-usage">
+      <h2>Kā ielikt citā projektā</h2>
+      <pre class="code-block"><span class="lang">text</span><code>1.  Izveido lapas WordPress admin: /login/, /registracija/,
+    /forgot-password/, /dashboard/, /pricing/
+
+2.  Katrā lapā ievieto atbilstošo shortcode (piem. [mem_login]
+    lapā /login/, [mem_register] lapā /registracija/ utt.)
+
+3.  functions.php (vai izceltā failā inc/auth.php) pievieno
+    1.-4. sadaļas PHP kodu (login, register, forgot-password,
+    dashboard) — jau izmanto to pašu TURNSTILE_SITE_KEY/
+    TURNSTILE_SECRET_KEY, kas definēts Kontaktforma sadaļā
+
+4.  Pievieno 5. sadaļas MEM_PLANS un abonementa funkcijas —
+    pielāgo plānu sarakstu un cenas savam projektam
+
+5.  Stripe Checkout Session izveidē (Stripe grupas 3. sadaļa)
+    pievieno 6. sadaļas metadata laukus, un webhook apstrādē
+    pievieno mem_activate_subscription() izsaukumu
+
+6.  Pievieno 7. sadaļas piekļuves kontroli lapām/saturam,
+    kam vajadzīgs aktīvs abonements
+
+7.  Izveido mem-cron.php (8. sadaļa) un uzstādi to kā Plesk
+    Scheduled Task (skat. SSH dokumentāciju) — ieteicams reizi
+    dienā, piem., plkst. 06:00</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Šī sistēma apzināti balstās uz jau citur šajā lapā aprakstītajiem gabaliem (Turnstile no Kontaktformas, Checkout Session/webhook no Stripe, cron no SSH dokumentācijas) — tā vietā, lai visu pārrakstītu no jauna, katrs solis skaidri norāda, KURU jau esošo daļu tas atkārtoti izmanto.</p>
       </div>
     </section>
 
