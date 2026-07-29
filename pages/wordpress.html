@@ -71,6 +71,7 @@
       <a href="#widgets"><span class="bullet"></span>Widgets &amp; Sidebars</a>
       <a href="#ajax"><span class="bullet"></span>AJAX pamati</a>
       <a href="#gutenberg"><span class="bullet"></span>Gutenberg bloki</a>
+      <a href="#block-temas"><span class="bullet"></span>Block tēmas &amp; theme.json</a>
       <a href="#i18n"><span class="bullet"></span>Tulkošana (i18n)</a>
     </div>
     <div class="doc-sidebar-group">
@@ -607,6 +608,54 @@ registerBlockType('mana-tema/sveiciens', {
       </div>
     </section>
 
+    <section class="doc-section" id="block-temas">
+      <h2>Block tēmas &amp; theme.json</h2>
+      <p>Kopš WordPress 5.9 pastāv otrs veids, kā veidot tēmu — <strong>block tēma</strong> (Full Site Editing, FSE). Atšķirībā no <a href="#temas">klasiskās tēmas</a> augstāk (PHP faili ar <code>get_header()</code>/<code>get_footer()</code>), block tēmā <strong>viss</strong> — arī header un footer — sastāv no blokiem, un lietotājs tos var rediģēt vizuāli (Izskats → Redaktors), nevis tikai pašu ierakstu saturu. Klasiskā pieeja joprojām strādā un ir plaši lietota — block tēmas ir jaunāka alternatīva, nevis obligāta prasība.</p>
+      <p>Galvenā atšķirība failu struktūrā — veidnes ir <strong>HTML faili ar bloku komentāriem</strong>, nevis PHP:</p>
+      <pre class="code-block"><span class="lang">text</span><code>mana-block-tema/
+├── style.css          (tas pats, kas klasiskajā tēmā — tēmas metadati)
+├── theme.json         (globālie stili un iestatījumi)
+└── templates/
+    ├── index.html     (galvenā veidne — HTML + bloku komentāri, NEVIS PHP)
+    └── single.html
+└── parts/
+    ├── header.html
+    └── footer.html</code></pre>
+      <p><strong>theme.json</strong> ir viena centrāla vieta, kur definē krāsas, fontus un atstarpes — tos automātiski redz gan redaktors (kā izvēles), gan tas tiek pielietots frontend pusē, bez atsevišķa CSS faila rakstīšanas katrai vērtībai:</p>
+      <pre class="code-block"><span class="lang">json</span><code>{
+  <span class="tok-str">"$schema"</span>: <span class="tok-str">"https://schemas.wp.org/trunk/theme.json"</span>,
+  <span class="tok-str">"version"</span>: 3,
+  <span class="tok-str">"settings"</span>: {
+    <span class="tok-str">"color"</span>: {
+      <span class="tok-str">"palette"</span>: [
+        { <span class="tok-str">"name"</span>: <span class="tok-str">"Primārā"</span>, <span class="tok-str">"slug"</span>: <span class="tok-str">"primara"</span>, <span class="tok-str">"color"</span>: <span class="tok-str">"#7c3aed"</span> },
+        { <span class="tok-str">"name"</span>: <span class="tok-str">"Tumšā"</span>, <span class="tok-str">"slug"</span>: <span class="tok-str">"tumsa"</span>, <span class="tok-str">"color"</span>: <span class="tok-str">"#17141f"</span> }
+      ]
+    },
+    <span class="tok-str">"typography"</span>: {
+      <span class="tok-str">"fontSizes"</span>: [
+        { <span class="tok-str">"name"</span>: <span class="tok-str">"Mazs"</span>, <span class="tok-str">"slug"</span>: <span class="tok-str">"small"</span>, <span class="tok-str">"size"</span>: <span class="tok-str">"14px"</span> }
+      ]
+    }
+  }
+}</code></pre>
+      <p>Vienkāršas veidnes fragments — bloki HTML komentāru veidā, ko redaktors saprot un attēlo vizuāli:</p>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;!-- wp:template-part {"slug":"header","tagName":"header"} /--&gt;
+
+&lt;!-- wp:group {"tagName":"main"} --&gt;
+&lt;main class="wp-block-group"&gt;
+  &lt;!-- wp:post-title /--&gt;
+  &lt;!-- wp:post-content /--&gt;
+&lt;/main&gt;
+&lt;!-- /wp:group --&gt;
+
+&lt;!-- wp:template-part {"slug":"footer","tagName":"footer"} /--&gt;</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Nav jāizvēlas viens vai otrs uz visu tēmu — <strong>hibrīda tēma</strong> ir pilnīgi normāla: klasiski PHP faili (piem., <code>single.php</code> ar sarežģītu loģiku) blakus <code>theme.json</code> un dažām HTML veidnēm citām lapām. WordPress vispirms meklē <code>templates/*.html</code>, un, ja neatrod atbilstošu, krīt atpakaļ uz parasto <a href="#template-hierarchy">Template Hierarchy</a>.</p>
+      </div>
+    </section>
+
     <section class="doc-section" id="i18n">
       <h2>Tulkošana (i18n)</h2>
       <p>Ja tēma vai spraudnis paredzēts izplatīšanai (arī citiem lietotājiem, ne tikai vienai vietnei), visi lietotājam redzamie teksti jāietver tulkošanas funkcijās — tas ļauj vēlāk pievienot jebkuru valodu bez koda maiņas.</p>
@@ -760,6 +809,24 @@ registerBlockType('mana-tema/sveiciens', {
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
         <p>Zemapmeklētai vietnei WP-Cron var kavēties (nav apmeklētāju = nav trigera). Ražošanas vietnēm bieži atspējo iebūvēto sistēmu (<code>define('DISABLE_WP_CRON', true)</code> failā <code>wp-config.php</code>) un aizstāj ar īstu servera cron, kas ik minūti izsauc <code>wp-cron.php</code>.</p>
+      </div>
+      <p><strong>Reāls cron caur Plesk</strong> — ja hostings ir Plesk (vai līdzīgs panelis), servera cron var iestatīt bez SSH, tieši panelī:</p>
+      <pre class="code-block"><span class="lang">text</span><code>1. Plesk paneli: Websites &amp; Domains → tava vietne → Scheduled Tasks
+2. "Add Task" → izvēlies tipu "Run a command"
+3. Norāda komandu (izvēlies VIENU no divām):
+
+   a) Ar wget (visbiežāk der, ja PHP CLI nav pieejams):
+      wget -q -O /dev/null "https://tavavietne.lv/wp-cron.php?doing_wp_cron"
+
+   b) Tieši ar PHP CLI (ātrāk, apiet HTTP pieprasījumu pavisam):
+      php /var/www/vhosts/tavavietne.lv/httpdocs/wp-cron.php
+
+4. Biežums: izvēlies "Every 15 minutes" (parasti pietiek,
+   nevis katru minūti kā komandrindas piemērā augstāk)
+5. Saglabā — Plesk pats izveido servera crontab ierakstu fonā</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Neaizmirsti soli 1 no augšas — <code>DISABLE_WP_CRON</code> konstante <code>wp-config.php</code> failā — pretējā gadījumā uzdevumi izpildīsies <strong>divreiz</strong>: reizi no Plesk ieplānotā uzdevuma, reizi no WordPress pašas pseido-cron sistēmas, kad kāds apmeklētājs atver lapu. Ja tavā serverī ir SSH pieeja un vēlies to pašu izdarīt caur termināli (<code>crontab -e</code>), pilns piemērs ir <a href="ssh.html#wp-cron">SSH dokumentācijā</a>.</p>
       </div>
     </section>
 
