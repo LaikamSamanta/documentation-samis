@@ -121,4 +121,51 @@ document.addEventListener("DOMContentLoaded", function () {
     );
     sections.forEach(function (s) { observer.observe(s); });
   }
+
+  // mobile "jump to section" dropdown — the real sidebar is hidden below
+  // 980px (see CSS), so build a native <select> from the same links
+  // instead of leaving mobile readers to scroll through the whole page
+  var jumpSidebar = document.querySelector(".doc-sidebar");
+  var jumpMain = document.querySelector(".doc-main");
+  if (jumpSidebar && jumpMain) {
+    var jumpLinks = jumpSidebar.querySelectorAll("a[href^='#']");
+    if (jumpLinks.length) {
+      var select = document.createElement("select");
+      select.className = "mobile-section-jump";
+      select.setAttribute("aria-label", "Lēkt uz sadaļu");
+
+      var placeholder = document.createElement("option");
+      placeholder.textContent = "📑 Lēkt uz sadaļu...";
+      placeholder.setAttribute("selected", "");
+      placeholder.setAttribute("disabled", "");
+      select.appendChild(placeholder);
+
+      var jumpGroups = jumpSidebar.querySelectorAll(".doc-sidebar-group, .doc-sidebar-accordion");
+      jumpGroups.forEach(function (group) {
+        var groupLinks = group.querySelectorAll("a[href^='#']");
+        if (!groupLinks.length) return;
+        var heading = group.querySelector("h4, .doc-accordion-toggle span");
+        var optgroup = document.createElement("optgroup");
+        optgroup.label = heading ? heading.textContent.trim() : "";
+        groupLinks.forEach(function (a) {
+          var opt = document.createElement("option");
+          opt.value = a.getAttribute("href");
+          opt.textContent = a.textContent.trim();
+          optgroup.appendChild(opt);
+        });
+        select.appendChild(optgroup);
+      });
+
+      select.addEventListener("change", function () {
+        var target = document.querySelector(select.value);
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+          history.replaceState(null, "", select.value);
+        }
+        select.value = "";
+      });
+
+      jumpMain.insertBefore(select, jumpMain.firstChild);
+    }
+  }
 });
