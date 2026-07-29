@@ -1676,6 +1676,10 @@ function nosutitPirkumaKonversiju(pasutijumaId, summa, valuta = 'EUR') {
     &lt;/script&gt;
     &lt;?php
 });</code></pre>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4><code>wc_get_order()</code></h4><p>WooCommerce funkcija — pēc pasūtījuma ID atgriež pilnu pasūtījuma objektu ar visām metodēm (<code>get_total()</code>, <code>get_currency()</code> u.c.), nevis jēlus datubāzes datus.</p></div>
+        <div class="doc-mini-card"><h4><code>get_meta()</code> / <code>update_meta_data()</code> / <code>save()</code></h4><p>WooCommerce objekta "trīs soļu" saglabāšanas veids — <code>update_meta_data()</code> tikai sagatavo izmaiņu atmiņā, <code>save()</code> to tiešām ieraksta datubāzē. <code>get_meta()</code> nolasa jau saglabātu vērtību.</p></div>
+      </div>
       <p><strong>B) Ar MakeCommerce</strong> (Maksekeskus/Montonio Baltijas maksājumu vārti, bez WooCommerce) — plūsma līdzīga <a href="#stripe-overview">Stripe integrācijai</a> augstāk: tavs serveris izveido transakciju, pāradresē klientu, MakeCommerce paziņo par statusa maiņu, un tu apstiprini to caur API:</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// wp-config.php</span>
 <span class="tok-kw">define</span>(<span class="tok-str">'MAKECOMMERCE_SHOP_ID'</span>, <span class="tok-str">'...'</span>);
@@ -1712,6 +1716,10 @@ function nosutitPirkumaKonversiju(pasutijumaId, summa, valuta = 'EUR') {
     // reālā integrācijā parasti rāda lietotājam izvēli starp vairākām bankām</span>
     <span class="tok-kw">return</span> <span class="tok-fn">$rezultats</span>[<span class="tok-str">'payment_methods'</span>][<span class="tok-str">'banklinks'</span>][0][<span class="tok-str">'url'</span>] ?? <span class="tok-kw">null</span>;
 }</code></pre>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4><code>number_format($summa, 2, '.', '')</code></h4><p>Formatē skaitli kā tekstu ar tieši 2 cipariem aiz komata (piem., <code>25.5</code> → <code>"25.50"</code>). Trešais parametrs — kāda zīme aiz komata (punkts), ceturtais — tūkstošu atdalītājs (šeit tukšs, lai API nesajauktu, piem., <code>"1,000.00"</code>).</p></div>
+        <div class="doc-mini-card"><h4><code>base64_encode()</code> Basic Auth</h4><p>"Basic" autentifikācija sūta <code>lietotajs:parole</code> pārī, kodētu base64 formātā (nevis šifrētu — tikai citādi attēlotu). Tas ir droši TIKAI pāri HTTPS, jo base64 var atkodēt jebkurš, kas redz pieprasījumu.</p></div>
+      </div>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 2) Notification galapunkts — MakeCommerce paziņo, ka statuss mainījies,
 // bet NEKAD neuzticies pašam payload — vienmēr pārbaudi statusu ar atsevišķu API izsaukumu</span>
 <span class="tok-fn">add_action</span>(<span class="tok-str">'rest_api_init'</span>, <span class="tok-kw">function</span> () {
