@@ -415,6 +415,22 @@
     <section class="doc-section" id="composer">
       <h2>Composer</h2>
       <p>Composer ir PHP pakotņu pārvaldnieks — ļauj instalēt un pārvaldīt gatavas bibliotēkas, nevis rakstīt visu no nulles. Instalētās bibliotēkas nonāk <code>vendor/</code> mapē un tiek automātiski ielādētas.</p>
+      <p><strong>Kur atrast bibliotēkas?</strong> — <a href="https://packagist.org" target="_blank" rel="noopener">packagist.org</a> ir oficiālais, centrālais Composer pakotņu katalogs (tas pats, kas <code>npmjs.com</code> ir JavaScript pasaulē). Tur meklē pēc vajadzības (piem., "PDF", "email", "excel"), nevis pēc konkrēta pakotnes nosaukuma, ko jau iepriekš vajadzētu zināt:</p>
+      <pre class="code-block"><span class="lang">text</span><code>1. Atver packagist.org, meklēšanas laukā ieraksti, KO vajag darīt
+   (piem. "pdf generator", "send email", "excel export")
+2. Katras pakotnes lapā redzams:
+   - Instalēšanas komanda (kopē tieši no turienes, precīzi ar
+     versijas ierobežojumu — nekad nepārraksti ar roku)
+   - README ar lietošanas piemēriem
+   - Downloads skaits — populārāka pakotne parasti drošāka izvēle
+   - "Requires" — vai der ar tavu PHP versiju
+3. Atver pakotnes GitHub saiti (parasti augšā) un paskaties,
+   vai tā tiek aktīvi uzturēta (pēdējais commit ne pārāk sen,
+   atvērtie issues tiek risināti, ne tikai uzkrājas)</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Pakotnes nosaukums vienmēr ir formātā <code>autors/pakotne</code> (piem., <code>dompdf/dompdf</code>, <code>monolog/monolog</code>) — tā pirmā daļa NAV nejauša, tā ir konkrētā izstrādātāja/organizācijas vārds Packagist. Nekad neuzmini vai neizdomā šo nosaukumu — vienmēr kopē to tieši no Packagist lapas.</p>
+      </div>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Izveido jaunu projektu ar composer.json failu</span>
 composer init
 
