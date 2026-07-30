@@ -426,6 +426,46 @@ composer install</code></pre>
       <p>Pēc instalēšanas bibliotēku izmanto, pievienojot vienu rindu koda sākumā:</p>
       <pre class="code-block"><span class="lang">php</span><code>&lt;?php
 <span class="tok-fn">require</span> <span class="tok-str">'vendor/autoload.php'</span>; <span class="tok-com">// ielādē visas Composer bibliotēkas</span></code></pre>
+      <h3 style="font-size:17px; margin:32px 0 10px;">Composer WordPress projektā</h3>
+      <p>WordPress pats kodols <strong>nav</strong> paredzēts instalēšanai caur Composer kā parasta bibliotēka — to lejupielādē kā gatavu CMS pakotni (piem., no wordpress.org vai caur hostinga instalatoru). Composer WordPress projektos parasti izmanto vienā no diviem veidiem:</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>✅ Iekšā tēmā/spraudnī <span class="tag easy">Visbiežāk</span></h4><p>Composer pārvalda tikai TAVA koda atkarības (piem., PDF ģenerēšanas bibliotēku pielāgotā spraudnī) — <code>vendor/</code> paliek tēmas/spraudņa mapē, WordPress kodols to neskar.</p></div>
+        <div class="doc-mini-card"><h4>⚙️ Visam projektam <span class="tag mid">Progresīvāk</span></h4><p>Composer pārvalda arī pašus WordPress spraudņus/tēmas caur "WordPress Packagist" — visa projekta atkarības (kodols, spraudņi, tēmas) vienuviet <code>composer.json</code> failā.</p></div>
+      </div>
+      <p><strong>1. variants</strong> — der lielākajai daļai projektu. Pielāgotā spraudņa mapē:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Palaiž tieši spraudņa mapē, piem. wp-content/plugins/mans-spraudnis/</span>
+composer require dompdf/dompdf</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// mans-spraudnis.php — spraudņa galvenajā failā</span>
+&lt;?php
+<span class="tok-com">/* Plugin Name: Mans spraudnis */</span>
+<span class="tok-fn">require_once</span> __DIR__ . <span class="tok-str">'/vendor/autoload.php'</span>;
+
+<span class="tok-com">// Tagad pieejama Dompdf klase, tāpat kā jebkurā PHP projektā</span>
+<span class="tok-fn">$pdf</span> = <span class="tok-kw">new</span> <span class="tok-fn">\Dompdf\Dompdf</span>();</code></pre>
+      <p><strong>2. variants</strong> — pārvalda arī spraudņus/tēmas caur Composer, izmantojot <a href="https://wpackagist.org" target="_blank" rel="noopener">WordPress Packagist</a> (spogulis, kas WordPress.org spraudņu/tēmu katalogu padara pieejamu kā Composer pakotnes):</p>
+      <pre class="code-block"><span class="lang">json</span><code>{
+    <span class="tok-str">"repositories"</span>: [
+        { <span class="tok-str">"type"</span>: <span class="tok-str">"composer"</span>, <span class="tok-str">"url"</span>: <span class="tok-str">"https://wpackagist.org"</span> }
+    ],
+    <span class="tok-str">"require"</span>: {
+        <span class="tok-str">"wpackagist-plugin/contact-form-7"</span>: <span class="tok-str">"^5.9"</span>,
+        <span class="tok-str">"wpackagist-theme/twentytwentyfour"</span>: <span class="tok-str">"^1.0"</span>
+    },
+    <span class="tok-str">"extra"</span>: {
+        <span class="tok-str">"installer-paths"</span>: {
+            <span class="tok-str">"wp-content/plugins/{$name}/"</span>: [<span class="tok-str">"type:wordpress-plugin"</span>],
+            <span class="tok-str">"wp-content/themes/{$name}/"</span>: [<span class="tok-str">"type:wordpress-theme"</span>]
+        }
+    }
+}</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Ja spraudni pārvalda Composer (2. variants), <strong>izslēdz</strong> tā automātisko atjaunināšanu WordPress admin panelī — pretējā gadījumā WordPress pats atjauninās failus, un <code>composer.json</code> vairs neatbildīs reālajai instalētajai versijai. Izvēlies <strong>vienu</strong> pārvaldības veidu katram spraudnim, nekad abus vienlaikus.</p>
+      </div>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>vendor/</code> mapi (tāpat kā jebkurā PHP projektā) <strong>nekad</strong> nepievieno Git repozitorijā — pievieno to <a href="git.html#gitignore"><code>.gitignore</code></a> failam. Katrs, kas klonē projektu, atjauno <code>vendor/</code> pats ar <code>composer install</code>, izmantojot <code>composer.lock</code> failu, kas nodrošina, ka visiem instalējas <strong>tieši tās pašas</strong> bibliotēku versijas.</p>
+      </div>
     </section>
 
     <div class="doc-pager">

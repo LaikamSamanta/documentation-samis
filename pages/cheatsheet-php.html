@@ -62,6 +62,7 @@
     <a href="#ct-date">Datums &amp; laiks</a>
     <a href="#ct-regex">Regex</a>
     <a href="#ct-pdo">PDO datubāze</a>
+    <a href="#ct-composer">Composer</a>
     <a href="#ct-misc">Citas noderīgas</a>
   </nav>
 
@@ -280,6 +281,17 @@ $rinda = $stmt-&gt;fetch();</code></pre></div>
 );
 $stmt-&gt;execute([$teksts]);
 $id = $pdo-&gt;lastInsertId();</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-composer">
+    <h2>Composer</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>composer require</h4><p>Instalē bibliotēku un pievieno to composer.json.</p><pre><code>composer require monolog/monolog</code></pre></div>
+      <div class="cheat-card"><h4>composer install</h4><p>Instalē visas atkarības no composer.lock — jāpalaiž pēc katras klonēšanas.</p><pre><code>composer install</code></pre></div>
+      <div class="cheat-card"><h4>Ielāde kodā</h4><p>Viena rinda, kas ielādē visas Composer bibliotēkas.</p><pre><code>require 'vendor/autoload.php';</code></pre></div>
+      <div class="cheat-card"><h4>Spraudnī/tēmā</h4><p>Composer WordPress projektā parasti pārvalda tikai VIENA spraudņa/tēmas atkarības, ne kodolu.</p><pre><code>require __DIR__ . '/vendor/autoload.php';</code></pre></div>
+      <div class="cheat-card"><h4>WordPress Packagist</h4><p>Ļauj pārvaldīt arī pašus WP spraudņus/tēmas caur composer.json.</p><pre><code>"wpackagist-plugin/contact-form-7": "^5.9"</code></pre></div>
     </div>
   </section>
 
