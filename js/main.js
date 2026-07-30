@@ -168,4 +168,62 @@ document.addEventListener("DOMContentLoaded", function () {
       jumpMain.insertBefore(select, jumpMain.firstChild);
     }
   }
+
+  // copy-to-clipboard button on every code block — re-parents the existing
+  // .lang badge into a shared toolbar alongside a new copy button, so no
+  // HTML file needs to change, only this script + the matching CSS
+  document.querySelectorAll("pre.code-block").forEach(function (block) {
+    var codeEl = block.querySelector("code");
+    if (!codeEl) return;
+
+    var toolbar = document.createElement("div");
+    toolbar.className = "code-block-toolbar";
+
+    var langEl = block.querySelector(".lang");
+    if (langEl) toolbar.appendChild(langEl);
+
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "code-copy-btn";
+    btn.setAttribute("aria-label", "Kopēt kodu");
+    btn.innerHTML =
+      '<svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>' +
+      '<svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+
+    function showCopied() {
+      btn.classList.add("copied");
+      setTimeout(function () { btn.classList.remove("copied"); }, 1500);
+    }
+
+    function fallbackCopy(text) {
+      // older/more permissive method for browsers or contexts (e.g. non-HTTPS,
+      // restrictive permission policies) where navigator.clipboard is blocked
+      var textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      try {
+        if (document.execCommand("copy")) showCopied();
+      } catch (err) {
+        console.error("Kopēšana neizdevās:", err);
+      }
+      document.body.removeChild(textarea);
+    }
+
+    btn.addEventListener("click", function () {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(codeEl.textContent).then(showCopied, function () {
+          fallbackCopy(codeEl.textContent);
+        });
+      } else {
+        fallbackCopy(codeEl.textContent);
+      }
+    });
+
+    toolbar.appendChild(btn);
+    block.insertBefore(toolbar, block.firstChild);
+  });
 });

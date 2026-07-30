@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>WordPress dokumentācija — Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=12" />
+<link rel="stylesheet" href="../css/style.css?v=14" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -501,6 +501,11 @@ pings_open()          → vai pingback/trackback ir atvērti šim ierakstam</cod
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
         <p>Biežākie āķi, ar kuriem sāksi: <code>init</code> (WordPress ielādēts), <code>wp_enqueue_scripts</code> (CSS/JS), <code>wp_head</code>/<code>wp_footer</code> (lapas sākums/beigas).</p>
       </div>
+      <p><strong>Kur atrast VISUS pieejamos hooks?</strong> — šeit parādīti tikai daži piemēri no simtiem, kas eksistē WordPress kodolā. Pilns, meklējams saraksts ar katra hook aprakstu un pieejamajiem parametriem ir <a href="https://developer.wordpress.org/reference/hooks/" target="_blank" rel="noopener">developer.wordpress.org/reference/hooks/</a> — tā ir oficiālā WordPress dokumentācija, ne kāda trešās puses vietne. Tur pat var redzēt, kurā WordPress versijā konkrētais hook parādījās.</p>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Tā pati vietne (<a href="https://developer.wordpress.org/reference/" target="_blank" rel="noopener">developer.wordpress.org/reference/</a>) satur arī pilnu WordPress <strong>funkciju</strong> uzziņu (piem., ko tieši dara <code>get_post_meta()</code>, kādi tai parametri) — tas ir pareizais pirmais pieturas punkts, ja neesi drošs, ko konkrēta WordPress funkcija dara vai vai tāda vispār eksistē priekš tavas vajadzības, nevis meklēt Google pēc nejaušiem forumu ierakstiem.</p>
+      </div>
     </section>
 
     <section class="doc-section" id="shortcodes">
@@ -882,7 +887,7 @@ GET /wp-json/wp/v2/produkts     → CPT ieraksti (ja show_in_rest: true)</code><
   </main>
 </div>
 
-<script src="../js/theme.js?v=12"></script>
-<script src="../js/main.js?v=12"></script>
+<script src="../js/theme.js?v=14"></script>
+<script src="../js/main.js?v=14"></script>
 </body>
 </html>

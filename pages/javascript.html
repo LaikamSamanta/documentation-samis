@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>JavaScript dokumentācija — Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=12" />
+<link rel="stylesheet" href="../css/style.css?v=14" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -494,6 +494,15 @@ npm run dev</code></pre>
         <div class="doc-mini-card"><h4>📦 npm / pnpm</h4><p>Pakotņu pārvaldnieki — instalē un pārvalda projekta atkarības (bibliotēkas), kas uzskaitītas <code>package.json</code> failā.</p></div>
         <div class="doc-mini-card"><h4>🧹 ESLint / Prettier</h4><p>ESLint atrod iespējamas kļūdas un stila problēmas kodā; Prettier automātiski formatē kodu vienotā stilā.</p></div>
       </div>
+      <p><strong>Kur atrast bibliotēkas?</strong> — <a href="https://www.npmjs.com" target="_blank" rel="noopener">npmjs.com</a> ir centrālais JavaScript pakotņu katalogs (tas pats, kas PHP pasaulē ir <a href="php.html#composer">Packagist</a>). Meklē pēc vajadzības, tad instalē tieši ar to nosaukumu, ko atradi tur:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Instalē konkrētu bibliotēku (piem., datumu formatēšanai)</span>
+npm install dayjs</code></pre>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">import</span> dayjs <span class="tok-kw">from</span> <span class="tok-str">'dayjs'</span>;
+<span class="tok-fn">console.log</span>(<span class="tok-fn">dayjs</span>().format(<span class="tok-str">'YYYY-MM-DD'</span>));</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>npmjs.com pakotnes lapā pārbaudi to pašu, ko Packagist lapā — lejupielāžu skaitu (populārāka = uzticamāka), pēdējā atjauninājuma datumu un vai bibliotēka tiek aktīvi uzturēta. Instalētās bibliotēkas nonāk <code>node_modules/</code> mapē — tāpat kā PHP <code>vendor/</code>, arī šo mapi <strong>nekad</strong> nepievieno Git repozitorijā.</p>
+      </div>
     </section>
 
     <div class="doc-pager">
@@ -503,7 +512,7 @@ npm run dev</code></pre>
   </main>
 </div>
 
-<script src="../js/theme.js?v=12"></script>
-<script src="../js/main.js?v=12"></script>
+<script src="../js/theme.js?v=14"></script>
+<script src="../js/main.js?v=14"></script>
 </body>
 </html>

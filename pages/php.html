@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>PHP dokumentācija — Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=12" />
+<link rel="stylesheet" href="../css/style.css?v=14" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -415,6 +415,24 @@
     <section class="doc-section" id="composer">
       <h2>Composer</h2>
       <p>Composer ir PHP pakotņu pārvaldnieks — ļauj instalēt un pārvaldīt gatavas bibliotēkas, nevis rakstīt visu no nulles. Instalētās bibliotēkas nonāk <code>vendor/</code> mapē un tiek automātiski ielādētas.</p>
+      <p><strong>Kāpēc tas vajadzīgs — reāls piemērs.</strong> Pieņemsim, vajag ģenerēt PDF rēķinu. PDF ir sarežģīts binārs failu formāts — pats no nulles to uzrakstīt aizņemtu nedēļas. Ar Composer bibliotēku <code>dompdf/dompdf</code> to izdara dažās rindās:</p>
+      <pre class="code-block"><span class="lang">bash</span><code>composer require dompdf/dompdf</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-fn">require</span> <span class="tok-str">'vendor/autoload.php'</span>; <span class="tok-com">// ielādē dompdf (un jebkuru citu instalēto bibliotēku)</span>
+
+<span class="tok-fn">$dompdf</span> = <span class="tok-kw">new</span> <span class="tok-fn">\Dompdf\Dompdf</span>();
+
+<span class="tok-com">// Padod parastu HTML — dompdf pats parūpējas par visu PDF formāta sarežģītību</span>
+<span class="tok-fn">$dompdf</span>->loadHtml(<span class="tok-str">'&lt;h1&gt;Rēķins Nr. 001&lt;/h1&gt;&lt;p&gt;Summa: 49.00 EUR&lt;/p&gt;'</span>);
+<span class="tok-fn">$dompdf</span>->setPaper(<span class="tok-str">'A4'</span>);
+<span class="tok-fn">$dompdf</span>->render();
+
+<span class="tok-com">// Nosūta gatavo PDF failu tieši apmeklētāja pārlūkam lejupielādei</span>
+<span class="tok-fn">$dompdf</span>->stream(<span class="tok-str">'rekins.pdf'</span>);</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Tieši šeit ir Composer vērtība: <code>\Dompdf\Dompdf</code> klase, <code>loadHtml()</code>, <code>render()</code>, <code>stream()</code> — visas šīs metodes uzrakstīja <strong>kāds cits</strong>, un tu tās tikai izmanto. Bez Composer būtu jāatrod bibliotēkas kods manuāli internetā, jālejupielādē, jāsaprot pats jāieliek pareizajā mapē un pats jāraksta <code>require</code> katram failam atsevišķi — Composer visu šo automatizē vienā komandā.</p>
+      </div>
       <p><strong>Kur atrast bibliotēkas?</strong> — <a href="https://packagist.org" target="_blank" rel="noopener">packagist.org</a> ir oficiālais, centrālais Composer pakotņu katalogs (tas pats, kas <code>npmjs.com</code> ir JavaScript pasaulē). Tur meklē pēc vajadzības (piem., "PDF", "email", "excel"), nevis pēc konkrēta pakotnes nosaukuma, ko jau iepriekš vajadzētu zināt:</p>
       <pre class="code-block"><span class="lang">text</span><code>1. Atver packagist.org, meklēšanas laukā ieraksti, KO vajag darīt
    (piem. "pdf generator", "send email", "excel export")
@@ -491,7 +509,7 @@ composer require dompdf/dompdf</code></pre>
   </main>
 </div>
 
-<script src="../js/theme.js?v=12"></script>
-<script src="../js/main.js?v=12"></script>
+<script src="../js/theme.js?v=14"></script>
+<script src="../js/main.js?v=14"></script>
 </body>
 </html>
