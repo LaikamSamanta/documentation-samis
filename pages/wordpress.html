@@ -981,22 +981,26 @@ GET /wp-json/wp/v2/produkts     → CPT ieraksti (ja show_in_rest: true)</code><
 
 <span class="tok-com">// Neobligāti — logo klikšķis ved uz tavu vietni, ne wordpress.org</span>
 <span class="tok-fn">add_filter</span>(<span class="tok-str">'login_headerurl'</span>, <span class="tok-str">'home_url'</span>);</code></pre>
-      <p>Piemērs augstāk izmanto <strong>fiksētu</strong> failu no tēmas mapes — labi der, ja logo maina reti, pats izstrādātājs. Ja logo jāļauj mainīt klientam pašam (bez koda rediģēšanas), labāk to glabāt kā parastu WordPress <strong>Media Library</strong> augšupielādi, ne fiksētu failu:</p>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 1) Vienkārša admin lapa, kur izvēlēties logo no Media Library
-// (var arī izmantot WordPress Customizer — skat. piezīmi zemāk)</span>
-<span class="tok-fn">add_action</span>(<span class="tok-str">'admin_init'</span>, <span class="tok-kw">function</span>() {
-    <span class="tok-fn">register_setting</span>(<span class="tok-str">'general'</span>, <span class="tok-str">'wpds_login_logo_id'</span>, [<span class="tok-str">'type'</span> => <span class="tok-str">'integer'</span>]);
+      <p>Piemērs augstāk izmanto <strong>fiksētu</strong> failu no tēmas mapes — labi der, ja logo maina reti, pats izstrādātājs. Ja logo jāļauj mainīt klientam pašam (bez koda rediģēšanas), izmanto WordPress <strong>Customizer</strong> — <code>WP_Customize_Image_Control</code> uzreiz dod gatavu attēla augšupielādes lauku ar priekšskatījumu no Media Library, bez papildu JS rakstīšanas:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 1) Reģistrē attēla lauku Izskats → Pielāgot → Vietnes identitāte</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'customize_register'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$wp_customize</span>) {
+    <span class="tok-fn">$wp_customize</span>->add_setting(<span class="tok-str">'wpds_login_logo'</span>, [
+        <span class="tok-str">'type'</span>    => <span class="tok-str">'option'</span>, <span class="tok-com">// saglabā wp_options tabulā, nevis theme mod</span>
+        <span class="tok-str">'default'</span> => <span class="tok-str">''</span>,
+    ]);
+
+    <span class="tok-fn">$wp_customize</span>->add_control(<span class="tok-kw">new</span> WP_Customize_Image_Control(<span class="tok-fn">$wp_customize</span>, <span class="tok-str">'wpds_login_logo_control'</span>, [
+        <span class="tok-str">'label'</span>    => <span class="tok-str">'Pieteikšanās lapas logo'</span>,
+        <span class="tok-str">'section'</span>  => <span class="tok-str">'title_tagline'</span>, <span class="tok-com">// jau esoša "Vietnes identitāte" sadaļa</span>
+        <span class="tok-str">'settings'</span> => <span class="tok-str">'wpds_login_logo'</span>,
+    ]));
 });
 
-<span class="tok-com">// 2) Nolasa saglabāto attēla ID un pārvērš to par īstu URL</span>
+<span class="tok-com">// 2) Nolasa saglabāto URL un izmanto to — WP_Customize_Image_Control jau</span>
+<span class="tok-com">// pats saglabā GATAVU attēla URL (nevis tikai ID), tāpēc get_option() pietiek</span>
 <span class="tok-fn">add_action</span>(<span class="tok-str">'login_enqueue_scripts'</span>, <span class="tok-kw">function</span>() {
-    <span class="tok-fn">$logo_id</span> = (<span class="tok-kw">int</span>) <span class="tok-fn">get_option</span>(<span class="tok-str">'wpds_login_logo_id'</span>);
-    <span class="tok-kw">if</span> (!<span class="tok-fn">$logo_id</span>) <span class="tok-kw">return</span>; <span class="tok-com">// nekas nav augšupielādēts — paliek WordPress noklusējuma logo</span>
-
-    <span class="tok-com">// wp_get_attachment_image_url() ņem konkrētu izmēru no Media Library ieraksta,</span>
-    <span class="tok-com">// nevis oriģinālo (bieži milzīgo) failu — 'medium' der logo vajadzībām</span>
-    <span class="tok-fn">$logo</span> = <span class="tok-fn">wp_get_attachment_image_url</span>(<span class="tok-fn">$logo_id</span>, <span class="tok-str">'medium'</span>);
-    <span class="tok-kw">if</span> (!<span class="tok-fn">$logo</span>) <span class="tok-kw">return</span>;
+    <span class="tok-fn">$logo</span> = <span class="tok-fn">get_option</span>(<span class="tok-str">'wpds_login_logo'</span>);
+    <span class="tok-kw">if</span> (!<span class="tok-fn">$logo</span>) <span class="tok-kw">return</span>; <span class="tok-com">// nekas nav augšupielādēts — paliek WordPress noklusējuma logo</span>
     ?&gt;
     &lt;style&gt;
         #login h1 a {
@@ -1010,7 +1014,7 @@ GET /wp-json/wp/v2/produkts     → CPT ieraksti (ja show_in_rest: true)</code><
 });</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>register_setting()</code> pats vien nedod ievades lauku — vajadzīga arī WordPress <strong>Media Uploader</strong> poga (JS, kas atver Media Library logu un saglabā izvēlētā attēla ID). Vienkāršāk to visu iegūst "par velti" caur <strong>WordPress Customizer</strong> (<code>WP_Customize_Image_Control</code>) — tas jau satur gatavu attēla augšupielādes lauku ar priekšskatījumu, tikai jāreģistrē viena sadaļa Izskats → Pielāgot.</p>
+        <p>Šis piemērs ir <strong>pilnībā pašpietiekams</strong> — pēc iekopēšanas klients uzreiz redz jaunu "Pieteikšanās lapas logo" lauku Izskats → Pielāgot → Vietnes identitāte, ar pogu "Izvēlēties attēlu", kas atver Media Library. Nekas papildus (admin lapa, JS) nav jāraksta — <code>WP_Customize_Image_Control</code> to visu jau dara pats.</p>
       </div>
 
       <h3 style="font-size:17px; margin:32px 0 10px;">Pievienot pielāgotu attēla izmēru</h3>
