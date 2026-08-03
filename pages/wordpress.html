@@ -89,6 +89,10 @@
       <a href="#http-api"><span class="bullet"></span>HTTP API (wp_remote_*)</a>
       <a href="#rest-api"><span class="bullet"></span>REST API pamati</a>
     </div>
+    <div class="doc-sidebar-group">
+      <h4>Ātrie risinājumi</h4>
+      <a href="#snippets"><span class="bullet"></span>Populāri functions.php trikizi</a>
+    </div>
   </aside>
 
   <main class="doc-main">
@@ -878,6 +882,129 @@ GET /wp-json/wp/v2/produkts     → CPT ieraksti (ja show_in_rest: true)</code><
     ]);
 });
 <span class="tok-com">// Pieejams: /wp-json/mana-tema/v1/sveiciens</span></code></pre>
+    </section>
+
+    <section class="doc-section" id="snippets">
+      <h2>Populāri functions.php trikizi</h2>
+      <p>Mazi, patstāvīgi koda gabaliņi bez lielas paskaidrošanas vajadzības — katru var iekopēt tieši tādu, kāds tas ir, tēmas <code>functions.php</code> failā (vai izceltā failā, ko no turienes ielādē ar <code>require_once</code>).</p>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Izslēgt komentārus pilnībā</h3>
+      <p>Aizver komentārus visos esošajos ierakstos, noņem komentāru atbalstu no ierakstu/lapu tipiem un paslēpj "Komentāri" izvēlni admin panelī — der vietnēm, kur komentāri nemaz nav vajadzīgi.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 1) Aizver komentārus/trackback visiem esošajiem ierakstiem un lapām</span>
+<span class="tok-kw">function</span> <span class="tok-fn">wpds_disable_comments_status</span>() {
+    <span class="tok-kw">return</span> <span class="tok-kw">false</span>;
+}
+<span class="tok-fn">add_filter</span>(<span class="tok-str">'comments_open'</span>, <span class="tok-str">'wpds_disable_comments_status'</span>, 20, 2);
+<span class="tok-fn">add_filter</span>(<span class="tok-str">'pings_open'</span>, <span class="tok-str">'wpds_disable_comments_status'</span>, 20, 2);
+
+<span class="tok-com">// 2) Noņem komentāru atbalstu no ierakstu/lapu tipiem</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'init'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-fn">remove_post_type_support</span>(<span class="tok-str">'post'</span>, <span class="tok-str">'comments'</span>);
+    <span class="tok-fn">remove_post_type_support</span>(<span class="tok-str">'page'</span>, <span class="tok-str">'comments'</span>);
+});
+
+<span class="tok-com">// 3) Paslēpj "Komentāri" admin izvēlnē</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'admin_menu'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-fn">remove_menu_page</span>(<span class="tok-str">'edit-comments.php'</span>);
+});</code></pre>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">SVG augšupielāžu atbalsts</h3>
+      <p>WordPress pēc noklusējuma <strong>bloķē</strong> SVG augšupielādi — SVG faili ir teksta (XML) faili, kas var saturēt JavaScript kodu, tāpēc tie ir potenciāls XSS drošības risks. Šis kods atļauj SVG, bet <strong>tikai</strong> uzticamiem lietotājiem (administratoriem).</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_filter</span>(<span class="tok-str">'upload_mimes'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$mimes</span>) {
+    <span class="tok-kw">if</span> (<span class="tok-fn">current_user_can</span>(<span class="tok-str">'manage_options'</span>)) {
+        <span class="tok-fn">$mimes</span>[<span class="tok-str">'svg'</span>] = <span class="tok-str">'image/svg+xml'</span>;
+    }
+    <span class="tok-kw">return</span> <span class="tok-fn">$mimes</span>;
+});</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Nekad neatļauj SVG augšupielādi <strong>visiem</strong> lietotājiem (piem., <code>edit_posts</code> vietā <code>manage_options</code>) — jebkurš, kas var augšupielādēt SVG, teorētiski var ievietot ļaunprātīgu JavaScript kodu. Ražošanas vietnēm, kur SVG jāaugšupielādē arī parastiem redaktoriem, apsver specializētu spraudni (piem., "Safe SVG"), kas SVG failu attīra pirms saglabāšanas.</p>
+      </div>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Paslēpt admin izvēlnes punktus</h3>
+      <p>Vienkāršo admin paneli parastiem redaktoriem, paslēpjot izvēlnes punktus, kas viņiem nav vajadzīgi.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'admin_menu'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-kw">if</span> (<span class="tok-fn">current_user_can</span>(<span class="tok-str">'manage_options'</span>)) <span class="tok-kw">return</span>; <span class="tok-com">// administratori redz visu</span>
+
+    <span class="tok-fn">remove_menu_page</span>(<span class="tok-str">'tools.php'</span>);       <span class="tok-com">// Rīki</span>
+    <span class="tok-fn">remove_menu_page</span>(<span class="tok-str">'edit-comments.php'</span>); <span class="tok-com">// Komentāri</span>
+    <span class="tok-fn">remove_menu_page</span>(<span class="tok-str">'plugins.php'</span>);     <span class="tok-com">// Spraudņi</span>
+}, 999); <span class="tok-com">// liels skaitlis — izpildās PĒC visiem, kas izveido izvēlnes</span></code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Standarta izvēlnes punktu identifikatorus (kā <code>tools.php</code>, <code>edit-comments.php</code>) atrodi WordPress oficiālajā <a href="https://developer.wordpress.org/reference/functions/remove_menu_page/" target="_blank" rel="noopener"><code>remove_menu_page()</code> dokumentācijā</a>. Pielāgota spraudņa izveidoto izvēlni (piem., no kāda uzstādīta spraudņa) paslēpj tāpat, izmantojot tā reģistrēto slug.</p>
+      </div>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Izslēgt emoji skriptus (veiktspēja)</h3>
+      <p>WordPress pēc noklusējuma katrā lapā ielādē papildu skriptu emoji attēlošanai vecākos pārlūkos — lielākajai daļai vietņu tas nav vajadzīgs un nedaudz palēnina lapu.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'init'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-fn">remove_action</span>(<span class="tok-str">'wp_head'</span>, <span class="tok-str">'print_emoji_detection_script'</span>, 7);
+    <span class="tok-fn">remove_action</span>(<span class="tok-str">'wp_print_styles'</span>, <span class="tok-str">'print_emoji_styles'</span>);
+    <span class="tok-fn">remove_action</span>(<span class="tok-str">'admin_print_scripts'</span>, <span class="tok-str">'print_emoji_detection_script'</span>);
+    <span class="tok-fn">remove_action</span>(<span class="tok-str">'admin_print_styles'</span>, <span class="tok-str">'print_emoji_styles'</span>);
+});</code></pre>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Noņemt WordPress versijas numuru (drošība)</h3>
+      <p>WordPress pēc noklusējuma lapas HTML kodā atklāj savu versijas numuru — tas atvieglo uzbrucējiem atrast vietnes, kam vēl nav uzstādīts jaunākais drošības labojums.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">remove_action</span>(<span class="tok-str">'wp_head'</span>, <span class="tok-str">'wp_generator'</span>);</code></pre>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Mainīt izraksta (excerpt) garumu</h3>
+      <p>Noklusējuma izraksta garums ir 55 vārdi — šis filtrs to pielāgo pēc vajadzības.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_filter</span>(<span class="tok-str">'excerpt_length'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$garums</span>) {
+    <span class="tok-kw">return</span> 20; <span class="tok-com">// vārdu skaits</span>
+});
+
+<span class="tok-com">// Neobligāti — nomaina noklusējuma "[...]" beigās uz kaut ko citu</span>
+<span class="tok-fn">add_filter</span>(<span class="tok-str">'excerpt_more'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-kw">return</span> <span class="tok-str">'…'</span>;
+});</code></pre>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Izslēgt XML-RPC (drošība)</h3>
+      <p>XML-RPC ir vecāks WordPress interfeiss ārējiem savienojumiem (piem., senākām mobilajām lietotnēm) — tas ir arī izplatīts brute-force uzbrukumu mērķis. Ja to nelieto (lielākā daļa vietņu nelieto), droši izslēdz.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_filter</span>(<span class="tok-str">'xmlrpc_enabled'</span>, <span class="tok-str">'__return_false'</span>);</code></pre>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Pielāgot admin pieteikšanās logo</h3>
+      <p>Nomaina noklusējuma WordPress logo <code>/wp-login.php</code> lapā pret savas vietnes logo.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'login_enqueue_scripts'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-fn">$logo</span> = <span class="tok-fn">get_template_directory_uri</span>() . <span class="tok-str">'/assets/logo.png'</span>;
+    ?&gt;
+    &lt;style&gt;
+        #login h1 a {
+            background-image: url(&lt;?= esc_url($logo) ?&gt;);
+            background-size: contain;
+            width: 100%;
+            height: 80px;
+        }
+    &lt;/style&gt;
+    &lt;?php
+});
+
+<span class="tok-com">// Neobligāti — logo klikšķis ved uz tavu vietni, ne wordpress.org</span>
+<span class="tok-fn">add_filter</span>(<span class="tok-str">'login_headerurl'</span>, <span class="tok-str">'home_url'</span>);</code></pre>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Pievienot pielāgotu attēla izmēru</h3>
+      <p>WordPress automātiski ģenerē vairākus attēla izmērus katrai augšupielādei (thumbnail, medium, large) — šis pievieno vēl vienu, savu, izmēru tam pašam mehānismam.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'after_setup_theme'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-com">// nosaukums, platums, augstums, vai apgriezt (true = precīzi izmēri)</span>
+    <span class="tok-fn">add_image_size</span>(<span class="tok-str">'kartes-attels'</span>, 400, 300, <span class="tok-kw">true</span>);
+});</code></pre>
+      <p>Lietošana veidnē:</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php <span class="tok-kw">if</span> (<span class="tok-fn">has_post_thumbnail</span>()): ?&gt;
+    &lt;?= <span class="tok-fn">get_the_post_thumbnail</span>(<span class="tok-fn">get_the_ID</span>(), <span class="tok-str">'kartes-attels'</span>) ?&gt;
+&lt;?php <span class="tok-kw">endif</span>; ?&gt;</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Jauns izmērs attiecas tikai uz <strong>jaunām</strong> augšupielādēm — jau esošajiem attēliem šī izmēra versijas nav. Lai ģenerētu trūkstošos izmērus arī vecajiem attēliem, izmanto spraudni "Regenerate Thumbnails" vai WP-CLI komandu <code>wp media regenerate</code>.</p>
+      </div>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Novirzīt lietotāju pēc pieteikšanās (pēc lomas)</h3>
+      <p>Pēc pieteikšanās administratorus nosūta uz admin paneli, bet parastos lietotājus (piem., abonentus) — uz konta lapu, nevis noklusējuma admin dashboard.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_filter</span>(<span class="tok-str">'login_redirect'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$parasta_adrese</span>, <span class="tok-fn">$pieprasita_adrese</span>, <span class="tok-fn">$user</span>) {
+    <span class="tok-kw">if</span> (<span class="tok-fn">$user</span> <span class="tok-kw">instanceof</span> WP_User && <span class="tok-fn">in_array</span>(<span class="tok-str">'administrator'</span>, <span class="tok-fn">$user</span>->roles, <span class="tok-kw">true</span>)) {
+        <span class="tok-kw">return</span> <span class="tok-fn">admin_url</span>();
+    }
+    <span class="tok-kw">return</span> <span class="tok-fn">home_url</span>(<span class="tok-str">'/mans-konts/'</span>);
+}, 10, 3);</code></pre>
     </section>
 
     <div class="doc-pager">
