@@ -62,12 +62,15 @@
       <a href="#snip-login-redirect"><span class="bullet"></span>Novirzīšana pēc pieteikšanās</a>
       <a href="#snip-admin-locale"><span class="bullet"></span>Piespiedu admin valoda</a>
       <a href="#snip-admin-colors"><span class="bullet"></span>Admin &amp; pieteikšanās krāsas</a>
+      <a href="#snip-editor-customizer"><span class="bullet"></span>Redaktoram — Customizer piekļuve</a>
     </div>
     <div class="doc-sidebar-group">
       <h4>Saturs &amp; veiktspēja</h4>
       <a href="#snip-excerpt"><span class="bullet"></span>Izraksta garums</a>
       <a href="#snip-image-size"><span class="bullet"></span>Pielāgots attēla izmērs</a>
       <a href="#snip-emoji"><span class="bullet"></span>Izslēgt emoji skriptus</a>
+      <a href="#snip-classic-editor"><span class="bullet"></span>Piespiedu klasiskais redaktors</a>
+      <a href="#snip-gettext"><span class="bullet"></span>Jebkura teksta aizstāšana</a>
     </div>
   </aside>
 
@@ -406,6 +409,34 @@
       </div>
     </section>
 
+    <section class="doc-section" id="snip-editor-customizer">
+      <h2>Redaktoram (Editor lomai) — Customizer piekļuve, bet ierobežota</h2>
+      <p>Pēc noklusējuma tikai administratori var atvērt Izskats → Pielāgot (Customizer). Ja vēlies, lai arī <strong>Redaktora</strong> lomas lietotāji var mainīt logo, krāsas u.tml., bet <strong>nevar</strong> piekļūt tehniskākām sadaļām (izvēlnes, sīkrīki, pielāgots CSS) — vajadzīgas divas daļas: tiesību piešķiršana un pēc tam ierobežošana.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 1) Piešķir Redaktora lomai tiesības atvērt Customizer</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'admin_init'</span>, <span class="tok-str">'wpds_atlaut_redaktoram_customizer'</span>);
+<span class="tok-kw">function</span> <span class="tok-fn">wpds_atlaut_redaktoram_customizer</span>() {
+    <span class="tok-fn">$role</span> = <span class="tok-fn">get_role</span>(<span class="tok-str">'editor'</span>);
+    <span class="tok-kw">if</span> (<span class="tok-fn">$role</span> && !<span class="tok-fn">$role</span>->has_cap(<span class="tok-str">'edit_theme_options'</span>)) {
+        <span class="tok-fn">$role</span>->add_cap(<span class="tok-str">'edit_theme_options'</span>);
+    }
+}
+
+<span class="tok-com">// 2) Bet noņem tehniskākās sadaļas, ja lietotājs NAV administrators</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'customize_register'</span>, <span class="tok-str">'wpds_ierobezot_customizer_redaktoram'</span>, 999);
+<span class="tok-kw">function</span> <span class="tok-fn">wpds_ierobezot_customizer_redaktoram</span>(<span class="tok-fn">$wp_customize</span>) {
+    <span class="tok-kw">if</span> (!<span class="tok-fn">current_user_can</span>(<span class="tok-str">'administrator'</span>)) {
+        <span class="tok-fn">$wp_customize</span>->remove_section(<span class="tok-str">'custom_css'</span>);
+        <span class="tok-fn">$wp_customize</span>->remove_panel(<span class="tok-str">'nav_menus'</span>);
+        <span class="tok-fn">$wp_customize</span>->remove_panel(<span class="tok-str">'widgets'</span>);
+        <span class="tok-fn">$wp_customize</span>->remove_section(<span class="tok-str">'static_front_page'</span>);
+    }
+}</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Prioritāte <code>999</code> otrajā funkcijā ir svarīga — tā izpildās <strong>pēc</strong> tam, kad WordPress un citi spraudņi jau ir reģistrējuši visas savas Customizer sadaļas, tāpēc ir kas noņemt. Ja izlaidīsi prioritāti, funkcija var izpildīties par agru un daļu sadaļu vēl nemaz nebūs, ko dzēst.</p>
+      </div>
+    </section>
+
     <section class="doc-section" id="snip-excerpt">
       <h2>Izraksta (excerpt) garums</h2>
       <p>Noklusējuma izraksta garums ir 55 vārdi — šis filtrs to pielāgo pēc vajadzības.</p>
@@ -445,6 +476,46 @@
     <span class="tok-fn">remove_action</span>(<span class="tok-str">'admin_print_scripts'</span>, <span class="tok-str">'print_emoji_detection_script'</span>);
     <span class="tok-fn">remove_action</span>(<span class="tok-str">'admin_print_styles'</span>, <span class="tok-str">'print_emoji_styles'</span>);
 });</code></pre>
+    </section>
+
+    <section class="doc-section" id="snip-classic-editor">
+      <h2>Piespiedu klasiskais redaktors (izslēgt Gutenbergu)</h2>
+      <p>Ja tēma vai spraudņi ir veidoti ar veco, klasisko redaktoru prātā (vai vienkārši negribi blociņu redaktoru), viena rindiņa pilnībā izslēdz Gutenbergu — visiem ierakstu tipiem, visiem lietotājiem.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_filter</span>(<span class="tok-str">'use_block_editor_for_post'</span>, <span class="tok-str">'__return_false'</span>);</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Šis filtrs ietekmē <strong>tikai</strong> to, vai redaktors atveras kā Gutenbergs vai klasiskais TinyMCE — pati "Classic Editor" spraudņa uzstādīšana nav nepieciešama. Ja vajag izslēgt tikai konkrētam ierakstu tipam, pievieno pārbaudi: <code>if ($post_type === 'produkts') return false;</code> pirms atgriešanas.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="snip-gettext">
+      <h2>Jebkura teksta/frāzes aizstāšana (gettext)</h2>
+      <p><code>gettext</code> filtrs ļauj pārrakstīt <strong>jebkuru</strong> tekstu, ko WordPress vai kāds spraudnis izvada caur tulkošanas funkcijām (<code>__()</code>, <code>_e()</code> u.tml.) — pat ja tev nav piekļuves attiecīgā spraudņa kodam. Noder, ja gribi mainīt kāda spraudņa tekstu, nerediģējot pašu spraudni (kas citādi pazustu nākamajā atjauninājumā).</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Vienkāršs, precīzs viena teksta aizstāšanas gadījums</span>
+<span class="tok-fn">add_filter</span>(<span class="tok-str">'gettext'</span>, <span class="tok-str">'wpds_aizvietot_vienu_frazi'</span>, 20, 3);
+<span class="tok-kw">function</span> <span class="tok-fn">wpds_aizvietot_vienu_frazi</span>(<span class="tok-fn">$tulkotais</span>, <span class="tok-fn">$original</span>, <span class="tok-fn">$domain</span>) {
+    <span class="tok-kw">if</span> (<span class="tok-fn">$tulkotais</span> === <span class="tok-str">'E-pasta paroles atiestatīšanas saite'</span>) {
+        <span class="tok-kw">return</span> <span class="tok-str">'Atiestatīt paroli'</span>;
+    }
+    <span class="tok-kw">return</span> <span class="tok-fn">$tulkotais</span>;
+}
+
+<span class="tok-com">// Vairāku vārdu/frāžu masveida aizstāšana konkrētam spraudnim (piem., WooCommerce)</span>
+<span class="tok-fn">add_filter</span>(<span class="tok-str">'gettext'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$tulkotais</span>, <span class="tok-fn">$original</span>, <span class="tok-fn">$domain</span>) {
+    <span class="tok-kw">if</span> (<span class="tok-fn">$domain</span> !== <span class="tok-str">'woocommerce'</span>) <span class="tok-kw">return</span> <span class="tok-fn">$tulkotais</span>; <span class="tok-com">// tikai šī spraudņa teksti</span>
+
+    <span class="tok-fn">$aizvietojumi</span> = [
+        <span class="tok-str">'Pasūtījums'</span> => <span class="tok-str">'Pirkums'</span>,
+        <span class="tok-str">'Pasūtījumi'</span> => <span class="tok-str">'Pirkumi'</span>,
+        <span class="tok-str">'pasūtījums'</span> => <span class="tok-str">'pirkums'</span>,
+    ];
+
+    <span class="tok-kw">return</span> <span class="tok-fn">strtr</span>(<span class="tok-fn">$tulkotais</span>, <span class="tok-fn">$aizvietojumi</span>);
+}, 20, 3);</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Salīdzini pret <code>$tulkotais</code> (jau iztulkoto tekstu), nevis pret <code>$original</code> (angļu oriģinālu) — tā piemērs strādās neatkarīgi no tā, vai vietnei uzstādīta angļu vai latviešu valoda. <code>$domain</code> pārbaude (piem., <code>=== 'woocommerce'</code>) svarīga, lai netīšām neaizvietotu vienādu vārdu citur, kur tas nozīmē ko citu.</p>
+      </div>
     </section>
 
     <div class="doc-pager">
