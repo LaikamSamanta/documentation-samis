@@ -49,6 +49,7 @@
       <h4>Praktiski</h4>
       <a href="#superglobali"><span class="bullet"></span>Superglobālie mainīgie</a>
       <a href="#sesijas"><span class="bullet"></span>Sesijas &amp; sīkdatnes</a>
+      <a href="#unix-timestamps"><span class="bullet"></span>Unix laika zīmogi &amp; "expires"</a>
       <a href="#include"><span class="bullet"></span>include / require</a>
       <a href="#klaudas"><span class="bullet"></span>Kļūdu apstrāde</a>
     </div>
@@ -239,6 +240,49 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
         <p>Ja <code>session_start()</code> izsauc pēc tam, kad kaut kas jau izvadīts (pat viena atstarpe pirms <code>&lt;?php</code>), PHP izmet kļūdu "headers already sent" — tas ir viens no biežākajiem iesācēju stiķiem.</p>
       </div>
+    </section>
+
+    <section class="doc-section" id="unix-timestamps">
+      <h2>Unix laika zīmogi &amp; "expires" teorija</h2>
+      <p><strong>Unix laika zīmogs</strong> (timestamp) ir vienkārši skaitlis — cik sekundes pagājušas kopš <strong>1970. gada 1. janvāra, 00:00:00 UTC</strong>. Šo brīdi sauc par "Unix epoch" un tas ir vēsturiska konvencija no paša Unix operētājsistēmas izstrādes — pilnīgi patvaļīgs, bet visur pieņemts sākumpunkts. <code>time()</code> PHP, <code>UNIX_TIMESTAMP()</code> MySQL, <code>Date.now()</code> JavaScript — visi rēķina no tā paša punkta.</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-fn">$tagad</span> = <span class="tok-fn">time</span>(); <span class="tok-com">// piem. 1769866925 — sekundes kopš 1970-01-01 00:00:00 UTC</span>
+<span class="tok-kw">echo</span> <span class="tok-fn">$tagad</span> . <span class="tok-str">"\n"</span>;
+
+<span class="tok-kw">echo</span> <span class="tok-fn">date</span>(<span class="tok-str">'Y-m-d H:i:s'</span>, <span class="tok-fn">$tagad</span>) . <span class="tok-str">"\n"</span>; <span class="tok-com">// cilvēkam lasāms formāts</span>
+<span class="tok-kw">echo</span> <span class="tok-fn">date</span>(<span class="tok-str">'Y-m-d H:i:s'</span>, 0) . <span class="tok-str">"\n"</span>;      <span class="tok-com">// "1970-01-01 00:00:00" — pats epoch</span></code></pre>
+
+      <p><strong>Kāpēc "expires 0 = 1970"?</strong> Šī ir bieža, bet nedaudz neprecīza tautas gudrība. Patiesībā:</p>
+      <ul style="margin:0 0 16px 20px; color: var(--text-soft); line-height:1.8;">
+        <li>PHP <code>setcookie($vards, $vertiba)</code> bez trešā parametra (vai ar <code>0</code>) nozīmē <strong>sesijas sīkdatni</strong> — tā izdzēšas, kad lietotājs aizver pārlūku. Tas <strong>nav</strong> tas pats, kas "izdzēst tagad" un <strong>nav</strong> saistīts ar 1970. gadu.</li>
+        <li>Lai sīkdatni izdzēstu <strong>uzreiz</strong>, jāiestata derīguma termiņš PAGĀTNĒ — parasti izmanto <code>time() - 3600</code> (pirms stundas). Pārlūks to atmet, jo redz, ka termiņš "jau ir beidzies".</li>
+        <li>1970. gads te parādās tikai tāpēc, ka daudzi rīki (piem., raw <code>Set-Cookie</code> HTTP galvenes, kā tās redzamas pārlūka izstrādātāja rīkos) sīkdatnes dzēšanai izmanto burtiski epoch datumu (<code>Thu, 01 Jan 1970 00:00:00 GMT</code>) — jebkurš pagātnes datums derētu, bet epoch ir ērts un vienmēr garantēti "pagātnē", tāpēc kļuvis par de facto konvenciju.</li>
+      </ul>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Iestata sīkdatni, derīga 1 stundu (redzēts iepriekšējā sadaļā)</span>
+<span class="tok-fn">setcookie</span>(<span class="tok-str">'valoda'</span>, <span class="tok-str">'lv'</span>, time() + 3600);
+
+<span class="tok-com">// Lai sīkdatni IZDZĒSTU nekavējoties — derīguma termiņš jāliek PAGĀTNĒ</span>
+<span class="tok-fn">setcookie</span>(<span class="tok-str">'valoda'</span>, <span class="tok-str">''</span>, time() - 3600);</code></pre>
+
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><strong>"null" un "0" NAV tas pats.</strong> Datubāzē nullable datuma laukā <code>NULL</code> nozīmē "vērtība vispār nav iestatīta" (piem., "lietotājs vēl nav apstiprinājis e-pastu"). Savukārt <code>0</code> kā laika zīmogs ir <strong>konkrēts, reāls datums</strong> — 1970-01-01 00:00:00 UTC. Šīs divas lietas sajaukt ir izplatīta kļūdu izcelsme: pārbaude <code>if ($datums)</code> abus gadījumus (arī <code>null</code>, arī <code>0</code>) uztvers kā "nav vērtības" (jo abi ir "falsy" PHP), bet <code>$datums === null</code> pret <code>$datums === 0</code> uzvedas pavisam citādi.</p>
+      </div>
+
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><strong>Sekundes pret milisekundēm.</strong> PHP <code>time()</code> un MySQL <code>UNIX_TIMESTAMP()</code> atgriež laika zīmogu <strong>sekundēs</strong>, bet JavaScript <code>Date.now()</code> un <code>new Date().getTime()</code> atgriež to <strong>milisekundēs</strong>. Ja servera laika zīmogu padod tieši JS <code>Date</code> konstruktoram bez reizināšanas ar 1000, iznāk datums 1970. gada tuvumā — viens no biežākajiem "kāpēc mans datums rāda 1970" kļūdu cēloņiem.</p>
+      </div>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// No servera saņemts laika zīmogs (sekundēs)</span>
+<span class="tok-kw">const</span> serverisLaiks = 1769866925;
+
+<span class="tok-com">// NEPAREIZI — JS domā, ka tās ir milisekundes, iznāk ~1970. gads</span>
+<span class="tok-kw">console</span>.log(<span class="tok-kw">new</span> Date(serverisLaiks).toISOString());
+
+<span class="tok-com">// PAREIZI — reizini ar 1000, lai pārvērstu sekundes milisekundēs</span>
+<span class="tok-kw">console</span>.log(<span class="tok-kw">new</span> Date(serverisLaiks * 1000).toISOString());</code></pre>
+
+      <p>Vēl viens fakts, ko vērts zināt teorētiski — <strong>"2038. gada problēma"</strong>: vecākās, 32-bitu sistēmās Unix laika zīmogu glabā kā parakstītu 32-bitu skaitli, kas pārplūst 2038. gada 19. janvārī, plkst. 03:14:07 UTC (tāpat kā Y2K problēma, bet Unix pasaulē). Mūsdienu 64-bitu sistēmas to vairs neskar, bet dažkārt tas joprojām parādās vecākā aparatūrā, iegultajās sistēmās vai 32-bitu datubāzu laukos.</p>
     </section>
 
     <section class="doc-section" id="include">
