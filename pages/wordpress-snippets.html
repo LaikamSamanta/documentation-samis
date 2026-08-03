@@ -326,6 +326,30 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
         <p><code>admin_head</code> <strong>neizsaucas vispār</strong> <code>wp-login.php</code> lapā — tā ir sava, atsevišķa lapa ārpus admin paneļa, ne tā daļa. Ja liec pirmo piemēru un gaidi, ka mainīsies pieteikšanās lapas krāsa, kods vienkārši nekad neizpildīsies tur, kur skaties — bieži izskatās, it kā "nekas nemainās", lai gan kods faktiski strādā pareizi (dashboard krāsa gan mainījusies).</p>
       </div>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">3) Sekundārās (necaurspīdīgi apvilktās) pogas</h3>
+      <p>WordPress atšķir divus pogu veidus: <code>.button-primary</code> — pilnībā iekrāsota "galvenā" darbība (piem., "Pieteikties"), un parasta <code>.button</code> — bez fona, tikai ar apmali (piem., "Mainīt", "Atcelt"). <strong>Tās ir divi atšķirīgi selektori</strong> — otrās pogas krāsu <code>--wp-admin-theme-color</code> mainīgais <strong>neietekmē</strong>, tāpēc tai jāpieraksta sava CSS, neatkarīgi no tā, vai poga atrodas admin panelī vai pieteikšanās lapā.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Der gan admin_head (dashboard), gan login_enqueue_scripts (wp-login.php) —</span>
+<span class="tok-com">// izvēlies hooku atkarībā no tā, kurā lapā poga atrodas</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'admin_head'</span>, <span class="tok-kw">function</span>() {
+    ?&gt;
+    &lt;style&gt;
+        .wp-core-ui .button:not(.button-primary) {
+            color: #d94f70;
+            border-color: #d94f70;
+        }
+        .wp-core-ui .button:not(.button-primary):hover,
+        .wp-core-ui .button:not(.button-primary):focus {
+            color: #a8324e;
+            border-color: #a8324e;
+        }
+    &lt;/style&gt;
+    &lt;?php
+});</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>:not(.button-primary)</code> pasargā no tā, lai šis noteikums netīšām nepārrakstītu pirmās apakšsadaļas primāro pogu stilu — abi noteikumi var droši dzīvot vienā un tajā pašā <code>&lt;style&gt;</code> blokā.</p>
+      </div>
     </section>
 
     <section class="doc-section" id="snip-excerpt">
