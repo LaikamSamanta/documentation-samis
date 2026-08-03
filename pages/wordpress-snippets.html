@@ -350,6 +350,60 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
         <p><code>:not(.button-primary)</code> pasargā no tā, lai šis noteikums netīšām nepārrakstītu pirmās apakšsadaļas primāro pogu stilu — abi noteikumi var droši dzīvot vienā un tajā pašā <code>&lt;style&gt;</code> blokā.</p>
       </div>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">4) Pilnāks piemērs — vairāk elementu &amp; pacēluma efekts pogai</h3>
+      <p>Reālā projektā pieteikšanās lapā parasti jāstilizē vairāk nekā tikai divi-trīs elementi — arī privātuma politikas saite (redzama, ja iestatīta Privātuma politikas lapa) un valodas pārslēdzēja poga lapas apakšā (redzama, ja uzstādītas vairākas valodas). Šis piemērs apvieno visu iepriekšējo un pievieno arī nelielu "pacēluma" animāciju pogai, uzbraucot ar peli:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'login_enqueue_scripts'</span>, <span class="tok-kw">function</span>() {
+    ?&gt;
+    &lt;style&gt;
+        #login #nav a,
+        #login #backtoblog a {
+            color: #c8b3d0; <span class="tok-com">/* saišu krāsa */</span>
+        }
+        #login #nav a:hover,
+        #login #backtoblog a:hover {
+            color: #997ca2; <span class="tok-com">/* saišu krāsa, uzbraucot ar peli */</span>
+        }
+
+        <span class="tok-com">/* "Pieteikties" pogas krāsa, forma un pacēluma efekts */</span>
+        .wp-core-ui .button-primary {
+            background: #1e1b4b !important;
+            border-radius: 6px !important;
+            border-color: transparent !important;
+            color: #ffffff !important;
+            transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1) !important;
+            will-change: transform !important;
+        }
+        .wp-core-ui .button-primary:hover,
+        .wp-core-ui .button-primary:focus {
+            transform: translateY(-3px) !important; <span class="tok-com">/* poga "paceļas", uzbraucot ar peli */</span>
+            background-color: #34315d !important;
+            color: #ffffff !important;
+        }
+
+        <span class="tok-com">/* Privātuma politikas saites krāsa */</span>
+        .privacy-policy-page-link a {
+            color: #c8b3d0 !important;
+        }
+
+        <span class="tok-com">/* Valodas pārslēdzēja poga */</span>
+        .language-switcher input[type="submit"] {
+            color: #c8b3d0 !important;
+            border-color: #997ca2 !important;
+            background-color: transparent !important;
+        }
+        .language-switcher input[type="submit"]:hover,
+        .language-switcher input[type="submit"]:focus {
+            color: #997ca2 !important;
+            border-color: #c8b3d0 !important;
+        }
+    &lt;/style&gt;
+    &lt;?php
+});</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Šeit parādās <code>!important</code> pie katras rindas — tas parasti ir "pēdējais līdzeklis" un labas prakses ziņā jāizvairās, bet šeit tas bieži <strong>nepieciešams</strong>, jo citi spraudņi (piem., sociālās pieteikšanās spraudņi) vai tēma paši ielādē savu CSS ar lielāku specifiskumu (specificity) pieteikšanās lapā. Ja bez <code>!important</code> stils netiek pielietots, tas nozīmē — kaut kas cits to jau pārraksta.</p>
+      </div>
     </section>
 
     <section class="doc-section" id="snip-excerpt">
