@@ -58,7 +58,7 @@
       <h4>Admin &amp; pieteikšanās</h4>
       <a href="#snip-comments"><span class="bullet"></span>Izslēgt komentārus pilnībā</a>
       <a href="#snip-menu"><span class="bullet"></span>Paslēpt admin izvēlnes punktus</a>
-      <a href="#snip-login-logo"><span class="bullet"></span>Pieteikšanās logo &amp; saite</a>
+      <a href="#snip-login-logo"><span class="bullet"></span>Pieteikšanās logo, saite &amp; fons</a>
       <a href="#snip-login-redirect"><span class="bullet"></span>Novirzīšana pēc pieteikšanās</a>
     </div>
     <div class="doc-sidebar-group">
@@ -152,8 +152,8 @@
     </section>
 
     <section class="doc-section" id="snip-login-logo">
-      <h2>Pieteikšanās logo &amp; saite</h2>
-      <p>Nomaina noklusējuma WordPress logo <code>/wp-login.php</code> lapā pret savas vietnes logo.</p>
+      <h2>Pieteikšanās logo, saite &amp; fons</h2>
+      <p>Nomaina noklusējuma WordPress logo <code>/wp-login.php</code> lapā pret savas vietnes logo. Zemāk arī tas, kā tai pašā lapai ļaut pielāgot fona krāsu.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'login_enqueue_scripts'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-fn">$logo</span> = <span class="tok-fn">get_template_directory_uri</span>() . <span class="tok-str">'/assets/logo.png'</span>;
     ?&gt;
@@ -194,21 +194,42 @@
         <span class="tok-str">'section'</span>     => <span class="tok-str">'title_tagline'</span>,
         <span class="tok-str">'type'</span>        => <span class="tok-str">'url'</span>,
     ]);
+
+    <span class="tok-com">// Trešais lauks — fona krāsa. WP_Customize_Color_Control pats pievieno</span>
+    <span class="tok-com">// krāsu izvēlētāju (color picker), bez papildu JS</span>
+    <span class="tok-fn">$wp_customize</span>->add_setting(<span class="tok-str">'wpds_login_bg_color'</span>, [
+        <span class="tok-str">'type'</span>              => <span class="tok-str">'option'</span>,
+        <span class="tok-str">'default'</span>           => <span class="tok-str">''</span>,
+        <span class="tok-str">'sanitize_callback'</span> => <span class="tok-str">'sanitize_hex_color'</span>, <span class="tok-com">// pieņem tikai derīgu #rrggbb vai tukšu</span>
+    ]);
+    <span class="tok-fn">$wp_customize</span>->add_control(<span class="tok-kw">new</span> WP_Customize_Color_Control(<span class="tok-fn">$wp_customize</span>, <span class="tok-str">'wpds_login_bg_color_control'</span>, [
+        <span class="tok-str">'label'</span>    => <span class="tok-str">'Pieteikšanās lapas fona krāsa'</span>,
+        <span class="tok-str">'section'</span>  => <span class="tok-str">'title_tagline'</span>,
+        <span class="tok-str">'settings'</span> => <span class="tok-str">'wpds_login_bg_color'</span>,
+    ]));
 });
 
-<span class="tok-com">// 2) Nolasa saglabāto attēlu un izmanto to — WP_Customize_Image_Control jau</span>
-<span class="tok-com">// pats saglabā GATAVU attēla URL (nevis tikai ID), tāpēc get_option() pietiek</span>
+<span class="tok-com">// 2) Nolasa saglabāto attēlu un fona krāsu, izmanto tos — WP_Customize_Image_Control</span>
+<span class="tok-com">// jau pats saglabā GATAVU attēla URL (nevis tikai ID), tāpēc get_option() pietiek</span>
 <span class="tok-fn">add_action</span>(<span class="tok-str">'login_enqueue_scripts'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-fn">$logo</span> = <span class="tok-fn">get_option</span>(<span class="tok-str">'wpds_login_logo'</span>);
-    <span class="tok-kw">if</span> (!<span class="tok-fn">$logo</span>) <span class="tok-kw">return</span>; <span class="tok-com">// nekas nav augšupielādēts — paliek WordPress noklusējuma logo</span>
+    <span class="tok-fn">$bg_krasa</span> = <span class="tok-fn">get_option</span>(<span class="tok-str">'wpds_login_bg_color'</span>);
+    <span class="tok-kw">if</span> (!<span class="tok-fn">$logo</span> && !<span class="tok-fn">$bg_krasa</span>) <span class="tok-kw">return</span>; <span class="tok-com">// nekas nav iestatīts — paliek WordPress noklusējums</span>
     ?&gt;
     &lt;style&gt;
+        &lt;?php <span class="tok-kw">if</span> (<span class="tok-fn">$logo</span>): ?&gt;
         #login h1 a {
             background-image: url(&lt;?= esc_url($logo) ?&gt;);
             background-size: contain;
             width: 100%;
             height: 80px;
         }
+        &lt;?php <span class="tok-kw">endif</span>; ?&gt;
+        &lt;?php <span class="tok-kw">if</span> (<span class="tok-fn">$bg_krasa</span>): ?&gt;
+        body.login {
+            background: &lt;?= esc_attr($bg_krasa) ?&gt;;
+        }
+        &lt;?php <span class="tok-kw">endif</span>; ?&gt;
     &lt;/style&gt;
     &lt;?php
 });
@@ -220,7 +241,7 @@
 });</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Šis piemērs ir <strong>pilnībā pašpietiekams</strong> — pēc iekopēšanas klients uzreiz redz jaunus "Pieteikšanās lapas logo" un "Logo saite" laukus Izskats → Pielāgot → Vietnes identitāte, ar pogu "Izvēlēties attēlu", kas atver Media Library. Nekas papildus (admin lapa, JS) nav jāraksta — abi ievades tipi to visu jau dara paši.</p>
+        <p>Šis piemērs ir <strong>pilnībā pašpietiekams</strong> — pēc iekopēšanas klients uzreiz redz jaunus "Pieteikšanās lapas logo", "Logo saite" un "Pieteikšanās lapas fona krāsa" laukus Izskats → Pielāgot → Vietnes identitāte, ar attēla augšupielādes pogu un krāsu izvēlētāju. Nekas papildus (admin lapa, JS) nav jāraksta — visi trīs ievades tipi to visu jau dara paši.</p>
       </div>
     </section>
 
