@@ -61,6 +61,7 @@
       <a href="#snip-login-logo"><span class="bullet"></span>Pieteikšanās logo, saite &amp; fons</a>
       <a href="#snip-login-redirect"><span class="bullet"></span>Novirzīšana pēc pieteikšanās</a>
       <a href="#snip-admin-locale"><span class="bullet"></span>Piespiedu admin valoda</a>
+      <a href="#snip-admin-colors"><span class="bullet"></span>Admin &amp; pieteikšanās krāsas</a>
     </div>
     <div class="doc-sidebar-group">
       <h4>Saturs &amp; veiktspēja</h4>
@@ -272,6 +273,58 @@
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
         <p>Šis filtrs <strong>tikai norāda</strong>, kuru valodu WordPress mēģina lietot — tas nedarbosies, ja latviešu valodas pakotne serverī nav uzstādīta. Ja pēc šī koda admin panelis joprojām rādās angliski, dodies uz Iestatījumi → Vispārīgi → Vietnes valoda un izvēlies "Latviešu", lai WordPress lejupielādētu <code>lv_LV</code> tulkojuma failus (vai uzstādi ar WP-CLI: <code>wp language core install lv_LV</code>). Pēc tam šis filtrs turpinās strādāt automātiski visiem lietotājiem, arī tiem, kam profilā izvēlēta cita valoda.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="snip-admin-colors">
+      <h2>Admin paneļa &amp; pieteikšanās lapas krāsas</h2>
+      <p>Šeit bieži iesācējs sajauc divas <strong>pavisam atšķirīgas</strong> lapas: <code>wp-admin</code> panelis (dashboard, redzams <strong>pēc</strong> pieteikšanās) un <code>wp-login.php</code> (pati pieteikšanās forma, <strong>pirms</strong> pieteikšanās). Katrai ir sava CSS un savs hooks — piemērs, kas maina vienu, otru vispār neietekmē.</p>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">1) Admin paneļa (dashboard) pamata krāsa</h3>
+      <p>Kopš WordPress 5.7 admin panelis linkiem, fokusa iezīmējumiem un primārajām pogām izmanto CSS mainīgos — tos pārrakstot, maina krāsu visur uzreiz, neatkarīgi no lietotāja izvēlētās "Admin Color Scheme".</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'admin_head'</span>, <span class="tok-kw">function</span>() {
+    ?&gt;
+    &lt;style&gt;
+        :root {
+            --wp-admin-theme-color: #d94f70;
+            --wp-admin-theme-color-darker-10: #c23f5e;
+            --wp-admin-theme-color-darker-20: #a8324e;
+        }
+    &lt;/style&gt;
+    &lt;?php
+});</code></pre>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">2) Pieteikšanās lapas (wp-login.php) krāsa</h3>
+      <p><code>wp-login.php</code> šos CSS mainīgos <strong>nemaz nelasa</strong> — tai jāizmanto cits hooks (<code>login_enqueue_scripts</code>) un jāmērķē tieši uz lapā esošos selektorus (<code>#nav</code> — "Reģistrēties" / "Aizmirsāt paroli?", <code>#backtoblog</code> — "Atpakaļ uz vietni").</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'login_enqueue_scripts'</span>, <span class="tok-kw">function</span>() {
+    ?&gt;
+    &lt;style&gt;
+        #login #nav a,
+        #login #backtoblog a {
+            color: #d94f70;
+        }
+        #login #nav a:hover,
+        #login #backtoblog a:hover {
+            color: #a8324e;
+        }
+
+        <span class="tok-com">/* Neobligāti — arī "Pieteikties" pogas krāsa */</span>
+        .wp-core-ui .button-primary {
+            background: #d94f70;
+            border-color: #a8324e;
+        }
+        .wp-core-ui .button-primary:hover,
+        .wp-core-ui .button-primary:focus {
+            background: #c23f5e;
+            border-color: #8f2b45;
+        }
+    &lt;/style&gt;
+    &lt;?php
+});</code></pre>
+
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>admin_head</code> <strong>neizsaucas vispār</strong> <code>wp-login.php</code> lapā — tā ir sava, atsevišķa lapa ārpus admin paneļa, ne tā daļa. Ja liec pirmo piemēru un gaidi, ka mainīsies pieteikšanās lapas krāsa, kods vienkārši nekad neizpildīsies tur, kur skaties — bieži izskatās, it kā "nekas nemainās", lai gan kods faktiski strādā pareizi (dashboard krāsa gan mainījusies).</p>
       </div>
     </section>
 
