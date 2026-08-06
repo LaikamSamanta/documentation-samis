@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="lv" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SEO dokumentācija — Documentation Samis</title>
+<link rel="stylesheet" href="../css/style.css?v=15" />
+<script>
+  (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
+</script>
+</head>
+<body class="cat-seo">
+<div class="bg-glow"></div>
+<div class="bg-grid"></div>
+
+<header class="topbar">
+  <a class="brand" href="../index.html">
+    <span class="mark">DS</span>
+    Documentation Samis
+  </a>
+  <div class="topbar-actions">
+    <a class="btn-back" href="../index.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M5 12h14"/></svg>
+      Kategorijas
+    </a>
+    <button class="icon-btn" id="theme-toggle" title="Pārslēgt tēmu" aria-label="Pārslēgt tēmu">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="doc-shell">
+  <aside class="doc-sidebar">
+    <div class="doc-sidebar-group">
+      <h4>SEO pamati</h4>
+      <a href="#kapec" class="active"><span class="bullet"></span>Kāpēc SEO skar programmētāju</a>
+      <a href="#title-meta"><span class="bullet"></span>Title &amp; meta description</a>
+      <a href="#semantic-html"><span class="bullet"></span>Semantiskais HTML &amp; H1-H6</a>
+      <a href="#urls"><span class="bullet"></span>Tīras URL adreses</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Meta &amp; structured data</h4>
+      <a href="#canonical"><span class="bullet"></span>Canonical tagi</a>
+      <a href="#og-tags"><span class="bullet"></span>Open Graph &amp; Twitter Cards</a>
+      <a href="#structured-data"><span class="bullet"></span>Structured data (JSON-LD)</a>
+      <a href="#hreflang"><span class="bullet"></span>hreflang (daudzvalodu SEO)</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Crawling &amp; indeksēšana</h4>
+      <a href="#robots-txt"><span class="bullet"></span>robots.txt</a>
+      <a href="#sitemap"><span class="bullet"></span>XML sitemap</a>
+      <a href="#meta-robots"><span class="bullet"></span>Meta robots (noindex/nofollow)</a>
+      <a href="#redirects"><span class="bullet"></span>Redirects — 301 vs 302</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Veiktspēja &amp; Core Web Vitals</h4>
+      <a href="#core-web-vitals"><span class="bullet"></span>Core Web Vitals</a>
+      <a href="#images"><span class="bullet"></span>Attēlu optimizācija</a>
+      <a href="#render-blocking"><span class="bullet"></span>Render-blocking resursi</a>
+      <a href="#mobile"><span class="bullet"></span>Mobilā draudzīgums</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>WordPress SEO</h4>
+      <a href="#wp-seo"><span class="bullet"></span>WordPress SEO ar kodu</a>
+      <a href="#wp-sitemap"><span class="bullet"></span>Iebūvētais XML sitemap</a>
+    </div>
+  </aside>
+
+  <main class="doc-main">
+    <div class="doc-breadcrumb">
+      <a href="../index.html">Sākums</a>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span>SEO</span>
+    </div>
+
+    <div class="doc-header">
+      <div class="icon" style="background: var(--c-seo-soft); color: var(--c-seo);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      </div>
+      <h1 style="margin-bottom:0;">SEO</h1>
+    </div>
+    <p class="doc-lead">SEO nav tikai mārketinga darbs — liela daļa no tā ir kods, ko raksta programmētājs: meta tagi, structured data, sitemap ģenerēšana, lapas ielādes ātrums. Katrai tēmai — skaidrojums, kāpēc tas ietekmē meklētājprogrammas, un pilnībā patstāvīgs koda piemērs.</p>
+
+    <section class="doc-section" id="kapec">
+      <h2>Kāpēc SEO skar programmētāju, ne tikai mārketingu</h2>
+      <p>Mārketinga komanda izvēlas atslēgvārdus un raksta saturu, bet <strong>tehnisko</strong> pusi — vai Google vispār var izlasīt un saprast lapu — nosaka kods. Divi tipiski gadījumi, kur slikts kods sabojā labu saturu:</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>Saturs, ko renderē tikai JavaScript</h4><p>Ja lapas galvenais teksts parādās tikai pēc JS izpildes (piem., React/Vue lietotne bez server-side renderinga), daži meklētāji to var neredzēt vai redzēt aizkavēti — Google parasti izpilda JS, bet ne vienmēr uzticies tam pilnībā.</p></div>
+        <div class="doc-mini-card"><h4>Lēna vai nestabila lapa</h4><p>Google kopš 2021. gada oficiāli izmanto lapas ielādes ātrumu un vizuālo stabilitāti (Core Web Vitals, skat. zemāk) kā ranžošanas faktoru — ne tikai ieteikumu, bet reālu punktu skaitu meklēšanas algoritmā.</p></div>
+      </div>
+      <p>Tāpēc šī sadaļa koncentrējas uz <strong>tehnisko SEO</strong> — to, ko var un vajag atrisināt ar kodu, nevis uz atslēgvārdu izpēti vai satura stratēģiju.</p>
+    </section>
+
+    <section class="doc-section" id="title-meta">
+      <h2>Title &amp; meta description</h2>
+      <p><code>&lt;title&gt;</code> ir tas, kas parādās kā zilā, klikšķināmā rinda meklēšanas rezultātos un pārlūka cilnē — tas ir viens no spēcīgākajiem SEO signāliem. <code>meta description</code> tieši ranžošanu neietekmē, bet ietekmē, cik cilvēku uzklikšķina (CTR).</p>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;head&gt;
+    &lt;title&gt;Zils kokvilnas T-krekls — Apģērbu Veikals&lt;/title&gt;
+    &lt;meta name="description" content="Ērts, elpojošs 100% kokvilnas T-krekls zilā tonī. Pieejami izmēri S-XXL, piegāde 1-2 darba dienās."&gt;
+&lt;/head&gt;</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><strong>Title:</strong> ~50-60 rakstzīmes (garāks tiek nogriezts meklēšanas rezultātos), unikāls katrai lapai. <strong>Description:</strong> ~150-160 rakstzīmes. Nekad nekopē vienu un to pašu title/description visām lapām — dublēti tagi ir viena no biežākajām tehniskā SEO kļūdām lielās vietnēs.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="semantic-html">
+      <h2>Semantiskais HTML &amp; H1-H6 struktūra</h2>
+      <p>Meklētājprogrammas izmanto virsrakstu hierarhiju (<code>&lt;h1&gt;</code>-<code>&lt;h6&gt;</code>) un semantiskos tagus (<code>&lt;article&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;aside&gt;</code>), lai saprastu lapas struktūru — tas pats, kas padara lapu pieejamu ekrāna lasītājiem, palīdz arī Google saprast, kas ir galvenais saturs.</p>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;article&gt;
+    &lt;h1&gt;Kā izvēlēties skrejceļa apavus&lt;/h1&gt;
+    &lt;p&gt;Ievada teksts...&lt;/p&gt;
+
+    &lt;section&gt;
+        &lt;h2&gt;Amortizācija&lt;/h2&gt;
+        &lt;p&gt;...&lt;/p&gt;
+        &lt;h3&gt;Ceļa amortizācija&lt;/h3&gt;
+        &lt;p&gt;...&lt;/p&gt;
+    &lt;/section&gt;
+
+    &lt;section&gt;
+        &lt;h2&gt;Izmēra izvēle&lt;/h2&gt;
+        &lt;p&gt;...&lt;/p&gt;
+    &lt;/section&gt;
+&lt;/article&gt;</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Katrā lapā jābūt <strong>tieši vienam</strong> <code>&lt;h1&gt;</code> — tas ir lapas galvenā tēma. Nelec pāri līmeņiem (h2 tieši uz h4) tikai tāpēc, ka h4 vizuāli izskatās mazāks — hierarhijai jāatspoguļo satura struktūru, nevis vēlamo fonta izmēru (to risina CSS, ne tags).</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="urls">
+      <h2>Tīras URL adreses</h2>
+      <p>Lasāma URL palīdz gan lietotājam, gan meklētājprogrammai uzreiz saprast, kas atrodas lapā, un mēdz iegūt nedaudz labāku CTR meklēšanas rezultātos.</p>
+      <pre class="code-block"><span class="lang">text</span><code>Slikti: piemers.lv/index.php?p=123&cat=5&ref=xyz
+Labi:   piemers.lv/apavi/skrejceli/nike-air-zoom/</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Lieto defises (<code>-</code>), ne pasvītrojumus (<code>_</code>) — Google defises interpretē kā vārdu atdalītāju, pasvītrojumus ne. Turi URL mazos burtos un pēc iespējas īsāku, bet aprakstošu.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="canonical">
+      <h2>Canonical tagi</h2>
+      <p>Bieži viens un tas pats saturs ir pieejams pa vairākām URL adresēm (ar/bez <code>www</code>, ar/bez slīpsvītras beigās, ar filtru parametriem, ar UTM tagiem). <code>rel="canonical"</code> pasaka Google, kura no tām ir "īstā", galvenā versija — pārējās tiek uztvertas kā tās variācijas, nevis dublēts saturs.</p>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;!-- Visās šo variantu versijās: --&gt;
+&lt;!-- piemers.lv/produkts/krekls?ref=fb --&gt;
+&lt;!-- piemers.lv/produkts/krekls?sort=cena --&gt;
+&lt;!-- piemers.lv/produkts/krekls (galvenā) --&gt;
+
+&lt;link rel="canonical" href="https://piemers.lv/produkts/krekls"&gt;</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Canonical URL vienmēr jānorāda kā <strong>pilna, absolūta</strong> adrese (ar <code>https://</code>), ne relatīva. Katrai lapai jānorāda pati uz sevi kā canonical (izņemot gadījumus, kad tā tiešām ir dublikāts) — pat ja šķiet lieki, tas novērš neskaidrību, ja lapa vēlāk kļūst sasniedzama caur vairākiem URL.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="og-tags">
+      <h2>Open Graph &amp; Twitter Cards</h2>
+      <p>Nosaka, kā saite izskatās, kad kāds to ielīmē Facebook, LinkedIn, Twitter/X vai Slack — virsraksts, apraksts un priekšskatījuma attēls. Bez šiem tagiem sociālie tīkli mēģina "uzminēt" saturu paši, bieži neveiksmīgi.</p>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;meta property="og:title" content="Kā izvēlēties skrejceļa apavus"&gt;
+&lt;meta property="og:description" content="Pilns ceļvedis amortizācijas un izmēra izvēlei."&gt;
+&lt;meta property="og:image" content="https://piemers.lv/assets/skrejcelu-raksts.jpg"&gt;
+&lt;meta property="og:url" content="https://piemers.lv/raksti/skrejceli"&gt;
+&lt;meta property="og:type" content="article"&gt;
+
+&lt;meta name="twitter:card" content="summary_large_image"&gt;</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>og:image</code> jābūt vismaz <strong>1200×630px</strong> — mazāki attēli sociālajos tīklos bieži tiek apgriezti neglīti vai vispār netiek rādīti. Pēc izmaiņām pārbaudi rezultātu ar Facebook "Sharing Debugger" vai LinkedIn "Post Inspector" rīkiem — sociālie tīkli agresīvi kešo veco priekšskatījumu.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="structured-data">
+      <h2>Structured data (JSON-LD / Schema.org)</h2>
+      <p>Structured data ir standartizēts veids, kā lapā "iezīmēt" datus (cena, vērtējums, autors, notikuma datums) tā, lai Google tos varētu izmantot bagātinātiem meklēšanas rezultātiem (rich results) — zvaigznītēm, cenai, breadcrumbiem tieši meklēšanas rezultātos.</p>
+      <pre class="code-block"><span class="lang">json</span><code>&lt;script type="application/ld+json"&gt;
+{
+  <span class="tok-str">"@context"</span>: <span class="tok-str">"https://schema.org"</span>,
+  <span class="tok-str">"@type"</span>: <span class="tok-str">"Product"</span>,
+  <span class="tok-str">"name"</span>: <span class="tok-str">"Zils kokvilnas T-krekls"</span>,
+  <span class="tok-str">"image"</span>: <span class="tok-str">"https://piemers.lv/assets/krekls.jpg"</span>,
+  <span class="tok-str">"description"</span>: <span class="tok-str">"100% kokvilnas T-krekls, izmēri S-XXL."</span>,
+  <span class="tok-str">"offers"</span>: {
+    <span class="tok-str">"@type"</span>: <span class="tok-str">"Offer"</span>,
+    <span class="tok-str">"priceCurrency"</span>: <span class="tok-str">"EUR"</span>,
+    <span class="tok-str">"price"</span>: <span class="tok-str">"19.99"</span>,
+    <span class="tok-str">"availability"</span>: <span class="tok-str">"https://schema.org/InStock"</span>
+  }
+}
+&lt;/script&gt;</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Pēc pievienošanas vienmēr pārbaudi ar Google <a href="https://search.google.com/test/rich-results" target="_blank" rel="noopener">Rich Results Test</a> — nepareizi formatēts JSON-LD tiek klusi ignorēts, nevis izmet kļūdu lapā, tāpēc kļūdas pašam nav redzamas bez šī rīka. Pieejamie <code>@type</code> varianti (Product, Article, Recipe, Event, FAQPage u.c.) atrodami <a href="https://schema.org/" target="_blank" rel="noopener">schema.org</a>.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="hreflang">
+      <h2>hreflang (daudzvalodu SEO)</h2>
+      <p>Ja vietnei ir vairākas valodu versijas, <code>hreflang</code> pasaka Google, kuru versiju rādīt lietotājiem no konkrētas valsts/valodas — bez tā Google var uzskatīt dažādu valodu lapas par dublētu saturu.</p>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;link rel="alternate" hreflang="lv" href="https://piemers.lv/lv/produkts/"&gt;
+&lt;link rel="alternate" hreflang="en" href="https://piemers.lv/en/product/"&gt;
+&lt;link rel="alternate" hreflang="ru" href="https://piemers.lv/ru/produkts/"&gt;
+&lt;link rel="alternate" hreflang="x-default" href="https://piemers.lv/en/product/"&gt;</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>hreflang</code> tagiem jābūt <strong>savstarpēji simetriskiem</strong> — ja lv lapa norāda uz en versiju, en lapai jānorāda atpakaļ uz lv (un uz sevi pašu arī). Trūkstoša atgriezeniskā saite ir viena no biežākajām hreflang kļūdām. Pilnu, gatavu WordPress implementāciju skati <a href="integracijas.html#lang-switcher">Integrācijas → Valodu pārslēdzējs</a>.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="robots-txt">
+      <h2>robots.txt</h2>
+      <p>Fails vietnes saknē (<code>piemers.lv/robots.txt</code>), kas pasaka meklētājprogrammu robotiem, kuras vietnes daļas drīkst <strong>apstaigāt (crawl)</strong>. Svarīgi: robots.txt kontrolē apstaigāšanu, nevis indeksēšanu — lapa var joprojām parādīties meklēšanas rezultātos, ja uz to ved saite no citurienes, pat ja tā ir aizliegta šeit.</p>
+      <pre class="code-block"><span class="lang">text</span><code>User-agent: *
+Disallow: /wp-admin/
+Disallow: /meklet/
+Allow: /wp-admin/admin-ajax.php
+
+Sitemap: https://piemers.lv/sitemap.xml</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Lai kādu lapu <strong>garantēti</strong> izslēgtu no meklēšanas rezultātiem, izmanto <code>meta name="robots" content="noindex"</code> (skat. zemāk), nevis robots.txt — tie risina divas dažādas problēmas.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="sitemap">
+      <h2>XML sitemap</h2>
+      <p>Saraksts ar visām vietnes lapām, ko iesniedz Google Search Console — palīdz meklētājprogrammai atrast lapas, uz kurām nav daudz iekšējo saišu, un saprast, cik svarīga/svaiga katra lapa ir.</p>
+      <pre class="code-block"><span class="lang">text</span><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"&gt;
+    &lt;url&gt;
+        &lt;loc&gt;https://piemers.lv/&lt;/loc&gt;
+        &lt;lastmod&gt;2026-08-03&lt;/lastmod&gt;
+        &lt;changefreq&gt;weekly&lt;/changefreq&gt;
+        &lt;priority&gt;1.0&lt;/priority&gt;
+    &lt;/url&gt;
+    &lt;url&gt;
+        &lt;loc&gt;https://piemers.lv/par-mums/&lt;/loc&gt;
+        &lt;lastmod&gt;2026-07-15&lt;/lastmod&gt;
+    &lt;/url&gt;
+&lt;/urlset&gt;</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Pēc izveides iesniedz sitemap Google Search Console (Sitemaps sadaļā) — tas paātrina jaunu lapu atklāšanu. WordPress lietotājiem parasti šis fails jau tiek ģenerēts automātiski — skat. <a href="#wp-sitemap">WordPress iebūvētais XML sitemap</a> zemāk.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="meta-robots">
+      <h2>Meta robots (noindex / nofollow)</h2>
+      <p>Tag lapas <code>&lt;head&gt;</code> sadaļā, kas dod precīzas instrukcijas par konkrēto lapu — pretstatā robots.txt, šis <strong>garantēti</strong> neļauj lapai parādīties meklēšanas rezultātos.</p>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;!-- Neindeksēt šo lapu, bet sekot saitēm tajā (piem., "paldies par pasūtījumu" lapa) --&gt;
+&lt;meta name="robots" content="noindex, follow"&gt;
+
+&lt;!-- Neindeksēt UN nesekot saitēm (piem., iekšējās meklēšanas rezultātu lapa) --&gt;
+&lt;meta name="robots" content="noindex, nofollow"&gt;</code></pre>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>Der lietot <code>noindex</code></h4><p>Pateicības lapas, iekšējās meklēšanas rezultāti, filtrētu produktu skati ar tukšu rezultātu, admin/priekšskatījuma lapas.</p></div>
+        <div class="doc-mini-card"><h4>Neder lietot <code>noindex</code></h4><p>Lapas, kuras tomēr vēlies redzēt Google meklēšanā — pārbaudi ar <code>site:tavavietne.lv</code> Google meklēšanā, vai svarīgas lapas tur nav pazudušas.</p></div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="redirects">
+      <h2>Redirects — 301 vs 302</h2>
+      <p>Kad lapas adrese mainās, pareizais pāradresācijas tips ir svarīgs SEO ziņā — ne tikai lietotāja pieredzei.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 301 = PASTĀVĪGS pāradresējums — SEO "vērtība" (saišu autoritāte) pāriet uz jauno URL</span>
+<span class="tok-fn">header</span>(<span class="tok-str">'Location: https://piemers.lv/jauna-adrese/'</span>, <span class="tok-kw">true</span>, 301);
+<span class="tok-kw">exit</span>;
+
+<span class="tok-com">// 302 = PAGAIDU — izmanto tikai, ja adrese vēlāk atgriezīsies atpakaļ (piem., apkopes laikā)</span>
+<span class="tok-fn">header</span>(<span class="tok-str">'Location: https://piemers.lv/apkope/'</span>, <span class="tok-kw">true</span>, 302);
+<span class="tok-kw">exit</span>;</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Nepareizi izmantots 302 tur, kur vajadzēja 301, ir bieža kļūda — Google 302 uzskata par pagaidu, tāpēc nepilnībā (vai vispār ne) pārnes veco lapu "autoritāti" uz jauno adresi. Ja lapa pārceļas <strong>pastāvīgi</strong>, vienmēr izmanto 301.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="core-web-vitals">
+      <h2>Core Web Vitals</h2>
+      <p>Trīs konkrēti, mērāmi rādītāji, ko Google kopš 2021. gada izmanto kā <strong>tiešu ranžošanas faktoru</strong> — ne ieteikumu, bet reālu punktu meklēšanas algoritmā.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>LCP <span class="tag easy">&lt; 2.5s labi</span></h4><p><strong>Largest Contentful Paint</strong> — cik ātri ielādējas lapas lielākais redzamais elements (parasti hero attēls vai virsraksts). Bieži cēlonis: liels, neoptimizēts attēls vai lēns serveris.</p></div>
+        <div class="doc-mini-card"><h4>INP <span class="tag easy">&lt; 200ms labi</span></h4><p><strong>Interaction to Next Paint</strong> — cik ātri lapa reaģē uz klikšķi vai pieskārienu. Bieži cēlonis: smags, bloķējošs JavaScript, kas aizņem galveno pavedienu.</p></div>
+        <div class="doc-mini-card"><h4>CLS <span class="tag easy">&lt; 0.1 labi</span></h4><p><strong>Cumulative Layout Shift</strong> — cik daudz saturs "lēkā" ielādes laikā. Bieži cēlonis: attēli/reklāmas bez rezervēta izmēra, fonti, kas maina teksta izmēru pēc ielādes.</p></div>
+      </div>
+      <p>Izmērīt tos var reālā lietotāju datu formā ar <code>web-vitals</code> JS bibliotēku:</p>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">import</span> { onLCP, onINP, onCLS } <span class="tok-kw">from</span> <span class="tok-str">'web-vitals'</span>;
+
+onLCP((<span class="tok-fn">metrika</span>) => <span class="tok-kw">console</span>.log(<span class="tok-str">'LCP:'</span>, <span class="tok-fn">metrika</span>.value));
+onINP((<span class="tok-fn">metrika</span>) => <span class="tok-kw">console</span>.log(<span class="tok-str">'INP:'</span>, <span class="tok-fn">metrika</span>.value));
+onCLS((<span class="tok-fn">metrika</span>) => <span class="tok-kw">console</span>.log(<span class="tok-str">'CLS:'</span>, <span class="tok-fn">metrika</span>.value));</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Ātrai, bezmaksas pārbaudei bez koda rakstīšanas izmanto <a href="https://pagespeed.web.dev/" target="_blank" rel="noopener">PageSpeed Insights</a> — ielīmē URL un tas parāda visus trīs rādītājus plus konkrētus ieteikumus, kas tieši uz šīs lapas tos pasliktina.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="images">
+      <h2>Attēlu optimizācija</h2>
+      <p>Attēli parasti ir smagākā lapas daļa — pareiza to ielāde ietekmē gan LCP, gan CLS, gan attēlu meklēšanas trafiku.</p>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;img
+    src="krekls-800.jpg"
+    srcset="krekls-400.jpg 400w, krekls-800.jpg 800w, krekls-1200.jpg 1200w"
+    sizes="(max-width: 600px) 400px, 800px"
+    alt="Zils kokvilnas T-krekls, skats no priekšpuses"
+    loading="lazy"
+    width="800" height="600"&gt;</code></pre>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4><code>alt</code></h4><p>Apraksta attēlu ekrāna lasītājiem UN meklētājprogrammām — arī attēlu meklēšanas trafika nāk no šejienes. Nekad neatstāj tukšu dekoratīviem attēliem izlaisti (<code>alt=""</code>), bet saturiskiem attēliem vienmēr raksti īsu, konkrētu aprakstu.</p></div>
+        <div class="doc-mini-card"><h4><code>width</code> / <code>height</code></h4><p>Pārlūkam iepriekš rezervē vietu attēlam pirms tas ielādējies — bez tā teksts "palēkās" lejup, kad attēls beidzot parādās (tieši tas, ko mēra CLS).</p></div>
+      </div>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>loading="lazy"</code> <strong>NEKAD</strong> nelieto lapas augšpuses/hero attēlam (tam, kas veido LCP) — tas tieši pretējais tam, ko vēlies: lazy loading atliek ielādi, bet LCP attēlam vajag ielādēties pēc iespējas ātrāk. Lazy loading der tikai attēliem, kas sākotnēji nav redzami (jāritina lejup, lai tos redzētu).</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="render-blocking">
+      <h2>Render-blocking resursi</h2>
+      <p>Pēc noklusējuma pārlūks aptur lapas renderēšanu, kamēr lejupielādē un izpilda <code>&lt;script&gt;</code> tagus <code>&lt;head&gt;</code> sadaļā — tas tieši palēnina LCP. <code>defer</code> un <code>async</code> atribūti to novērš, bet uzvedas atšķirīgi.</p>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;!-- Bloķē renderēšanu — pārlūks gaida, kamēr šis izpildās, PIRMS rāda jebko --&gt;
+&lt;script src="scripts.js"&gt;&lt;/script&gt;
+
+&lt;!-- defer: lejupielādējas paralēli, IZPILDĀS pēc HTML pilnībā izparsēts, SAGLABĀ secību --&gt;
+&lt;script src="galvenais.js" defer&gt;&lt;/script&gt;
+
+&lt;!-- async: lejupielādējas paralēli, izpildās UZREIZ pēc lejupielādes, NESAGLABĀ secību --&gt;
+&lt;script src="analytics.js" async&gt;&lt;/script&gt;</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Lieto <code>defer</code> skriptiem, kas piekļūst DOM elementiem vai ir savstarpēji atkarīgi cits no cita secībā (piem., jQuery + spraudnis, kas to izmanto). Lieto <code>async</code> neatkarīgiem skriptiem, kam secība nav svarīga (analītika, reklāmu skripti).</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="mobile">
+      <h2>Mobilā draudzīgums</h2>
+      <p>Google izmanto <strong>mobile-first indexing</strong> — tas nozīmē, ka apstaigāšanai un ranžošanai galvenokārt tiek izmantota vietnes <strong>mobilā</strong> versija, nevis desktopa. Ja mobilajā skatā kaut kas salūzis, tas ietekmē ranžošanu pat desktopa meklētājiem.</p>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Bez šī <code>viewport</code> taga mobilie pārlūki mēģina "saspiest" desktopa izkārtojumu mazā ekrānā — teksts kļūst nesalasāms, un Google to atzīmē kā mobilajā ziņā nedraudzīgu. Papildus pārbaudi arī pieskāriena mērķu izmēru (pogas, saites) — Google iesaka vismaz ~48×48px, lai tās būtu ērti nospiežamas ar pirkstu.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="wp-seo">
+      <h2>WordPress SEO ar kodu</h2>
+      <p>Ja projektā nav SEO spraudņa (Yoast SEO, Rank Math) vai tas jāpapildina, meta description var izvadīt manuāli caur <code>wp_head</code> hook — tas pats mehānisms, ko izmanto arī paši SEO spraudņi.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'wp_head'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-kw">if</span> (!<span class="tok-fn">is_singular</span>()) <span class="tok-kw">return</span>; <span class="tok-com">// tikai atsevišķiem ierakstiem/lapām</span>
+
+    <span class="tok-fn">$apraksts</span> = <span class="tok-fn">get_post_meta</span>(<span class="tok-fn">get_the_ID</span>(), <span class="tok-str">'_meta_description'</span>, <span class="tok-kw">true</span>);
+    <span class="tok-kw">if</span> (!<span class="tok-fn">$apraksts</span>) {
+        <span class="tok-fn">$apraksts</span> = <span class="tok-fn">wp_trim_words</span>(<span class="tok-fn">get_the_excerpt</span>(), 30); <span class="tok-com">// atkāpe — no izraksta</span>
+    }
+
+    <span class="tok-kw">echo</span> <span class="tok-str">'&lt;meta name="description" content="'</span> . <span class="tok-fn">esc_attr</span>(<span class="tok-fn">$apraksts</span>) . <span class="tok-str">'"&gt;'</span> . <span class="tok-str">"\n"</span>;
+}, 1);</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Ja projektā jau ir uzstādīts <strong>Yoast SEO</strong> vai <strong>Rank Math</strong>, tie jau ģenerē title/description/canonical/OG/JSON-LD tagus automātiski — nerakstīt to pašu ar kodu paralēli, jo tad lapā parādīsies <strong>divi</strong> konfliktējoši meta tagi. Šo pieeju izmanto tikai tad, ja SEO spraudņa vietnē nav vispār (piem., headless/minimālā WordPress uzstādījumā).</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="wp-sitemap">
+      <h2>WordPress iebūvētais XML sitemap</h2>
+      <p>Kopš WordPress 5.5 versijas (2020) sitemap tiek ģenerēts <strong>automātiski</strong>, bez jebkāda spraudņa vai koda — pieejams adresē <code>tavavietne.lv/wp-sitemap.xml</code>.</p>
+      <pre class="code-block"><span class="lang">text</span><code>https://tavavietne.lv/wp-sitemap.xml           ← galvenais indekss
+https://tavavietne.lv/wp-sitemap-posts-post-1.xml  ← ieraksti
+https://tavavietne.lv/wp-sitemap-posts-page-1.xml  ← lapas</code></pre>
+      <p>Ja projektā izmanto Yoast SEO vai Rank Math, tie parasti izslēdz WordPress iebūvēto sitemap un ģenerē savu — der pārliecināties, ka aktīvs ir tikai <strong>viens</strong>:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Manuāli izslēdz WordPress iebūvēto sitemap (ja to dara SEO spraudnis)</span>
+<span class="tok-fn">add_filter</span>(<span class="tok-str">'wp_sitemaps_enabled'</span>, <span class="tok-str">'__return_false'</span>);</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Divi vienlaicīgi sitemap (viens no WordPress kodola, otrs no spraudņa) reti sabojā kaut ko kritiski, bet rada neskaidrību Google Search Console un dublē darbu — ērtāk uzturēt tikai vienu avotu patiesības.</p>
+      </div>
+    </section>
+
+    <div class="doc-pager">
+      <a href="ssh.html"><span class="lbl">← Iepriekšējais</span>SSH</a>
+      <a class="to-next" href="../index.html"><span class="lbl">Atpakaļ →</span>Visas kategorijas</a>
+    </div>
+  </main>
+</div>
+
+<script src="../js/theme.js?v=15"></script>
+<script src="../js/main.js?v=15"></script>
+</body>
+</html>

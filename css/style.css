@@ -29,6 +29,8 @@
   --c-git-soft: rgba(239, 68, 68, 0.15);
   --c-ssh: #22c55e;
   --c-ssh-soft: rgba(34, 197, 94, 0.15);
+  --c-seo: #0ea5e9;
+  --c-seo-soft: rgba(14, 165, 233, 0.15);
 
   /* page-scoped accent — falls back to the brand purple; category pages
      override these (see .cat-* below) so navigation/headings pick up the
@@ -67,6 +69,7 @@
   --c-api-2: color-mix(in srgb, var(--c-api), white 15%);
   --c-git-2: color-mix(in srgb, var(--c-git), white 15%);
   --c-ssh-2: color-mix(in srgb, var(--c-ssh), white 15%);
+  --c-seo-2: color-mix(in srgb, var(--c-seo), white 20%);
 
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 20px 40px -20px rgba(0, 0, 0, 0.6);
   --shadow-pop: 0 30px 60px -25px rgba(120, 60, 255, 0.35);
@@ -101,6 +104,7 @@
   --c-api-2: color-mix(in srgb, var(--c-api), black 50%);
   --c-git-2: color-mix(in srgb, var(--c-git), black 15%);
   --c-ssh-2: color-mix(in srgb, var(--c-ssh), black 40%);
+  --c-seo-2: color-mix(in srgb, var(--c-seo), black 25%);
 
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 20px 40px -24px rgba(80, 60, 140, 0.25);
   --shadow-pop: 0 30px 60px -25px rgba(124, 58, 237, 0.25);
@@ -116,6 +120,7 @@ body.cat-integrations { --page-accent: var(--c-integrations); --page-accent-2: v
 body.cat-api           { --page-accent: var(--c-api);          --page-accent-2: var(--c-api-2);          --page-accent-soft: var(--c-api-soft); }
 body.cat-git           { --page-accent: var(--c-git);          --page-accent-2: var(--c-git-2);          --page-accent-soft: var(--c-git-soft); }
 body.cat-ssh           { --page-accent: var(--c-ssh);          --page-accent-2: var(--c-ssh-2);          --page-accent-soft: var(--c-ssh-soft); }
+body.cat-seo           { --page-accent: var(--c-seo);          --page-accent-2: var(--c-seo-2);          --page-accent-soft: var(--c-seo-soft); }
 
 * {
   box-sizing: border-box;
@@ -584,6 +589,7 @@ code {
 .card.api       { --card-color: var(--c-api);       --card-soft: var(--c-api-soft); }
 .card.git       { --card-color: var(--c-git);       --card-soft: var(--c-git-soft); }
 .card.ssh       { --card-color: var(--c-ssh);       --card-soft: var(--c-ssh-soft); }
+.card.seo       { --card-color: var(--c-seo);       --card-soft: var(--c-seo-soft); }
 
 /* ---------- Stats strip ---------- */
 .stats {
