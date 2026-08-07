@@ -62,6 +62,10 @@
       <a href="#wp-cli-uzstadisana"><span class="bullet"></span>WP-CLI uzstādīšana</a>
     </div>
     <div class="doc-sidebar-group">
+      <h4>Drošības incidenti</h4>
+      <a href="#uzlausta-vietne"><span class="bullet"></span>Vietne ir uzlauzta — soli pa solim</a>
+    </div>
+    <div class="doc-sidebar-group">
       <h4>Citas problēmas</h4>
       <a href="#jauktais-saturs"><span class="bullet"></span>Mixed content pēc SSL</a>
       <a href="#epasti-netiek-sutiti"><span class="bullet"></span>E-pasti netiek nosūtīti</a>
@@ -298,6 +302,97 @@ wp core version</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
         <p>WP-CLI komandas jāizpilda tajā pašā serverī, tajā pašā mapē, kur atrodas <code>wp-config.php</code> — pretējā gadījumā tas nezinās, ar kuru WordPress instalāciju strādāt.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="uzlausta-vietne">
+      <h2>Vietne ir uzlauzta — soli pa solim</h2>
+      <p>Pazīmes, ka vietne varētu būt uzlauzta: negaidītas jaunas admin lietotāju kontas, spam saturs/saites, kas parādās Google meklēšanā, bet nav redzamas vietnē pašā, hostinga brīdinājums par aizdomīgu trafiku, vai vietne pēkšņi kļuvusi ļoti lēna. Zemāk — precīza soļu secība, kas jāveic <strong>šajā secībā</strong>.</p>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">1. Izolē vietni NEKAVĒJOTIES</h3>
+      <p>Pirms jebkas cits — apturi vietni apmeklētājiem, lai neizplatītos vairāk (piem., meklētājprogrammas neindeksē vairāk spam lapu) un lai hakeris nezinātu, ka esi pamanījis ielaušanos.</p>
+      <pre class="code-block"><span class="lang">bash</span><code>wp maintenance-mode activate</code></pre>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">2. Nomaini VISAS paroles</h3>
+      <p>Ne tikai WordPress admin paroli — arī datubāzes, servera (SSH/hostinga paneļa) un FTP paroles, ja tādas izmanto. Ja hakeris ieguva piekļuvi caur vienu no tām, vecā parole viņam joprojām strādā, kamēr to nemaini.</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># WordPress lietotāju paroles — vispirms redzi, kas vispār ir administrators</span>
+wp user list --role=administrator
+
+<span class="tok-com"># Nomaini katram aizdomīgam/zināmam lietotājam</span>
+wp user update lietotajvards --user_pass=<span class="tok-str">"jauna-gara-un-nejauša-parole-2026"</span>
+
+<span class="tok-com"># Servera (SSH) lietotāja parole</span>
+passwd
+
+<span class="tok-com"># MySQL datubāzes lietotāja parole</span>
+mysql -u root -p
+<span class="tok-com">-- pēc pieslēgšanās MySQL konsolē:</span>
+ALTER USER <span class="tok-str">'db_lietotajs'</span>@<span class="tok-str">'localhost'</span> IDENTIFIED BY <span class="tok-str">'jauna-db-parole'</span>;
+FLUSH PRIVILEGES;</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Pēc datubāzes paroles maiņas jāatjaunina arī <code>DB_PASSWORD</code> vērtība <code>wp-config.php</code> failā ar to pašu jauno paroli — pretējā gadījumā WordPress vairs nevarēs pieslēgties datubāzei.</p>
+      </div>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">3. Ģenerē jaunas drošības atslēgas (salts)</h3>
+      <p>WordPress drošības atslēgas (<code>AUTH_KEY</code>, <code>SECURE_AUTH_KEY</code> u.c. <code>wp-config.php</code> failā) šifrē pieteikšanās sīkdatnes. Ja hakeris nozaga aktīvu sesijas sīkdatni, jaunu atslēgu ģenerēšana to <strong>uzreiz</strong> padara nederīgu — visiem, arī hakerim, jāpiesakās no jauna.</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Vienkāršākais veids — WP-CLI dara to automātiski, tieši wp-config.php failā</span>
+wp config shuffle-salts</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Ja WP-CLI nav pieejams, jaunas atslēgas var iegūt manuāli no <a href="https://api.wordpress.org/secret-key/1.1/salt/" target="_blank" rel="noopener">api.wordpress.org/secret-key/1.1/salt/</a> (katru reizi ielādējot lapu, ģenerējas jaunas, unikālas atslēgas) un ar tām aizvietot veco <code>AUTH_KEY</code>/<code>SECURE_AUTH_KEY</code>/<code>LOGGED_IN_KEY</code>/<code>NONCE_KEY</code> (un to "SALT" versijas) bloku <code>wp-config.php</code> failā.</p>
+      </div>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">4. Meklē un noņem ļaunprātīgus failus</h3>
+      <p>Pilnu meklēšanas komandu kopumu (nesen mainīti faili, aizdomīgi koda paraugi, core failu salīdzināšana) skati <a href="ssh.html#drosiba-virusi">SSH → Vīrusu &amp; aizdomīgu failu meklēšana</a>. Papildus tam, uzlaušanas gadījumā vienmēr pārbaudi arī šo:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># PHP faili augšupielāžu mapē — tur PHP failiem NEKAD nevajadzētu būt</span>
+find wp-content/uploads -name <span class="tok-str">"*.php"</span>
+
+<span class="tok-com"># Salīdzini aktīvo spraudņu sarakstu ar to, ko tu pats tiešām uzstādīji</span>
+wp plugin list --status=active</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Ja <code>find wp-content/uploads -name "*.php"</code> atgriež kaut ko — tas ir gandrīz vienmēr ļaunprātīgs fails (tā sauktais "web shell"), jo augšupielāžu mape ir domāta attēliem/dokumentiem, nevis izpildāmam kodam. Izdzēs to nekavējoties, bet vispirms pieraksti tā nosaukumu/atrašanās vietu — tas palīdzēs saprast, caur kuru ievainojamību hakeris iekļuva.</p>
+      </div>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">5. Pārbaudi lietotājus un plānotos uzdevumus</h3>
+      <p>Bieža hakeru taktika — izveidot sev slēptu administratora kontu vai ieplānot uzdevumu (cron), kas periodiski atjauno ļaunprātīgo kodu, pat pēc tā izdzēšanas.</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Vēlreiz — vai visi administratori tiešām ir tavi cilvēki?</span>
+wp user list --role=administrator
+
+<span class="tok-com"># WordPress ieplānotie uzdevumi (wp-cron)</span>
+wp cron event list
+
+<span class="tok-com"># Servera līmeņa ieplānotie uzdevumi (īstais Linux cron)</span>
+crontab -l</code></pre>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">6. Pārbaudi .htaccess</h3>
+      <p>Hakeri bieži ievieto slēptus pāradresācijas noteikumus <code>.htaccess</code> failā — apmeklētājs no Google redz vienu saturu, bet, atverot to tieši, redz normālu vietni (tā sauktais "cloaking").</p>
+      <pre class="code-block"><span class="lang">bash</span><code>cat .htaccess</code></pre>
+      <p>Meklē jebko ārpus standarta WordPress bloka (kas sākas ar <code># BEGIN WordPress</code> un beidzas ar <code># END WordPress</code>) — īpaši <code>RewriteRule</code> vai <code>RewriteCond</code> rindas, ko pats neesi pievienojis.</p>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">7. Atjauno no tīras dublējumkopijas VAI atjaunini visu</h3>
+      <p>Ja ir dublējumkopija no <strong>pirms</strong> uzlaušanas — tā ir drošākā atgriešanās. Ja nav, jātīra manuāli (4.-6. solis) un obligāti jāaizlāpo ievainojamība, ko hakeris izmantoja:</p>
+      <pre class="code-block"><span class="lang">bash</span><code>wp core update
+wp plugin update --all
+wp theme update --all</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Novecojis spraudnis vai tēma ar zināmu ievainojamību ir <strong>visbiežākais</strong> WordPress uzlaušanas iemesls. Ja neatjaunini novecojušo komponenti, kas tika izmantota, hakeris (vai kāds cits) var iekļūt tieši tāpat vēlreiz, pat pēc pilnīgas tīrīšanas.</p>
+      </div>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">8. robots.txt un attīrīšana no meklētājprogrammām</h3>
+      <p>Ja hakeris ievietoja spam lapas (bieži farmācijas/azartspēļu saturs, kas redzams tikai Google, ne parastam apmeklētājam), pagaidām bloķē tās no apstaigāšanas, kamēr tīri, un pēc tīrīšanas pieprasi Google no jauna pārbaudīt vietni.</p>
+      <pre class="code-block"><span class="lang">text</span><code>User-agent: *
+Disallow: /wp-content/uploads/2026/spam-mape/</code></pre>
+      <p>Pēc pilnīgas notīrīšanas: Google Search Console → "Removals" (noņemt spam URL no meklēšanas rezultātiem uzreiz) un "Sitemaps" → atkārtoti iesniedz sitemap, lai Google pārindeksē tīro saturu. Skati arī <a href="seo.html#meta-robots">SEO → Meta robots</a>.</p>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">9. Pēc tam — nostiprini drošību</h3>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>Izslēdz failu rediģēšanu admin panelī</h4><p><code>define('DISALLOW_FILE_EDIT', true);</code> — pievieno <code>wp-config.php</code>. Ja hakeris tomēr iegūst admin pieeju, viņš vairs nevar rediģēt tēmas/spraudņu kodu tieši caur admin paneli.</p></div>
+        <div class="doc-mini-card"><h4>Ierobežo pieteikšanās mēģinājumus</h4><p>Spraudnis (piem., Limit Login Attempts) vai servera līmeņa risinājums, kas bloķē IP pēc vairākiem neveiksmīgiem mēģinājumiem — apgrūtina brute-force uzbrukumus.</p></div>
+        <div class="doc-mini-card"><h4>Divfaktoru autentifikācija (2FA)</h4><p>Pat ja parole tiek nozagta, bez otrā faktora (koda no telefona) hakeris nevar pieteikties.</p></div>
+        <div class="doc-mini-card"><h4>Regulāras, ĀRPUS servera dublējumkopijas</h4><p>Dublējums, kas glabājas tajā pašā serverī, var tikt uzlauzts kopā ar pārējo — turi vismaz vienu kopiju citur (mākoņkrātuve, cits serveris).</p></div>
       </div>
     </section>
 
