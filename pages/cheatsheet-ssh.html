@@ -52,6 +52,7 @@
     <a href="#ct-connect">Pieslēgšanās</a>
     <a href="#ct-keys">SSH atslēgas</a>
     <a href="#ct-wpcli">WP-CLI</a>
+    <a href="#ct-status">Statusa pārbaude</a>
     <a href="#ct-db">Datubāze</a>
     <a href="#ct-files">Faili &amp; tiesības</a>
     <a href="#ct-resources">Servera resursi</a>
@@ -92,6 +93,18 @@ wp plugin update --all</code></pre></div>
       <div class="cheat-card"><h4>Konkrēta lietotāja info</h4><p>Visi dati par vienu lietotāju.</p><pre><code>wp user get lietotajvards --fields=all</code></pre></div>
       <div class="cheat-card"><h4>Opcijas</h4><p>Nolasa/maina jebkuru WordPress iestatījumu.</p><pre><code>wp option update blogname "Jauns nosaukums"</code></pre></div>
       <div class="cheat-card"><h4>Cache</h4><p>Notīra WordPress objektu kešu.</p><pre><code>wp cache flush</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-status">
+    <h2>Statusa pārbaude</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>Aktīvā tēma</h4><p>Uzreiz nosaukums, bez liekā.</p><pre><code>wp theme list --status=active --field=name</code></pre></div>
+      <div class="cheat-card"><h4>Aktīvie spraudņi</h4><p>Tikai ieslēgtie, ne visi uzstādītie.</p><pre><code>wp plugin list --status=active --field=name</code></pre></div>
+      <div class="cheat-card"><h4>WordPress versija</h4><p>Instalētā kodola versija.</p><pre><code>wp core version</code></pre></div>
+      <div class="cheat-card"><h4>PHP versija</h4><p>Servera, ne WordPress, versija.</p><pre><code>php -v</code></pre></div>
+      <div class="cheat-card"><h4>MySQL versija</h4><p>Datubāzes servera versija.</p><pre><code>wp db query "SELECT VERSION();"</code></pre></div>
+      <div class="cheat-card"><h4>Vietnes URL</h4><p>Tas, kas saglabāts datubāzē (ne DNS).</p><pre><code>wp option get siteurl</code></pre></div>
     </div>
   </section>
 
