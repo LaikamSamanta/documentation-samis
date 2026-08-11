@@ -1209,7 +1209,7 @@ pre.code-block code {
 .preview-label {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   padding: 10px 16px;
   border-bottom: 1px solid var(--border);
   background: var(--bg-elevated);
@@ -1220,6 +1220,11 @@ pre.code-block code {
   color: var(--text-muted);
 }
 .preview-label svg { width: 14px; height: 14px; color: var(--page-accent); }
+.preview-dots { display: flex; gap: 5px; margin-right: 2px; }
+.preview-dots span { width: 8px; height: 8px; border-radius: 50%; display: block; }
+.preview-dots span:nth-child(1) { background: #f87171; }
+.preview-dots span:nth-child(2) { background: #fbbf24; }
+.preview-dots span:nth-child(3) { background: #4ade80; }
 .preview-frame {
   display: block;
   width: 100%;
