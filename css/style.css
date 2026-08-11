@@ -31,6 +31,8 @@
   --c-ssh-soft: rgba(34, 197, 94, 0.15);
   --c-seo: #0ea5e9;
   --c-seo-soft: rgba(14, 165, 233, 0.15);
+  --c-templates: #eab308;
+  --c-templates-soft: rgba(234, 179, 8, 0.15);
 
   /* page-scoped accent — falls back to the brand purple; category pages
      override these (see .cat-* below) so navigation/headings pick up the
@@ -70,6 +72,7 @@
   --c-git-2: color-mix(in srgb, var(--c-git), white 15%);
   --c-ssh-2: color-mix(in srgb, var(--c-ssh), white 15%);
   --c-seo-2: color-mix(in srgb, var(--c-seo), white 20%);
+  --c-templates-2: color-mix(in srgb, var(--c-templates), white 20%);
 
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 20px 40px -20px rgba(0, 0, 0, 0.6);
   --shadow-pop: 0 30px 60px -25px rgba(120, 60, 255, 0.35);
@@ -105,6 +108,7 @@
   --c-git-2: color-mix(in srgb, var(--c-git), black 15%);
   --c-ssh-2: color-mix(in srgb, var(--c-ssh), black 40%);
   --c-seo-2: color-mix(in srgb, var(--c-seo), black 25%);
+  --c-templates-2: color-mix(in srgb, var(--c-templates), black 20%);
 
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 20px 40px -24px rgba(80, 60, 140, 0.25);
   --shadow-pop: 0 30px 60px -25px rgba(124, 58, 237, 0.25);
@@ -121,6 +125,7 @@ body.cat-api           { --page-accent: var(--c-api);          --page-accent-2: 
 body.cat-git           { --page-accent: var(--c-git);          --page-accent-2: var(--c-git-2);          --page-accent-soft: var(--c-git-soft); }
 body.cat-ssh           { --page-accent: var(--c-ssh);          --page-accent-2: var(--c-ssh-2);          --page-accent-soft: var(--c-ssh-soft); }
 body.cat-seo           { --page-accent: var(--c-seo);          --page-accent-2: var(--c-seo-2);          --page-accent-soft: var(--c-seo-soft); }
+body.cat-templates     { --page-accent: var(--c-templates);    --page-accent-2: var(--c-templates-2);    --page-accent-soft: var(--c-templates-soft); }
 
 * {
   box-sizing: border-box;
@@ -590,6 +595,7 @@ code {
 .card.git       { --card-color: var(--c-git);       --card-soft: var(--c-git-soft); }
 .card.ssh       { --card-color: var(--c-ssh);       --card-soft: var(--c-ssh-soft); }
 .card.seo       { --card-color: var(--c-seo);       --card-soft: var(--c-seo-soft); }
+.card.templates { --card-color: var(--c-templates); --card-soft: var(--c-templates-soft); }
 
 /* ---------- Stats strip ---------- */
 .stats {
@@ -1191,3 +1197,41 @@ pre.code-block code {
     box-shadow: 0 0 0 3px var(--page-accent-soft);
   }
 }
+
+/* ---------- Live component preview (sagataves.html) ---------- */
+.preview-box {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin: 18px 0;
+  background: #fff;
+}
+.preview-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-elevated);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.preview-label svg { width: 14px; height: 14px; color: var(--page-accent); }
+.preview-frame {
+  display: block;
+  width: 100%;
+  border: none;
+  background: #fff;
+}
+.code-group-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 18px 0 8px;
+}
+.code-group-label:first-child { margin-top: 0; }
