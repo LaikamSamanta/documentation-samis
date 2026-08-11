@@ -94,6 +94,10 @@
       <a href="#http-api"><span class="bullet"></span>HTTP API (wp_remote_*)</a>
       <a href="#rest-api"><span class="bullet"></span>REST API pamati</a>
     </div>
+    <div class="doc-sidebar-group">
+      <h4>Veiktspēja</h4>
+      <a href="#veiktspejas-merisana"><span class="bullet"></span>Ātruma mērīšana (Core Web Vitals)</a>
+    </div>
   </aside>
 
   <main class="doc-main">
@@ -883,6 +887,39 @@ GET /wp-json/wp/v2/produkts     → CPT ieraksti (ja show_in_rest: true)</code><
     ]);
 });
 <span class="tok-com">// Pieejams: /wp-json/mana-tema/v1/sveiciens</span></code></pre>
+    </section>
+
+    <section class="doc-section" id="veiktspejas-merisana">
+      <h2>Ātruma mērīšana (Core Web Vitals rīki)</h2>
+      <p>Ko tieši nozīmē LCP, INP un CLS, skaties <a href="seo.html#core-web-vitals">SEO → Core Web Vitals</a>. Šī sadaļa fokusējas uz <strong>kur</strong> tos pārbaudīt un <strong>kā</strong> pareizi interpretēt rezultātus WordPress vietnei.</p>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Field Data pret Lab Data — vissvarīgākā atšķirība</h3>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>📊 Field Data (reālie dati)</h4><p>Savākti no īstiem apmeklētājiem pēdējo 28 dienu laikā (Chrome User Experience Report). <strong>Tas ir tas, ko Google izmanto ranžēšanai.</strong> Mazām vietnēm ar maz trafika šo datu var vēl nebūt ("Not enough data").</p></div>
+        <div class="doc-mini-card"><h4>🧪 Lab Data (laboratorijas dati)</h4><p>Viena simulēta lapas ielāde uz vienas, fiksētas ierīces/interneta ātruma. Pieejama uzreiz, ideāla, lai atrastu konkrētu problēmu un pārbaudītu, vai labojums palīdzēja — bet var atšķirties no tā, ko reāli redz apmeklētāji.</p></div>
+      </div>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Kur pārbaudīt</h3>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>1. Google Search Console</h4><p>Sadaļa "Core Web Vitals" — rāda <strong>reālos (field)</strong> datus, sagrupētus pa līdzīgu lapu grupām. Šeit redzi tieši to, kas ietekmē ranžošanu — sāc pārbaudi vienmēr no šejienes.</p></div>
+        <div class="doc-mini-card"><h4>2. PageSpeed Insights</h4><p><a href="https://pagespeed.web.dev/" target="_blank" rel="noopener">pagespeed.web.dev</a> — ielīmē URL, uzreiz redzi gan field, gan lab datus vienā vietā, plus konkrētus, prioritizētus ieteikumus katrai problēmai.</p></div>
+        <div class="doc-mini-card"><h4>3. Chrome DevTools → Lighthouse</h4><p>F12 → cilne "Lighthouse" → "Analyze page load". Lokāls lab tests bez interneta gaidīšanas — ideāls, lai ātri pārbaudītu, vai tikko izdarītā izmaiņa tiešām palīdzēja.</p></div>
+        <div class="doc-mini-card"><h4>4. web-vitals bibliotēka</h4><p>Pašam savākt reālo lietotāju datus tieši savā vietnē (piem., nosūtot uz analītiku). Pilns koda piemērs: <a href="seo.html#core-web-vitals">SEO → Core Web Vitals</a>.</p></div>
+      </div>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">WordPress: kā atrast, kas tieši bremzē</h3>
+      <p>Minēt ir bezjēdzīgi — uzstādi <strong>Query Monitor</strong> spraudni, kas katrai lapas ielādei rāda tieši, kurš spraudnis, veidne vai datubāzes vaicājums patērē visvairāk laika:</p>
+      <pre class="code-block"><span class="lang">bash</span><code>wp plugin install query-monitor --activate</code></pre>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>🔁 Trūkstoša kešošana</h4><p>Biežākais cēlonis. Skat. <a href="wordpress-problemas.html#lena-vietne">Problēmas → Lēna WordPress vietne</a> konkrētiem SSH labojumiem.</p></div>
+        <div class="doc-mini-card"><h4>🧱 Page builder bloāts</h4><p>Elementor, Divi u.c. bieži katrai lapai ģenerē savu, smagu CSS/JS failu — pārbaudi, vai builderim ir "optimizācijas" iestatījumi (neizmantotā CSS noņemšana).</p></div>
+        <div class="doc-mini-card"><h4>🖼️ Neoptimizēti attēli</h4><p>Skat. <a href="seo.html#images">SEO → Attēlu optimizācija</a> — <code>srcset</code>, <code>loading="lazy"</code>, pareizi izmēri.</p></div>
+        <div class="doc-mini-card"><h4>🐌 Lēns hosting (augsts TTFB)</h4><p>Ja pat tukša lapa ielādējas lēni, problēma nav WordPress kodā — pārbaudi servera atbildes laiku (Time to First Byte) atsevišķi no pārējiem rādītājiem.</p></div>
+      </div>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><strong>Ieteicamā secība:</strong> (1) PageSpeed Insights vai Lighthouse — noskaidro, kura konkrētā metrika (LCP/INP/CLS) ir sliktākā; (2) Query Monitor — atrod konkrēto vainīgo spraudni/vaicājumu; (3) labo tieši to; (4) pārbaudi vēlreiz ar to pašu rīku, lai apstiprinātu uzlabojumu. Neoptimizē "aklu" — vienmēr izmēri pirms un pēc.</p>
+      </div>
     </section>
 
     <div class="doc-pager">
