@@ -280,10 +280,25 @@ Sitemap: https://piemers.lv/sitemap.xml</code></pre>
     <section class="doc-section" id="core-web-vitals">
       <h2>Core Web Vitals</h2>
       <p>Trīs konkrēti, mērāmi rādītāji, ko Google kopš 2021. gada izmanto kā <strong>tiešu ranžēšanas faktoru</strong> — ne ieteikumu, bet reālu punktu meklēšanas algoritmā.</p>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Robežvērtības — kas ir labi, kas slikti</h3>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Metrika</th><th>🟢 Labi</th><th>🟡 Vidēji</th><th>🔴 Slikti</th></tr></thead>
+          <tbody>
+            <tr><td><strong>LCP</strong></td><td>≤ 2.5s</td><td>2.5s – 4.0s</td><td>&gt; 4.0s</td></tr>
+            <tr><td><strong>INP</strong></td><td>≤ 200ms</td><td>200ms – 500ms</td><td>&gt; 500ms</td></tr>
+            <tr><td><strong>CLS</strong></td><td>≤ 0.1</td><td>0.1 – 0.25</td><td>&gt; 0.25</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:13px; color:var(--text-muted); margin-top:8px;">Google ranžošanā "labi" statusam jāsasniedz vismaz 75% no lapas apmeklējumiem (field data) — pietiek ar dažiem sliktiem apmeklējumiem, lai kopējais vērtējums nekristies uzreiz.</p>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Kas katru rādītāju visvairāk ietekmē</h3>
       <div class="doc-cards">
-        <div class="doc-mini-card"><h4>LCP <span class="tag easy">&lt; 2.5s labi</span></h4><p><strong>Largest Contentful Paint</strong> — cik ātri ielādējas lapas lielākais redzamais elements (parasti hero attēls vai virsraksts). Bieži cēlonis: liels, neoptimizēts attēls vai lēns serveris.</p></div>
-        <div class="doc-mini-card"><h4>INP <span class="tag easy">&lt; 200ms labi</span></h4><p><strong>Interaction to Next Paint</strong> — cik ātri lapa reaģē uz klikšķi vai pieskārienu. Bieži cēlonis: smags, bloķējošs JavaScript, kas aizņem galveno pavedienu.</p></div>
-        <div class="doc-mini-card"><h4>CLS <span class="tag easy">&lt; 0.1 labi</span></h4><p><strong>Cumulative Layout Shift</strong> — cik daudz saturs "lēkā" ielādes laikā. Bieži cēlonis: attēli/reklāmas bez rezervēta izmēra, fonti, kas maina teksta izmēru pēc ielādes.</p></div>
+        <div class="doc-mini-card"><h4>LCP <span class="tag easy">≤ 2.5s labi</span></h4><p><strong>Largest Contentful Paint</strong> — cik ātri ielādējas lapas lielākais redzamais elements (parasti hero attēls vai virsraksts). Ietekmē: <strong>servera atbildes laiks (TTFB)</strong>, render-blocking CSS/JS pirms galvenā satura, paša elementa (attēla) faila izmērs, un vai saturu vispār renderē serveris vai tikai klienta JavaScript.</p></div>
+        <div class="doc-mini-card"><h4>INP <span class="tag easy">≤ 200ms labi</span></h4><p><strong>Interaction to Next Paint</strong> — cik ātri lapa vizuāli reaģē uz klikšķi/pieskārienu. Ietekmē: <strong>smagi, ilgi JS uzdevumi</strong>, kas bloķē galveno pavedienu, liels DOM izmērs, un trešo pušu skripti (analītika, čatboti, reklāmas), kas darbojas tajā pašā pavedienā.</p></div>
+        <div class="doc-mini-card"><h4>CLS <span class="tag easy">≤ 0.1 labi</span></h4><p><strong>Cumulative Layout Shift</strong> — cik daudz saturs "lēkā" ielādes laikā. Ietekmē: attēli/reklāmas/iframe <strong>bez norādīta <code>width</code>/<code>height</code></strong>, fonti, kas maina teksta izmēru pēc ielādes (FOUT), un dinamiski ievietots saturs virs jau esošā (piem., paziņojumu josla, kas parādās vēlāk).</p></div>
       </div>
       <p>Izmērīt tos var reālā lietotāju datu formā ar <code>web-vitals</code> JS bibliotēku:</p>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">import</span> { onLCP, onINP, onCLS } <span class="tok-kw">from</span> <span class="tok-str">'web-vitals'</span>;
