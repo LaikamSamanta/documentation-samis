@@ -71,6 +71,7 @@
       <h4>Izstrādes rīki</h4>
       <a href="#izvelnes"><span class="bullet"></span>Izvēlnes</a>
       <a href="#enqueue"><span class="bullet"></span>Skriptu/stilu pieslēgšana</a>
+      <a href="#tailwind-compile"><span class="bullet"></span>Tailwind CSS kompilēšana (bez CDN)</a>
       <a href="#hooks"><span class="bullet"></span>Hooks &amp; Filters</a>
       <a href="#shortcodes"><span class="bullet"></span>Shortcodes</a>
       <a href="#widgets"><span class="bullet"></span>Widgets &amp; Sidebars</a>
@@ -491,6 +492,91 @@ pings_open()          → vai pingback/trackback ir atvērti šim ierakstam</cod
     );
 });</code></pre>
       <p>Lai šis piemērs strādātu, jāizveido reāls fails <code>js/main.js</code> tēmas mapē — pretējā gadījumā pārlūka konsolē redzēsi 404 kļūdu tam vienam failam (pati vietne turpinās strādāt).</p>
+    </section>
+
+    <section class="doc-section" id="tailwind-compile">
+      <h2>Tailwind CSS kompilēšana (bez CDN)</h2>
+      <p>Tailwind CDN skripts (<code>&lt;script src="https://cdn.tailwindcss.com"&gt;</code>) ir domāts tikai izmēģināšanai — tas ģenerē CSS pārlūkā katru reizi no jauna un pats brīdina konsolē: <em>"cdn.tailwindcss.com should not be used in production"</em>. Ražošanas vietnei Tailwind jāsakompilē par vienu, mazu, jau gatavu CSS failu. Šeit — pilns ceļš uz strādājošu rezultātu bez Node.js/npm instalēšanas grūtībām (kas uz dažiem serveriem ar <code>root</code> lietotāju var neizdoties atļauju problēmu dēļ) — izmantojot Tailwind <strong>Standalone CLI</strong>, kas ir viens patstāvīgs izpildfails.</p>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">1. Lejupielādē Standalone CLI</h3>
+      <p>Pieslēdzies serverim caur SSH (skat. <a href="ssh.html">SSH kategoriju</a>), dodies uz tēmas mapi un izpildi:</p>
+      <pre class="code-block"><span class="lang">bash</span><code>curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-linux-x64
+chmod +x tailwindcss-linux-x64
+mv tailwindcss-linux-x64 tailwindcss</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Standalone CLI ietver iekšā visu Tailwind dzinēju — nevajag ne <code>node_modules</code>, ne <code>npm install</code>, ne uztraukties par Node.js versiju vai servera lietotāja tiesībām. Šī lejupielādētā versija ir Tailwind <strong>v4</strong>, kas atšķiras no v3 — konfigurācija dzīvo CSS failā, nevis atsevišķā <code>tailwind.config.js</code> failā.</p>
+      </div>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">2. Izveido/pārraksti avota CSS failu</h3>
+      <p>Tēmas mapē izveido <code>src/input.css</code>. Ja iepriekš tavai CDN versijai bija pielāgota konfigurācija (krāsas, fonti, atstarpes — <code>tailwind.config = {...}</code> CDN formātā), pārceļ to uz jauno <code>@theme</code> bloku:</p>
+      <pre class="code-block"><span class="lang">css</span><code>@import "tailwindcss";
+
+/* Google Fonts, ja lieto pielāgotu fontu */
+@import url('https://fonts.googleapis.com/css2?family=Beau+Rivage&display=swap');
+
+@theme {
+    /* Fonti */
+    --font-sans: "Georgia", serif;
+    --font-title: "Beau Rivage", cursive;
+
+    /* Atstarpes */
+    --spacing-18: 4.5rem;
+    --spacing-22: 5.5rem;
+
+    /* Krāsas */
+    --color-stone-800: #292524;
+    --color-custom-accent: #c8b3d0;
+    --color-custom-button-bg: #1e1b4b;
+    --color-custom-button-text: #ffffff;
+
+    /* Stūru noapaļojumi */
+    --radius-xl: 1rem;
+    --radius-2xl: 1.5rem;
+}</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Tailwind v4 automātiski noskenē visus <code>.php</code> failus tēmas mapē, meklējot izmantotās klases — vairs nav vajadzīga <code>content</code> masīva norādīšana kā v3 versijā. Ja tev jau bija atsevišķs <code>tailwind.config.js</code> fails, to droši var izdzēst — v4 to vairs nelasa.</p>
+      </div>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">3. Pievieno kompilēšanas skriptus</h3>
+      <p><code>package.json</code> failā (ja tāda vēl nav, izveido to ar <code>npm init -y</code> — bet ievēro, ka paketes nosaukumā nedrīkst būt garumzīmes vai lielie burti):</p>
+      <pre class="code-block"><span class="lang">json</span><code>{
+  <span class="tok-str">"scripts"</span>: {
+    <span class="tok-str">"dev"</span>: <span class="tok-str">"./tailwindcss -i ./src/input.css -o ./style.css --watch"</span>,
+    <span class="tok-str">"build"</span>: <span class="tok-str">"./tailwindcss -i ./src/input.css -o ./style.css --minify"</span>
+  }
+}</code></pre>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">4. Palaid kompilatoru</h3>
+      <pre class="code-block"><span class="lang">bash</span><code>npm run dev</code></pre>
+      <p>Šī komanda paliek darboties fonā (<code>--watch</code> režīms) un automātiski pārkompilē <code>style.css</code> ikreiz, kad saglabā izmaiņas kādā <code>.php</code> failā. Termināļa logam jāpaliek atvērtam, kamēr programmē; darbu beidz ar <code>Ctrl+C</code>. Pirms lapas publicēšanas palaid <code>npm run build</code> — tas sakompilē mazāku, minificētu versiju bez novērošanas režīma.</p>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">5. Aizvieto CDN kodu ar sakompilēto CSS</h3>
+      <p>Atrodi un pilnībā izdzēs veco CDN pieslēgšanu no <code>functions.php</code>:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// IZDZĒŠAMS — vairs nav vajadzīgs</span>
+<span class="tok-kw">function</span> <span class="tok-fn">enqueue_tailwind_cdn_and_config</span>() {
+    <span class="tok-fn">wp_enqueue_script</span>( <span class="tok-str">'tailwind-cdn'</span>, <span class="tok-str">'https://cdn.tailwindcss.com'</span>, [], <span class="tok-kw">null</span>, <span class="tok-kw">true</span> );
+    <span class="tok-fn">wp_enqueue_script</span>(
+        <span class="tok-str">'tailwind-config'</span>,
+        <span class="tok-fn">get_stylesheet_directory_uri</span>() . <span class="tok-str">'/assets/js/tailwind-config.js'</span>,
+        [<span class="tok-str">'tailwind-cdn'</span>], <span class="tok-kw">null</span>, <span class="tok-kw">true</span>
+    );
+}
+<span class="tok-fn">add_action</span>(<span class="tok-str">'wp_enqueue_scripts'</span>, <span class="tok-str">'enqueue_tailwind_cdn_and_config'</span>);</code></pre>
+      <p>Un aizvieto ar sakompilētā faila pieslēgšanu — ja izvadi kompilē tieši tēmas <code>style.css</code>, der jau esošais standarta <a href="#enqueue">enqueue piemērs</a> augstāk šajā lapā, kas jau ielādē <code>get_stylesheet_uri()</code>. Ja izvadi kompilē uz atsevišķu failu (piem., <code>assets/css/tailwind.css</code>), norādi to tieši:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'wp_enqueue_scripts'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-fn">wp_enqueue_style</span>(
+        <span class="tok-str">'tailwind-compiled'</span>,
+        <span class="tok-fn">get_stylesheet_directory_uri</span>() . <span class="tok-str">'/assets/css/tailwind.css'</span>,
+        [],
+        <span class="tok-fn">filemtime</span>( <span class="tok-fn">get_stylesheet_directory</span>() . <span class="tok-str">'/assets/css/tailwind.css'</span> )
+    );
+});</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Rezultāts: pārlūka konsolē vairs nav "cdn.tailwindcss.com should not be used in production" brīdinājuma, nav 404 kļūdas uz veco config failu, un lapa ielādē tikai to CSS, kas reāli izmantots — mazāks fails, ātrāka ielāde.</p>
+      </div>
     </section>
 
     <section class="doc-section" id="hooks">
