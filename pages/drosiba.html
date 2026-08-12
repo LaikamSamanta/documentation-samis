@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="lv" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+<title>Drošība — Documentation Samis</title>
+<link rel="stylesheet" href="../css/style.css?v=17" />
+<script>
+  (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
+</script>
+</head>
+<body class="cat-security">
+<div class="bg-glow"></div>
+<div class="bg-grid"></div>
+
+<header class="topbar">
+  <a class="brand" href="../index.html">
+    <span class="mark">DS</span>
+    Documentation Samis
+  </a>
+  <div class="topbar-actions">
+    <a class="btn-back" href="../index.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M5 12h14"/></svg>
+      Kategorijas
+    </a>
+    <button class="icon-btn" id="theme-toggle" title="Pārslēgt tēmu" aria-label="Pārslēgt tēmu">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="doc-shell">
+  <aside class="doc-sidebar">
+    <div class="doc-sidebar-group">
+      <h4>Injekcijas &amp; ievade</h4>
+      <a href="#xss" class="active"><span class="bullet"></span>XSS (Cross-Site Scripting)</a>
+      <a href="#sql-injection"><span class="bullet"></span>SQL Injection</a>
+      <a href="#input-validation"><span class="bullet"></span>Ievades validācija &amp; sanitizācija</a>
+      <a href="#csrf"><span class="bullet"></span>CSRF</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Autentifikācija &amp; sesijas</h4>
+      <a href="#password-hashing"><span class="bullet"></span>Paroļu hashošana</a>
+      <a href="#session-security"><span class="bullet"></span>Sesiju drošība</a>
+      <a href="#rate-limiting"><span class="bullet"></span>Brute-force aizsardzība</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Transports &amp; galvenes</h4>
+      <a href="#https-tls"><span class="bullet"></span>HTTPS/TLS pamati</a>
+      <a href="#security-headers"><span class="bullet"></span>Drošības HTTP galvenes</a>
+      <a href="#csp"><span class="bullet"></span>Content Security Policy</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Citas svarīgas tēmas</h4>
+      <a href="#owasp-top10"><span class="bullet"></span>OWASP Top 10 pārskats</a>
+      <a href="#dependency-vulns"><span class="bullet"></span>Atkarību ievainojamības</a>
+      <a href="#file-upload-security"><span class="bullet"></span>Failu augšupielādes drošība</a>
+      <a href="#error-disclosure"><span class="bullet"></span>Kļūdu ziņojumi &amp; informācijas noplūde</a>
+    </div>
+  </aside>
+
+  <main class="doc-main">
+    <div class="doc-breadcrumb">
+      <a href="../index.html">Sākums</a>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span>Drošība</span>
+    </div>
+
+    <div class="doc-header">
+      <div class="icon" style="background: var(--c-security-soft); color: var(--c-security);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <h1 style="margin-bottom:0;">Drošība</h1>
+    </div>
+    <p class="doc-lead">Web drošības pamatprincipi, ko jāzina katram programmētājam — ne tikai WordPress kontekstā. Katrai tēmai — kāpēc uzbrukums strādā, un konkrēts, pareizs koda piemērs, kā to novērst.</p>
+
+    <section class="doc-section" id="xss">
+      <h2>XSS (Cross-Site Scripting)</h2>
+      <p>Uzbrucējs iesmidzina ļaunprātīgu JavaScript kodu lapā, ko pēc tam izpilda cita lietotāja pārlūks — piem., nozogot viņa sesijas sīkdatni. Notiek, kad lietotāja ievade tiek izvadīta HTML bez attīrīšanas.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// NEDROŠI — lietotāja ievade tiek izvadīta tieši HTML</span>
+<span class="tok-kw">echo</span> <span class="tok-str">"Sveiks, "</span> . <span class="tok-fn">$_GET</span>[<span class="tok-str">'vards'</span>];
+<span class="tok-com">// Ja ?vards=&lt;script&gt;alert(document.cookie)&lt;/script&gt;, tas IZPILDĀS pārlūkā</span>
+
+<span class="tok-com">// DROŠI — htmlspecialchars() pārvērš &lt; &gt; " ' & par HTML entītijām</span>
+<span class="tok-kw">echo</span> <span class="tok-str">"Sveiks, "</span> . <span class="tok-fn">htmlspecialchars</span>(<span class="tok-fn">$_GET</span>[<span class="tok-str">'vards'</span>], ENT_QUOTES, <span class="tok-str">'UTF-8'</span>);</code></pre>
+      <p>Tas pats princips JavaScript pusē:</p>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// NEDROŠI — innerHTML izpilda jebkuru HTML/JS, kas ir mainīgajā</span>
+element.innerHTML = lietotajaIevade;
+
+<span class="tok-com">// DROŠI — textContent vienmēr rāda tekstu burtiski, neizpildot HTML</span>
+element.textContent = lietotajaIevade;</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>WordPress šim nolūkam piedāvā veselu funkciju saimi — <code>esc_html()</code>, <code>esc_attr()</code>, <code>esc_url()</code> — katra paredzēta konkrētam kontekstam (HTML teksts, atribūts, URL). Nekad neizmanto vienu universālu "escaping" funkciju visur.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="sql-injection">
+      <h2>SQL Injection</h2>
+      <p>Uzbrucējs ievada SQL kodu formas laukā tā, lai tas mainītu paša vaicājuma nozīmi — var izgūt visu datubāzi, apiet pieteikšanos vai dzēst datus.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// NEDROŠI — lietotāja ievade tieši SQL vaicājumā (string konkatenācija)</span>
+<span class="tok-fn">$rezultats</span> = <span class="tok-fn">$pdo</span>->query(<span class="tok-str">"SELECT * FROM lietotaji WHERE epasts = '"</span> . <span class="tok-fn">$_POST</span>[<span class="tok-str">'epasts'</span>] . <span class="tok-str">"'"</span>);
+<span class="tok-com">// Ievade: ' OR '1'='1  ⇒ vaicājums kļūst PATIESS visām rindām, atgriež VISUS lietotājus</span>
+
+<span class="tok-com">// DROŠI — sagatavotie vaicājumi (prepared statements) ar parametru saistīšanu</span>
+<span class="tok-fn">$stmt</span> = <span class="tok-fn">$pdo</span>->prepare(<span class="tok-str">"SELECT * FROM lietotaji WHERE epasts = :epasts"</span>);
+<span class="tok-fn">$stmt</span>->execute([<span class="tok-str">'epasts'</span> => <span class="tok-fn">$_POST</span>[<span class="tok-str">'epasts'</span>]]);
+<span class="tok-fn">$rezultats</span> = <span class="tok-fn">$stmt</span>->fetchAll();</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Prepared statements strādā, jo PDO parametrus (<code>:epasts</code>) nosūta serverim <strong>atsevišķi</strong> no paša SQL vaicājuma teksta — datubāze tos nekad neinterpretē kā daļu no SQL sintakses, lai arī ko lietotājs ievadītu. Pilnu PDO piemēru skati <a href="php.html#datubaze">PHP → Datubāzes (PDO)</a>.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="input-validation">
+      <h2>Ievades validācija &amp; sanitizācija</h2>
+      <p>Divi atšķirīgi jēdzieni: <strong>validācija</strong> pārbauda, vai dati atbilst gaidītajam formātam (un noraida, ja ne), <strong>sanitizācija</strong> tīra/pārveido datus, noņemot bīstamo saturu.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Validācija — noraida, ja e-pasts nav derīgā formātā</span>
+<span class="tok-fn">$epasts</span> = <span class="tok-fn">filter_var</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'epasts'</span>], FILTER_VALIDATE_EMAIL);
+<span class="tok-kw">if</span> (<span class="tok-fn">$epasts</span> === <span class="tok-kw">false</span>) {
+    <span class="tok-kw">die</span>(<span class="tok-str">'Nederīga e-pasta adrese'</span>);
+}
+
+<span class="tok-com">// Sanitizācija — noņem bīstamās rakstzīmes, neatgriežot kļūdu</span>
+<span class="tok-fn">$komentars</span> = <span class="tok-fn">filter_var</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'komentars'</span>], FILTER_SANITIZE_FULL_SPECIAL_CHARS);</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Validācija JavaScript pusē (piem., HTML5 <code>required</code> atribūts) ir <strong>tikai lietotāja ērtībai</strong> — jebkurš var apiet klienta pusi ar DevTools vai tiešu pieprasījumu. Vienmēr validē <strong>arī</strong> serverī — tā ir vienīgā validācija, kurai tiešām var uzticēties.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="csrf">
+      <h2>CSRF (Cross-Site Request Forgery)</h2>
+      <p>Uzbrucēja lapa liek Tavam pārlūkam (kamēr esi pieteicies citā vietnē) nosūtīt pieprasījumu tavā vārdā — piem., paroles maiņu — izmantojot to, ka pārlūks automātiski pievieno sesijas sīkdatnes jebkuram pieprasījumam uz to domēnu.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 1) Ģenerē tokenu un saglabā sesijā (vienu reizi uz formu/sesiju)</span>
+<span class="tok-fn">session_start</span>();
+<span class="tok-kw">if</span> (<span class="tok-fn">empty</span>(<span class="tok-fn">$_SESSION</span>[<span class="tok-str">'csrf_token'</span>])) {
+    <span class="tok-fn">$_SESSION</span>[<span class="tok-str">'csrf_token'</span>] = <span class="tok-fn">bin2hex</span>(<span class="tok-fn">random_bytes</span>(32));
+}</code></pre>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;!-- 2) Ievieto formā kā paslēptu lauku --&gt;
+&lt;form method="post" action="/saglabat"&gt;
+    &lt;input type="hidden" name="csrf_token" value="&lt;?= htmlspecialchars($_SESSION['csrf_token']) ?&gt;"&gt;
+    ...
+&lt;/form&gt;</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 3) Pārbauda pirms JEBKURAS darbības izpildes (nevis pēc)</span>
+<span class="tok-kw">if</span> (!<span class="tok-fn">hash_equals</span>(<span class="tok-fn">$_SESSION</span>[<span class="tok-str">'csrf_token'</span>], <span class="tok-fn">$_POST</span>[<span class="tok-str">'csrf_token'</span>] ?? <span class="tok-str">''</span>)) {
+    <span class="tok-kw">die</span>(<span class="tok-str">'Nederīgs pieprasījums (CSRF)'</span>);
+}</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>WordPress šo mehānismu jau realizē pats ar <strong>nonces</strong> (<code>wp_nonce_field()</code> + <code>wp_verify_nonce()</code>) — sk. <a href="wordpress.html#drosiba">WordPress → Drošība (nonce &amp; escaping)</a>. <code>hash_equals()</code>, nevis <code>===</code>, tiek izmantots tāpēc, ka tas salīdzina virknes nemainīgā laikā, novēršot "timing attack" — uzbrukumu, kas mēra atbildes laiku, lai uzminētu pareizo tokenu simbolu pa simbolam.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="password-hashing">
+      <h2>Paroļu hashošana</h2>
+      <p>Paroles datubāzē nekad neglabā tekstā vai ar novecojušiem algoritmiem (MD5, SHA1) — tos var uzlauzt sekundēs ar gatavām "rainbow table" tabulām. PHP iebūvētās funkcijas dara visu pareizi automātiski.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Saglabājot paroli (piem., reģistrācijas laikā)</span>
+<span class="tok-fn">$hash</span> = <span class="tok-fn">password_hash</span>(<span class="tok-fn">$parole</span>, PASSWORD_DEFAULT); <span class="tok-com">// bcrypt/Argon2, atkarībā no PHP versijas</span>
+<span class="tok-com">// Saglabā $hash datubāzē — NEVIS pašu $parole</span>
+
+<span class="tok-com">// Pārbaudot pieteikšanos</span>
+<span class="tok-kw">if</span> (<span class="tok-fn">password_verify</span>(<span class="tok-fn">$ievaditaParole</span>, <span class="tok-fn">$hash</span>)) {
+    <span class="tok-kw">echo</span> <span class="tok-str">'Parole pareiza'</span>;
+}</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>PASSWORD_DEFAULT</code> tīši nenorāda konkrētu algoritmu — PHP izvēlas labāko pieejamo, un tas var mainīties nākotnes versijās. Tāpēc hash garums datubāzes kolonnā vienmēr jāatstāj vismaz 255 rakstzīmes, nevis fiksēts 32/40 (kā MD5/SHA1 laikos).</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="session-security">
+      <h2>Sesiju drošība</h2>
+      <p>PHP sesiju sīkdatnes pēc noklusējuma nav pilnībā aizsargātas — daži iestatījumi jāpieslēdz manuāli, pirms sesija sākas.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Jāiestata PIRMS session_start()</span>
+<span class="tok-fn">ini_set</span>(<span class="tok-str">'session.cookie_httponly'</span>, 1); <span class="tok-com">// JS nevar piekļūt cookie — aizsardzība pret XSS zādzību</span>
+<span class="tok-fn">ini_set</span>(<span class="tok-str">'session.cookie_secure'</span>, 1);   <span class="tok-com">// cookie sūta TIKAI pār HTTPS</span>
+<span class="tok-fn">ini_set</span>(<span class="tok-str">'session.cookie_samesite'</span>, <span class="tok-str">'Lax'</span>); <span class="tok-com">// papildu aizsardzība pret CSRF</span>
+<span class="tok-fn">session_start</span>();
+
+<span class="tok-com">// Pēc VEIKSMĪGAS pieteikšanās — vienmēr reģenerē sesijas ID</span>
+<span class="tok-fn">session_regenerate_id</span>(<span class="tok-kw">true</span>);</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>session_regenerate_id(true)</code> pēc pieteikšanās novērš "session fixation" uzbrukumu — kad uzbrucējs uzspiež zināmu sesijas ID upurim PIRMS pieteikšanās, cerot to izmantot PĒC. Jauna ID ģenerēšana pēc pieteikšanās šo iepriekš zināmo ID padara nederīgu.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="rate-limiting">
+      <h2>Brute-force aizsardzība (rate limiting)</h2>
+      <p>Bez ierobežojuma uzbrucējs var automātiski izmēģināt tūkstošiem paroļu sekundē. Vienkāršākais aizsardzības līmenis — skaitīt neveiksmīgos mēģinājumus un īslaicīgi bloķēt.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">session_start</span>();
+<span class="tok-fn">$meginejumi</span> = <span class="tok-fn">$_SESSION</span>[<span class="tok-str">'login_attempts'</span>] ?? 0;
+
+<span class="tok-kw">if</span> (<span class="tok-fn">$meginejumi</span> >= 5) {
+    <span class="tok-kw">die</span>(<span class="tok-str">'Pārāk daudz mēģinājumu. Mēģini vēlreiz pēc 15 minūtēm.'</span>);
+}
+
+<span class="tok-com">// ... pēc NEVEIKSMĪGA pieteikšanās mēģinājuma:</span>
+<span class="tok-fn">$_SESSION</span>[<span class="tok-str">'login_attempts'</span>] = <span class="tok-fn">$meginejumi</span> + 1;
+
+<span class="tok-com">// ... pēc VEIKSMĪGAS pieteikšanās — atiestata skaitītāju</span>
+<span class="tok-fn">unset</span>(<span class="tok-fn">$_SESSION</span>[<span class="tok-str">'login_attempts'</span>]);</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Šis piemērs balstās sesijā, tāpēc uzbrucējs to var apiet, vienkārši dzēšot sīkdatnes starp mēģinājumiem. Ražošanas vidē skaitītāju labāk glabāt pēc <strong>IP adreses</strong> datubāzē vai Redis/Memcached, un WordPress projektos ērtāk lietot gatavu spraudni (piem., "Limit Login Attempts Reloaded").</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="https-tls">
+      <h2>HTTPS/TLS pamati</h2>
+      <p>HTTPS šifrē datus starp pārlūku un serveri — bez tā jebkurš tajā pašā tīklā (piem., publiskā WiFi) var nolasīt paroles un sīkdatnes vienkāršā tekstā. Mūsdienās HTTPS ir obligāts standarts, ne izvēle.</p>
+      <pre class="code-block"><span class="lang">text</span><code># .htaccess — piespiedu novirzīšana no HTTP uz HTTPS
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Bezmaksas, automātiski atjaunojamu SSL sertifikātu (Let's Encrypt) šodien piedāvā gandrīz katrs hostings — nav iemesla maksāt par sertifikātu. Vairāk par pašiem SSL/TLS pamatiem un DNS ierakstiem skati <a href="web-izveide.html">Tīkls</a> kategorijā.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="security-headers">
+      <h2>Drošības HTTP galvenes</h2>
+      <p>HTTP atbildes galvenes, kas pasaka pārlūkam ievērot papildu drošības noteikumus — lēts, ātrs veids, kā aizvērt veselas uzbrukumu klases.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">header</span>(<span class="tok-str">'X-Content-Type-Options: nosniff'</span>);       <span class="tok-com">// aizliedz pārlūkam "uzminēt" faila tipu</span>
+<span class="tok-fn">header</span>(<span class="tok-str">'X-Frame-Options: DENY'</span>);                 <span class="tok-com">// aizliedz lapu ielikt &lt;iframe&gt; (clickjacking)</span>
+<span class="tok-fn">header</span>(<span class="tok-str">'Strict-Transport-Security: max-age=31536000; includeSubDomains'</span>); <span class="tok-com">// piespiež HTTPS</span>
+<span class="tok-fn">header</span>(<span class="tok-str">'Referrer-Policy: strict-origin-when-cross-origin'</span>); <span class="tok-com">// ierobežo URL noplūdi caur Referer</span></code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Pārbaudi savas vietnes galvenes bez koda rakstīšanas ar <a href="https://securityheaders.com/" target="_blank" rel="noopener">securityheaders.com</a> — ielīmē URL un tas parāda, kuras galvenes trūkst un kāpēc katra svarīga.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="csp">
+      <h2>Content Security Policy (CSP)</h2>
+      <p>Galvene, kas norāda pārlūkam, no kurām vietnēm drīkst ielādēt skriptus, stilus, attēlus u.c. — pat ja XSS uzbrukums izdodas iesmidzināt <code>&lt;script&gt;</code> tagu, CSP var neļaut tam izpildīties, ja tas nenāk no atļautā avota.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">header</span>(<span class="tok-str">"Content-Security-Policy: default-src 'self'; script-src 'self' https://www.google-analytics.com; style-src 'self' 'unsafe-inline';"</span>);</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Ieviešot CSP esošā projektā, vispirms izmanto <code>Content-Security-Policy-Report-Only</code> galveni tā vietā — tā ziņo par pārkāpumiem konsolē, bet <strong>nebloķē</strong> neko. Tas ļauj redzēt, ko politika sabojātu, pirms to reāli aktivizē un salauž vietni.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="owasp-top10">
+      <h2>OWASP Top 10 pārskats</h2>
+      <p>OWASP (Open Worldwide Application Security Project) reizi pāris gados publicē sarakstu ar biežākajām, nopietnākajām web ievainojamībām — nozares standarta atskaites punkts.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>Injekcijas</h4><p>SQL Injection, XSS un līdzīgi — nefiltrēta lietotāja ievade nonāk tur, kur tā tiek interpretēta kā kods. Skat. augstāk šajā lapā.</p></div>
+        <div class="doc-mini-card"><h4>Salauzta piekļuves kontrole</h4><p>Lietotājs var piekļūt datiem/darbībām, kurām viņam nevajadzētu — piem., mainot URL parametru <code>?user_id=5</code> uz <code>6</code> un redzot cita lietotāja datus.</p></div>
+        <div class="doc-mini-card"><h4>Kriptogrāfijas kļūdas</h4><p>Paroles vienkāršā tekstā, novecojuši hash algoritmi (MD5), trūkstošs HTTPS. Skat. Paroļu hashošana un HTTPS/TLS augstāk.</p></div>
+        <div class="doc-mini-card"><h4>Drošības nepareizi iestatījumi</h4><p>Noklusējuma paroles, ieslēgti debug režīmi ražošanā, nevajadzīgi atvērti porti/pakalpojumi.</p></div>
+        <div class="doc-mini-card"><h4>Novecojušas/ievainojamas komponentes</h4><p>Neatjaunināti spraudņi, bibliotēkas ar zināmām ievainojamībām. Skat. Atkarību ievainojamības zemāk.</p></div>
+        <div class="doc-mini-card"><h4>Autentifikācijas kļūdas</h4><p>Vāja paroļu politika, trūkstoša brute-force aizsardzība, slikta sesiju pārvaldība. Skat. sadaļas augstāk.</p></div>
+      </div>
+      <p style="font-size:13px; color:var(--text-muted); margin-top:8px;">Pilnu, aktuālo sarakstu ar detalizētiem piemēriem skati <a href="https://owasp.org/www-project-top-ten/" target="_blank" rel="noopener">owasp.org</a>.</p>
+    </section>
+
+    <section class="doc-section" id="dependency-vulns">
+      <h2>Atkarību ievainojamības</h2>
+      <p>Lielākā daļa mūsdienu projektu izmanto simtiem trešo pušu bibliotēku (npm/Composer pakotnes) — ja kādā no tām atklāj drošības caurumu, tas ietekmē arī tavu projektu, pat ja pats kods ir nevainojams.</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># JavaScript/Node.js projektiem</span>
+npm audit
+npm audit fix
+
+<span class="tok-com"># PHP/Composer projektiem</span>
+composer audit</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>GitHub repozitorijiem ieslēdz "Dependabot" (Settings → Security) — tas automātiski skenē atkarības un atver Pull Request ar labojumu, tiklīdz atklāj ievainojamību, bez manuālas <code>npm audit</code> palaišanas.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="file-upload-security">
+      <h2>Failu augšupielādes drošība</h2>
+      <p>Ja lapa ļauj lietotājiem augšupielādēt failus, tā ir viena no biežākajām ievainojamībām — uzbrucējs var augšupielādēt izpildāmu PHP failu, izliekoties par attēlu.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">$atlautie</span> = [<span class="tok-str">'image/jpeg'</span>, <span class="tok-str">'image/png'</span>, <span class="tok-str">'image/webp'</span>];
+<span class="tok-fn">$failaTips</span> = <span class="tok-fn">mime_content_type</span>(<span class="tok-fn">$_FILES</span>[<span class="tok-str">'attels'</span>][<span class="tok-str">'tmp_name'</span>]); <span class="tok-com">// pārbauda REĀLO tipu, ne tikai .jpg paplašinājumu</span>
+
+<span class="tok-kw">if</span> (!<span class="tok-fn">in_array</span>(<span class="tok-fn">$failaTips</span>, <span class="tok-fn">$atlautie</span>, <span class="tok-kw">true</span>)) {
+    <span class="tok-kw">die</span>(<span class="tok-str">'Nederīgs faila tips'</span>);
+}
+
+<span class="tok-com">// Pārsauc failu ar nejaušu nosaukumu — novērš path traversal un uzminamus URL</span>
+<span class="tok-fn">$jaunaisNosaukums</span> = <span class="tok-fn">bin2hex</span>(<span class="tok-fn">random_bytes</span>(16)) . <span class="tok-str">'.jpg'</span>;
+<span class="tok-fn">move_uploaded_file</span>(<span class="tok-fn">$_FILES</span>[<span class="tok-str">'attels'</span>][<span class="tok-str">'tmp_name'</span>], <span class="tok-fn">$uploadDir</span> . <span class="tok-fn">$jaunaisNosaukums</span>);</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Faila <strong>paplašinājums</strong> (<code>.jpg</code>) ir tikai nosaukums, ne garantija — uzbrucējs var nosaukt PHP failu par <code>attels.jpg.php</code> vai pat <code>attels.jpg</code> ar PHP saturu iekšā. <code>mime_content_type()</code> pārbauda faila reālo saturu, ne tikai nosaukumu, kas ir daudz drošāk. Augšupielāžu mapei arī vēlams liegt PHP izpildi servera konfigurācijā.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="error-disclosure">
+      <h2>Kļūdu ziņojumi &amp; informācijas noplūde</h2>
+      <p>PHP kļūdu ziņojumi izstrādes vidē ir noderīgi, bet ražošanā tie atklāj uzbrucējam faila ceļus, datubāzes struktūru un pat daļu no koda — informāciju, kas atvieglo turpmāku uzbrukumu plānošanu.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Ražošanā (production) — NEKAD nerādi kļūdas apmeklētājam</span>
+<span class="tok-fn">ini_set</span>(<span class="tok-str">'display_errors'</span>, 0);
+<span class="tok-fn">ini_set</span>(<span class="tok-str">'log_errors'</span>, 1);
+<span class="tok-fn">ini_set</span>(<span class="tok-str">'error_log'</span>, <span class="tok-str">'/var/log/php-errors.log'</span>);</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Kļūdas nekur nepazūd — tās joprojām tiek pilnībā <strong>pierakstītas</strong> (<code>error_log</code>), tikai vairs netiek rādītas apmeklētājam. Šī ir tā pati loģika, kas jau apskatīta <a href="wordpress-problemas.html#kritiska-kluda">WordPress → "There has been a critical error"</a> — WordPress šo pašu pieeju izmanto pēc noklusējuma.</p>
+      </div>
+    </section>
+
+    <div class="doc-pager">
+      <a href="sagataves.html"><span class="lbl">← Iepriekšējais</span>Sagataves</a>
+      <a class="to-next" href="../index.html"><span class="lbl">Atpakaļ →</span>Visas kategorijas</a>
+    </div>
+  </main>
+</div>
+
+<script src="../js/theme.js?v=17"></script>
+<script src="../js/main.js?v=17"></script>
+</body>
+</html>

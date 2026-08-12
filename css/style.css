@@ -33,6 +33,14 @@
   --c-seo-soft: rgba(14, 165, 233, 0.15);
   --c-templates: #eab308;
   --c-templates-soft: rgba(234, 179, 8, 0.15);
+  --c-security: #dc2626;
+  --c-security-soft: rgba(220, 38, 38, 0.15);
+  --c-sql: #6366f1;
+  --c-sql-soft: rgba(99, 102, 241, 0.15);
+  --c-css-adv: #d946ef;
+  --c-css-adv-soft: rgba(217, 70, 239, 0.15);
+  --c-gdpr: #475569;
+  --c-gdpr-soft: rgba(71, 85, 105, 0.15);
 
   /* page-scoped accent — falls back to the brand purple; category pages
      override these (see .cat-* below) so navigation/headings pick up the
@@ -73,6 +81,10 @@
   --c-ssh-2: color-mix(in srgb, var(--c-ssh), white 15%);
   --c-seo-2: color-mix(in srgb, var(--c-seo), white 20%);
   --c-templates-2: color-mix(in srgb, var(--c-templates), white 20%);
+  --c-security-2: color-mix(in srgb, var(--c-security), white 15%);
+  --c-sql-2: color-mix(in srgb, var(--c-sql), white 15%);
+  --c-css-adv-2: color-mix(in srgb, var(--c-css-adv), white 15%);
+  --c-gdpr-2: color-mix(in srgb, var(--c-gdpr), white 25%);
 
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 20px 40px -20px rgba(0, 0, 0, 0.6);
   --shadow-pop: 0 30px 60px -25px rgba(120, 60, 255, 0.35);
@@ -109,6 +121,10 @@
   --c-ssh-2: color-mix(in srgb, var(--c-ssh), black 40%);
   --c-seo-2: color-mix(in srgb, var(--c-seo), black 25%);
   --c-templates-2: color-mix(in srgb, var(--c-templates), black 20%);
+  --c-security-2: color-mix(in srgb, var(--c-security), black 10%);
+  --c-sql-2: color-mix(in srgb, var(--c-sql), black 15%);
+  --c-css-adv-2: color-mix(in srgb, var(--c-css-adv), black 15%);
+  --c-gdpr-2: color-mix(in srgb, var(--c-gdpr), black 5%);
 
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 20px 40px -24px rgba(80, 60, 140, 0.25);
   --shadow-pop: 0 30px 60px -25px rgba(124, 58, 237, 0.25);
@@ -126,6 +142,10 @@ body.cat-git           { --page-accent: var(--c-git);          --page-accent-2: 
 body.cat-ssh           { --page-accent: var(--c-ssh);          --page-accent-2: var(--c-ssh-2);          --page-accent-soft: var(--c-ssh-soft); }
 body.cat-seo           { --page-accent: var(--c-seo);          --page-accent-2: var(--c-seo-2);          --page-accent-soft: var(--c-seo-soft); }
 body.cat-templates     { --page-accent: var(--c-templates);    --page-accent-2: var(--c-templates-2);    --page-accent-soft: var(--c-templates-soft); }
+body.cat-security      { --page-accent: var(--c-security);     --page-accent-2: var(--c-security-2);     --page-accent-soft: var(--c-security-soft); }
+body.cat-sql           { --page-accent: var(--c-sql);          --page-accent-2: var(--c-sql-2);          --page-accent-soft: var(--c-sql-soft); }
+body.cat-css-adv       { --page-accent: var(--c-css-adv);      --page-accent-2: var(--c-css-adv-2);      --page-accent-soft: var(--c-css-adv-soft); }
+body.cat-gdpr          { --page-accent: var(--c-gdpr);         --page-accent-2: var(--c-gdpr-2);         --page-accent-soft: var(--c-gdpr-soft); }
 
 * {
   box-sizing: border-box;
@@ -596,6 +616,10 @@ code {
 .card.ssh       { --card-color: var(--c-ssh);       --card-soft: var(--c-ssh-soft); }
 .card.seo       { --card-color: var(--c-seo);       --card-soft: var(--c-seo-soft); }
 .card.templates { --card-color: var(--c-templates); --card-soft: var(--c-templates-soft); }
+.card.security  { --card-color: var(--c-security);  --card-soft: var(--c-security-soft); }
+.card.sql       { --card-color: var(--c-sql);       --card-soft: var(--c-sql-soft); }
+.card.css-adv   { --card-color: var(--c-css-adv);   --card-soft: var(--c-css-adv-soft); }
+.card.gdpr      { --card-color: var(--c-gdpr);      --card-soft: var(--c-gdpr-soft); }
 
 /* ---------- Stats strip ---------- */
 .stats {
