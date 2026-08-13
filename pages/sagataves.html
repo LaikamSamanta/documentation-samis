@@ -59,15 +59,25 @@
       <h4>Formas</h4>
       <a href="#failu-augsupielade"><span class="bullet"></span>Failu augšupielāde (Drag &amp; Drop)</a>
       <a href="#meklesana"><span class="bullet"></span>Meklēšana ar autopabeigšanu</a>
+      <a href="#novertejuma-ievade"><span class="bullet"></span>Novērtējuma ievade (Star Rating)</a>
     </div>
     <div class="doc-sidebar-group">
       <h4>Navigācija</h4>
       <a href="#navigacijas-josla"><span class="bullet"></span>Navigācijas josla (Navbar)</a>
       <a href="#solu-indikators"><span class="bullet"></span>Solu indikators (Stepper)</a>
+      <a href="#pazinojumu-zvans"><span class="bullet"></span>Paziņojumu zvans</a>
     </div>
     <div class="doc-sidebar-group">
       <h4>Dati</h4>
       <a href="#salidzinasanas-tabula"><span class="bullet"></span>Salīdzināšanas tabula</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Saturs</h4>
+      <a href="#laika-linija"><span class="bullet"></span>Laika līnija (Timeline)</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Attēli</h4>
+      <a href="#attelu-salidzinatajs"><span class="bullet"></span>Attēlu salīdzinātājs (Before/After)</a>
     </div>
   </aside>
 
@@ -1340,6 +1350,302 @@ document.addEventListener('keydown', (e) => {
       </div>
     </section>
 
+    <section class="doc-section" id="novertejuma-ievade">
+      <h2>Novērtējuma ievade (Star Rating)</h2>
+      <p>Klikšķināmas zvaigznītes ar hover priekšskatījumu — pārvietojot peli pāri, tiek iezīmēts, kāds vērtējums tiktu izvēlēts, bet reālā vērtība saglabājas tikai pēc klikšķa.</p>
+
+      <div class="preview-box">
+        <div class="preview-label">
+          <span class="preview-dots"><span></span><span></span><span></span></span>
+          Priekšskatījums
+        </div>
+        <iframe class="preview-frame" id="preview-rating" style="height:160px" title="Novērtējuma ievades priekšskatījums"></iframe>
+      </div>
+
+      <p class="code-group-label">HTML</p>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;div class="dsrating" id="dsrating1"&gt;
+    &lt;div class="dsrating-stars" role="radiogroup" aria-label="Vērtējums"&gt;
+        &lt;button type="button" class="dsrating-star" data-value="1" aria-label="1 zvaigzne"&gt;★&lt;/button&gt;
+        &lt;button type="button" class="dsrating-star" data-value="2" aria-label="2 zvaigznes"&gt;★&lt;/button&gt;
+        &lt;button type="button" class="dsrating-star" data-value="3" aria-label="3 zvaigznes"&gt;★&lt;/button&gt;
+        &lt;button type="button" class="dsrating-star" data-value="4" aria-label="4 zvaigznes"&gt;★&lt;/button&gt;
+        &lt;button type="button" class="dsrating-star" data-value="5" aria-label="5 zvaigznes"&gt;★&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;p class="dsrating-text" id="dsratingText"&gt;Uzklikšķini, lai novērtētu&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+
+      <p class="code-group-label">CSS</p>
+      <pre class="code-block"><span class="lang">css</span><code>.dsrating { text-align: center; }
+.dsrating-stars { display: inline-flex; gap: 6px; }
+.dsrating-star { background: none; border: none; cursor: pointer; font-size: 2.2rem; line-height: 1; color: #e5e7eb; padding: 0; transition: color .15s ease, transform .15s ease; }
+.dsrating-star:hover { transform: scale(1.15); }
+.dsrating-star.hover, .dsrating-star.selected { color: #f59e0b; }
+.dsrating-text { margin: 10px 0 0; color: #6b7280; font-size: .85rem; font-weight: 600; }</code></pre>
+
+      <p class="code-group-label">JavaScript</p>
+      <pre class="code-block"><span class="lang">js</span><code>(function () {
+    const rating = document.getElementById('dsrating1');
+    const stars = rating.querySelectorAll('.dsrating-star');
+    const text = document.getElementById('dsratingText');
+    const labels = ['', 'Slikti', 'Vidēji', 'Labi', 'Ļoti labi', 'Lieliski'];
+    let selected = 0;
+
+    function paint(value) {
+        stars.forEach((star) => {
+            star.classList.toggle('hover', Number(star.dataset.value) <= value);
+        });
+    }
+
+    stars.forEach((star) => {
+        star.addEventListener('mouseenter', () => paint(Number(star.dataset.value)));
+
+        star.addEventListener('click', () => {
+            selected = Number(star.dataset.value);
+            stars.forEach((s) => s.classList.toggle('selected', Number(s.dataset.value) <= selected));
+            text.textContent = labels[selected] + ' (' + selected + '/5)';
+        });
+    });
+
+    // atgriež iezīmējumu uz reāli izvēlēto vērtējumu, kad pele pamet zvaigžņu rindu
+    rating.querySelector('.dsrating-stars').addEventListener('mouseleave', () => paint(selected));
+})();</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Divas atsevišķas CSS klases — <code>.hover</code> (pagaidu, seko pelei) un <code>.selected</code> (paliekoša, seko klikšķim) — ir svarīgas, lai lietotājs vienmēr redzētu atšķirību starp "ko es tūlīt izvēlēšos" un "ko es jau izvēlējos". Bez <code>mouseleave</code> apstrādes iezīmējums paliktu uz peles pēdējās pozīcijas, nevis atgrieztos uz reālo vērtību.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="pazinojumu-zvans">
+      <h2>Paziņojumu zvans</h2>
+      <p>Zvana ikona ar nelasīto paziņojumu skaitītāju — klikšķis atver izkrītošu sarakstu, klikšķis uz paziņojuma atzīmē to kā lasītu un samazina skaitītāju.</p>
+
+      <div class="preview-box">
+        <div class="preview-label">
+          <span class="preview-dots"><span></span><span></span><span></span></span>
+          Priekšskatījums
+        </div>
+        <iframe class="preview-frame" id="preview-notif" style="height:360px" title="Paziņojumu zvana priekšskatījums"></iframe>
+      </div>
+
+      <p class="code-group-label">HTML</p>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;div class="dsnotif" id="dsnotif1"&gt;
+    &lt;button type="button" class="dsnotif-bell" id="dsnotifBell" aria-label="Paziņojumi"&gt;
+        &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/&gt;&lt;path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/&gt;&lt;/svg&gt;
+        &lt;span class="dsnotif-badge" id="dsnotifBadge"&gt;3&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;div class="dsnotif-panel" id="dsnotifPanel"&gt;
+        &lt;div class="dsnotif-head"&gt;
+            &lt;span&gt;Paziņojumi&lt;/span&gt;
+            &lt;button type="button" class="dsnotif-clear" id="dsnotifClear"&gt;Atzīmēt visus kā lasītus&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;ul class="dsnotif-list"&gt;
+            &lt;li class="dsnotif-item unread"&gt;&lt;span class="dsnotif-dot"&gt;&lt;/span&gt;&lt;div&gt;&lt;strong&gt;Jauns komentārs&lt;/strong&gt;&lt;p&gt;Anna atstāja komentāru zem tava raksta.&lt;/p&gt;&lt;span class="dsnotif-time"&gt;pirms 5 min&lt;/span&gt;&lt;/div&gt;&lt;/li&gt;
+            &lt;li class="dsnotif-item unread"&gt;&lt;span class="dsnotif-dot"&gt;&lt;/span&gt;&lt;div&gt;&lt;strong&gt;Maksājums saņemts&lt;/strong&gt;&lt;p&gt;Rēķins #4821 ir apmaksāts.&lt;/p&gt;&lt;span class="dsnotif-time"&gt;pirms 1 h&lt;/span&gt;&lt;/div&gt;&lt;/li&gt;
+            &lt;li class="dsnotif-item unread"&gt;&lt;span class="dsnotif-dot"&gt;&lt;/span&gt;&lt;div&gt;&lt;strong&gt;Sistēmas atjauninājums&lt;/strong&gt;&lt;p&gt;Plānots tehniskais darbs šonakt 02:00.&lt;/p&gt;&lt;span class="dsnotif-time"&gt;vakar&lt;/span&gt;&lt;/div&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+      <p class="code-group-label">CSS</p>
+      <pre class="code-block"><span class="lang">css</span><code>.dsnotif { position: relative; display: inline-block; }
+.dsnotif-bell { position: relative; width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid #e5e7eb; background: #fff; color: #475569; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color .2s ease; }
+.dsnotif-bell:hover { border-color: #6366f1; color: #4f46e5; }
+.dsnotif-bell svg { width: 20px; height: 20px; }
+.dsnotif-badge { position: absolute; top: -2px; right: -2px; min-width: 18px; height: 18px; padding: 0 4px; border-radius: 100px; background: #ef4444; color: #fff; font-size: .65rem; font-weight: 700; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 2px #fff; }
+.dsnotif-badge.empty { display: none; }
+.dsnotif-panel { position: absolute; top: calc(100% + 10px); left: 0; width: 300px; background: #fff; border-radius: 16px; border: 1px solid #eef0f4; box-shadow: 0 25px 60px -25px rgba(49,46,129,.35), 0 10px 20px -10px rgba(0,0,0,.15); opacity: 0; transform: translateY(-8px); pointer-events: none; transition: opacity .2s ease, transform .2s ease; z-index: 10; }
+.dsnotif-panel.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.dsnotif-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #f3f4f6; font-weight: 700; font-size: .85rem; color: #1e293b; }
+.dsnotif-clear { background: none; border: none; color: #4f46e5; font-size: .72rem; font-weight: 600; cursor: pointer; }
+.dsnotif-list { list-style: none; margin: 0; padding: 6px; max-height: 260px; overflow-y: auto; }
+.dsnotif-item { display: flex; gap: 10px; padding: 10px; border-radius: 10px; cursor: pointer; align-items: flex-start; }
+.dsnotif-item:hover { background: #f9fafb; }
+.dsnotif-dot { width: 8px; height: 8px; border-radius: 50%; background: #4f46e5; margin-top: 6px; flex-shrink: 0; opacity: 0; }
+.dsnotif-item.unread .dsnotif-dot { opacity: 1; }
+.dsnotif-item strong { display: block; font-size: .82rem; color: #1e293b; }
+.dsnotif-item p { margin: 2px 0; color: #6b7280; font-size: .78rem; line-height: 1.4; }
+.dsnotif-time { font-size: .68rem; color: #9ca3af; }</code></pre>
+
+      <p class="code-group-label">JavaScript</p>
+      <pre class="code-block"><span class="lang">js</span><code>(function () {
+    const notif = document.getElementById('dsnotif1');
+    const bell = document.getElementById('dsnotifBell');
+    const panel = document.getElementById('dsnotifPanel');
+    const badge = document.getElementById('dsnotifBadge');
+    const clearBtn = document.getElementById('dsnotifClear');
+    const items = notif.querySelectorAll('.dsnotif-item');
+
+    function updateBadge() {
+        const count = notif.querySelectorAll('.dsnotif-item.unread').length;
+        badge.textContent = count;
+        badge.classList.toggle('empty', count === 0);
+    }
+
+    bell.addEventListener('click', (e) => {
+        e.stopPropagation(); // neaizver paneli uzreiz caur document klikšķa listeneri zemāk
+        panel.classList.toggle('open');
+    });
+
+    items.forEach((item) => {
+        item.addEventListener('click', () => {
+            item.classList.remove('unread');
+            updateBadge();
+        });
+    });
+
+    clearBtn.addEventListener('click', () => {
+        items.forEach((item) => item.classList.remove('unread'));
+        updateBadge();
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!notif.contains(e.target)) panel.classList.remove('open');
+    });
+
+    updateBadge();
+})();</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Šis piemērs glabā paziņojumus tieši HTML iezīmējumā — reālā projektā tos ielādētu no servera (piem., <code>fetch('/api/notifications')</code>) un "atzīmēt kā lasītu" klikšķis nosūtītu pieprasījumu atpakaļ uz serveri, lai stāvoklis paliktu saglabāts arī pēc lapas pārlādēšanas.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="laika-linija">
+      <h2>Laika līnija (Timeline)</h2>
+      <p>Vertikāla notikumu/vēstures līnija ar savienotu līniju starp punktiem — katrs ieraksts parādās ar nelielu aizkavi, ritinot to skatā (<code>IntersectionObserver</code>, tāpat kā statistikas skaitītājos).</p>
+
+      <div class="preview-box">
+        <div class="preview-label">
+          <span class="preview-dots"><span></span><span></span><span></span></span>
+          Priekšskatījums
+        </div>
+        <iframe class="preview-frame" id="preview-timeline" style="height:320px" title="Laika līnijas priekšskatījums"></iframe>
+      </div>
+
+      <p class="code-group-label">HTML</p>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;ol class="dstimeline"&gt;
+    &lt;li class="dstimeline-item"&gt;
+        &lt;span class="dstimeline-dot"&gt;&lt;/span&gt;
+        &lt;div class="dstimeline-content"&gt;
+            &lt;span class="dstimeline-date"&gt;2023&lt;/span&gt;
+            &lt;h4&gt;Uzņēmums dibināts&lt;/h4&gt;
+            &lt;p&gt;Sākām ar 3 cilvēku komandu un vienu ideju.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li class="dstimeline-item"&gt;
+        &lt;span class="dstimeline-dot"&gt;&lt;/span&gt;
+        &lt;div class="dstimeline-content"&gt;
+            &lt;span class="dstimeline-date"&gt;2024&lt;/span&gt;
+            &lt;h4&gt;Pirmie 1000 klienti&lt;/h4&gt;
+            &lt;p&gt;Produkts sasniedza tirgus atbilstību un sāka augt organiski.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li class="dstimeline-item dstimeline-item--active"&gt;
+        &lt;span class="dstimeline-dot"&gt;&lt;/span&gt;
+        &lt;div class="dstimeline-content"&gt;
+            &lt;span class="dstimeline-date"&gt;2026&lt;/span&gt;
+            &lt;h4&gt;Starptautiska paplašināšanās&lt;/h4&gt;
+            &lt;p&gt;Šobrīd strādājam pie ienākšanas jaunos tirgos.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+
+      <p class="code-group-label">CSS</p>
+      <pre class="code-block"><span class="lang">css</span><code>.dstimeline { list-style: none; margin: 0; padding: 0; }
+.dstimeline-item { position: relative; padding: 0 0 28px 32px; opacity: 0; transform: translateY(16px); transition: opacity .5s ease, transform .5s ease; }
+.dstimeline-item.visible { opacity: 1; transform: translateY(0); }
+.dstimeline-item:last-child { padding-bottom: 0; }
+.dstimeline-item::before { content: ""; position: absolute; left: 5px; top: 18px; bottom: -10px; width: 2px; background: #e5e7eb; }
+.dstimeline-item:last-child::before { display: none; }
+.dstimeline-dot { position: absolute; left: 0; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: #fff; border: 2px solid #c7d2fe; }
+.dstimeline-item--active .dstimeline-dot { background: linear-gradient(135deg,#4f46e5,#3b82f6); border-color: transparent; box-shadow: 0 0 0 4px #eef2ff; }
+.dstimeline-date { display: inline-block; font-size: .72rem; font-weight: 700; color: #4f46e5; background: #eef2ff; padding: 2px 10px; border-radius: 100px; margin-bottom: 6px; }
+.dstimeline-content h4 { margin: 0 0 4px; font-size: .95rem; color: #1e293b; }
+.dstimeline-content p { margin: 0; color: #6b7280; font-size: .85rem; line-height: 1.55; }</code></pre>
+
+      <p class="code-group-label">JavaScript</p>
+      <pre class="code-block"><span class="lang">js</span><code>(function () {
+    const items = document.querySelectorAll('.dstimeline-item');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.3 });
+
+    items.forEach((item, i) => {
+        item.style.transitionDelay = (i * 0.1) + 's'; // katrs nākamais ieraksts parādās nedaudz vēlāk
+        observer.observe(item);
+    });
+})();</code></pre>
+    </section>
+
+    <section class="doc-section" id="attelu-salidzinatajs">
+      <h2>Attēlu salīdzinātājs (Before/After)</h2>
+      <p>Divi attēli vienā rāmī ar velkamu dalītāju — velkot pa kreisi/labi, atklājas viens vai otrs attēls. Izmanto <code>clip-path</code> un Pointer Events (peles + skārienekrāna atbalsts vienā kodā).</p>
+
+      <div class="preview-box">
+        <div class="preview-label">
+          <span class="preview-dots"><span></span><span></span><span></span></span>
+          Priekšskatījums
+        </div>
+        <iframe class="preview-frame" id="preview-imgcompare" style="height:260px" title="Attēlu salīdzinātāja priekšskatījums"></iframe>
+      </div>
+
+      <p class="code-group-label">HTML</p>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;div class="dsimgcompare" id="dsimgcompare1"&gt;
+    &lt;img class="dsimgcompare-layer dsimgcompare-after" src="pec.jpg" alt="Attēls pēc"&gt;
+    &lt;img class="dsimgcompare-layer dsimgcompare-before" src="pirms.jpg" alt="Attēls pirms" id="dsimgcompareBefore"&gt;
+    &lt;div class="dsimgcompare-divider" id="dsimgcompareDivider"&gt;
+        &lt;span class="dsimgcompare-handle"&gt;↔&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;span class="dsimgcompare-label dsimgcompare-label--before"&gt;Pirms&lt;/span&gt;
+    &lt;span class="dsimgcompare-label dsimgcompare-label--after"&gt;Pēc&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+
+      <p class="code-group-label">CSS</p>
+      <pre class="code-block"><span class="lang">css</span><code>.dsimgcompare { position: relative; width: 100%; aspect-ratio: 16/9; border-radius: 18px; overflow: hidden; box-shadow: 0 25px 60px -25px rgba(49,46,129,.35), 0 10px 20px -10px rgba(0,0,0,.15); cursor: ew-resize; touch-action: none; }
+.dsimgcompare-layer { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; user-select: none; }
+.dsimgcompare-before { clip-path: inset(0 50% 0 0); }
+.dsimgcompare-divider { position: absolute; top: 0; bottom: 0; left: 50%; width: 3px; background: #fff; transform: translateX(-50%); box-shadow: 0 0 0 1px rgba(0,0,0,.1); pointer-events: none; }
+.dsimgcompare-handle { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 38px; height: 38px; border-radius: 50%; background: #fff; box-shadow: 0 8px 20px -8px rgba(0,0,0,.4); display: flex; align-items: center; justify-content: center; font-size: 1rem; color: #4f46e5; }
+.dsimgcompare-label { position: absolute; top: 14px; padding: 4px 12px; border-radius: 100px; background: rgba(15,10,30,.55); backdrop-filter: blur(6px); color: #fff; font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; pointer-events: none; }
+.dsimgcompare-label--before { left: 14px; }
+.dsimgcompare-label--after { right: 14px; }</code></pre>
+
+      <p class="code-group-label">JavaScript</p>
+      <pre class="code-block"><span class="lang">js</span><code>(function () {
+    const container = document.getElementById('dsimgcompare1');
+    const before = document.getElementById('dsimgcompareBefore');
+    const divider = document.getElementById('dsimgcompareDivider');
+    let dragging = false;
+
+    function setPosition(clientX) {
+        const rect = container.getBoundingClientRect();
+        let percent = ((clientX - rect.left) / rect.width) * 100;
+        percent = Math.max(0, Math.min(100, percent));
+        before.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+        divider.style.left = percent + '%';
+    }
+
+    container.addEventListener('pointerdown', (e) => {
+        dragging = true;
+        setPosition(e.clientX);
+    });
+    window.addEventListener('pointermove', (e) => {
+        if (dragging) setPosition(e.clientX);
+    });
+    window.addEventListener('pointerup', () => { dragging = false; });
+})();</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>"Pēc" attēls (<code>.dsimgcompare-after</code>) vienmēr aizņem visu rāmi — "pirms" attēls (<code>.dsimgcompare-before</code>) atrodas tieši virs tā, un <code>clip-path: inset(0 X% 0 0)</code> nogriež tā labo malu par <code>X%</code>, atklājot apakšējo attēlu. Pointer Events (<code>pointerdown</code>/<code>pointermove</code>/<code>pointerup</code>) aizstāj gan peles, gan skārienekrāna notikumus ar vienu kodu — nav vajadzīgi atsevišķi <code>touchstart</code>/<code>touchmove</code> apstrādātāji.</p>
+      </div>
+    </section>
+
     <div class="doc-pager">
       <a href="seo.html"><span class="lbl">← Iepriekšējais</span>SEO</a>
       <a class="to-next" href="drosiba.html"><span class="lbl">Tālāk →</span>Drošība</a>
@@ -1441,6 +1747,26 @@ document.addEventListener('keydown', (e) => {
       css: '.dscompare-toggle { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; font-size: .8rem; color: #6b7280; font-weight: 600; cursor: pointer; } .dscompare { overflow-x: auto; border-radius: 16px; border: 1px solid #eef0f4; } .dscompare-table { width: 100%; border-collapse: collapse; font-size: .8rem; min-width: 420px; } .dscompare-table th, .dscompare-table td { padding: 12px 14px; text-align: center; } .dscompare-table th:first-child, .dscompare-table td:first-child { text-align: left; color: #374151; font-weight: 600; } .dscompare-table thead th { background: #f9fafb; color: #6b7280; font-size: .72rem; text-transform: uppercase; letter-spacing: .03em; border-bottom: 1px solid #eef0f4; } .dscompare-table tbody tr:not(:last-child) td { border-bottom: 1px solid #f3f4f6; } .dscompare-featured { background: #eef2ff; } .dscompare-table thead .dscompare-featured { background: linear-gradient(135deg,#4f46e5,#3b82f6); color: #fff; } .dscompare-check { color: #059669; font-weight: 700; } .dscompare-x { color: #d1d5db; font-weight: 700; }',
       html: '<label class="dscompare-toggle"><input type="checkbox" id="dscompareDiffToggle"> Rādīt tikai atšķirīgās rindas</label><div class="dscompare"><table class="dscompare-table"><thead><tr><th>Funkcija</th><th>Starter</th><th class="dscompare-featured">Pro</th><th>Enterprise</th></tr></thead><tbody><tr><td>Lietotāju skaits</td><td>1</td><td class="dscompare-featured">10</td><td>Neierobežoti</td></tr><tr><td>Krātuve</td><td>5 GB</td><td class="dscompare-featured">100 GB</td><td>1 TB</td></tr><tr><td>E-pasta atbalsts</td><td><span class="dscompare-check">✓</span></td><td class="dscompare-featured"><span class="dscompare-check">✓</span></td><td><span class="dscompare-check">✓</span></td></tr><tr><td>API pieeja</td><td><span class="dscompare-x">✕</span></td><td class="dscompare-featured"><span class="dscompare-check">✓</span></td><td><span class="dscompare-check">✓</span></td></tr><tr><td>Prioritārs atbalsts</td><td><span class="dscompare-x">✕</span></td><td class="dscompare-featured"><span class="dscompare-check">✓</span></td><td><span class="dscompare-check">✓</span></td></tr><tr><td>Dedicēts menedžeris</td><td><span class="dscompare-x">✕</span></td><td class="dscompare-featured"><span class="dscompare-x">✕</span></td><td><span class="dscompare-check">✓</span></td></tr></tbody></table></div>',
       js: "(function(){var table=document.querySelector('.dscompare-table');var toggle=document.getElementById('dscompareDiffToggle');var rows=table.querySelectorAll('tbody tr');toggle.addEventListener('change',function(){Array.prototype.forEach.call(rows,function(row){var cells=Array.prototype.slice.call(row.querySelectorAll('td')).slice(1);var values=cells.map(function(c){return c.textContent.trim();});var allEqual=values.every(function(v){return v===values[0];});row.style.display=(toggle.checked&&allEqual)?'none':'';});});})();"
+    },
+    'preview-rating': {
+      css: '.dsrating { text-align: center; } .dsrating-stars { display: inline-flex; gap: 6px; } .dsrating-star { background: none; border: none; cursor: pointer; font-size: 2rem; line-height: 1; color: #e5e7eb; padding: 0; transition: color .15s ease, transform .15s ease; } .dsrating-star:hover { transform: scale(1.15); } .dsrating-star.hover, .dsrating-star.selected { color: #f59e0b; } .dsrating-text { margin: 10px 0 0; color: #6b7280; font-size: .85rem; font-weight: 600; }',
+      html: '<div class="dsrating" id="dsrating1"><div class="dsrating-stars" role="radiogroup" aria-label="Vērtējums"><button type="button" class="dsrating-star" data-value="1" aria-label="1 zvaigzne">★</button><button type="button" class="dsrating-star" data-value="2" aria-label="2 zvaigznes">★</button><button type="button" class="dsrating-star" data-value="3" aria-label="3 zvaigznes">★</button><button type="button" class="dsrating-star" data-value="4" aria-label="4 zvaigznes">★</button><button type="button" class="dsrating-star" data-value="5" aria-label="5 zvaigznes">★</button></div><p class="dsrating-text" id="dsratingText">Uzklikšķini, lai novērtētu</p></div>',
+      js: "(function(){var rating=document.getElementById('dsrating1');var stars=rating.querySelectorAll('.dsrating-star');var text=document.getElementById('dsratingText');var labels=['','Slikti','Vidēji','Labi','Ļoti labi','Lieliski'];var selected=0;function paint(value){Array.prototype.forEach.call(stars,function(star){star.classList.toggle('hover',Number(star.dataset.value)<=value);});}Array.prototype.forEach.call(stars,function(star){star.addEventListener('mouseenter',function(){paint(Number(star.dataset.value));});star.addEventListener('click',function(){selected=Number(star.dataset.value);Array.prototype.forEach.call(stars,function(s){s.classList.toggle('selected',Number(s.dataset.value)<=selected);});text.textContent=labels[selected]+' ('+selected+'/5)';});});rating.querySelector('.dsrating-stars').addEventListener('mouseleave',function(){paint(selected);});})();"
+    },
+    'preview-notif': {
+      css: '.dsnotif { position: relative; display: inline-block; } .dsnotif-bell { position: relative; width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid #e5e7eb; background: #fff; color: #475569; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color .2s ease; } .dsnotif-bell:hover { border-color: #6366f1; color: #4f46e5; } .dsnotif-bell svg { width: 20px; height: 20px; } .dsnotif-badge { position: absolute; top: -2px; right: -2px; min-width: 18px; height: 18px; padding: 0 4px; border-radius: 100px; background: #ef4444; color: #fff; font-size: .65rem; font-weight: 700; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 2px #fff; } .dsnotif-badge.empty { display: none; } .dsnotif-panel { position: absolute; top: calc(100% + 10px); left: 0; width: 280px; background: #fff; border-radius: 16px; border: 1px solid #eef0f4; box-shadow: 0 25px 60px -25px rgba(49,46,129,.35), 0 10px 20px -10px rgba(0,0,0,.15); opacity: 0; transform: translateY(-8px); pointer-events: none; transition: opacity .2s ease, transform .2s ease; z-index: 10; } .dsnotif-panel.open { opacity: 1; transform: translateY(0); pointer-events: auto; } .dsnotif-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #f3f4f6; font-weight: 700; font-size: .85rem; color: #1e293b; } .dsnotif-clear { background: none; border: none; color: #4f46e5; font-size: .7rem; font-weight: 600; cursor: pointer; } .dsnotif-list { list-style: none; margin: 0; padding: 6px; max-height: 240px; overflow-y: auto; } .dsnotif-item { display: flex; gap: 10px; padding: 10px; border-radius: 10px; cursor: pointer; align-items: flex-start; } .dsnotif-item:hover { background: #f9fafb; } .dsnotif-dot { width: 8px; height: 8px; border-radius: 50%; background: #4f46e5; margin-top: 6px; flex-shrink: 0; opacity: 0; } .dsnotif-item.unread .dsnotif-dot { opacity: 1; } .dsnotif-item strong { display: block; font-size: .8rem; color: #1e293b; } .dsnotif-item p { margin: 2px 0; color: #6b7280; font-size: .76rem; line-height: 1.4; } .dsnotif-time { font-size: .66rem; color: #9ca3af; }',
+      html: '<div class="dsnotif" id="dsnotif1"><button type="button" class="dsnotif-bell" id="dsnotifBell" aria-label="Paziņojumi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg><span class="dsnotif-badge" id="dsnotifBadge">3</span></button><div class="dsnotif-panel" id="dsnotifPanel"><div class="dsnotif-head"><span>Paziņojumi</span><button type="button" class="dsnotif-clear" id="dsnotifClear">Atzīmēt visus kā lasītus</button></div><ul class="dsnotif-list"><li class="dsnotif-item unread"><span class="dsnotif-dot"></span><div><strong>Jauns komentārs</strong><p>Anna atstāja komentāru zem tava raksta.</p><span class="dsnotif-time">pirms 5 min</span></div></li><li class="dsnotif-item unread"><span class="dsnotif-dot"></span><div><strong>Maksājums saņemts</strong><p>Rēķins #4821 ir apmaksāts.</p><span class="dsnotif-time">pirms 1 h</span></div></li><li class="dsnotif-item unread"><span class="dsnotif-dot"></span><div><strong>Sistēmas atjauninājums</strong><p>Plānots tehniskais darbs šonakt 02:00.</p><span class="dsnotif-time">vakar</span></div></li></ul></div></div>',
+      js: "(function(){var notif=document.getElementById('dsnotif1');var bell=document.getElementById('dsnotifBell');var panel=document.getElementById('dsnotifPanel');var badge=document.getElementById('dsnotifBadge');var clearBtn=document.getElementById('dsnotifClear');var items=notif.querySelectorAll('.dsnotif-item');function updateBadge(){var count=notif.querySelectorAll('.dsnotif-item.unread').length;badge.textContent=count;badge.classList.toggle('empty',count===0);}bell.addEventListener('click',function(e){e.stopPropagation();panel.classList.toggle('open');});Array.prototype.forEach.call(items,function(item){item.addEventListener('click',function(){item.classList.remove('unread');updateBadge();});});clearBtn.addEventListener('click',function(){Array.prototype.forEach.call(items,function(item){item.classList.remove('unread');});updateBadge();});document.addEventListener('click',function(e){if(!notif.contains(e.target))panel.classList.remove('open');});updateBadge();})();"
+    },
+    'preview-timeline': {
+      css: '.dstimeline { list-style: none; margin: 0; padding: 0; } .dstimeline-item { position: relative; padding: 0 0 24px 30px; opacity: 0; transform: translateY(16px); transition: opacity .5s ease, transform .5s ease; } .dstimeline-item.visible { opacity: 1; transform: translateY(0); } .dstimeline-item:last-child { padding-bottom: 0; } .dstimeline-item::before { content: ""; position: absolute; left: 5px; top: 18px; bottom: -8px; width: 2px; background: #e5e7eb; } .dstimeline-item:last-child::before { display: none; } .dstimeline-dot { position: absolute; left: 0; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: #fff; border: 2px solid #c7d2fe; } .dstimeline-item--active .dstimeline-dot { background: linear-gradient(135deg,#4f46e5,#3b82f6); border-color: transparent; box-shadow: 0 0 0 4px #eef2ff; } .dstimeline-date { display: inline-block; font-size: .7rem; font-weight: 700; color: #4f46e5; background: #eef2ff; padding: 2px 10px; border-radius: 100px; margin-bottom: 6px; } .dstimeline-content h4 { margin: 0 0 4px; font-size: .92rem; color: #1e293b; } .dstimeline-content p { margin: 0; color: #6b7280; font-size: .82rem; line-height: 1.5; }',
+      html: '<ol class="dstimeline"><li class="dstimeline-item"><span class="dstimeline-dot"></span><div class="dstimeline-content"><span class="dstimeline-date">2023</span><h4>Uzņēmums dibināts</h4><p>Sākām ar 3 cilvēku komandu un vienu ideju.</p></div></li><li class="dstimeline-item"><span class="dstimeline-dot"></span><div class="dstimeline-content"><span class="dstimeline-date">2024</span><h4>Pirmie 1000 klienti</h4><p>Produkts sasniedza tirgus atbilstību un sāka augt organiski.</p></div></li><li class="dstimeline-item dstimeline-item--active"><span class="dstimeline-dot"></span><div class="dstimeline-content"><span class="dstimeline-date">2026</span><h4>Starptautiska paplašināšanās</h4><p>Šobrīd strādājam pie ienākšanas jaunos tirgos.</p></div></li></ol>',
+      js: "(function(){var items=document.querySelectorAll('.dstimeline-item');var observer=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target);}});},{threshold:0.3});Array.prototype.forEach.call(items,function(item,i){item.style.transitionDelay=(i*0.1)+'s';observer.observe(item);});})();"
+    },
+    'preview-imgcompare': {
+      css: '.dsimgcompare { position: relative; width: 100%; aspect-ratio: 16/9; border-radius: 18px; overflow: hidden; box-shadow: 0 25px 60px -25px rgba(49,46,129,.35), 0 10px 20px -10px rgba(0,0,0,.15); cursor: ew-resize; touch-action: none; } .dsimgcompare-layer { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; user-select: none; } .dsimgcompare-before { clip-path: inset(0 50% 0 0); } .dsimgcompare-divider { position: absolute; top: 0; bottom: 0; left: 50%; width: 3px; background: #fff; transform: translateX(-50%); box-shadow: 0 0 0 1px rgba(0,0,0,.1); pointer-events: none; } .dsimgcompare-handle { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 38px; height: 38px; border-radius: 50%; background: #fff; box-shadow: 0 8px 20px -8px rgba(0,0,0,.4); display: flex; align-items: center; justify-content: center; font-size: 1rem; color: #4f46e5; } .dsimgcompare-label { position: absolute; top: 14px; padding: 4px 12px; border-radius: 100px; background: rgba(15,10,30,.55); backdrop-filter: blur(6px); color: #fff; font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; pointer-events: none; } .dsimgcompare-label--before { left: 14px; } .dsimgcompare-label--after { right: 14px; }',
+      html: '<div class="dsimgcompare" id="dsimgcompare1"><img class="dsimgcompare-layer dsimgcompare-after" src="' + img6 + '" alt="Attēls pēc"><img class="dsimgcompare-layer dsimgcompare-before" src="' + img2 + '" alt="Attēls pirms" id="dsimgcompareBefore"><div class="dsimgcompare-divider" id="dsimgcompareDivider"><span class="dsimgcompare-handle">↔</span></div><span class="dsimgcompare-label dsimgcompare-label--before">Pirms</span><span class="dsimgcompare-label dsimgcompare-label--after">Pēc</span></div>',
+      js: "(function(){var container=document.getElementById('dsimgcompare1');var before=document.getElementById('dsimgcompareBefore');var divider=document.getElementById('dsimgcompareDivider');var dragging=false;function setPosition(clientX){var rect=container.getBoundingClientRect();var percent=((clientX-rect.left)/rect.width)*100;percent=Math.max(0,Math.min(100,percent));before.style.clipPath='inset(0 '+(100-percent)+'% 0 0)';divider.style.left=percent+'%';}container.addEventListener('pointerdown',function(e){dragging=true;setPosition(e.clientX);});window.addEventListener('pointermove',function(e){if(dragging)setPosition(e.clientX);});window.addEventListener('pointerup',function(){dragging=false;});})();"
     }
   };
 
