@@ -49,6 +49,16 @@
       <h4>Autentifikācija</h4>
       <a href="#auth-card"><span class="bullet"></span>Pieteikšanās/reģistrācijas kartīte</a>
     </div>
+    <div class="doc-sidebar-group">
+      <h4>Mārketinga elementi</h4>
+      <a href="#cenu-kartites"><span class="bullet"></span>Cenu kartītes (Pricing)</a>
+      <a href="#statistikas-skaititaji"><span class="bullet"></span>Animēti statistikas skaitītāji</a>
+      <a href="#atsauksmes"><span class="bullet"></span>Atsauksmju karuselis</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Formas</h4>
+      <a href="#failu-augsupielade"><span class="bullet"></span>Failu augšupielāde (Drag &amp; Drop)</a>
+    </div>
   </aside>
 
   <main class="doc-main">
@@ -566,6 +576,382 @@ document.addEventListener('keydown', (e) => {
       </div>
     </section>
 
+    <section class="doc-section" id="cenu-kartites">
+      <h2>Cenu kartītes (Pricing)</h2>
+      <p>Trīs SaaS-stila cenu plāni ar izcelto "Populārākais" plānu un funkcionējošu mēneša/gada pārslēgu, kas pārrēķina cenas.</p>
+
+      <div class="preview-box">
+        <div class="preview-label">
+          <span class="preview-dots"><span></span><span></span><span></span></span>
+          Priekšskatījums
+        </div>
+        <iframe class="preview-frame" id="preview-pricing" style="height:480px" title="Cenu kartīšu priekšskatījums"></iframe>
+      </div>
+
+      <p class="code-group-label">HTML</p>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;div class="dsprice-toggle"&gt;
+    &lt;span&gt;Mēnesī&lt;/span&gt;
+    &lt;button class="dsprice-switch" id="pricingSwitch" role="switch" aria-checked="false"&gt;&lt;span class="dsprice-switch-thumb"&gt;&lt;/span&gt;&lt;/button&gt;
+    &lt;span&gt;Gadā &lt;span class="dsprice-save"&gt;(ietaupi 20%)&lt;/span&gt;&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div class="dspricing"&gt;
+    &lt;div class="dsprice-card"&gt;
+        &lt;h3&gt;Starter&lt;/h3&gt;
+        &lt;p class="dsprice-amount"&gt;&lt;span class="dsprice-num" data-monthly="9" data-yearly="7"&gt;€9&lt;/span&gt;&lt;span class="dsprice-period"&gt;/mēnesī&lt;/span&gt;&lt;/p&gt;
+        &lt;p class="dsprice-desc"&gt;Priekš neliela projekta sākumam.&lt;/p&gt;
+        &lt;ul class="dsprice-features"&gt;
+            &lt;li&gt;1 lietotājs&lt;/li&gt;
+            &lt;li&gt;5 GB krātuve&lt;/li&gt;
+            &lt;li&gt;E-pasta atbalsts&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;button class="dsprice-btn"&gt;Izvēlēties&lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;div class="dsprice-card dsprice-card--featured"&gt;
+        &lt;span class="dsprice-badge"&gt;Populārākais&lt;/span&gt;
+        &lt;h3&gt;Pro&lt;/h3&gt;
+        &lt;p class="dsprice-amount"&gt;&lt;span class="dsprice-num" data-monthly="29" data-yearly="23"&gt;€29&lt;/span&gt;&lt;span class="dsprice-period"&gt;/mēnesī&lt;/span&gt;&lt;/p&gt;
+        &lt;p class="dsprice-desc"&gt;Augošām komandām ar lielākām vajadzībām.&lt;/p&gt;
+        &lt;ul class="dsprice-features"&gt;
+            &lt;li&gt;10 lietotāji&lt;/li&gt;
+            &lt;li&gt;100 GB krātuve&lt;/li&gt;
+            &lt;li&gt;Prioritārs atbalsts&lt;/li&gt;
+            &lt;li&gt;API pieeja&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;button class="dsprice-btn dsprice-btn--featured"&gt;Izvēlēties&lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;div class="dsprice-card"&gt;
+        &lt;h3&gt;Enterprise&lt;/h3&gt;
+        &lt;p class="dsprice-amount"&gt;&lt;span class="dsprice-num" data-monthly="99" data-yearly="79"&gt;€99&lt;/span&gt;&lt;span class="dsprice-period"&gt;/mēnesī&lt;/span&gt;&lt;/p&gt;
+        &lt;p class="dsprice-desc"&gt;Neierobežotai mērogošanai un drošībai.&lt;/p&gt;
+        &lt;ul class="dsprice-features"&gt;
+            &lt;li&gt;Neierobežoti lietotāji&lt;/li&gt;
+            &lt;li&gt;1 TB krātuve&lt;/li&gt;
+            &lt;li&gt;Dedicēts menedžeris&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;button class="dsprice-btn"&gt;Izvēlēties&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+      <p class="code-group-label">CSS</p>
+      <pre class="code-block"><span class="lang">css</span><code>.dsprice-toggle { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 28px; font-size: .875rem; color: #6b7280; font-weight: 600; }
+.dsprice-save { color: #059669; font-weight: 700; }
+.dsprice-switch { position: relative; width: 46px; height: 26px; border-radius: 100px; background: #e5e7eb; border: none; cursor: pointer; transition: background .25s ease; padding: 0; }
+.dsprice-switch.on { background: linear-gradient(135deg,#7c3aed,#d946ef); }
+.dsprice-switch-thumb { position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.25); transition: transform .25s cubic-bezier(.65,0,.35,1); }
+.dsprice-switch.on .dsprice-switch-thumb { transform: translateX(20px); }
+
+.dspricing { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: center; }
+.dsprice-card { position: relative; background: #fff; border: 1.5px solid #eef0f4; border-radius: 20px; padding: 32px 28px; text-align: left; transition: transform .3s ease, box-shadow .3s ease; }
+.dsprice-card:hover { transform: translateY(-4px); box-shadow: 0 20px 45px -20px rgba(0,0,0,.2); }
+.dsprice-card--featured { border: 2px solid transparent; background: linear-gradient(#fff,#fff) padding-box, linear-gradient(135deg,#7c3aed,#d946ef) border-box; transform: scale(1.05); box-shadow: 0 25px 60px -20px rgba(124,58,237,.4); z-index: 1; }
+.dsprice-card--featured:hover { transform: scale(1.05) translateY(-4px); }
+.dsprice-badge { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg,#7c3aed,#d946ef); color: #fff; font-size: .7rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; padding: 5px 16px; border-radius: 100px; box-shadow: 0 8px 16px -6px rgba(124,58,237,.5); }
+.dsprice-card h3 { margin: 0 0 6px; font-size: 1.1rem; color: #6b7280; font-weight: 600; }
+.dsprice-amount { margin: 0 0 10px; display: flex; align-items: baseline; gap: 4px; }
+.dsprice-num { font-size: 2.2rem; font-weight: 800; color: #1e1b3a; }
+.dsprice-period { color: #9ca3af; font-size: .85rem; }
+.dsprice-desc { margin: 0 0 20px; color: #6b7280; font-size: .85rem; line-height: 1.5; }
+.dsprice-features { list-style: none; margin: 0 0 26px; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.dsprice-features li { display: flex; align-items: center; gap: 10px; font-size: .875rem; color: #374151; }
+.dsprice-features li::before { content: "✓"; width: 20px; height: 20px; border-radius: 50%; background: #f3e8ff; color: #7c3aed; font-size: .7rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.dsprice-btn { width: 100%; padding: 12px; border-radius: 12px; border: 1.5px solid #e5e7eb; background: #fff; color: #1e1b3a; font-weight: 600; cursor: pointer; transition: .2s ease; }
+.dsprice-btn:hover { border-color: #a855f7; color: #7c3aed; }
+.dsprice-btn--featured { background: linear-gradient(135deg,#7c3aed,#d946ef); border: none; color: #fff; box-shadow: 0 10px 24px -10px rgba(124,58,237,.6); }
+.dsprice-btn--featured:hover { transform: translateY(-2px); }
+
+/* mobilajā skatā kartītes sakrīt vienā kolonnā, "featured" mērogojums izslēgts */
+@media (max-width: 720px) {
+    .dspricing { grid-template-columns: 1fr; }
+    .dsprice-card--featured { transform: scale(1); }
+}</code></pre>
+
+      <p class="code-group-label">JavaScript</p>
+      <pre class="code-block"><span class="lang">js</span><code>(function () {
+    const toggle = document.getElementById('pricingSwitch');
+    const nums = document.querySelectorAll('.dsprice-num');
+    const periods = document.querySelectorAll('.dsprice-period');
+    let yearly = false;
+
+    toggle.addEventListener('click', () => {
+        yearly = !yearly;
+        toggle.classList.toggle('on', yearly);
+        toggle.setAttribute('aria-checked', String(yearly));
+
+        nums.forEach((el) => {
+            el.textContent = '€' + (yearly ? el.dataset.yearly : el.dataset.monthly);
+        });
+        periods.forEach((el) => {
+            el.textContent = yearly ? '/mēnesī, rēķins gadā' : '/mēnesī';
+        });
+    });
+})();</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Katra cena glabājas HTML atribūtos <code>data-monthly</code> un <code>data-yearly</code> — JS tikai nolasa attiecīgo vērtību un ievieto to tekstā. Nekas netiek pārrēķināts formulā, tāpēc gada cenas (piem., 20% atlaide) jāieraksta jau iepriekš aprēķinātas.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="statistikas-skaititaji">
+      <h2>Animēti statistikas skaitītāji</h2>
+      <p>Skaitļi, kas "uzskaitās" no 0 līdz mērķa vērtībai, kad kļūst redzami skatā — izmanto <code>IntersectionObserver</code>, lai animācija sāktos tieši brīdī, kad lietotājs tos ierauga.</p>
+
+      <div class="preview-box">
+        <div class="preview-label">
+          <span class="preview-dots"><span></span><span></span><span></span></span>
+          Priekšskatījums
+        </div>
+        <iframe class="preview-frame" id="preview-stats" style="height:200px" title="Statistikas skaitītāju priekšskatījums"></iframe>
+      </div>
+
+      <p class="code-group-label">HTML</p>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;div class="dsstats"&gt;
+    &lt;div class="dsstat"&gt;
+        &lt;p class="dsstat-num" data-target="500" data-suffix="+"&gt;0&lt;/p&gt;
+        &lt;p class="dsstat-label"&gt;Apmierināti klienti&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="dsstat"&gt;
+        &lt;p class="dsstat-num" data-target="98" data-suffix="%"&gt;0&lt;/p&gt;
+        &lt;p class="dsstat-label"&gt;Uzticības rādītājs&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="dsstat"&gt;
+        &lt;p class="dsstat-num" data-target="24" data-suffix="/7"&gt;0&lt;/p&gt;
+        &lt;p class="dsstat-label"&gt;Klientu atbalsts&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="dsstat"&gt;
+        &lt;p class="dsstat-num" data-target="12" data-suffix="k+"&gt;0&lt;/p&gt;
+        &lt;p class="dsstat-label"&gt;Pabeigti projekti&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+      <p class="code-group-label">CSS</p>
+      <pre class="code-block"><span class="lang">css</span><code>.dsstats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; text-align: center; padding: 12px 0; }
+.dsstat-num { margin: 0; font-size: 2.4rem; font-weight: 800; background: linear-gradient(135deg,#7c3aed,#d946ef); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.dsstat-label { margin: 6px 0 0; color: #6b7280; font-size: .8rem; font-weight: 600; letter-spacing: .01em; }
+
+@media (max-width: 640px) {
+    .dsstats { grid-template-columns: repeat(2, 1fr); gap: 28px 16px; }
+}</code></pre>
+
+      <p class="code-group-label">JavaScript</p>
+      <pre class="code-block"><span class="lang">js</span><code>(function () {
+    const nums = document.querySelectorAll('.dsstat-num');
+
+    function animateNum(el) {
+        const target = parseFloat(el.dataset.target);
+        const suffix = el.dataset.suffix || '';
+        const duration = 1400;
+        const start = performance.now();
+
+        function tick(now) {
+            const progress = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3); // ease-out
+            el.textContent = Math.round(target * eased) + suffix;
+            if (progress < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                animateNum(entry.target);
+                observer.unobserve(entry.target); // animē tikai vienreiz
+            }
+        });
+    }, { threshold: 0.5 });
+
+    nums.forEach((num) => observer.observe(num));
+})();</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>observer.unobserve(entry.target)</code> pēc animācijas palaišanas ir svarīgi — bez tā skaitītājs mēģinātu animēt no jauna katru reizi, kad elements atkārtoti ienāk skatā (piem., ritinot uz augšu un atpakaļ).</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="atsauksmes">
+      <h2>Atsauksmju karuselis (Testimonials)</h2>
+      <p>Slīdošas klientu atsauksmju kartītes ar zvaigznīšu vērtējumu un iniciāļu avatāru — karuseļa augstums automātiski pielāgojas katras atsauksmes garumam.</p>
+
+      <div class="preview-box">
+        <div class="preview-label">
+          <span class="preview-dots"><span></span><span></span><span></span></span>
+          Priekšskatījums
+        </div>
+        <iframe class="preview-frame" id="preview-testimonials" style="height:320px" title="Atsauksmju karuseļa priekšskatījums"></iframe>
+      </div>
+
+      <p class="code-group-label">HTML</p>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;div class="dstest" id="dstest1"&gt;
+    &lt;div class="dstest-track"&gt;
+        &lt;div class="dstest-slide"&gt;
+            &lt;div class="dstest-stars"&gt;★★★★★&lt;/div&gt;
+            &lt;p class="dstest-quote"&gt;"Šis rīks ietaupīja mums neskaitāmas stundas katru nedēļu. Ieviešana bija pārsteidzoši vienkārša."&lt;/p&gt;
+            &lt;div class="dstest-author"&gt;&lt;span class="dstest-avatar"&gt;LK&lt;/span&gt;&lt;div&gt;&lt;strong&gt;Laura Kalniņa&lt;/strong&gt;&lt;span&gt;Mārketinga vadītāja&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="dstest-slide"&gt;
+            &lt;div class="dstest-stars"&gt;★★★★★&lt;/div&gt;
+            &lt;p class="dstest-quote"&gt;"Klientu atbalsts ir nevainojams — atbild dažu minūšu laikā un patiešām palīdz, nevis tikai lasa skriptu."&lt;/p&gt;
+            &lt;div class="dstest-author"&gt;&lt;span class="dstest-avatar"&gt;MO&lt;/span&gt;&lt;div&gt;&lt;strong&gt;Mārtiņš Ozols&lt;/strong&gt;&lt;span&gt;Produkta vadītājs&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="dstest-slide"&gt;
+            &lt;div class="dstest-stars"&gt;★★★★☆&lt;/div&gt;
+            &lt;p class="dstest-quote"&gt;"Cena/kvalitāte attiecība ir izcila. Vienīgais mīnuss — gribētos vēl vairāk integrāciju, bet tās nāk klāt regulāri."&lt;/p&gt;
+            &lt;div class="dstest-author"&gt;&lt;span class="dstest-avatar"&gt;SB&lt;/span&gt;&lt;div&gt;&lt;strong&gt;Sanita Bērziņa&lt;/strong&gt;&lt;span&gt;Uzņēmuma īpašniece&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="dstest-nav"&gt;
+        &lt;button class="dstest-btn" id="dstestPrev" aria-label="Iepriekšējā atsauksme"&gt;‹&lt;/button&gt;
+        &lt;div class="dstest-dots"&gt;&lt;/div&gt;
+        &lt;button class="dstest-btn" id="dstestNext" aria-label="Nākamā atsauksme"&gt;›&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+      <p class="code-group-label">CSS</p>
+      <pre class="code-block"><span class="lang">css</span><code>.dstest { max-width: 560px; margin: 0 auto; background: #fff; border-radius: 22px; padding: 36px 40px; box-shadow: 0 25px 60px -25px rgba(76,29,149,.3), 0 10px 20px -10px rgba(0,0,0,.1); overflow: hidden; }
+.dstest-track { display: flex; overflow: hidden; transition: transform .5s cubic-bezier(.65,0,.35,1), height .3s ease; }
+.dstest-slide { flex: 0 0 100%; text-align: center; }
+.dstest-stars { color: #f59e0b; letter-spacing: 2px; margin-bottom: 14px; font-size: 1rem; }
+.dstest-quote { font-size: 1.05rem; line-height: 1.65; color: #1e1b3a; margin: 0 0 22px; font-weight: 500; }
+.dstest-author { display: flex; align-items: center; justify-content: center; gap: 12px; }
+.dstest-avatar { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg,#7c3aed,#d946ef); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .8rem; flex-shrink: 0; }
+.dstest-author div { text-align: left; font-size: .85rem; }
+.dstest-author strong { display: block; color: #1e1b3a; }
+.dstest-author span { color: #9ca3af; }
+.dstest-nav { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 26px; }
+.dstest-btn { width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid #e5e7eb; background: #fff; color: #6b7280; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; transition: .2s ease; }
+.dstest-btn:hover { border-color: #a855f7; color: #7c3aed; }
+.dstest-dots { display: flex; gap: 6px; }
+.dstest-dots button { width: 7px; height: 7px; border-radius: 100px; border: none; background: #e5e7eb; cursor: pointer; padding: 0; transition: width .3s ease, background .3s ease; }
+.dstest-dots button.active { width: 20px; background: linear-gradient(135deg,#7c3aed,#d946ef); }</code></pre>
+
+      <p class="code-group-label">JavaScript</p>
+      <pre class="code-block"><span class="lang">js</span><code>(function () {
+    const card = document.getElementById('dstest1');
+    const track = card.querySelector('.dstest-track');
+    const slides = card.querySelectorAll('.dstest-slide');
+    const dotsWrap = card.querySelector('.dstest-dots');
+    let index = 0;
+
+    slides.forEach((_, i) => {
+        const dot = document.createElement('button');
+        if (i === 0) dot.classList.add('active');
+        dot.addEventListener('click', () => goTo(i));
+        dotsWrap.appendChild(dot);
+    });
+    const dots = dotsWrap.querySelectorAll('button');
+
+    function setHeight() {
+        track.style.height = slides[index].offsetHeight + 'px';
+    }
+
+    function goTo(i) {
+        index = (i + slides.length) % slides.length;
+        track.style.transform = `translateX(-${index * 100}%)`;
+        dots.forEach((d, di) => d.classList.toggle('active', di === index));
+        setHeight();
+    }
+
+    window.addEventListener('resize', setHeight);
+    setHeight(); // sākotnējais augstums pirmajai atsauksmei
+
+    card.querySelector('#dstestPrev').addEventListener('click', () => goTo(index - 1));
+    card.querySelector('#dstestNext').addEventListener('click', () => goTo(index + 1));
+})();</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Atsauksmes parasti nav vienāda garuma, tāpēc <code>.dstest-track</code> augstums netiek fiksēts CSS — to katru reizi pārrēķina <code>setHeight()</code>, mērot aktīvā slaida <code>offsetHeight</code>. Tas novērš garāku tekstu apgriešanu vai liekas tukšas vietas īsākiem.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="failu-augsupielade">
+      <h2>Failu augšupielāde (Drag &amp; Drop)</h2>
+      <p>Zona failu ievilkšanai ar peli vai izvēlei caur failu logu, simulētu augšupielādes progresa joslu katram failam un iespēju failu noņemt no saraksta.</p>
+
+      <div class="preview-box">
+        <div class="preview-label">
+          <span class="preview-dots"><span></span><span></span><span></span></span>
+          Priekšskatījums
+        </div>
+        <iframe class="preview-frame" id="preview-upload" style="height:280px" title="Failu augšupielādes priekšskatījums"></iframe>
+      </div>
+
+      <p class="code-group-label">HTML</p>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;div class="dsupload" id="dsupload1"&gt;
+    &lt;label class="dsupload-zone" for="dsupload-input"&gt;
+        &lt;input type="file" id="dsupload-input" multiple hidden&gt;
+        &lt;div class="dsupload-icon"&gt;⬆&lt;/div&gt;
+        &lt;p class="dsupload-title"&gt;Ievelc failus šeit&lt;/p&gt;
+        &lt;p class="dsupload-sub"&gt;vai &lt;span class="dsupload-browse"&gt;izvēlies no ierīces&lt;/span&gt; — PNG, JPG, PDF līdz 10 MB&lt;/p&gt;
+    &lt;/label&gt;
+    &lt;div class="dsupload-list" id="dsupload-list"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+      <p class="code-group-label">CSS</p>
+      <pre class="code-block"><span class="lang">css</span><code>.dsupload-zone { display: block; border: 2px dashed #ddd6fe; border-radius: 18px; padding: 40px 24px; text-align: center; cursor: pointer; transition: border-color .2s ease, background .2s ease; background: #faf5ff; }
+.dsupload-zone:hover, .dsupload-zone.dragover { border-color: #a855f7; background: #f3e8ff; }
+.dsupload-icon { width: 48px; height: 48px; margin: 0 auto 14px; border-radius: 50%; background: linear-gradient(135deg,#7c3aed,#d946ef); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+.dsupload-title { margin: 0 0 4px; font-weight: 700; color: #1e1b3a; font-size: .95rem; }
+.dsupload-sub { margin: 0; color: #9ca3af; font-size: .8rem; }
+.dsupload-browse { color: #7c3aed; font-weight: 600; text-decoration: underline; }
+.dsupload-list { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+.dsupload-file { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid #eef0f4; border-radius: 12px; padding: 12px 14px; }
+.dsupload-file-icon { width: 34px; height: 34px; border-radius: 9px; background: #f3e8ff; color: #7c3aed; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.dsupload-file-info { flex: 1; min-width: 0; }
+.dsupload-file-name { margin: 0; font-size: .825rem; font-weight: 600; color: #1e1b3a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dsupload-file-bar { height: 4px; border-radius: 100px; background: #f3f4f6; margin-top: 6px; overflow: hidden; }
+.dsupload-file-bar-fill { height: 100%; background: linear-gradient(90deg,#7c3aed,#d946ef); width: 0%; transition: width .4s ease; }
+.dsupload-file-remove { background: none; border: none; color: #9ca3af; cursor: pointer; font-size: 1rem; padding: 4px; line-height: 1; flex-shrink: 0; }
+.dsupload-file-remove:hover { color: #ef4444; }</code></pre>
+
+      <p class="code-group-label">JavaScript</p>
+      <pre class="code-block"><span class="lang">js</span><code>(function () {
+    const zone = document.querySelector('.dsupload-zone');
+    const input = document.getElementById('dsupload-input');
+    const list = document.getElementById('dsupload-list');
+
+    function addFile(file) {
+        const item = document.createElement('div');
+        item.className = 'dsupload-file';
+        item.innerHTML =
+            '&lt;span class="dsupload-file-icon"&gt;' + file.name.split('.').pop().slice(0, 3).toUpperCase() + '&lt;/span&gt;' +
+            '&lt;div class="dsupload-file-info"&gt;' +
+                '&lt;p class="dsupload-file-name"&gt;' + file.name + '&lt;/p&gt;' +
+                '&lt;div class="dsupload-file-bar"&gt;&lt;div class="dsupload-file-bar-fill"&gt;&lt;/div&gt;&lt;/div&gt;' +
+            '&lt;/div&gt;' +
+            '&lt;button class="dsupload-file-remove" aria-label="Noņemt"&gt;✕&lt;/button&gt;';
+        list.appendChild(item);
+
+        const fill = item.querySelector('.dsupload-file-bar-fill');
+        requestAnimationFrame(() => { fill.style.width = '100%'; }); // demo nolūkos — reālā projektā šeit progresu atjauno xhr.upload.onprogress
+
+        item.querySelector('.dsupload-file-remove').addEventListener('click', () => item.remove());
+    }
+
+    function handleFiles(files) {
+        Array.from(files).forEach(addFile);
+    }
+
+    zone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        zone.classList.add('dragover');
+    });
+    zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+    zone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        zone.classList.remove('dragover');
+        handleFiles(e.dataTransfer.files);
+    });
+    input.addEventListener('change', () => handleFiles(input.files));
+})();</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Progresa josla šeit ir <strong>vizuāla simulācija</strong> (uzreiz lec uz 100%) — reālā projektā to atjauno <code>XMLHttpRequest</code> notikums <code>xhr.upload.onprogress</code> (vai <code>fetch</code> ar straumēšanu), kas ziņo faktisko nosūtīto baitu skaitu, kamēr fails vēl ceļo uz serveri.</p>
+      </div>
+    </section>
+
     <div class="doc-pager">
       <a href="seo.html"><span class="lbl">← Iepriekšējais</span>SEO</a>
       <a class="to-next" href="drosiba.html"><span class="lbl">Tālāk →</span>Drošība</a>
@@ -627,6 +1013,26 @@ document.addEventListener('keydown', (e) => {
       css: '.dsauth-card { position: relative; overflow: hidden; width: 100%; max-width: 600px; aspect-ratio: 3/2; margin: 0 auto; border-radius: 28px; background: #fff; box-shadow: 0 30px 60px -25px rgba(76,29,149,.35), 0 10px 20px -10px rgba(0,0,0,.15); } .dsauth-form { position: absolute; top: 0; width: 50%; height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; gap: 12px; padding: 0 36px; } .dsauth-form--login { left: 0; } .dsauth-form--register { left: 50%; } .dsauth-form h4 { margin: 0; font-size: 1.4rem; font-weight: 700; color: #1e1b3a; letter-spacing: -.01em; } .dsauth-sub { margin: -4px 0 6px; color: #6b7280; font-size: .85rem; } .dsauth-form input { width: 100%; box-sizing: border-box; padding: 12px 14px; border-radius: 12px; border: 1.5px solid #e5e7eb; font: inherit; transition: border-color .2s ease, box-shadow .2s ease; } .dsauth-form input:focus { outline: none; border-color: #a855f7; box-shadow: 0 0 0 4px rgba(168,85,247,.15); } .dsauth-submit-btn { padding: 12px; margin-top: 4px; border-radius: 12px; border: none; background: linear-gradient(135deg, #7c3aed, #d946ef); color: #fff; font-weight: 600; font-size: .95rem; cursor: pointer; box-shadow: 0 10px 24px -10px rgba(124,58,237,.6); transition: transform .2s ease, box-shadow .2s ease; } .dsauth-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 28px -10px rgba(124,58,237,.7); } .dsauth-cover { position: absolute; top: 8px; bottom: 8px; left: 8px; width: calc(50% - 16px); border-radius: 20px; overflow: hidden; z-index: 2; transition: transform .65s cubic-bezier(.65,0,.35,1); } .dsauth-card.view-login .dsauth-cover { transform: translateX(calc(100% + 16px)); } .dsauth-card.view-register .dsauth-cover { transform: translateX(0); } .dsauth-cover-bg { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transform: scale(1.08); transition: opacity .7s ease, transform 1.4s ease; } .dsauth-card.view-login .dsauth-cover-bg--login { opacity: 1; transform: scale(1); } .dsauth-card.view-register .dsauth-cover-bg--register { opacity: 1; transform: scale(1); } .dsauth-cover::after { content: ""; position: absolute; inset: 0; background: linear-gradient(190deg, rgba(20,10,45,.1) 10%, rgba(12,6,28,.7) 100%); } .dsauth-hero { position: absolute; inset: 0; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 0 28px; text-align: center; color: #fff; opacity: 0; pointer-events: none; transition: opacity .5s ease; } .dsauth-hero h3 { margin: 0; font-size: 1.4rem; } .dsauth-hero p { margin: 0; opacity: .9; font-size: .875rem; line-height: 1.5; } .dsauth-toggle-btn { padding: 11px 30px; border-radius: 100px; border: 1.5px solid rgba(255,255,255,.7); background: rgba(255,255,255,.08); backdrop-filter: blur(6px); color: #fff; font-weight: 600; letter-spacing: .02em; cursor: pointer; transition: .25s ease; } .dsauth-toggle-btn:hover { background: #fff; color: #1e1b3a; border-color: #fff; transform: translateY(-2px); box-shadow: 0 10px 24px -8px rgba(0,0,0,.35); } .dsauth-card.view-login .dsauth-hero--login { opacity: 1; pointer-events: auto; } .dsauth-card.view-register .dsauth-hero--register { opacity: 1; pointer-events: auto; }',
       html: '<div class="dsauth-card view-login" id="dsauth1"><form class="dsauth-form dsauth-form--login"><h4>Pieteikšanās</h4><p class="dsauth-sub">Priecājamies redzēt tevi atkal!</p><input type="email" placeholder="E-pasts"><input type="password" placeholder="Parole"><button type="submit" class="dsauth-submit-btn">Pieteikties</button></form><form class="dsauth-form dsauth-form--register"><h4>Reģistrācija</h4><p class="dsauth-sub">Izveido kontu dažu sekunžu laikā</p><input type="text" placeholder="Vārds"><input type="email" placeholder="E-pasts"><input type="password" placeholder="Parole"><button type="submit" class="dsauth-submit-btn">Reģistrēties</button></form><div class="dsauth-cover"><div class="dsauth-cover-bg dsauth-cover-bg--login" style="background-image:url(' + img1 + ')"></div><div class="dsauth-cover-bg dsauth-cover-bg--register" style="background-image:url(' + img5 + ')"></div><div class="dsauth-hero dsauth-hero--login"><h3>Sveiks!</h3><p>Vēl nav konta? Pievienojies mums.</p><button type="button" class="dsauth-toggle-btn" data-target="register">Reģistrēties</button></div><div class="dsauth-hero dsauth-hero--register"><h3>Laipni lūdzam atpakaļ</h3><p>Jau esi reģistrējies? Piesakies.</p><button type="button" class="dsauth-toggle-btn" data-target="login">Pieteikties</button></div></div></div>',
       js: "(function(){var card=document.getElementById('dsauth1');card.querySelectorAll('.dsauth-toggle-btn').forEach(function(btn){btn.addEventListener('click',function(){card.classList.remove('view-login','view-register');card.classList.add('view-'+btn.dataset.target);});});card.querySelectorAll('.dsauth-form').forEach(function(form){form.addEventListener('submit',function(e){e.preventDefault();});});})();"
+    },
+    'preview-pricing': {
+      css: '.dsprice-toggle { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 24px; font-size: .875rem; color: #6b7280; font-weight: 600; } .dsprice-save { color: #059669; font-weight: 700; } .dsprice-switch { position: relative; width: 46px; height: 26px; border-radius: 100px; background: #e5e7eb; border: none; cursor: pointer; transition: background .25s ease; padding: 0; } .dsprice-switch.on { background: linear-gradient(135deg,#7c3aed,#d946ef); } .dsprice-switch-thumb { position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.25); transition: transform .25s cubic-bezier(.65,0,.35,1); } .dsprice-switch.on .dsprice-switch-thumb { transform: translateX(20px); } .dspricing { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: center; } .dsprice-card { position: relative; background: #fff; border: 1.5px solid #eef0f4; border-radius: 20px; padding: 26px 20px; text-align: left; transition: transform .3s ease, box-shadow .3s ease; } .dsprice-card:hover { transform: translateY(-4px); box-shadow: 0 20px 45px -20px rgba(0,0,0,.2); } .dsprice-card--featured { border: 2px solid transparent; background: linear-gradient(#fff,#fff) padding-box, linear-gradient(135deg,#7c3aed,#d946ef) border-box; transform: scale(1.05); box-shadow: 0 25px 60px -20px rgba(124,58,237,.4); z-index: 1; } .dsprice-card--featured:hover { transform: scale(1.05) translateY(-4px); } .dsprice-badge { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg,#7c3aed,#d946ef); color: #fff; font-size: .65rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; padding: 5px 14px; border-radius: 100px; box-shadow: 0 8px 16px -6px rgba(124,58,237,.5); white-space: nowrap; } .dsprice-card h3 { margin: 0 0 6px; font-size: 1rem; color: #6b7280; font-weight: 600; } .dsprice-amount { margin: 0 0 8px; display: flex; align-items: baseline; gap: 4px; } .dsprice-num { font-size: 1.8rem; font-weight: 800; color: #1e1b3a; } .dsprice-period { color: #9ca3af; font-size: .75rem; } .dsprice-desc { margin: 0 0 16px; color: #6b7280; font-size: .78rem; line-height: 1.5; } .dsprice-features { list-style: none; margin: 0 0 20px; padding: 0; display: flex; flex-direction: column; gap: 8px; } .dsprice-features li { display: flex; align-items: center; gap: 8px; font-size: .78rem; color: #374151; } .dsprice-features li::before { content: "✓"; width: 18px; height: 18px; border-radius: 50%; background: #f3e8ff; color: #7c3aed; font-size: .6rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; } .dsprice-btn { width: 100%; padding: 10px; border-radius: 10px; border: 1.5px solid #e5e7eb; background: #fff; color: #1e1b3a; font-weight: 600; font-size: .82rem; cursor: pointer; transition: .2s ease; } .dsprice-btn:hover { border-color: #a855f7; color: #7c3aed; } .dsprice-btn--featured { background: linear-gradient(135deg,#7c3aed,#d946ef); border: none; color: #fff; box-shadow: 0 10px 24px -10px rgba(124,58,237,.6); } .dsprice-btn--featured:hover { transform: translateY(-2px); }',
+      html: '<div class="dsprice-toggle"><span>Mēnesī</span><button class="dsprice-switch" id="pricingSwitch" role="switch" aria-checked="false"><span class="dsprice-switch-thumb"></span></button><span>Gadā <span class="dsprice-save">(ietaupi 20%)</span></span></div><div class="dspricing"><div class="dsprice-card"><h3>Starter</h3><p class="dsprice-amount"><span class="dsprice-num" data-monthly="9" data-yearly="7">€9</span><span class="dsprice-period">/mēnesī</span></p><p class="dsprice-desc">Priekš neliela projekta sākumam.</p><ul class="dsprice-features"><li>1 lietotājs</li><li>5 GB krātuve</li><li>E-pasta atbalsts</li></ul><button class="dsprice-btn">Izvēlēties</button></div><div class="dsprice-card dsprice-card--featured"><span class="dsprice-badge">Populārākais</span><h3>Pro</h3><p class="dsprice-amount"><span class="dsprice-num" data-monthly="29" data-yearly="23">€29</span><span class="dsprice-period">/mēnesī</span></p><p class="dsprice-desc">Augošām komandām ar lielākām vajadzībām.</p><ul class="dsprice-features"><li>10 lietotāji</li><li>100 GB krātuve</li><li>Prioritārs atbalsts</li><li>API pieeja</li></ul><button class="dsprice-btn dsprice-btn--featured">Izvēlēties</button></div><div class="dsprice-card"><h3>Enterprise</h3><p class="dsprice-amount"><span class="dsprice-num" data-monthly="99" data-yearly="79">€99</span><span class="dsprice-period">/mēnesī</span></p><p class="dsprice-desc">Neierobežotai mērogošanai un drošībai.</p><ul class="dsprice-features"><li>Neierobežoti lietotāji</li><li>1 TB krātuve</li><li>Dedicēts menedžeris</li></ul><button class="dsprice-btn">Izvēlēties</button></div></div>',
+      js: "(function(){var toggle=document.getElementById('pricingSwitch');var nums=document.querySelectorAll('.dsprice-num');var periods=document.querySelectorAll('.dsprice-period');var yearly=false;toggle.addEventListener('click',function(){yearly=!yearly;toggle.classList.toggle('on',yearly);toggle.setAttribute('aria-checked',String(yearly));nums.forEach(function(el){el.textContent='€'+(yearly?el.dataset.yearly:el.dataset.monthly);});periods.forEach(function(el){el.textContent=yearly?'/mēnesī, rēķins gadā':'/mēnesī';});});})();"
+    },
+    'preview-stats': {
+      css: '.dsstats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; text-align: center; padding: 12px 0; } .dsstat-num { margin: 0; font-size: 2rem; font-weight: 800; background: linear-gradient(135deg,#7c3aed,#d946ef); -webkit-background-clip: text; background-clip: text; color: transparent; } .dsstat-label { margin: 6px 0 0; color: #6b7280; font-size: .72rem; font-weight: 600; letter-spacing: .01em; }',
+      html: '<div class="dsstats"><div class="dsstat"><p class="dsstat-num" data-target="500" data-suffix="+">0</p><p class="dsstat-label">Apmierināti klienti</p></div><div class="dsstat"><p class="dsstat-num" data-target="98" data-suffix="%">0</p><p class="dsstat-label">Uzticības rādītājs</p></div><div class="dsstat"><p class="dsstat-num" data-target="24" data-suffix="/7">0</p><p class="dsstat-label">Klientu atbalsts</p></div><div class="dsstat"><p class="dsstat-num" data-target="12" data-suffix="k+">0</p><p class="dsstat-label">Pabeigti projekti</p></div></div>',
+      js: "(function(){var nums=document.querySelectorAll('.dsstat-num');function animateNum(el){var target=parseFloat(el.dataset.target);var suffix=el.dataset.suffix||'';var duration=1400;var start=performance.now();function tick(now){var progress=Math.min((now-start)/duration,1);var eased=1-Math.pow(1-progress,3);el.textContent=Math.round(target*eased)+suffix;if(progress<1)requestAnimationFrame(tick);}requestAnimationFrame(tick);}var observer=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){animateNum(entry.target);observer.unobserve(entry.target);}});},{threshold:0.5});nums.forEach(function(num){observer.observe(num);});})();"
+    },
+    'preview-testimonials': {
+      css: '.dstest { max-width: 100%; margin: 0 auto; background: #fff; border-radius: 22px; padding: 28px 26px; box-shadow: 0 25px 60px -25px rgba(76,29,149,.3), 0 10px 20px -10px rgba(0,0,0,.1); overflow: hidden; box-sizing: border-box; } .dstest-track { display: flex; overflow: hidden; transition: transform .5s cubic-bezier(.65,0,.35,1), height .3s ease; } .dstest-slide { flex: 0 0 100%; text-align: center; box-sizing: border-box; padding: 0 6px; } .dstest-stars { color: #f59e0b; letter-spacing: 2px; margin-bottom: 12px; font-size: .95rem; } .dstest-quote { font-size: .95rem; line-height: 1.6; color: #1e1b3a; margin: 0 0 18px; font-weight: 500; } .dstest-author { display: flex; align-items: center; justify-content: center; gap: 12px; } .dstest-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg,#7c3aed,#d946ef); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .78rem; flex-shrink: 0; } .dstest-author div { text-align: left; font-size: .82rem; } .dstest-author strong { display: block; color: #1e1b3a; } .dstest-author span { color: #9ca3af; } .dstest-nav { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 22px; } .dstest-btn { width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid #e5e7eb; background: #fff; color: #6b7280; cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; transition: .2s ease; } .dstest-btn:hover { border-color: #a855f7; color: #7c3aed; } .dstest-dots { display: flex; gap: 6px; } .dstest-dots button { width: 7px; height: 7px; border-radius: 100px; border: none; background: #e5e7eb; cursor: pointer; padding: 0; transition: width .3s ease, background .3s ease; } .dstest-dots button.active { width: 20px; background: linear-gradient(135deg,#7c3aed,#d946ef); }',
+      html: '<div class="dstest" id="dstest1"><div class="dstest-track"><div class="dstest-slide"><div class="dstest-stars">★★★★★</div><p class="dstest-quote">"Šis rīks ietaupīja mums neskaitāmas stundas katru nedēļu. Ieviešana bija pārsteidzoši vienkārša."</p><div class="dstest-author"><span class="dstest-avatar">LK</span><div><strong>Laura Kalniņa</strong><span>Mārketinga vadītāja</span></div></div></div><div class="dstest-slide"><div class="dstest-stars">★★★★★</div><p class="dstest-quote">"Klientu atbalsts ir nevainojams — atbild dažu minūšu laikā un patiešām palīdz, nevis tikai lasa skriptu."</p><div class="dstest-author"><span class="dstest-avatar">MO</span><div><strong>Mārtiņš Ozols</strong><span>Produkta vadītājs</span></div></div></div><div class="dstest-slide"><div class="dstest-stars">★★★★☆</div><p class="dstest-quote">"Cena/kvalitāte attiecība ir izcila. Vienīgais mīnuss — gribētos vēl vairāk integrāciju, bet tās nāk klāt regulāri."</p><div class="dstest-author"><span class="dstest-avatar">SB</span><div><strong>Sanita Bērziņa</strong><span>Uzņēmuma īpašniece</span></div></div></div></div><div class="dstest-nav"><button class="dstest-btn" id="dstestPrev" aria-label="Iepriekšējā atsauksme">‹</button><div class="dstest-dots"></div><button class="dstest-btn" id="dstestNext" aria-label="Nākamā atsauksme">›</button></div></div>',
+      js: "(function(){var card=document.getElementById('dstest1');var track=card.querySelector('.dstest-track');var slides=card.querySelectorAll('.dstest-slide');var dotsWrap=card.querySelector('.dstest-dots');var index=0;slides.forEach(function(_,i){var dot=document.createElement('button');if(i===0)dot.classList.add('active');dot.addEventListener('click',function(){goTo(i);});dotsWrap.appendChild(dot);});var dots=dotsWrap.querySelectorAll('button');function setHeight(){track.style.height=slides[index].offsetHeight+'px';}function goTo(i){index=(i+slides.length)%slides.length;track.style.transform='translateX(-'+(index*100)+'%)';dots.forEach(function(d,di){d.classList.toggle('active',di===index);});setHeight();}window.addEventListener('resize',setHeight);setHeight();card.querySelector('#dstestPrev').addEventListener('click',function(){goTo(index-1);});card.querySelector('#dstestNext').addEventListener('click',function(){goTo(index+1);});})();"
+    },
+    'preview-upload': {
+      css: '.dsupload-zone { display: block; border: 2px dashed #ddd6fe; border-radius: 18px; padding: 32px 20px; text-align: center; cursor: pointer; transition: border-color .2s ease, background .2s ease; background: #faf5ff; } .dsupload-zone:hover, .dsupload-zone.dragover { border-color: #a855f7; background: #f3e8ff; } .dsupload-icon { width: 44px; height: 44px; margin: 0 auto 12px; border-radius: 50%; background: linear-gradient(135deg,#7c3aed,#d946ef); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; } .dsupload-title { margin: 0 0 4px; font-weight: 700; color: #1e1b3a; font-size: .9rem; } .dsupload-sub { margin: 0; color: #9ca3af; font-size: .78rem; } .dsupload-browse { color: #7c3aed; font-weight: 600; text-decoration: underline; } .dsupload-list { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; } .dsupload-file { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid #eef0f4; border-radius: 12px; padding: 12px 14px; } .dsupload-file-icon { width: 34px; height: 34px; border-radius: 9px; background: #f3e8ff; color: #7c3aed; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; } .dsupload-file-info { flex: 1; min-width: 0; } .dsupload-file-name { margin: 0; font-size: .8rem; font-weight: 600; color: #1e1b3a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .dsupload-file-bar { height: 4px; border-radius: 100px; background: #f3f4f6; margin-top: 6px; overflow: hidden; } .dsupload-file-bar-fill { height: 100%; background: linear-gradient(90deg,#7c3aed,#d946ef); width: 0%; transition: width .4s ease; } .dsupload-file-remove { background: none; border: none; color: #9ca3af; cursor: pointer; font-size: 1rem; padding: 4px; line-height: 1; flex-shrink: 0; } .dsupload-file-remove:hover { color: #ef4444; }',
+      html: '<div class="dsupload" id="dsupload1"><label class="dsupload-zone" for="dsupload-input"><input type="file" id="dsupload-input" multiple hidden><div class="dsupload-icon">⬆</div><p class="dsupload-title">Ievelc failus šeit</p><p class="dsupload-sub">vai <span class="dsupload-browse">izvēlies no ierīces</span> — PNG, JPG, PDF līdz 10 MB</p></label><div class="dsupload-list" id="dsupload-list"></div></div>',
+      js: "(function(){var zone=document.querySelector('.dsupload-zone');var input=document.getElementById('dsupload-input');var list=document.getElementById('dsupload-list');function addFile(file){var item=document.createElement('div');item.className='dsupload-file';item.innerHTML='<span class=\"dsupload-file-icon\">'+file.name.split('.').pop().slice(0,3).toUpperCase()+'</span><div class=\"dsupload-file-info\"><p class=\"dsupload-file-name\">'+file.name+'</p><div class=\"dsupload-file-bar\"><div class=\"dsupload-file-bar-fill\"></div></div></div><button class=\"dsupload-file-remove\" aria-label=\"Noņemt\">✕</button>';list.appendChild(item);var fill=item.querySelector('.dsupload-file-bar-fill');requestAnimationFrame(function(){fill.style.width='100%';});item.querySelector('.dsupload-file-remove').addEventListener('click',function(){item.remove();});}function handleFiles(files){Array.prototype.slice.call(files).forEach(addFile);}zone.addEventListener('dragover',function(e){e.preventDefault();zone.classList.add('dragover');});zone.addEventListener('dragleave',function(){zone.classList.remove('dragover');});zone.addEventListener('drop',function(e){e.preventDefault();zone.classList.remove('dragover');handleFiles(e.dataTransfer.files);});input.addEventListener('change',function(){handleFiles(input.files);});})();"
     }
   };
 
