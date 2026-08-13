@@ -77,6 +77,10 @@
       <h4>WooCommerce</h4>
       <a href="#snip-stripe-locale"><span class="bullet"></span>Stripe apmaksas formas valoda</a>
     </div>
+    <div class="doc-sidebar-group">
+      <h4>Contact Form 7</h4>
+      <a href="#snip-cf7-autofill"><span class="bullet"></span>Automātiska aizpilde pieteikušamies</a>
+    </div>
   </aside>
 
   <main class="doc-main">
@@ -537,6 +541,37 @@
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
         <p>Pārbaudi, vai <code>'lv'</code> ir Stripe atbalstīto lokalizāciju sarakstā (<a href="https://docs.stripe.com/js/appendix/supported_locales" target="_blank" rel="noopener">docs.stripe.com/js/appendix/supported_locales</a>) — Stripe periodiski paplašina atbalstīto valodu klāstu. Ja konkrētā valoda vēl netiek atbalstīta, drošāka alternatīva ir <code>'auto'</code>, kas ļauj Stripe pašam noteikt valodu pēc apmeklētāja pārlūka iestatījumiem.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="snip-cf7-autofill">
+      <h2>Automātiska aizpilde pieteikušamies lietotājiem</h2>
+      <p>Contact Form 7 formas laukos var norādīt <code>default:...</code> parametru — tas automātiski aizpilda lauku ar pieteikušā lietotāja datiem, ja apmeklētājs jau ir ielogojies. Neielogotam apmeklētājam lauks vienkārši paliek tukšs — kļūdas nav, tas ir gaidītā uzvedība.</p>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;label&gt;Vārds &lt;span style="color: red;"&gt;*&lt;/span&gt;&lt;/label&gt;
+[text* name default:user_display_name placeholder "Jūsu vārds"]
+
+&lt;label&gt;Tālrunis &lt;span style="color: red;"&gt;*&lt;/span&gt;&lt;/label&gt;
+[tel* phone default:user_meta key='billing_phone' placeholder "+371..."]
+
+&lt;label&gt;E-pasts &lt;span style="color: red;"&gt;*&lt;/span&gt;&lt;/label&gt;
+[email* email default:user_email placeholder "piemers@epasts.lv"]
+
+&lt;label&gt;Jūsu ziņa &lt;span style="color: red;"&gt;*&lt;/span&gt;&lt;/label&gt;
+[textarea* message x4 minlength:10]
+
+[submit "Nosūtīt ziņu"]</code></pre>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4><code>default:user_display_name</code></h4><p>Aizpilda ar pieteikušā lietotāja publiski redzamo vārdu (WordPress profila "Displayed name" lauks).</p></div>
+        <div class="doc-mini-card"><h4><code>default:user_email</code></h4><p>Aizpilda ar lietotāja konta e-pasta adresi.</p></div>
+        <div class="doc-mini-card"><h4><code>default:user_meta key='...'</code></h4><p>Aizpilda ar jebkuru lietotāja meta lauku — piem., <code>billing_phone</code> ir WooCommerce saglabātais rēķina tālrunis.</p></div>
+      </div>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>user_meta key='billing_phone'</code> strādā tikai tad, ja lietotājs jau iepriekš iegādājies kaut ko WooCommerce veikalā (vai administrators to ir manuāli aizpildījis) — <code>billing_phone</code> ir WooCommerce, nevis WordPress kodola meta lauks. Ja projektā WooCommerce nav uzstādīts, šis konkrētais lauks paliks tukšs arī pieteikušamies lietotājiem.</p>
+      </div>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Aizpildītā vērtība ir tikai <strong>sākotnējais ieteikums</strong> — lauks joprojām ir parasts teksta lauks, ko lietotājs var brīvi rediģēt vai izdzēst pirms nosūtīšanas. Neuztver to kā drošu, neapšaubāmu datu avotu servera pusē — ja formas apstrādē kaut ko izmanto tālāk (piem., saglabā datubāzē), joprojām validē un attīri ievadi tāpat kā jebkuru citu formas lauku.</p>
       </div>
     </section>
 
