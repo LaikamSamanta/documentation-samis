@@ -58,6 +58,16 @@
     <div class="doc-sidebar-group">
       <h4>Formas</h4>
       <a href="#failu-augsupielade"><span class="bullet"></span>Failu augšupielāde (Drag &amp; Drop)</a>
+      <a href="#meklesana"><span class="bullet"></span>Meklēšana ar autopabeigšanu</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Navigācija</h4>
+      <a href="#navigacijas-josla"><span class="bullet"></span>Navigācijas josla (Navbar)</a>
+      <a href="#solu-indikators"><span class="bullet"></span>Solu indikators (Stepper)</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Dati</h4>
+      <a href="#salidzinasanas-tabula"><span class="bullet"></span>Salīdzināšanas tabula</a>
     </div>
   </aside>
 
@@ -952,6 +962,384 @@ document.addEventListener('keydown', (e) => {
       </div>
     </section>
 
+    <section class="doc-section" id="meklesana">
+      <h2>Meklēšana ar autopabeigšanu</h2>
+      <p>Ievades lauks, kas dzīvi filtrē rezultātu sarakstu, iezīmē sakrītošo teksta daļu un atbalsta bulttaustiņu navigāciju + <code>Enter</code>/<code>Escape</code>.</p>
+
+      <div class="preview-box">
+        <div class="preview-label">
+          <span class="preview-dots"><span></span><span></span><span></span></span>
+          Priekšskatījums
+        </div>
+        <iframe class="preview-frame" id="preview-search" style="height:280px" title="Meklēšanas priekšskatījums"></iframe>
+      </div>
+
+      <p class="code-group-label">HTML</p>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;div class="dssearch" id="dssearch1"&gt;
+    &lt;div class="dssearch-box"&gt;
+        &lt;svg class="dssearch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;circle cx="11" cy="11" r="8"/&gt;&lt;path d="m21 21-4.3-4.3"/&gt;&lt;/svg&gt;
+        &lt;input type="text" class="dssearch-input" id="dssearchInput" placeholder="Meklēt lapas..." autocomplete="off"&gt;
+    &lt;/div&gt;
+    &lt;ul class="dssearch-results" id="dssearchResults"&gt;&lt;/ul&gt;
+&lt;/div&gt;</code></pre>
+
+      <p class="code-group-label">CSS</p>
+      <pre class="code-block"><span class="lang">css</span><code>.dssearch { position: relative; max-width: 380px; margin: 0 auto; }
+.dssearch-box { position: relative; display: flex; align-items: center; }
+.dssearch-icon { position: absolute; left: 14px; width: 18px; height: 18px; color: #9ca3af; pointer-events: none; }
+.dssearch-input { width: 100%; box-sizing: border-box; padding: 12px 14px 12px 42px; border-radius: 12px; border: 1.5px solid #e5e7eb; font: inherit; font-size: .9rem; transition: border-color .2s ease, box-shadow .2s ease; }
+.dssearch-input:focus { outline: none; border-color: #6366f1; box-shadow: 0 0 0 4px #eef2ff; }
+.dssearch-results { list-style: none; margin: 8px 0 0; padding: 6px; position: absolute; top: 100%; left: 0; right: 0; background: #fff; border-radius: 14px; border: 1px solid #eef0f4; box-shadow: 0 20px 45px -20px rgba(49,46,129,.3); max-height: 260px; overflow-y: auto; display: none; z-index: 10; }
+.dssearch-results.open { display: block; }
+.dssearch-item { display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border-radius: 9px; cursor: pointer; }
+.dssearch-item:hover, .dssearch-item.active { background: #eef2ff; }
+.dssearch-item-title { font-size: .85rem; font-weight: 600; color: #1e293b; }
+.dssearch-item-title mark { background: #c7d2fe; color: #4338ca; border-radius: 3px; padding: 0 1px; }
+.dssearch-item-cat { font-size: .72rem; color: #9ca3af; }
+.dssearch-empty { padding: 16px; text-align: center; color: #9ca3af; font-size: .85rem; }</code></pre>
+
+      <p class="code-group-label">JavaScript</p>
+      <pre class="code-block"><span class="lang">js</span><code>(function () {
+    const items = [
+        { title: 'WordPress hooks un filtri', cat: 'WordPress' },
+        { title: 'REST API autentifikācija', cat: 'API' },
+        { title: 'CSS Grid padziļināti', cat: 'HTML &amp; CSS' },
+        { title: 'SQL Injection aizsardzība', cat: 'Drošība' },
+        { title: 'Git zaru pārvaldība', cat: 'Git &amp; GitHub' },
+        { title: 'JavaScript Promises', cat: 'JavaScript' },
+        { title: 'Core Web Vitals mērīšana', cat: 'SEO' },
+    ];
+
+    const input = document.getElementById('dssearchInput');
+    const list = document.getElementById('dssearchResults');
+    let activeIndex = -1;
+
+    function highlight(text, query) {
+        const i = text.toLowerCase().indexOf(query.toLowerCase());
+        if (i === -1) return text;
+        return text.slice(0, i) + '&lt;mark&gt;' + text.slice(i, i + query.length) + '&lt;/mark&gt;' + text.slice(i + query.length);
+    }
+
+    function render(query) {
+        const matches = items.filter((item) => item.title.toLowerCase().includes(query.toLowerCase()));
+        activeIndex = -1;
+
+        if (!query) {
+            list.classList.remove('open');
+            list.innerHTML = '';
+            return;
+        }
+
+        list.innerHTML = matches.length
+            ? matches.map((item) =>
+                `&lt;li class="dssearch-item"&gt;&lt;span class="dssearch-item-title"&gt;${highlight(item.title, query)}&lt;/span&gt;&lt;span class="dssearch-item-cat"&gt;${item.cat}&lt;/span&gt;&lt;/li&gt;`
+              ).join('')
+            : '&lt;li class="dssearch-empty"&gt;Nekas netika atrasts&lt;/li&gt;';
+
+        list.classList.add('open');
+    }
+
+    input.addEventListener('input', () => render(input.value.trim()));
+
+    input.addEventListener('keydown', (e) => {
+        const options = list.querySelectorAll('.dssearch-item');
+        if (!options.length) return;
+
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            activeIndex = (activeIndex + 1) % options.length;
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            activeIndex = (activeIndex - 1 + options.length) % options.length;
+        } else if (e.key === 'Enter' &amp;&amp; activeIndex > -1) {
+            options[activeIndex].click();
+            return;
+        } else if (e.key === 'Escape') {
+            list.classList.remove('open');
+            return;
+        } else {
+            return;
+        }
+        options.forEach((opt, i) => opt.classList.toggle('active', i === activeIndex));
+    });
+
+    list.addEventListener('click', (e) => {
+        const item = e.target.closest('.dssearch-item');
+        if (!item) return;
+        input.value = item.querySelector('.dssearch-item-title').textContent;
+        list.classList.remove('open');
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!document.getElementById('dssearch1').contains(e.target)) {
+            list.classList.remove('open');
+        }
+    });
+})();</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Šis piemērs meklē <strong>klientā</strong> (masīvā, kas jau ielādēts pārlūkā) — der nelieliem sarakstiem. Simtiem/tūkstošiem ierakstu gadījumā vajadzētu meklēšanu pārcelt uz serveri (ar <code>debounce</code>, lai nesūtītu pieprasījumu par katru burtu — skat. <a href="javascript.html#async">JavaScript → Asinhronā programmēšana</a>).</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="navigacijas-josla">
+      <h2>Navigācijas josla (Navbar)</h2>
+      <p>Stikla efekta (glass) navigācija, kas uz šauriem ekrāniem pārslēdzas uz "hamburger" izvēlni — šis priekšskatījums izmanto <code>@container</code> vaicājumu, nevis <code>@media</code>, tāpēc mobilā versija redzama uzreiz, neatkarīgi no pārlūka loga platuma.</p>
+
+      <div class="preview-box">
+        <div class="preview-label">
+          <span class="preview-dots"><span></span><span></span><span></span></span>
+          Priekšskatījums
+        </div>
+        <iframe class="preview-frame" id="preview-navbar" style="height:280px" title="Navigācijas joslas priekšskatījums"></iframe>
+      </div>
+
+      <p class="code-group-label">HTML</p>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;div class="dsnav-frame"&gt;
+    &lt;nav class="dsnav" id="dsnav1"&gt;
+        &lt;a class="dsnav-brand" href="#"&gt;Zīmols&lt;/a&gt;
+        &lt;button class="dsnav-toggle" id="dsnavToggle" aria-label="Izvēlne" aria-expanded="false"&gt;
+            &lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;div class="dsnav-links" id="dsnavLinks"&gt;
+            &lt;a href="#"&gt;Sākums&lt;/a&gt;
+            &lt;a href="#"&gt;Par mums&lt;/a&gt;
+            &lt;a href="#"&gt;Pakalpojumi&lt;/a&gt;
+            &lt;a href="#"&gt;Kontakti&lt;/a&gt;
+            &lt;a class="dsnav-cta" href="#"&gt;Pieteikties&lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+    &lt;div class="dsnav-body"&gt;
+        &lt;h4&gt;Konteinera vaicājums, nevis viewport&lt;/h4&gt;
+        &lt;p&gt;Šis rāmis ir šaurs ar nolūku — izvēlne uz "hamburgeru" pārslēdzas balstoties uz &lt;strong&gt;šī konteinera&lt;/strong&gt; platumu, nevis visa loga platumu.&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+      <p class="code-group-label">CSS</p>
+      <pre class="code-block"><span class="lang">css</span><code>.dsnav-frame { max-width: 340px; margin: 0 auto; container-type: inline-size; border-radius: 24px; overflow: hidden; border: 1px solid #eef0f4; box-shadow: 0 25px 60px -25px rgba(49,46,129,.35), 0 10px 20px -10px rgba(0,0,0,.15); }
+
+.dsnav { position: relative; display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: rgba(255,255,255,.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,.06); }
+.dsnav-brand { font-weight: 800; font-size: 1.05rem; color: #1e293b; text-decoration: none; }
+.dsnav-toggle { display: none; flex-direction: column; justify-content: center; gap: 4px; width: 34px; height: 34px; border: none; background: #eef2ff; border-radius: 9px; cursor: pointer; flex-shrink: 0; }
+.dsnav-toggle span { width: 16px; height: 2px; background: #4f46e5; margin: 0 auto; border-radius: 2px; transition: transform .3s ease, opacity .3s ease; }
+.dsnav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.dsnav-toggle.open span:nth-child(2) { opacity: 0; }
+.dsnav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+.dsnav-links { display: flex; align-items: center; gap: 20px; }
+.dsnav-links a { color: #475569; text-decoration: none; font-size: .85rem; font-weight: 600; white-space: nowrap; }
+.dsnav-links a:hover { color: #4f46e5; }
+.dsnav-cta { background: linear-gradient(135deg,#4f46e5,#3b82f6); color: #fff !important; padding: 8px 16px; border-radius: 9px; }
+.dsnav-body { padding: 22px 18px; color: #475569; font-size: .82rem; line-height: 1.6; }
+.dsnav-body h4 { margin: 0 0 8px; color: #1e293b; font-size: .95rem; }
+
+/* konteinera vaicājums — trigerē balstoties uz .dsnav-frame platumu, nevis visa loga platumu */
+@container (max-width: 420px) {
+    .dsnav-toggle { display: flex; }
+    .dsnav-links { position: absolute; top: 100%; right: 0; width: 200px; background: #fff; flex-direction: column; align-items: flex-start; padding: 18px; gap: 14px; box-shadow: 0 20px 40px -20px rgba(0,0,0,.3); border-radius: 0 0 0 16px; transform: translateY(-8px); opacity: 0; pointer-events: none; transition: opacity .25s ease, transform .25s ease; }
+    .dsnav-links.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .dsnav-cta { width: 100%; text-align: center; box-sizing: border-box; }
+}</code></pre>
+
+      <p class="code-group-label">JavaScript</p>
+      <pre class="code-block"><span class="lang">js</span><code>(function () {
+    const toggle = document.getElementById('dsnavToggle');
+    const links = document.getElementById('dsnavLinks');
+
+    toggle.addEventListener('click', () => {
+        const isOpen = links.classList.toggle('open');
+        toggle.classList.toggle('open', isOpen);
+        toggle.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    links.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => {
+            links.classList.remove('open');
+            toggle.classList.remove('open');
+            toggle.setAttribute('aria-expanded', 'false');
+        });
+    });
+})();</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>@container</code> vaicājumam nepieciešams, lai kāds priekštecis (šeit — <code>.dsnav-frame</code>) būtu deklarēts kā konteiners ar <code>container-type: inline-size</code>. Pilnu skaidrojumu skat. <a href="css-advanced.html#container-queries">HTML &amp; CSS → Container Queries</a>. Reālā projektā <code>.dsnav</code> parasti liktu tieši uz <code>&lt;body&gt;</code> bez šī mākslīgā rāmja — rāmis šeit ir tikai priekšskatījuma demonstrācijai.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="solu-indikators">
+      <h2>Solu indikators (Stepper)</h2>
+      <p>Numurēti soļi ar savienotu progresa līniju — pabeigtajiem soļiem ķeksītis, aktīvajam izcēlums, gaidošajiem pelēks tonis. Bieži izmanto checkout vai onboarding plūsmās.</p>
+
+      <div class="preview-box">
+        <div class="preview-label">
+          <span class="preview-dots"><span></span><span></span><span></span></span>
+          Priekšskatījums
+        </div>
+        <iframe class="preview-frame" id="preview-stepper" style="height:200px" title="Solu indikatora priekšskatījums"></iframe>
+      </div>
+
+      <p class="code-group-label">HTML</p>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;div class="dsstepper" id="dsstepper1"&gt;
+    &lt;ol class="dsstep-list"&gt;
+        &lt;li class="dsstep-item" data-step="1"&gt;&lt;span class="dsstep-circle"&gt;1&lt;/span&gt;&lt;span class="dsstep-label"&gt;Konts&lt;/span&gt;&lt;/li&gt;
+        &lt;li class="dsstep-item" data-step="2"&gt;&lt;span class="dsstep-circle"&gt;2&lt;/span&gt;&lt;span class="dsstep-label"&gt;Piegāde&lt;/span&gt;&lt;/li&gt;
+        &lt;li class="dsstep-item" data-step="3"&gt;&lt;span class="dsstep-circle"&gt;3&lt;/span&gt;&lt;span class="dsstep-label"&gt;Maksājums&lt;/span&gt;&lt;/li&gt;
+        &lt;li class="dsstep-item" data-step="4"&gt;&lt;span class="dsstep-circle"&gt;4&lt;/span&gt;&lt;span class="dsstep-label"&gt;Apstiprinājums&lt;/span&gt;&lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;div class="dsstep-actions"&gt;
+        &lt;button class="dsstep-btn dsstep-btn--ghost" id="dsstepBack"&gt;Atpakaļ&lt;/button&gt;
+        &lt;button class="dsstep-btn" id="dsstepNext"&gt;Tālāk&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+      <p class="code-group-label">CSS</p>
+      <pre class="code-block"><span class="lang">css</span><code>.dsstep-list { display: flex; list-style: none; margin: 0 0 28px; padding: 0; }
+.dsstep-item { flex: 1; position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; font-size: .8rem; color: #9ca3af; font-weight: 600; }
+.dsstep-item:not(:last-child)::after { content: ""; position: absolute; top: 17px; left: 50%; width: 100%; height: 2px; background: #e5e7eb; z-index: 0; }
+.dsstep-item.completed:not(:last-child)::after { background: linear-gradient(90deg,#4f46e5,#3b82f6); }
+.dsstep-circle { position: relative; z-index: 1; width: 34px; height: 34px; border-radius: 50%; background: #fff; border: 2px solid #e5e7eb; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; font-size: .8rem; color: #9ca3af; transition: .3s ease; }
+.dsstep-item.completed .dsstep-circle { background: linear-gradient(135deg,#4f46e5,#3b82f6); border-color: transparent; color: #fff; }
+.dsstep-item.active .dsstep-circle { border-color: #4f46e5; color: #4f46e5; box-shadow: 0 0 0 4px #eef2ff; }
+.dsstep-item.active .dsstep-label { color: #1e293b; }
+.dsstep-actions { display: flex; justify-content: space-between; gap: 12px; }
+.dsstep-btn { padding: 10px 22px; border-radius: 10px; border: none; background: linear-gradient(135deg,#4f46e5,#3b82f6); color: #fff; font-weight: 600; font-size: .85rem; cursor: pointer; transition: transform .2s ease; }
+.dsstep-btn:hover { transform: translateY(-2px); }
+.dsstep-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+.dsstep-btn--ghost { background: none; border: 1.5px solid #e5e7eb; color: #6b7280; }</code></pre>
+
+      <p class="code-group-label">JavaScript</p>
+      <pre class="code-block"><span class="lang">js</span><code>(function () {
+    const stepper = document.getElementById('dsstepper1');
+    const items = stepper.querySelectorAll('.dsstep-item');
+    const backBtn = document.getElementById('dsstepBack');
+    const nextBtn = document.getElementById('dsstepNext');
+    let current = 2; // demo nolūkos sākam ar 2. soli aktīvu (1. jau pabeigts)
+
+    function render() {
+        items.forEach((item) => {
+            const step = Number(item.dataset.step);
+            item.classList.remove('active', 'completed');
+            if (step < current) item.classList.add('completed');
+            if (step === current) item.classList.add('active');
+            item.querySelector('.dsstep-circle').textContent = step < current ? '✓' : step;
+        });
+        backBtn.disabled = current === 1;
+        nextBtn.textContent = current === items.length ? 'Pabeigt' : 'Tālāk';
+    }
+
+    backBtn.addEventListener('click', () => {
+        if (current > 1) current -= 1;
+        render();
+    });
+    nextBtn.addEventListener('click', () => {
+        if (current < items.length) current += 1;
+        render();
+    });
+
+    render();
+})();</code></pre>
+    </section>
+
+    <section class="doc-section" id="salidzinasanas-tabula">
+      <h2>Salīdzināšanas tabula</h2>
+      <p>Funkciju salīdzinājums starp plāniem ar izceltu kolonnu un iespēju paslēpt rindas, kur visiem plāniem vērtība ir vienāda.</p>
+
+      <div class="preview-box">
+        <div class="preview-label">
+          <span class="preview-dots"><span></span><span></span><span></span></span>
+          Priekšskatījums
+        </div>
+        <iframe class="preview-frame" id="preview-compare" style="height:320px" title="Salīdzināšanas tabulas priekšskatījums"></iframe>
+      </div>
+
+      <p class="code-group-label">HTML</p>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;label class="dscompare-toggle"&gt;&lt;input type="checkbox" id="dscompareDiffToggle"&gt; Rādīt tikai atšķirīgās rindas&lt;/label&gt;
+
+&lt;div class="dscompare"&gt;
+    &lt;table class="dscompare-table"&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Funkcija&lt;/th&gt;
+                &lt;th&gt;Starter&lt;/th&gt;
+                &lt;th class="dscompare-featured"&gt;Pro&lt;/th&gt;
+                &lt;th&gt;Enterprise&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Lietotāju skaits&lt;/td&gt;
+                &lt;td&gt;1&lt;/td&gt;
+                &lt;td class="dscompare-featured"&gt;10&lt;/td&gt;
+                &lt;td&gt;Neierobežoti&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Krātuve&lt;/td&gt;
+                &lt;td&gt;5 GB&lt;/td&gt;
+                &lt;td class="dscompare-featured"&gt;100 GB&lt;/td&gt;
+                &lt;td&gt;1 TB&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;E-pasta atbalsts&lt;/td&gt;
+                &lt;td&gt;&lt;span class="dscompare-check"&gt;✓&lt;/span&gt;&lt;/td&gt;
+                &lt;td class="dscompare-featured"&gt;&lt;span class="dscompare-check"&gt;✓&lt;/span&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;span class="dscompare-check"&gt;✓&lt;/span&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;API pieeja&lt;/td&gt;
+                &lt;td&gt;&lt;span class="dscompare-x"&gt;✕&lt;/span&gt;&lt;/td&gt;
+                &lt;td class="dscompare-featured"&gt;&lt;span class="dscompare-check"&gt;✓&lt;/span&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;span class="dscompare-check"&gt;✓&lt;/span&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Prioritārs atbalsts&lt;/td&gt;
+                &lt;td&gt;&lt;span class="dscompare-x"&gt;✕&lt;/span&gt;&lt;/td&gt;
+                &lt;td class="dscompare-featured"&gt;&lt;span class="dscompare-check"&gt;✓&lt;/span&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;span class="dscompare-check"&gt;✓&lt;/span&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;Dedicēts menedžeris&lt;/td&gt;
+                &lt;td&gt;&lt;span class="dscompare-x"&gt;✕&lt;/span&gt;&lt;/td&gt;
+                &lt;td class="dscompare-featured"&gt;&lt;span class="dscompare-x"&gt;✕&lt;/span&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;span class="dscompare-check"&gt;✓&lt;/span&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;/div&gt;</code></pre>
+
+      <p class="code-group-label">CSS</p>
+      <pre class="code-block"><span class="lang">css</span><code>.dscompare-toggle { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; font-size: .85rem; color: #6b7280; font-weight: 600; cursor: pointer; }
+.dscompare { overflow-x: auto; border-radius: 16px; border: 1px solid #eef0f4; }
+.dscompare-table { width: 100%; border-collapse: collapse; font-size: .85rem; min-width: 480px; }
+.dscompare-table th, .dscompare-table td { padding: 14px 18px; text-align: center; }
+.dscompare-table th:first-child, .dscompare-table td:first-child { text-align: left; color: #374151; font-weight: 600; }
+.dscompare-table thead th { background: #f9fafb; color: #6b7280; font-size: .78rem; text-transform: uppercase; letter-spacing: .03em; border-bottom: 1px solid #eef0f4; }
+.dscompare-table tbody tr:not(:last-child) td { border-bottom: 1px solid #f3f4f6; }
+.dscompare-featured { background: #eef2ff; }
+.dscompare-table thead .dscompare-featured { background: linear-gradient(135deg,#4f46e5,#3b82f6); color: #fff; }
+.dscompare-check { color: #059669; font-weight: 700; }
+.dscompare-x { color: #d1d5db; font-weight: 700; }</code></pre>
+
+      <p class="code-group-label">JavaScript</p>
+      <pre class="code-block"><span class="lang">js</span><code>(function () {
+    const table = document.querySelector('.dscompare-table');
+    const toggle = document.getElementById('dscompareDiffToggle');
+    const rows = table.querySelectorAll('tbody tr');
+
+    toggle.addEventListener('change', () => {
+        rows.forEach((row) => {
+            const cells = Array.from(row.querySelectorAll('td')).slice(1); // izlaiž pirmo (funkcijas nosaukuma) kolonnu
+            const values = cells.map((c) => c.textContent.trim());
+            const allEqual = values.every((v) => v === values[0]);
+
+            row.style.display = (toggle.checked && allEqual) ? 'none' : '';
+        });
+    });
+})();</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>overflow-x: auto</code> uz <code>.dscompare</code> ir svarīgs — tabulai ir <code>min-width: 480px</code>, tāpēc uz šauriem ekrāniem tā ripo horizontāli, nevis saspiežas nelasāma. "Atšķirīgo rindu" filtrs salīdzina katras rindas 2.–4. kolonnas tekstu — ja visas trīs vērtības sakrīt (piem., "E-pasta atbalsts" ir ✓ visiem), rinda tiek paslēpta.</p>
+      </div>
+    </section>
+
     <div class="doc-pager">
       <a href="seo.html"><span class="lbl">← Iepriekšējais</span>SEO</a>
       <a class="to-next" href="drosiba.html"><span class="lbl">Tālāk →</span>Drošība</a>
@@ -1033,6 +1421,26 @@ document.addEventListener('keydown', (e) => {
       css: '.dsupload-zone { display: block; border: 2px dashed #c7d2fe; border-radius: 18px; padding: 32px 20px; text-align: center; cursor: pointer; transition: border-color .2s ease, background .2s ease; background: #eff6ff; } .dsupload-zone:hover, .dsupload-zone.dragover { border-color: #6366f1; background: #eef2ff; } .dsupload-icon { width: 44px; height: 44px; margin: 0 auto 12px; border-radius: 50%; background: linear-gradient(135deg,#4f46e5,#3b82f6); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; } .dsupload-title { margin: 0 0 4px; font-weight: 700; color: #1e293b; font-size: .9rem; } .dsupload-sub { margin: 0; color: #9ca3af; font-size: .78rem; } .dsupload-browse { color: #4f46e5; font-weight: 600; text-decoration: underline; } .dsupload-list { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; } .dsupload-file { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid #eef0f4; border-radius: 12px; padding: 12px 14px; } .dsupload-file-icon { width: 34px; height: 34px; border-radius: 9px; background: #eef2ff; color: #4f46e5; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; flex-shrink: 0; } .dsupload-file-info { flex: 1; min-width: 0; } .dsupload-file-name { margin: 0; font-size: .8rem; font-weight: 600; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .dsupload-file-bar { height: 4px; border-radius: 100px; background: #f3f4f6; margin-top: 6px; overflow: hidden; } .dsupload-file-bar-fill { height: 100%; background: linear-gradient(90deg,#4f46e5,#3b82f6); width: 0%; transition: width .4s ease; } .dsupload-file-remove { background: none; border: none; color: #9ca3af; cursor: pointer; font-size: 1rem; padding: 4px; line-height: 1; flex-shrink: 0; } .dsupload-file-remove:hover { color: #ef4444; }',
       html: '<div class="dsupload" id="dsupload1"><label class="dsupload-zone" for="dsupload-input"><input type="file" id="dsupload-input" multiple hidden><div class="dsupload-icon">⬆</div><p class="dsupload-title">Ievelc failus šeit</p><p class="dsupload-sub">vai <span class="dsupload-browse">izvēlies no ierīces</span> — PNG, JPG, PDF līdz 10 MB</p></label><div class="dsupload-list" id="dsupload-list"></div></div>',
       js: "(function(){var zone=document.querySelector('.dsupload-zone');var input=document.getElementById('dsupload-input');var list=document.getElementById('dsupload-list');function addFile(file){var item=document.createElement('div');item.className='dsupload-file';item.innerHTML='<span class=\"dsupload-file-icon\">'+file.name.split('.').pop().slice(0,3).toUpperCase()+'</span><div class=\"dsupload-file-info\"><p class=\"dsupload-file-name\">'+file.name+'</p><div class=\"dsupload-file-bar\"><div class=\"dsupload-file-bar-fill\"></div></div></div><button class=\"dsupload-file-remove\" aria-label=\"Noņemt\">✕</button>';list.appendChild(item);var fill=item.querySelector('.dsupload-file-bar-fill');requestAnimationFrame(function(){fill.style.width='100%';});item.querySelector('.dsupload-file-remove').addEventListener('click',function(){item.remove();});}function handleFiles(files){Array.prototype.slice.call(files).forEach(addFile);}zone.addEventListener('dragover',function(e){e.preventDefault();zone.classList.add('dragover');});zone.addEventListener('dragleave',function(){zone.classList.remove('dragover');});zone.addEventListener('drop',function(e){e.preventDefault();zone.classList.remove('dragover');handleFiles(e.dataTransfer.files);});input.addEventListener('change',function(){handleFiles(input.files);});})();"
+    },
+    'preview-search': {
+      css: '.dssearch { position: relative; max-width: 340px; margin: 0 auto; } .dssearch-box { position: relative; display: flex; align-items: center; } .dssearch-icon { position: absolute; left: 14px; width: 18px; height: 18px; color: #9ca3af; pointer-events: none; } .dssearch-input { width: 100%; box-sizing: border-box; padding: 12px 14px 12px 42px; border-radius: 12px; border: 1.5px solid #e5e7eb; font: inherit; font-size: .88rem; transition: border-color .2s ease, box-shadow .2s ease; } .dssearch-input:focus { outline: none; border-color: #6366f1; box-shadow: 0 0 0 4px #eef2ff; } .dssearch-results { list-style: none; margin: 8px 0 0; padding: 6px; position: absolute; top: 100%; left: 0; right: 0; background: #fff; border-radius: 14px; border: 1px solid #eef0f4; box-shadow: 0 20px 45px -20px rgba(49,46,129,.3); max-height: 220px; overflow-y: auto; display: none; z-index: 10; } .dssearch-results.open { display: block; } .dssearch-item { display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border-radius: 9px; cursor: pointer; } .dssearch-item:hover, .dssearch-item.active { background: #eef2ff; } .dssearch-item-title { font-size: .82rem; font-weight: 600; color: #1e293b; } .dssearch-item-title mark { background: #c7d2fe; color: #4338ca; border-radius: 3px; padding: 0 1px; } .dssearch-item-cat { font-size: .7rem; color: #9ca3af; } .dssearch-empty { padding: 16px; text-align: center; color: #9ca3af; font-size: .82rem; }',
+      html: '<div class="dssearch" id="dssearch1"><div class="dssearch-box"><svg class="dssearch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><input type="text" class="dssearch-input" id="dssearchInput" placeholder="Meklēt lapas..." autocomplete="off"></div><ul class="dssearch-results" id="dssearchResults"></ul></div>',
+      js: "(function(){var items=[{title:'WordPress hooks un filtri',cat:'WordPress'},{title:'REST API autentifikācija',cat:'API'},{title:'CSS Grid padziļināti',cat:'HTML & CSS'},{title:'SQL Injection aizsardzība',cat:'Drošība'},{title:'Git zaru pārvaldība',cat:'Git & GitHub'},{title:'JavaScript Promises',cat:'JavaScript'},{title:'Core Web Vitals mērīšana',cat:'SEO'}];var input=document.getElementById('dssearchInput');var list=document.getElementById('dssearchResults');var activeIndex=-1;function highlight(text,query){var i=text.toLowerCase().indexOf(query.toLowerCase());if(i===-1)return text;return text.slice(0,i)+'<mark>'+text.slice(i,i+query.length)+'</mark>'+text.slice(i+query.length);}function render(query){var matches=items.filter(function(item){return item.title.toLowerCase().indexOf(query.toLowerCase())>-1;});activeIndex=-1;if(!query){list.classList.remove('open');list.innerHTML='';return;}list.innerHTML=matches.length?matches.map(function(item){return '<li class=\"dssearch-item\"><span class=\"dssearch-item-title\">'+highlight(item.title,query)+'</span><span class=\"dssearch-item-cat\">'+item.cat+'</span></li>';}).join(''):'<li class=\"dssearch-empty\">Nekas netika atrasts</li>';list.classList.add('open');}input.addEventListener('input',function(){render(input.value.trim());});input.addEventListener('keydown',function(e){var options=list.querySelectorAll('.dssearch-item');if(!options.length)return;if(e.key==='ArrowDown'){e.preventDefault();activeIndex=(activeIndex+1)%options.length;}else if(e.key==='ArrowUp'){e.preventDefault();activeIndex=(activeIndex-1+options.length)%options.length;}else if(e.key==='Enter'&&activeIndex>-1){options[activeIndex].click();return;}else if(e.key==='Escape'){list.classList.remove('open');return;}else{return;}Array.prototype.forEach.call(options,function(opt,i){opt.classList.toggle('active',i===activeIndex);});});list.addEventListener('click',function(e){var item=e.target.closest('.dssearch-item');if(!item)return;input.value=item.querySelector('.dssearch-item-title').textContent;list.classList.remove('open');});document.addEventListener('click',function(e){if(!document.getElementById('dssearch1').contains(e.target)){list.classList.remove('open');}});})();"
+    },
+    'preview-navbar': {
+      css: '.dsnav-frame { max-width: 320px; margin: 0 auto; container-type: inline-size; border-radius: 24px; overflow: hidden; border: 1px solid #eef0f4; box-shadow: 0 25px 60px -25px rgba(49,46,129,.35), 0 10px 20px -10px rgba(0,0,0,.15); } .dsnav { position: relative; display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; background: rgba(255,255,255,.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,.06); } .dsnav-brand { font-weight: 800; font-size: 1rem; color: #1e293b; text-decoration: none; } .dsnav-toggle { display: none; flex-direction: column; justify-content: center; gap: 4px; width: 34px; height: 34px; border: none; background: #eef2ff; border-radius: 9px; cursor: pointer; flex-shrink: 0; } .dsnav-toggle span { width: 16px; height: 2px; background: #4f46e5; margin: 0 auto; border-radius: 2px; transition: transform .3s ease, opacity .3s ease; } .dsnav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); } .dsnav-toggle.open span:nth-child(2) { opacity: 0; } .dsnav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); } .dsnav-links { display: flex; align-items: center; gap: 18px; } .dsnav-links a { color: #475569; text-decoration: none; font-size: .82rem; font-weight: 600; white-space: nowrap; } .dsnav-links a:hover { color: #4f46e5; } .dsnav-cta { background: linear-gradient(135deg,#4f46e5,#3b82f6); color: #fff !important; padding: 8px 14px; border-radius: 9px; } .dsnav-body { padding: 20px 16px; color: #475569; font-size: .8rem; line-height: 1.6; } .dsnav-body h4 { margin: 0 0 8px; color: #1e293b; font-size: .9rem; } @container (max-width: 420px) { .dsnav-toggle { display: flex; } .dsnav-links { position: absolute; top: 100%; right: 0; width: 190px; background: #fff; flex-direction: column; align-items: flex-start; padding: 16px; gap: 12px; box-shadow: 0 20px 40px -20px rgba(0,0,0,.3); border-radius: 0 0 0 16px; transform: translateY(-8px); opacity: 0; pointer-events: none; transition: opacity .25s ease, transform .25s ease; } .dsnav-links.open { opacity: 1; transform: translateY(0); pointer-events: auto; } .dsnav-cta { width: 100%; text-align: center; box-sizing: border-box; } }',
+      html: '<div class="dsnav-frame"><nav class="dsnav" id="dsnav1"><a class="dsnav-brand" href="#">Zīmols</a><button class="dsnav-toggle" id="dsnavToggle" aria-label="Izvēlne" aria-expanded="false"><span></span><span></span><span></span></button><div class="dsnav-links" id="dsnavLinks"><a href="#">Sākums</a><a href="#">Par mums</a><a href="#">Pakalpojumi</a><a href="#">Kontakti</a><a class="dsnav-cta" href="#">Pieteikties</a></div></nav><div class="dsnav-body"><h4>Konteinera vaicājums, nevis viewport</h4><p>Šis rāmis ir šaurs ar nolūku — izvēlne uz "hamburgeru" pārslēdzas balstoties uz šī konteinera platumu, nevis visa loga platumu.</p></div></div>',
+      js: "(function(){var toggle=document.getElementById('dsnavToggle');var links=document.getElementById('dsnavLinks');toggle.addEventListener('click',function(){var isOpen=links.classList.toggle('open');toggle.classList.toggle('open',isOpen);toggle.setAttribute('aria-expanded',String(isOpen));});var linkEls=links.querySelectorAll('a');Array.prototype.forEach.call(linkEls,function(link){link.addEventListener('click',function(){links.classList.remove('open');toggle.classList.remove('open');toggle.setAttribute('aria-expanded','false');});});})();"
+    },
+    'preview-stepper': {
+      css: '.dsstep-list { display: flex; list-style: none; margin: 0 0 24px; padding: 0; } .dsstep-item { flex: 1; position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; font-size: .78rem; color: #9ca3af; font-weight: 600; } .dsstep-item:not(:last-child)::after { content: ""; position: absolute; top: 17px; left: 50%; width: 100%; height: 2px; background: #e5e7eb; z-index: 0; } .dsstep-item.completed:not(:last-child)::after { background: linear-gradient(90deg,#4f46e5,#3b82f6); } .dsstep-circle { position: relative; z-index: 1; width: 34px; height: 34px; border-radius: 50%; background: #fff; border: 2px solid #e5e7eb; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; font-size: .8rem; color: #9ca3af; transition: .3s ease; } .dsstep-item.completed .dsstep-circle { background: linear-gradient(135deg,#4f46e5,#3b82f6); border-color: transparent; color: #fff; } .dsstep-item.active .dsstep-circle { border-color: #4f46e5; color: #4f46e5; box-shadow: 0 0 0 4px #eef2ff; } .dsstep-item.active .dsstep-label { color: #1e293b; } .dsstep-actions { display: flex; justify-content: space-between; gap: 12px; } .dsstep-btn { padding: 10px 22px; border-radius: 10px; border: none; background: linear-gradient(135deg,#4f46e5,#3b82f6); color: #fff; font-weight: 600; font-size: .85rem; cursor: pointer; transition: transform .2s ease; } .dsstep-btn:hover { transform: translateY(-2px); } .dsstep-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; } .dsstep-btn--ghost { background: none; border: 1.5px solid #e5e7eb; color: #6b7280; }',
+      html: '<div class="dsstepper" id="dsstepper1"><ol class="dsstep-list"><li class="dsstep-item" data-step="1"><span class="dsstep-circle">1</span><span class="dsstep-label">Konts</span></li><li class="dsstep-item" data-step="2"><span class="dsstep-circle">2</span><span class="dsstep-label">Piegāde</span></li><li class="dsstep-item" data-step="3"><span class="dsstep-circle">3</span><span class="dsstep-label">Maksājums</span></li><li class="dsstep-item" data-step="4"><span class="dsstep-circle">4</span><span class="dsstep-label">Apstiprinājums</span></li></ol><div class="dsstep-actions"><button class="dsstep-btn dsstep-btn--ghost" id="dsstepBack">Atpakaļ</button><button class="dsstep-btn" id="dsstepNext">Tālāk</button></div></div>',
+      js: "(function(){var stepper=document.getElementById('dsstepper1');var items=stepper.querySelectorAll('.dsstep-item');var backBtn=document.getElementById('dsstepBack');var nextBtn=document.getElementById('dsstepNext');var current=2;function render(){Array.prototype.forEach.call(items,function(item){var step=Number(item.dataset.step);item.classList.remove('active','completed');if(step<current)item.classList.add('completed');if(step===current)item.classList.add('active');item.querySelector('.dsstep-circle').textContent=step<current?'✓':step;});backBtn.disabled=current===1;nextBtn.textContent=current===items.length?'Pabeigt':'Tālāk';}backBtn.addEventListener('click',function(){if(current>1)current-=1;render();});nextBtn.addEventListener('click',function(){if(current<items.length)current+=1;render();});render();})();"
+    },
+    'preview-compare': {
+      css: '.dscompare-toggle { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; font-size: .8rem; color: #6b7280; font-weight: 600; cursor: pointer; } .dscompare { overflow-x: auto; border-radius: 16px; border: 1px solid #eef0f4; } .dscompare-table { width: 100%; border-collapse: collapse; font-size: .8rem; min-width: 420px; } .dscompare-table th, .dscompare-table td { padding: 12px 14px; text-align: center; } .dscompare-table th:first-child, .dscompare-table td:first-child { text-align: left; color: #374151; font-weight: 600; } .dscompare-table thead th { background: #f9fafb; color: #6b7280; font-size: .72rem; text-transform: uppercase; letter-spacing: .03em; border-bottom: 1px solid #eef0f4; } .dscompare-table tbody tr:not(:last-child) td { border-bottom: 1px solid #f3f4f6; } .dscompare-featured { background: #eef2ff; } .dscompare-table thead .dscompare-featured { background: linear-gradient(135deg,#4f46e5,#3b82f6); color: #fff; } .dscompare-check { color: #059669; font-weight: 700; } .dscompare-x { color: #d1d5db; font-weight: 700; }',
+      html: '<label class="dscompare-toggle"><input type="checkbox" id="dscompareDiffToggle"> Rādīt tikai atšķirīgās rindas</label><div class="dscompare"><table class="dscompare-table"><thead><tr><th>Funkcija</th><th>Starter</th><th class="dscompare-featured">Pro</th><th>Enterprise</th></tr></thead><tbody><tr><td>Lietotāju skaits</td><td>1</td><td class="dscompare-featured">10</td><td>Neierobežoti</td></tr><tr><td>Krātuve</td><td>5 GB</td><td class="dscompare-featured">100 GB</td><td>1 TB</td></tr><tr><td>E-pasta atbalsts</td><td><span class="dscompare-check">✓</span></td><td class="dscompare-featured"><span class="dscompare-check">✓</span></td><td><span class="dscompare-check">✓</span></td></tr><tr><td>API pieeja</td><td><span class="dscompare-x">✕</span></td><td class="dscompare-featured"><span class="dscompare-check">✓</span></td><td><span class="dscompare-check">✓</span></td></tr><tr><td>Prioritārs atbalsts</td><td><span class="dscompare-x">✕</span></td><td class="dscompare-featured"><span class="dscompare-check">✓</span></td><td><span class="dscompare-check">✓</span></td></tr><tr><td>Dedicēts menedžeris</td><td><span class="dscompare-x">✕</span></td><td class="dscompare-featured"><span class="dscompare-x">✕</span></td><td><span class="dscompare-check">✓</span></td></tr></tbody></table></div>',
+      js: "(function(){var table=document.querySelector('.dscompare-table');var toggle=document.getElementById('dscompareDiffToggle');var rows=table.querySelectorAll('tbody tr');toggle.addEventListener('change',function(){Array.prototype.forEach.call(rows,function(row){var cells=Array.prototype.slice.call(row.querySelectorAll('td')).slice(1);var values=cells.map(function(c){return c.textContent.trim();});var allEqual=values.every(function(v){return v===values[0];});row.style.display=(toggle.checked&&allEqual)?'none':'';});});})();"
     }
   };
 
