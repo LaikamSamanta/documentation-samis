@@ -45,6 +45,10 @@
       <a href="#toast-pazinojums"><span class="bullet"></span>Toast paziņojums</a>
       <a href="#lightbox"><span class="bullet"></span>Lightbox (attēlu skatītājs)</a>
     </div>
+    <div class="doc-sidebar-group">
+      <h4>Autentifikācija</h4>
+      <a href="#auth-card"><span class="bullet"></span>Pieteikšanās/reģistrācijas kartīte</a>
+    </div>
   </aside>
 
   <main class="doc-main">
@@ -446,6 +450,97 @@ document.addEventListener('keydown', (e) => {
       </div>
     </section>
 
+    <section class="doc-section" id="auth-card">
+      <h2>Pieteikšanās/reģistrācijas kartīte</h2>
+      <p>Populārs, moderns autentifikācijas UI raksts — attēla panelis ar aicinājumu slīd starp abām pusēm, atklājot vai nu pieteikšanās, vai reģistrācijas formu.</p>
+
+      <div class="preview-box">
+        <div class="preview-label">
+          <span class="preview-dots"><span></span><span></span><span></span></span>
+          Priekšskatījums
+        </div>
+        <iframe class="preview-frame" id="preview-authcard" style="height:340px" title="Pieteikšanās/reģistrācijas kartītes priekšskatījums"></iframe>
+      </div>
+
+      <p class="code-group-label">HTML</p>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;div class="dsauth-card view-login" id="dsauth1"&gt;
+    &lt;form class="dsauth-form dsauth-form--login"&gt;
+        &lt;h4&gt;Pieteikšanās&lt;/h4&gt;
+        &lt;input type="email" placeholder="E-pasts" required&gt;
+        &lt;input type="password" placeholder="Parole" required&gt;
+        &lt;button type="submit" class="dsauth-submit-btn"&gt;Pieteikties&lt;/button&gt;
+    &lt;/form&gt;
+
+    &lt;form class="dsauth-form dsauth-form--register"&gt;
+        &lt;h4&gt;Reģistrācija&lt;/h4&gt;
+        &lt;input type="text" placeholder="Vārds" required&gt;
+        &lt;input type="email" placeholder="E-pasts" required&gt;
+        &lt;input type="password" placeholder="Parole" required&gt;
+        &lt;button type="submit" class="dsauth-submit-btn"&gt;Reģistrēties&lt;/button&gt;
+    &lt;/form&gt;
+
+    &lt;div class="dsauth-cover"&gt;
+        &lt;div class="dsauth-hero dsauth-hero--login"&gt;
+            &lt;h3&gt;Sveiks!&lt;/h3&gt;
+            &lt;p&gt;Vēl nav konta? Pievienojies mums.&lt;/p&gt;
+            &lt;button type="button" class="dsauth-toggle-btn" data-target="register"&gt;Reģistrēties&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class="dsauth-hero dsauth-hero--register"&gt;
+            &lt;h3&gt;Laipni lūdzam atpakaļ&lt;/h3&gt;
+            &lt;p&gt;Jau esi reģistrējies? Piesakies.&lt;/p&gt;
+            &lt;button type="button" class="dsauth-toggle-btn" data-target="login"&gt;Pieteikties&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+      <p class="code-group-label">CSS</p>
+      <pre class="code-block"><span class="lang">css</span><code>.dsauth-card { position: relative; overflow: hidden; width: 100%; max-width: 600px; aspect-ratio: 3/2; margin: 0 auto; border-radius: 24px; background: #fff; box-shadow: 0 20px 50px -20px rgba(0,0,0,.35); }
+
+.dsauth-form { position: absolute; top: 0; width: 50%; height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; gap: 12px; padding: 0 32px; }
+.dsauth-form--login { left: 0; }
+.dsauth-form--register { left: 50%; }
+.dsauth-form h4 { margin: 0 0 6px; font-size: 1.1rem; }
+.dsauth-form input { width: 100%; box-sizing: border-box; padding: 11px 14px; border-radius: 10px; border: 1px solid #e5e7eb; font: inherit; }
+.dsauth-submit-btn { padding: 11px; border-radius: 10px; border: none; background: #7c3aed; color: #fff; font-weight: 600; cursor: pointer; }
+
+.dsauth-cover { position: absolute; top: 8px; bottom: 8px; left: 8px; width: calc(50% - 16px); border-radius: 18px; overflow: hidden; z-index: 2; background: url("kalns.jpg") center/cover; transition: transform .65s cubic-bezier(.65,0,.35,1); }
+
+/* view-login: attēla panelis pārceļas uz labo pusi (aizsedzot reģistrācijas formu) */
+.dsauth-card.view-login .dsauth-cover { transform: translateX(calc(100% + 16px)); }
+/* view-register: attēla panelis paliek kreisajā pusē (aizsedzot pieteikšanās formu) */
+.dsauth-card.view-register .dsauth-cover { transform: translateX(0); }
+
+.dsauth-hero { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 0 28px; text-align: center; color: #fff; background: rgba(0,0,0,.35); opacity: 0; transition: opacity .4s ease; }
+.dsauth-hero h3 { margin: 0; font-size: 1.3rem; }
+.dsauth-hero p { margin: 0; opacity: .9; font-size: .875rem; line-height: 1.5; }
+.dsauth-toggle-btn { padding: 10px 28px; border-radius: 100px; border: 1px solid #fff; background: transparent; color: #fff; font-weight: 600; letter-spacing: .02em; cursor: pointer; transition: .25s ease; }
+.dsauth-toggle-btn:hover { background: #fff; color: #111827; }
+
+.dsauth-card.view-login .dsauth-hero--login { opacity: 1; }
+.dsauth-card.view-register .dsauth-hero--register { opacity: 1; }</code></pre>
+
+      <p class="code-group-label">JavaScript</p>
+      <pre class="code-block"><span class="lang">js</span><code>(function () {
+    const card = document.getElementById('dsauth1');
+
+    card.querySelectorAll('.dsauth-toggle-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            card.classList.remove('view-login', 'view-register');
+            card.classList.add('view-' + btn.dataset.target); // "login" vai "register"
+        });
+    });
+
+    // Demo nolūkos aptur reālu formas nosūtīšanu — reālā projektā šeit sūti fetch() uz serveri
+    card.querySelectorAll('.dsauth-form').forEach((form) => {
+        form.addEventListener('submit', (e) => e.preventDefault());
+    });
+})();</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Abas formas (<code>.dsauth-form--login</code> un <code>.dsauth-form--register</code>) vienmēr atrodas DOM — attēla panelis (<code>.dsauth-cover</code>) tikai <strong>vizuāli aizsedz</strong> vienu no tām, slīdot pāri. Tas nozīmē, ka aizsegtās formas laukus tehniski joprojām var aizpildīt ar Tab taustiņu — reālā projektā apsver <code>tabindex="-1"</code> vai <code>inert</code> atribūtu aizsegtajai formai, lai to novērstu.</p>
+      </div>
+    </section>
+
     <div class="doc-pager">
       <a href="seo.html"><span class="lbl">← Iepriekšējais</span>SEO</a>
       <a class="to-next" href="drosiba.html"><span class="lbl">Tālāk →</span>Drošība</a>
@@ -502,6 +597,11 @@ document.addEventListener('keydown', (e) => {
       css: '.dslb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px,1fr)); gap: 8px; } .dslb-item { position: relative; border-radius: 10px; overflow: hidden; cursor: zoom-in; aspect-ratio: 4/3; } .dslb-thumb { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s ease; } .dslb-item:hover .dslb-thumb { transform: scale(1.08); } .dslb-item::after { content: "🔍"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0); font-size: 1.1rem; opacity: 0; transition: opacity .25s ease, background .25s ease; pointer-events: none; } .dslb-item:hover::after { opacity: 1; background: rgba(0,0,0,.25); } .dslb-overlay { display: none; position: fixed; inset: 0; background: rgba(10,10,15,.92); backdrop-filter: blur(6px); align-items: center; justify-content: center; z-index: 999; } .dslb-overlay.open { display: flex; } .dslb-overlay img { max-width: 78%; max-height: 78%; border-radius: 12px; box-shadow: 0 30px 80px rgba(0,0,0,.5); } .dslb-close { position: absolute; top: 16px; right: 16px; width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); color: #fff; font-size: 1rem; cursor: pointer; } .dslb-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); color: #fff; font-size: 1.3rem; cursor: pointer; } .dslb-prev { left: 16px; } .dslb-next { right: 16px; }',
       html: '<div class="dslb-grid"><div class="dslb-item"><img class="dslb-thumb" src="' + img4 + '" alt="Galerijas attēls 1"></div><div class="dslb-item"><img class="dslb-thumb" src="' + img5 + '" alt="Galerijas attēls 2"></div><div class="dslb-item"><img class="dslb-thumb" src="' + img6 + '" alt="Galerijas attēls 3"></div><div class="dslb-item"><img class="dslb-thumb" src="' + img7 + '" alt="Galerijas attēls 4"></div></div><div class="dslb-overlay" id="lbOverlay"><button class="dslb-close" id="lbClose" aria-label="Aizvērt">&#10005;</button><button class="dslb-nav dslb-prev" id="lbPrev" aria-label="Iepriekšējais">&lsaquo;</button><img src="" alt="" id="lbImage"><button class="dslb-nav dslb-next" id="lbNext" aria-label="Nākamais">&rsaquo;</button></div>',
       js: "var thumbs=Array.prototype.slice.call(document.querySelectorAll('.dslb-thumb'));var overlay=document.getElementById('lbOverlay');var lbImg=document.getElementById('lbImage');var current=0;function openAt(i){current=i;lbImg.src=thumbs[i].dataset.full||thumbs[i].src;lbImg.alt=thumbs[i].alt;overlay.classList.add('open');}function next(){openAt((current+1)%thumbs.length);}function prev(){openAt((current-1+thumbs.length)%thumbs.length);}thumbs.forEach(function(thumb,i){thumb.addEventListener('click',function(){openAt(i);});});document.getElementById('lbClose').addEventListener('click',function(){overlay.classList.remove('open');});document.getElementById('lbNext').addEventListener('click',next);document.getElementById('lbPrev').addEventListener('click',prev);overlay.addEventListener('click',function(e){if(e.target===overlay)overlay.classList.remove('open');});document.addEventListener('keydown',function(e){if(!overlay.classList.contains('open'))return;if(e.key==='Escape')overlay.classList.remove('open');if(e.key==='ArrowRight')next();if(e.key==='ArrowLeft')prev();});"
+    },
+    'preview-authcard': {
+      css: '.dsauth-card { position: relative; overflow: hidden; width: 100%; max-width: 600px; aspect-ratio: 3/2; margin: 0 auto; border-radius: 24px; background: #fff; box-shadow: 0 20px 50px -20px rgba(0,0,0,.35); } .dsauth-form { position: absolute; top: 0; width: 50%; height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; gap: 12px; padding: 0 32px; } .dsauth-form--login { left: 0; } .dsauth-form--register { left: 50%; } .dsauth-form h4 { margin: 0 0 6px; font-size: 1.1rem; } .dsauth-form input { width: 100%; box-sizing: border-box; padding: 11px 14px; border-radius: 10px; border: 1px solid #e5e7eb; font: inherit; } .dsauth-submit-btn { padding: 11px; border-radius: 10px; border: none; background: #7c3aed; color: #fff; font-weight: 600; cursor: pointer; } .dsauth-cover { position: absolute; top: 8px; bottom: 8px; left: 8px; width: calc(50% - 16px); border-radius: 18px; overflow: hidden; z-index: 2; background-size: cover; background-position: center; transition: transform .65s cubic-bezier(.65,0,.35,1); } .dsauth-card.view-login .dsauth-cover { transform: translateX(calc(100% + 16px)); } .dsauth-card.view-register .dsauth-cover { transform: translateX(0); } .dsauth-hero { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 0 28px; text-align: center; color: #fff; background: rgba(0,0,0,.35); opacity: 0; transition: opacity .4s ease; } .dsauth-hero h3 { margin: 0; font-size: 1.3rem; } .dsauth-hero p { margin: 0; opacity: .9; font-size: .875rem; line-height: 1.5; } .dsauth-toggle-btn { padding: 10px 28px; border-radius: 100px; border: 1px solid #fff; background: transparent; color: #fff; font-weight: 600; letter-spacing: .02em; cursor: pointer; transition: .25s ease; } .dsauth-toggle-btn:hover { background: #fff; color: #111827; } .dsauth-card.view-login .dsauth-hero--login { opacity: 1; } .dsauth-card.view-register .dsauth-hero--register { opacity: 1; }',
+      html: '<div class="dsauth-card view-login" id="dsauth1"><form class="dsauth-form dsauth-form--login"><h4>Pieteikšanās</h4><input type="email" placeholder="E-pasts"><input type="password" placeholder="Parole"><button type="submit" class="dsauth-submit-btn">Pieteikties</button></form><form class="dsauth-form dsauth-form--register"><h4>Reģistrācija</h4><input type="text" placeholder="Vārds"><input type="email" placeholder="E-pasts"><input type="password" placeholder="Parole"><button type="submit" class="dsauth-submit-btn">Reģistrēties</button></form><div class="dsauth-cover" style="background-image:url(' + img1 + ')"><div class="dsauth-hero dsauth-hero--login"><h3>Sveiks!</h3><p>Vēl nav konta? Pievienojies mums.</p><button type="button" class="dsauth-toggle-btn" data-target="register">Reģistrēties</button></div><div class="dsauth-hero dsauth-hero--register"><h3>Laipni lūdzam atpakaļ</h3><p>Jau esi reģistrējies? Piesakies.</p><button type="button" class="dsauth-toggle-btn" data-target="login">Pieteikties</button></div></div></div>',
+      js: "(function(){var card=document.getElementById('dsauth1');card.querySelectorAll('.dsauth-toggle-btn').forEach(function(btn){btn.addEventListener('click',function(){card.classList.remove('view-login','view-register');card.classList.add('view-'+btn.dataset.target);});});card.querySelectorAll('.dsauth-form').forEach(function(form){form.addEventListener('submit',function(e){e.preventDefault();});});})();"
     }
   };
 
