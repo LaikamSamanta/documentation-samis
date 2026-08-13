@@ -56,6 +56,7 @@
       <a href="#servera-resursi"><span class="bullet"></span>Servera resursi (RAM, CPU, disks)</a>
       <a href="#tikla-diagnostika"><span class="bullet"></span>Tīkla diagnostika (IP, DNS, MX)</a>
       <a href="#logi"><span class="bullet"></span>Kļūdu logi</a>
+      <a href="#sintakses-parbaude"><span class="bullet"></span>Sintakses pārbaude (php -l)</a>
       <a href="#datubaze-mysql"><span class="bullet"></span>MySQL &amp; dublējumi</a>
       <a href="#wp-cron"><span class="bullet"></span>WP-Cron vs īstais cron</a>
     </div>
@@ -307,6 +308,29 @@ tail -f /var/log/apache2/error.log</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
         <p><code>tail -f</code> (nevis vienkārši <code>cat</code>) turpina rādīt jaunas rindas reāllaikā, kamēr komanda darbojas — atver to, tad izpildi darbību, kas izraisa kļūdu (piem., atsvaidzini lapu), un skaties, kas parādās uzreiz. Beidz ar <code>Ctrl+C</code>. Vienmēr izslēdz <code>WP_DEBUG_DISPLAY</code> produkcijas vietnē — redzamas PHP kļūdas apmeklētājiem var atklāt servera failu ceļus un citu tehnisku info uzbrucējiem.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="sintakses-parbaude">
+      <h2>Sintakses pārbaude (php -l)</h2>
+      <p>Pirms rediģēta faila (piem., <code>functions.php</code>) augšupielādes vai aizvietošanas uz dzīvas vietnes vienmēr der pārbaudīt, vai tajā nav sintakses kļūdu — pat viena trūkstoša iekava vai semikols nozīmē tūlītēju "critical error" / balto ekrānu visai vietnei. <code>php -l</code> ("lint") pārbauda faila sintaksi, <strong>nepalaižot</strong> to:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Pārbauda vienu konkrētu failu</span>
+php -l wp-content/themes/mana-tema/functions.php</code></pre>
+      <p>Ja viss kārtībā, redzēsi:</p>
+      <pre class="code-block"><span class="lang">bash</span><code>No syntax errors detected in wp-content/themes/mana-tema/functions.php</code></pre>
+      <p>Ja failā ir kļūda, komanda parāda precīzu <strong>rindas numuru</strong>, kur PHP parsētājs "aizķērās" (bieži tas ir viena rinda pēc tās, kur reālā problēma ir, piem., trūkstoša aizverošā iekava iepriekšējā rindā):</p>
+      <pre class="code-block"><span class="lang">bash</span><code>PHP Parse error:  syntax error, unexpected token "}", expecting end of file in wp-content/themes/mana-tema/functions.php on line 142
+Errors parsing wp-content/themes/mana-tema/functions.php</code></pre>
+      <p>Lai pārbaudītu <strong>visus</strong> PHP failus tēmā vai spraudnī uzreiz (un redzētu tikai tos, kuros patiešām ir kļūda, nevis garu sarakstu ar "No syntax errors" katram failam):</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># find atrod visus .php failus, php -l pārbauda katru; grep -v izfiltrē "tīros" rezultātus</span>
+find . -name <span class="tok-str">"*.php"</span> -exec php -l {} \; | grep -v <span class="tok-str">"No syntax errors"</span></code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Šis paradums glābj no visbiežāk sastopamā "izsalabotā vietne" scenārija: rediģē <code>functions.php</code> tieši serverī (piem., ar <code>nano</code>), aizmirsti aizvērt iekavu, saglabā — un vietne uzreiz krīt visiem apmeklētājiem. Palaižot <code>php -l</code> pirms saglabāšanas ietekmes (vai kā daļu no deploy skripta), kļūdu noķer <strong>pirms</strong> tā nonāk dzīvajā vietnē.</p>
+      </div>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>php -l</code> noķer tikai <strong>sintakses</strong> (parsēšanas laika) kļūdas — trūkstošas iekavas, semikolus, neaizvērtas pēdiņas. Tas <strong>neatklāj</strong> loģikas vai izpildlaika kļūdas (piem., izsaukumu neesošai funkcijai, nepareizu mainīgo), jo kods faktiski netiek palaists. Tādām kļūdām vajag <code>WP_DEBUG</code> un kļūdu logu (skat. <a href="#logi">augstāk</a>).</p>
       </div>
     </section>
 
