@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="lv" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+<title>Python rīki — Documentation Samis</title>
+<link rel="stylesheet" href="../css/style.css?v=20" />
+<script>
+  (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
+</script>
+</head>
+<body class="cat-python">
+<div class="bg-glow"></div>
+<div class="bg-grid"></div>
+
+<header class="topbar">
+  <a class="brand" href="../index.html">
+    <span class="mark">DS</span>
+    Documentation Samis
+  </a>
+  <div class="topbar-actions">
+    <a class="btn-back" href="../index.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M5 12h14"/></svg>
+      Kategorijas
+    </a>
+    <button class="icon-btn" id="theme-toggle" title="Pārslēgt tēmu" aria-label="Pārslēgt tēmu">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="doc-shell">
+  <aside class="doc-sidebar">
+    <div class="doc-sidebar-group">
+      <h4>Video &amp; mediji</h4>
+      <a href="#yt-bulk-download" class="active"><span class="bullet"></span>YouTube video masveida lejupielāde</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Faili &amp; dokumenti</h4>
+      <a href="#image-resize-bulk"><span class="bullet"></span>Attēlu masveida izmēra maiņa</a>
+      <a href="#pdf-merge"><span class="bullet"></span>PDF failu apvienošana</a>
+      <a href="#file-sorter"><span class="bullet"></span>Lejupielāžu mapes sakārtošana</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Uzraudzība</h4>
+      <a href="#uptime-checker"><span class="bullet"></span>Vietnes darbības pārbaude (uptime)</a>
+    </div>
+  </aside>
+
+  <main class="doc-main">
+    <div class="doc-breadcrumb">
+      <a href="../index.html">Sākums</a>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span>Python rīki</span>
+    </div>
+
+    <div class="doc-header">
+      <div class="icon" style="background: var(--c-python-soft); color: var(--c-python);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M10 8.5v7l6-3.5-6-3.5z" fill="currentColor" stroke="none"/></svg>
+      </div>
+      <h1 style="margin-bottom:0;">Python rīki</h1>
+    </div>
+    <p class="doc-lead">Mazi, praktiski Python skripti ikdienas darbu automatizēšanai — ne web izstrāde, bet noderīgi rīki, ko palaist lokāli no komandrindas. Katram skriptam — kas jāuzinstalē pirms palaišanas, pilns kods, ko var iekopēt un uzreiz palaist, un komandas soli pa solim.</p>
+
+    <section class="doc-section" id="yt-bulk-download">
+      <h2>YouTube video masveida lejupielāde</h2>
+      <p>Skripts, kas lejupielādē vairākus YouTube video paralēli (vairākus vienlaicīgi, nevis vienu pēc otra), izmantojot <code>yt-dlp</code> bibliotēku video/audio iegūšanai un <code>ffmpeg</code> to salīmēšanai vienā failā.</p>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Kas jāuzinstalē pirms palaišanas</h3>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>1. Python 3.8+</h4><p>Jābūt instalētam un pieejamam no komandrindas (<code>python --version</code>).</p></div>
+        <div class="doc-mini-card"><h4>2. yt-dlp bibliotēka</h4><p><code>pip install yt-dlp</code> — pats video/audio lejupielādes rīks.</p></div>
+        <div class="doc-mini-card"><h4>3. FFmpeg</h4><p>Nepieciešams, lai salīmētu atsevišķi lejupielādēto video un audio straumi vienā failā — bez tā video var iznākt bez skaņas.</p></div>
+      </div>
+      <pre class="code-block"><span class="lang">text</span><code>1. Instalē yt-dlp:
+   pip install yt-dlp
+
+2. Instalē FFmpeg (Windows, ar winget):
+   winget install ffmpeg
+
+3. Restartē termināli — PATH atjaunojas tikai jaunā sesijā
+
+4. Pārbaudi, vai abi ir pieejami:
+   yt-dlp --version
+   ffmpeg -version</code></pre>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Pilns skripts</h3>
+      <pre class="code-block"><span class="lang">python</span><code><span class="tok-kw">import</span> concurrent.futures
+<span class="tok-kw">import</span> yt_dlp
+
+<span class="tok-kw">def</span> <span class="tok-fn">lade_video</span>(url):
+    <span class="tok-com">"""Lejupielādē vienu video maksimālajā kvalitātē un salīmē video ar audio, izmantojot ffmpeg."""</span>
+    ydl_opts = {
+        <span class="tok-com"># Automātiski paņem labāko video (4K/2K/1080p) un labāko audio</span>
+        <span class="tok-str">'format'</span>: <span class="tok-str">'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'</span>,
+        <span class="tok-com"># Saglabāšanas formāts: Video Nosaukums.mp4</span>
+        <span class="tok-str">'outtmpl'</span>: <span class="tok-str">'%(title)s.%(ext)s'</span>,
+    }
+
+    <span class="tok-kw">try</span>:
+        <span class="tok-fn">print</span>(<span class="tok-str">f"➜ Sāk lejupielādēt: {url}"</span>)
+        <span class="tok-kw">with</span> yt_dlp.YoutubeDL(ydl_opts) <span class="tok-kw">as</span> ydl:
+            ydl.download([url])
+        <span class="tok-fn">print</span>(<span class="tok-str">f"✓ Veiksmīgi lejupielādēts: {url}\n"</span>)
+    <span class="tok-kw">except</span> Exception <span class="tok-kw">as</span> e:
+        <span class="tok-fn">print</span>(<span class="tok-str">f"✗ Kļūda ar {url}: {e}\n"</span>)
+
+<span class="tok-kw">def</span> <span class="tok-fn">masveida_lejupielade</span>(saites, max_paraleli=3):
+    <span class="tok-com">"""Palaiž vairāku video lejupielādi vienlaicīgi."""</span>
+    <span class="tok-fn">print</span>(<span class="tok-str">f"=== SĀK {len(saites)} VIDEO LEJUPIELĀDI ==="</span>)
+
+    <span class="tok-com"># ThreadPoolExecutor palaiž vairākas lejupielādes paralēli, nevis vienu pēc otras</span>
+    <span class="tok-kw">with</span> concurrent.futures.ThreadPoolExecutor(max_workers=max_paraleli) <span class="tok-kw">as</span> executor:
+        executor.map(lade_video, saites)
+
+    <span class="tok-fn">print</span>(<span class="tok-str">"=== VISI VIDEO IR LEJUPIELĀDĒTI! ==="</span>)
+
+<span class="tok-kw">if</span> __name__ == <span class="tok-str">"__main__"</span>:
+    <span class="tok-com"># Ievieto šeit savus YouTube linkus</span>
+    video_saraksts = [
+        <span class="tok-str">"https://www.youtube.com/watch?v=piemers1"</span>,
+        <span class="tok-str">"https://www.youtube.com/watch?v=piemers2"</span>,
+        <span class="tok-str">"https://www.youtube.com/watch?v=piemers3"</span>,
+    ]
+
+    <span class="tok-com"># max_paraleli=3 nozīmē 3 video lejupielādē vienlaicīgi</span>
+    masveida_lejupielade(video_saraksts, max_paraleli=3)</code></pre>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Palaišana</h3>
+      <pre class="code-block"><span class="lang">text</span><code>1. Saglabā skriptu kā lejupielade.py
+
+2. Atver termināli tajā pašā mapē, kur atrodas fails
+
+3. Palaid:
+   python lejupielade.py
+
+4. Video saglabāsies tajā pašā mapē, kurā palaists skripts</code></pre>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4><code>concurrent.futures</code></h4><p>Python iebūvēts modulis paralēlai izpildei — nav jāuzinstalē atsevišķi. <code>ThreadPoolExecutor</code> pārvalda pavedienu (thread) kopu automātiski.</p></div>
+        <div class="doc-mini-card"><h4><code>executor.map()</code></h4><p>Izsauc <code>lade_video()</code> katram sarakstā esošajam URL, izmantojot brīvu pavedienu no kopas — nākamā lejupielāde sākas, tiklīdz atbrīvojas kāds no <code>max_paraleli</code> pavedieniem.</p></div>
+        <div class="doc-mini-card"><h4>Kāpēc <code>try/except</code> katrā video</h4><p>Ja viens URL ir nederīgs vai video izdzēsts, kļūda tiek noķerta un izdrukāta, bet pārējo saraksta video lejupielāde turpinās netraucēti.</p></div>
+      </div>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><strong>Divi praktiski ierobežojumi:</strong> (1) <code>max_paraleli</code> nevajadzētu likt daudz augstāku par 3-5 — pārāk daudz paralēlu pieprasījumu var YouTube pusē izraisīt pagaidu bloķēšanu. (2) Lejupielādē tikai saturu, kam tev ir tiesības to saglabāt (paša augšupielādēts video/straume, saturs ar skaidru atļauju) — YouTube lietošanas noteikumi masveida lejupielādi svešam saturam neatļauj.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="image-resize-bulk">
+      <h2>Attēlu masveida izmēra maiņa</h2>
+      <p>Samazina visu norādītās mapes attēlu platumu un failu izmēru — noderīgi pirms attēlu augšupielādes WordPress vietnē, kad kameras/telefona attēli ir nevajadzīgi lieli (piem., 4000px platumā, kur reāli vajag 1600px).</p>
+      <p><strong>Uzinstalē:</strong> <code>pip install Pillow</code></p>
+      <pre class="code-block"><span class="lang">python</span><code><span class="tok-kw">from</span> PIL <span class="tok-kw">import</span> Image
+<span class="tok-kw">import</span> os
+
+<span class="tok-kw">def</span> <span class="tok-fn">samazinat_attelus</span>(mape, max_platums=1600, kvalitate=85):
+    <span class="tok-com">"""Samazina visu mapes attēlu izmēru un pārraksta tos vietā."""</span>
+    <span class="tok-kw">for</span> fails <span class="tok-kw">in</span> os.listdir(mape):
+        <span class="tok-kw">if</span> <span class="tok-kw">not</span> fails.lower().endswith((<span class="tok-str">'.jpg'</span>, <span class="tok-str">'.jpeg'</span>, <span class="tok-str">'.png'</span>)):
+            <span class="tok-kw">continue</span>
+
+        cels = os.path.join(mape, fails)
+        <span class="tok-kw">with</span> Image.open(cels) <span class="tok-kw">as</span> img:
+            <span class="tok-kw">if</span> img.width > max_platums:
+                attieciba = max_platums / img.width
+                jauns_augstums = <span class="tok-fn">int</span>(img.height * attieciba)
+                img = img.resize((max_platums, jauns_augstums), Image.LANCZOS)
+            img.save(cels, quality=kvalitate, optimize=<span class="tok-kw">True</span>)
+        <span class="tok-fn">print</span>(<span class="tok-str">f"✓ {fails}"</span>)
+
+<span class="tok-kw">if</span> __name__ == <span class="tok-str">"__main__"</span>:
+    samazinat_attelus(<span class="tok-str">"attēli"</span>)</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Skripts <strong>pārraksta oriģinālos failus vietā</strong> (<code>img.save(cels, ...)</code>) — ja oriģinālie, pilna izmēra attēli vēl ir vajadzīgi, vispirms izveido to kopiju citā mapē, pirms palaid šo skriptu.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="pdf-merge">
+      <h2>PDF failu apvienošana</h2>
+      <p>Apvieno vairākus PDF failus vienā, tādā secībā, kādā tie norādīti sarakstā — noderīgi, piem., apvienojot skenētus dokumentus vai atsevišķas rēķina daļas, bez online rīkiem, kur faili iet caur svešu serveri.</p>
+      <p><strong>Uzinstalē:</strong> <code>pip install pypdf</code></p>
+      <pre class="code-block"><span class="lang">python</span><code><span class="tok-kw">from</span> pypdf <span class="tok-kw">import</span> PdfWriter
+
+<span class="tok-kw">def</span> <span class="tok-fn">apvienot_pdf</span>(faili, izvades_fails=<span class="tok-str">"apvienots.pdf"</span>):
+    apvienotajs = PdfWriter()
+    <span class="tok-kw">for</span> fails <span class="tok-kw">in</span> faili:
+        apvienotajs.append(fails)
+    apvienotajs.write(izvades_fails)
+    apvienotajs.close()
+    <span class="tok-fn">print</span>(<span class="tok-str">f"✓ Izveidots: {izvades_fails}"</span>)
+
+<span class="tok-kw">if</span> __name__ == <span class="tok-str">"__main__"</span>:
+    apvienot_pdf([<span class="tok-str">"dala1.pdf"</span>, <span class="tok-str">"dala2.pdf"</span>, <span class="tok-str">"dala3.pdf"</span>])</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>apvienotajs.append(fails)</code> pieņem gan faila ceļu (kā šeit), gan jau atvērtu faila objektu — der arī, ja PDF vispirms jāapstrādā citādi (piem., jāizfiltrē konkrētas lapas ar <code>append(fails, pages=(0, 3))</code>).</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="file-sorter">
+      <h2>Lejupielāžu mapes automātiska sakārtošana</h2>
+      <p>Pārvieto failus no vienas mapes (piem., Lejupielādes) apakšmapēs pēc faila tipa — attēli, dokumenti, arhīvi, video katrs savā mapē. Nelieto nekādas ārējas bibliotēkas, tikai Python standarta moduļus.</p>
+      <pre class="code-block"><span class="lang">python</span><code><span class="tok-kw">import</span> os
+<span class="tok-kw">import</span> shutil
+
+MAPES_PA_TIPIEM = {
+    <span class="tok-str">"Attēli"</span>: [<span class="tok-str">".jpg"</span>, <span class="tok-str">".jpeg"</span>, <span class="tok-str">".png"</span>, <span class="tok-str">".gif"</span>, <span class="tok-str">".webp"</span>],
+    <span class="tok-str">"Dokumenti"</span>: [<span class="tok-str">".pdf"</span>, <span class="tok-str">".docx"</span>, <span class="tok-str">".txt"</span>, <span class="tok-str">".xlsx"</span>],
+    <span class="tok-str">"Arhivi"</span>: [<span class="tok-str">".zip"</span>, <span class="tok-str">".rar"</span>, <span class="tok-str">".7z"</span>],
+    <span class="tok-str">"Video"</span>: [<span class="tok-str">".mp4"</span>, <span class="tok-str">".mkv"</span>, <span class="tok-str">".mov"</span>],
+}
+
+<span class="tok-kw">def</span> <span class="tok-fn">sakartot_mapi</span>(mape):
+    <span class="tok-kw">for</span> fails <span class="tok-kw">in</span> os.listdir(mape):
+        cels = os.path.join(mape, fails)
+        <span class="tok-kw">if</span> os.path.isdir(cels):
+            <span class="tok-kw">continue</span>
+
+        pletiens = os.path.splitext(fails)[1].lower()
+        <span class="tok-kw">for</span> mapes_nosaukums, pletieni <span class="tok-kw">in</span> MAPES_PA_TIPIEM.items():
+            <span class="tok-kw">if</span> pletiens <span class="tok-kw">in</span> pletieni:
+                merkis = os.path.join(mape, mapes_nosaukums)
+                os.makedirs(merkis, exist_ok=<span class="tok-kw">True</span>)
+                shutil.move(cels, os.path.join(merkis, fails))
+                <span class="tok-fn">print</span>(<span class="tok-str">f"→ {fails} pārvietots uz {mapes_nosaukums}/"</span>)
+                <span class="tok-kw">break</span>
+
+<span class="tok-kw">if</span> __name__ == <span class="tok-str">"__main__"</span>:
+    sakartot_mapi(os.path.expanduser(<span class="tok-str">"~/Downloads"</span>))</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>shutil.move()</code> failus pārvieto (ne kopē) — pirmajā reizē izmēģini uz mapi ar dažiem testa failiem, ne uzreiz uz reālo Lejupielādes mapi, lai pārliecinātos, ka sadalījums pa tipiem atbilst tavām vēlmēm.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="uptime-checker">
+      <h2>Vietnes darbības pārbaude (uptime)</h2>
+      <p>Ik pēc noteikta laika pārbauda, vai norādītās vietnes atbild — noderīgi, ja apkalpo klientu vietnes un gribas uzzināt par dīkstāvi ātrāk, nekā to pamana klients.</p>
+      <p><strong>Uzinstalē:</strong> <code>pip install requests</code></p>
+      <pre class="code-block"><span class="lang">python</span><code><span class="tok-kw">import</span> requests
+<span class="tok-kw">import</span> time
+
+VIETNES = [
+    <span class="tok-str">"https://piemers.lv"</span>,
+    <span class="tok-str">"https://otra-vietne.lv"</span>,
+]
+
+<span class="tok-kw">def</span> <span class="tok-fn">parbaudit_vietnes</span>():
+    <span class="tok-kw">for</span> url <span class="tok-kw">in</span> VIETNES:
+        <span class="tok-kw">try</span>:
+            atbilde = requests.get(url, timeout=10)
+            <span class="tok-kw">if</span> atbilde.status_code == 200:
+                <span class="tok-fn">print</span>(<span class="tok-str">f"✓ {url} — strādā ({atbilde.status_code})"</span>)
+            <span class="tok-kw">else</span>:
+                <span class="tok-fn">print</span>(<span class="tok-str">f"⚠ {url} — neparasts statuss ({atbilde.status_code})"</span>)
+        <span class="tok-kw">except</span> requests.exceptions.RequestException <span class="tok-kw">as</span> e:
+            <span class="tok-fn">print</span>(<span class="tok-str">f"✗ {url} — NESTRĀDĀ: {e}"</span>)
+
+<span class="tok-kw">if</span> __name__ == <span class="tok-str">"__main__"</span>:
+    <span class="tok-kw">while</span> <span class="tok-kw">True</span>:
+        parbaudit_vietnes()
+        <span class="tok-fn">print</span>(<span class="tok-str">"-" * 40</span>)
+        time.sleep(300)  <span class="tok-com"># pārbauda ik pēc 5 minūtēm</span></code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Šis piemērs tikai izdrukā rezultātu terminālī, kur tas paliek redzams tikai tik ilgi, kamēr skripts palaists. Reālai lietošanai der to papildināt ar paziņojumu (piem., e-pasts ar <code>smtplib</code> vai ziņa uz Slack/Telegram webhook), kas nosūtās tikai tad, kad statuss mainās no "strādā" uz "nestrādā" — nevis pie katras pārbaudes.</p>
+      </div>
+    </section>
+
+    <div class="doc-pager">
+      <a href="gdpr.html"><span class="lbl">← Iepriekšējais</span>GDPR / Sīkdatnes</a>
+      <a class="to-next" href="../index.html"><span class="lbl">Atpakaļ →</span>Visas kategorijas</a>
+    </div>
+  </main>
+</div>
+
+<script src="../js/theme.js?v=20"></script>
+<script src="../js/main.js?v=20"></script>
+</body>
+</html>
