@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
 <title>Python rīki - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=29" />
+<link rel="stylesheet" href="../css/style.css?v=30" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -288,58 +288,86 @@ iepriksejie_statusi = {}
 _pazinojumu_rinda = queue.Queue()
 _aktivie_logi = []
 
+<span class="tok-kw">def</span> <span class="tok-fn">_apalu_taisnstura</span>(c, x1, y1, x2, y2, r, **kwargs):
+    <span class="tok-com"># tkinter Canvas nemāk zīmēt noapaļotus taisnstūrus pats - tā to uzbūvē</span>
+    <span class="tok-com"># no punktiem ar smooth=True (izliektas līknes starp punktiem)</span>
+    punkti = [
+        x1+r, y1, x2-r, y1, x2, y1, x2, y1+r,
+        x2, y2-r, x2, y2, x2-r, y2, x1+r, y2,
+        x1, y2, x1, y2-r, x1, y1+r, x1, y1,
+    ]
+    <span class="tok-kw">return</span> c.create_polygon(punkti, smooth=<span class="tok-kw">True</span>, **kwargs)
+
+<span class="tok-kw">def</span> <span class="tok-fn">_atskanot_skanu</span>(ir_labi):
+    <span class="tok-com"># divtoņu signāls, nevis viens plakans pīkstiens - winsound.Beep ir</span>
+    <span class="tok-com"># iebūvēts (nekāds .wav fails nav vajadzīgs), pats ģenerē toni</span>
+    <span class="tok-kw">if</span> ir_labi:
+        winsound.Beep(880, 90)
+        winsound.Beep(1175, 130)
+    <span class="tok-kw">else</span>:
+        winsound.Beep(392, 100)
+        winsound.Beep(330, 160)
+
 <span class="tok-kw">def</span> <span class="tok-fn">_izveidot_pazinojuma_logu</span>(root, virsraksts, zina, ir_labi):
     logs = tk.Toplevel(root)
     logs.overrideredirect(<span class="tok-kw">True</span>)
     logs.attributes(<span class="tok-str">"-topmost"</span>, <span class="tok-kw">True</span>)
     logs.attributes(<span class="tok-str">"-alpha"</span>, 0.0)  <span class="tok-com"># sākas neredzams, tad iebalsinās</span>
 
-    krasa_fons = <span class="tok-str">"#15151f"</span>
-    krasa_akcents = <span class="tok-str">"#22c55e"</span> <span class="tok-kw">if</span> ir_labi <span class="tok-kw">else</span> <span class="tok-str">"#ef4444"</span>
-    platums, augstums, atstarpe = 340, 92, 12
+    platums, augstums, atstarpe = 360, 100, 14
+    <span class="tok-com"># "burvju" krāsa - jebkur, kur tā parādās logā, kļūst pilnībā caurspīdīga.</span>
+    <span class="tok-com"># Tas ir vienīgais veids, kā panākt TIEŠI noapaļotus stūrus bez rāmja logā,</span>
+    <span class="tok-com"># kam ir overrideredirect(True) - tā vietā, lai logs būtu taisnstūris ar</span>
+    <span class="tok-com"># noapaļotu saturu, pats logs kļūst neredzams tur, kur nav "stikla" formas</span>
+    magic = <span class="tok-str">"#0a0a0c"</span>
+    logs.configure(bg=magic)
+    logs.attributes(<span class="tok-str">"-transparentcolor"</span>, magic)
 
-    x = logs.winfo_screenwidth() - platums - 20
+    x = logs.winfo_screenwidth() - platums - 24
     y = logs.winfo_screenheight() - augstums - 60 - <span class="tok-fn">len</span>(_aktivie_logi) * (augstums + atstarpe)
     logs.geometry(<span class="tok-str">f"{platums}x{augstums}+{x}+{y}"</span>)
-    logs.configure(bg=krasa_fons)
 
-    josla = tk.Frame(logs, bg=krasa_akcents, width=6)
-    josla.pack(side=<span class="tok-str">"left"</span>, fill=<span class="tok-str">"y"</span>)
+    canvas = tk.Canvas(logs, width=platums, height=augstums, bg=magic, highlightthickness=0)
+    canvas.pack(fill=<span class="tok-str">"both"</span>, expand=<span class="tok-kw">True</span>)
 
-    ikonas_apvalks = tk.Frame(logs, bg=krasa_fons, width=40)
-    ikonas_apvalks.pack(side=<span class="tok-str">"left"</span>, fill=<span class="tok-str">"y"</span>)
-    ikonas_apvalks.pack_propagate(<span class="tok-kw">False</span>)
-    tk.Label(ikonas_apvalks, text=(<span class="tok-str">"✓"</span> <span class="tok-kw">if</span> ir_labi <span class="tok-kw">else</span> <span class="tok-str">"✕"</span>), bg=krasa_fons, fg=krasa_akcents,
-             font=(<span class="tok-str">"Segoe UI"</span>, 18, <span class="tok-str">"bold"</span>)).place(relx=0.5, rely=0.5, anchor=<span class="tok-str">"center"</span>)
+    krasa_akcents = <span class="tok-str">"#4ade80"</span> <span class="tok-kw">if</span> ir_labi <span class="tok-kw">else</span> <span class="tok-str">"#f87171"</span>
+    stikla_krasa = <span class="tok-str">"#14141f"</span>   <span class="tok-com"># tumšs, puscaurspīdīgas stikla iespaida panelis</span>
+    apmales_krasa = <span class="tok-str">"#3a3a55"</span>  <span class="tok-com"># smalka gaiša mala ap paneli</span>
 
-    saturs = tk.Frame(logs, bg=krasa_fons)
-    saturs.pack(side=<span class="tok-str">"left"</span>, fill=<span class="tok-str">"both"</span>, expand=<span class="tok-kw">True</span>, padx=(4, 14), pady=10)
+    <span class="tok-fn">_apalu_taisnstura</span>(canvas, 1, 1, platums-1, augstums-1, 22,
+                     fill=stikla_krasa, outline=apmales_krasa, width=1)
 
-    tk.Label(saturs, text=virsraksts, bg=krasa_fons, fg=<span class="tok-str">"white"</span>,
-             font=(<span class="tok-str">"Segoe UI"</span>, 11, <span class="tok-str">"bold"</span>), anchor=<span class="tok-str">"w"</span>, justify=<span class="tok-str">"left"</span>).pack(fill=<span class="tok-str">"x"</span>)
-    tk.Label(saturs, text=zina, bg=krasa_fons, fg=<span class="tok-str">"#a6a3c4"</span>,
-             font=(<span class="tok-str">"Segoe UI"</span>, 9), anchor=<span class="tok-str">"w"</span>, justify=<span class="tok-str">"left"</span>, wraplength=220).pack(fill=<span class="tok-str">"x"</span>, pady=(4, 0))
+    <span class="tok-com"># ikona apļa nozīmītē, ne tikai teksts - premium notikumu paziņojumu paraugs</span>
+    ikonas_r = 16
+    ikonas_cx, ikonas_cy = 40, augstums // 2
+    canvas.create_oval(ikonas_cx-ikonas_r, ikonas_cy-ikonas_r, ikonas_cx+ikonas_r, ikonas_cy+ikonas_r,
+                        fill=krasa_akcents, outline=<span class="tok-str">""</span>)
+    canvas.create_text(ikonas_cx, ikonas_cy, text=(<span class="tok-str">"✓"</span> <span class="tok-kw">if</span> ir_labi <span class="tok-kw">else</span> <span class="tok-str">"✕"</span>), fill=stikla_krasa,
+                        font=(<span class="tok-str">"Segoe UI"</span>, 14, <span class="tok-str">"bold"</span>))
 
-    aizvert_btn = tk.Label(logs, text=<span class="tok-str">"✕"</span>, bg=krasa_fons, fg=<span class="tok-str">"#a6a3c4"</span>, font=(<span class="tok-str">"Segoe UI"</span>, 9), cursor=<span class="tok-str">"hand2"</span>)
-    aizvert_btn.place(x=platums - 24, y=6)
+    canvas.create_text(70, 32, text=virsraksts, fill=<span class="tok-str">"white"</span>, anchor=<span class="tok-str">"w"</span>, font=(<span class="tok-str">"Segoe UI"</span>, 11, <span class="tok-str">"bold"</span>))
+    canvas.create_text(70, 56, text=zina, fill=<span class="tok-str">"#a6a3c4"</span>, anchor=<span class="tok-str">"w"</span>, font=(<span class="tok-str">"Segoe UI"</span>, 9), width=250)
+
+    canvas.create_text(platums - 24, 20, text=<span class="tok-str">"✕"</span>, fill=<span class="tok-str">"#8b87a3"</span>,
+                        font=(<span class="tok-str">"Segoe UI"</span>, 10, <span class="tok-str">"bold"</span>), tags=<span class="tok-str">"aizvert"</span>)
 
     <span class="tok-kw">def</span> <span class="tok-fn">aizvert</span>(event=<span class="tok-kw">None</span>):
         <span class="tok-kw">if</span> logs <span class="tok-kw">in</span> _aktivie_logi:
             _aktivie_logi.remove(logs)
         logs.destroy()
 
-    aizvert_btn.bind(<span class="tok-str">"&lt;Button-1&gt;"</span>, aizvert)
+    canvas.tag_bind(<span class="tok-str">"aizvert"</span>, <span class="tok-str">"&lt;Button-1&gt;"</span>, aizvert)
     _aktivie_logi.append(logs)
 
     <span class="tok-kw">def</span> <span class="tok-fn">iebalsinat</span>(soli=0):
         <span class="tok-kw">if</span> <span class="tok-kw">not</span> logs.winfo_exists():
             <span class="tok-kw">return</span>
-        logs.attributes(<span class="tok-str">"-alpha"</span>, <span class="tok-fn">min</span>(soli / 10, 1.0))
+        logs.attributes(<span class="tok-str">"-alpha"</span>, <span class="tok-fn">min</span>(soli / 10, 0.93))
         <span class="tok-kw">if</span> soli &lt; 10:
             logs.after(15, <span class="tok-kw">lambda</span>: iebalsinat(soli + 1))
 
     iebalsinat()
-    winsound.MessageBeep(winsound.MB_ICONASTERISK <span class="tok-kw">if</span> ir_labi <span class="tok-kw">else</span> winsound.MB_ICONEXCLAMATION)
+    <span class="tok-fn">_atskanot_skanu</span>(ir_labi)
     logs.after(15000, aizvert)  <span class="tok-com"># aizveras pats pēc 15s, ja pats neaizver ātrāk</span>
 
 <span class="tok-kw">def</span> <span class="tok-fn">_apstradat_pazinojumu_rindu</span>(root):
@@ -416,8 +444,10 @@ threading.Thread(target=_palaist_pazinojumu_fonu, daemon=<span class="tok-kw">Tr
       <div class="doc-cards">
         <div class="doc-mini-card"><h4><code>HEADERS</code> (User-Agent)</h4><p>Bez šī daudzas vietnes ar Cloudflare vai līdzīgu aizsardzību atgriež <strong>403</strong> pieprasījumam, kas nāk no <code>python-requests</code> - skripts to pareizi ziņotu kā "kluda", lai gan vietne apmeklētājam pārlūkā strādā normāli. Ar pārlūka izskata galveni serveris pieprasījumu neatšķir no īsta apmeklētāja.</p></div>
         <div class="doc-mini-card"><h4>Kopīgs Tk process + rinda</h4><p>Iepriekšējā versijā katrs paziņojums izveidoja savu <code>tk.Tk()</code> savā pavedienā - divi gandrīz vienlaicīgi paziņojumi dažkārt "sacentās" un redzams bija tikai viens. Tagad ir <strong>viens</strong> fona pavediens ar vienu logu, kas ik pēc 150ms pārbauda rindu un droši izveido jaunu paziņojumu katram ierakstam.</p></div>
-        <div class="doc-mini-card"><h4>Iebalsināšanās animācija</h4><p><code>attributes("-alpha", ...)</code> pakāpeniski ceļ logu no caurspīdīga uz pilnībā redzamu 150ms laikā - vienkāršs veids, kā panākt mīkstāku, modernāku parādīšanos bez ārējām bibliotēkām.</p></div>
+        <div class="doc-mini-card"><h4>Iebalsināšanās animācija</h4><p><code>attributes("-alpha", ...)</code> pakāpeniski ceļ logu no caurspīdīga uz gandrīz pilnībā redzamu 150ms laikā - vienkāršs veids, kā panākt mīkstāku, modernāku parādīšanos bez ārējām bibliotēkām.</p></div>
         <div class="doc-mini-card"><h4>Sakrāvums (stacking)</h4><p>Ja vairāki paziņojumi parādās gandrīz vienlaicīgi, katrs nākamais tiek novietots virs iepriekšējā (nevis pāri tam) - <code>len(_aktivie_logi)</code> nosaka nobīdi uz augšu.</p></div>
+        <div class="doc-mini-card"><h4>Noapaļoti stūri (<code>-transparentcolor</code>)</h4><p><code>tkinter</code> nemāk noapaļot loga stūrus tieši, tāpēc logam iestata "burvju" krāsu, kas kļūst pilnībā caurspīdīga - un uz tā zīmē noapaļotu formu (<code>Canvas.create_polygon(..., smooth=True)</code>). Rezultātā redzams tikai pats noapaļotais panelis, ne taisnstūra logs ap to. <strong>Pārbaudīts ar ekrānuzņēmumu</strong> - stūri tiešām caurspīdīgi, ne tikai teorētiski.</p></div>
+        <div class="doc-mini-card"><h4>Divtoņu skaņa (<code>winsound.Beep</code>)</h4><p>Nevis viens plakans sistēmas pīkstiens, bet divi īsi toņi pēc kārtas - augšupejoši (880→1175 Hz) veiksmei, lejupejoši (392→330 Hz) kļūdai. Skaņu ģenerē pats Python, nevis atskaņo failu - nekas jāuzinstalē nav.</p></div>
       </div>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
@@ -426,6 +456,10 @@ threading.Thread(target=_palaist_pazinojumu_fonu, daemon=<span class="tok-kw">Tr
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
         <p>Kompromiss salīdzinājumā ar Windows iebūvēto paziņojumu sistēmu (Action Center): šie logi <strong>neparādās</strong> paziņojumu vēsturē un pēc aizvēršanas nekur nepaliek. Un, tāpat kā iepriekš: paziņojums parādās tikai uz šī paša datora, kamēr skripts tur palaists.</p>
+      </div>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><strong>Godīgi par "glassmorphism":</strong> augstāk redzamais panelis ir puscaurspīdīgs, noapaļots, tumšs "stikla" izskata panelis - bet tas <strong>nav</strong> īsts fona izpludinājums (blur-behind), jo tīrs <code>tkinter</code> to nemāk. Ja gribi arī reālu Windows 11 "Acrylic"/"Mica" fona izpludinājumu (redzēt izplūdušu darbvirsmu caur logu, tāpat kā Windows sistēmas paziņojumos), der izmēģināt bibliotēku <code>pywinstyles</code> (<code>pip install pywinstyles</code>) un pievienot <code>pywinstyles.apply_style(logs, "acrylic")</code> pēc loga izveides - tas strādā droši tikai Windows 11 un nav šeit iekļauts/pārbaudīts pēc noklusējuma, jo tas ir papildu atkarība ar OS versijas ierobežojumu.</p>
       </div>
     </section>
 
@@ -436,7 +470,7 @@ threading.Thread(target=_palaist_pazinojumu_fonu, daemon=<span class="tok-kw">Tr
   </main>
 </div>
 
-<script src="../js/theme.js?v=29"></script>
-<script src="../js/main.js?v=29"></script>
+<script src="../js/theme.js?v=30"></script>
+<script src="../js/main.js?v=30"></script>
 </body>
 </html>
