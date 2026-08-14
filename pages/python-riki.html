@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
 <title>Python rīki - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=32" />
+<link rel="stylesheet" href="../css/style.css?v=33" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -360,11 +360,13 @@ _bildes_cache = []  <span class="tok-com"># jāpatur reference uz katru PhotoIma
     <span class="tok-fn">_apalu_taisnstura</span>(canvas, 1, 1, platums-1, augstums-1, 22,
                      fill=stikla_krasa, outline=apmales_krasa, width=1)
 
-    <span class="tok-com"># vienkāršs krāsains aplis kā statusa nozīmīte - bez burtiem/simboliem iekšā</span>
+    <span class="tok-com"># ikona apļa nozīmītē - ✓ veiksmei, ✕ kļūdai, baltā krāsā labam kontrastam</span>
     ikonas_izmers = 32
     ikonas_cx, ikonas_cy = 40, augstums // 2
     ikonas_bilde = <span class="tok-fn">_gluds_aplis</span>(krasa_akcents, ikonas_izmers)
     canvas.create_image(ikonas_cx, ikonas_cy, image=ikonas_bilde)
+    canvas.create_text(ikonas_cx, ikonas_cy, text=(<span class="tok-str">"✓"</span> <span class="tok-kw">if</span> ir_labi <span class="tok-kw">else</span> <span class="tok-str">"✕"</span>), fill=<span class="tok-str">"white"</span>,
+                        font=(<span class="tok-str">"Segoe UI"</span>, 13, <span class="tok-str">"bold"</span>))
 
     canvas.create_text(70, 32, text=virsraksts, fill=<span class="tok-str">"white"</span>, anchor=<span class="tok-str">"w"</span>, font=(<span class="tok-str">"Segoe UI"</span>, 11, <span class="tok-str">"bold"</span>))
     canvas.create_text(70, 56, text=zina, fill=<span class="tok-str">"#a6a3c4"</span>, anchor=<span class="tok-str">"w"</span>, font=(<span class="tok-str">"Segoe UI"</span>, 9), width=250)
@@ -507,7 +509,7 @@ STATUSA_TEKSTI = {
   </main>
 </div>
 
-<script src="../js/theme.js?v=32"></script>
-<script src="../js/main.js?v=32"></script>
+<script src="../js/theme.js?v=33"></script>
+<script src="../js/main.js?v=33"></script>
 </body>
 </html>
