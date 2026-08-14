@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
-<title>Drošība — Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=20" />
+<title>Drošība - Documentation Samis</title>
+<link rel="stylesheet" href="../css/style.css?v=21" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -81,28 +81,28 @@
       </div>
       <h1 style="margin-bottom:0;">Drošība</h1>
     </div>
-    <p class="doc-lead">Web drošības pamatprincipi, ko jāzina katram programmētājam — ne tikai WordPress kontekstā. Katrai tēmai — kāpēc uzbrukums strādā, un konkrēts, pareizs koda piemērs, kā to novērst.</p>
+    <p class="doc-lead">Web drošības pamatprincipi, ko jāzina katram programmētājam - ne tikai WordPress kontekstā. Katrai tēmai - kāpēc uzbrukums strādā, un konkrēts, pareizs koda piemērs, kā to novērst.</p>
 
     <section class="doc-section" id="hash-vs-encrypt">
       <h2>Hashošana vs šifrēšana (encryption)</h2>
-      <p>Abas pārvērš datus par nesalasāmu virkni, tāpēc tās bieži sajauc — bet tām ir pretēja pamatīpašība: <strong>hash ir vienvirziena</strong> (nekad neatšifrē atpakaļ), <strong>šifrēšana ir divvirzienu</strong> (ar pareizu atslēgu var iegūt oriģinālu atpakaļ). Izvēle starp tām ir izvēle starp "vai man dati kādreiz jāatgūst atpakaļ, vai tikai jāpārbauda, ka tie sakrīt".</p>
+      <p>Abas pārvērš datus par nesalasāmu virkni, tāpēc tās bieži sajauc - bet tām ir pretēja pamatīpašība: <strong>hash ir vienvirziena</strong> (nekad neatšifrē atpakaļ), <strong>šifrēšana ir divvirzienu</strong> (ar pareizu atslēgu var iegūt oriģinālu atpakaļ). Izvēle starp tām ir izvēle starp "vai man dati kādreiz jāatgūst atpakaļ, vai tikai jāpārbauda, ka tie sakrīt".</p>
       <div class="cheat-table-wrap">
         <table class="cheat-table">
           <thead><tr><th></th><th>Hashošana</th><th>Šifrēšana</th></tr></thead>
           <tbody>
-            <tr><td><strong>Virziens</strong></td><td>Vienvirziena — nav "atšifrē"</td><td>Divvirzienu — <code>encrypt()</code> un <code>decrypt()</code></td></tr>
+            <tr><td><strong>Virziens</strong></td><td>Vienvirziena - nav "atšifrē"</td><td>Divvirzienu - <code>encrypt()</code> un <code>decrypt()</code></td></tr>
             <tr><td><strong>Rezultāts</strong></td><td>Vienmēr fiksēta garuma virkne</td><td>Garums atkarīgs no oriģināla</td></tr>
-            <tr><td><strong>Atslēga</strong></td><td>Nav (bet var būt sāls)</td><td>Obligāta — bez tās nav iespējams atgūt datus</td></tr>
+            <tr><td><strong>Atslēga</strong></td><td>Nav (bet var būt sāls)</td><td>Obligāta - bez tās nav iespējams atgūt datus</td></tr>
             <tr><td><strong>Kad izmantot</strong></td><td>Paroles, failu integritātes pārbaude, čeksummas</td><td>Kredītkaršu dati, personas dati, ziņas, kas jāizlasa vēlāk</td></tr>
           </tbody>
         </table>
       </div>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// HASHOŠANA — paroles gadījumā oriģinālu vairs NEVAJAG, tikai salīdzināšanu</span>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// HASHOŠANA - paroles gadījumā oriģinālu vairs NEVAJAG, tikai salīdzināšanu</span>
 <span class="tok-fn">$hash</span> = <span class="tok-fn">password_hash</span>(<span class="tok-str">'ManaParole123'</span>, PASSWORD_DEFAULT);
-<span class="tok-com">// $hash: $2y$10$abc...  — no šī NAV iespējams iegūt atpakaļ 'ManaParole123'</span>
-<span class="tok-fn">password_verify</span>(<span class="tok-str">'ManaParole123'</span>, <span class="tok-fn">$hash</span>); <span class="tok-com">// true — salīdzina, neatšifrē</span>
+<span class="tok-com">// $hash: $2y$10$abc...  - no šī NAV iespējams iegūt atpakaļ 'ManaParole123'</span>
+<span class="tok-fn">password_verify</span>(<span class="tok-str">'ManaParole123'</span>, <span class="tok-fn">$hash</span>); <span class="tok-com">// true - salīdzina, neatšifrē</span>
 
-<span class="tok-com">// ŠIFRĒŠANA — piem., jāsaglabā lietotāja tālrunis, ko vēlāk jāparāda atpakaļ</span>
+<span class="tok-com">// ŠIFRĒŠANA - piem., jāsaglabā lietotāja tālrunis, ko vēlāk jāparāda atpakaļ</span>
 <span class="tok-fn">$atslega</span> = <span class="tok-fn">random_bytes</span>(32); <span class="tok-com">// glabā drošā vietā, NEVIS datubāzē blakus datiem</span>
 <span class="tok-fn">$iv</span> = <span class="tok-fn">random_bytes</span>(16);
 <span class="tok-fn">$sifrets</span> = <span class="tok-fn">openssl_encrypt</span>(<span class="tok-str">'+371 20000000'</span>, <span class="tok-str">'aes-256-cbc'</span>, <span class="tok-fn">$atslega</span>, 0, <span class="tok-fn">$iv</span>);
@@ -111,125 +111,125 @@
 <span class="tok-com">// $originals === '+371 20000000'</span></code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Pati biežākā kļūda: paroles <strong>šifrēt</strong> nevis <strong>hashot</strong>. Ja paroles ir šifrētas, tad, ja uzbrucējs kaut kā iegūst atslēgu (piem., no koda repozitorija vai konfigurācijas faila), viņš iegūst <strong>visas</strong> paroles vienlaikus tekstā. Ja paroles ir hashotas, tur nav nekādas atslēgas, ko nozagt — hash pats par sevi ir bezvērtīgs uzbrucējam bez milzīga brute-force darba. Skat. arī <a href="#password-hashing">Paroļu hashošana</a> zemāk.</p>
+        <p>Pati biežākā kļūda: paroles <strong>šifrēt</strong> nevis <strong>hashot</strong>. Ja paroles ir šifrētas, tad, ja uzbrucējs kaut kā iegūst atslēgu (piem., no koda repozitorija vai konfigurācijas faila), viņš iegūst <strong>visas</strong> paroles vienlaikus tekstā. Ja paroles ir hashotas, tur nav nekādas atslēgas, ko nozagt - hash pats par sevi ir bezvērtīgs uzbrucējam bez milzīga brute-force darba. Skat. arī <a href="#password-hashing">Paroļu hashošana</a> zemāk.</p>
       </div>
     </section>
 
     <section class="doc-section" id="symmetric-asymmetric">
       <h2>Simetriskā vs asimetriskā šifrēšana</h2>
-      <p>Iepriekšējā piemērā (<code>openssl_encrypt</code>) izmantota <strong>simetriskā</strong> šifrēšana — viena un tā pati atslēga gan šifrē, gan atšifrē. Tas ir ātri, bet rada praktisku problēmu: kā droši nodot šo atslēgu otrai pusei, ja sazināšanās kanāls pats vēl nav drošs? Šo problēmu risina <strong>asimetriskā</strong> šifrēšana.</p>
+      <p>Iepriekšējā piemērā (<code>openssl_encrypt</code>) izmantota <strong>simetriskā</strong> šifrēšana - viena un tā pati atslēga gan šifrē, gan atšifrē. Tas ir ātri, bet rada praktisku problēmu: kā droši nodot šo atslēgu otrai pusei, ja sazināšanās kanāls pats vēl nav drošs? Šo problēmu risina <strong>asimetriskā</strong> šifrēšana.</p>
       <div class="doc-cards">
         <div class="doc-mini-card"><h4>Simetriskā <span class="tag easy">ātra</span></h4><p>Viena atslēga abām darbībām (piem., AES). Ātra, der lielam datu apjomam. Problēma: atslēga jāpārsūta droši abām pusēm iepriekš.</p></div>
-        <div class="doc-mini-card"><h4>Asimetriskā <span class="tag hard">lēnāka</span></h4><p>Divas matemātiski saistītas atslēgas — <strong>publiskā</strong> (var brīvi izplatīt) un <strong>privātā</strong> (glabā slepenībā). Ar publisko šifrē, ar privāto atšifrē (piem., RSA, ECC). Lēnāka, tāpēc reti izmanto lieliem datu apjomiem tieši.</p></div>
+        <div class="doc-mini-card"><h4>Asimetriskā <span class="tag hard">lēnāka</span></h4><p>Divas matemātiski saistītas atslēgas - <strong>publiskā</strong> (var brīvi izplatīt) un <strong>privātā</strong> (glabā slepenībā). Ar publisko šifrē, ar privāto atšifrē (piem., RSA, ECC). Lēnāka, tāpēc reti izmanto lieliem datu apjomiem tieši.</p></div>
       </div>
-      <p>Praksē abas kombinē — tā strādā arī HTTPS/TLS (skat. <a href="#https-tls">HTTPS/TLS pamati</a> zemāk): asimetrisko šifrēšanu izmanto tikai īsam "roku spiedienam" sākumā, lai droši vienotos par vienreizēju simetrisko atslēgu, un pēc tam visu faktisko datu plūsmu šifrē ar to — ātrāk, bet tikpat droši.</p>
+      <p>Praksē abas kombinē - tā strādā arī HTTPS/TLS (skat. <a href="#https-tls">HTTPS/TLS pamati</a> zemāk): asimetrisko šifrēšanu izmanto tikai īsam "roku spiedienam" sākumā, lai droši vienotos par vienreizēju simetrisko atslēgu, un pēc tam visu faktisko datu plūsmu šifrē ar to - ātrāk, bet tikpat droši.</p>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Asimetriskā šifrēšana ir arī pamats <strong>digitālajam parakstam</strong> (JWT <code>RS256</code> algoritms, SSL sertifikāti, Git commit parakstīšana) — tikai apgrieztā virzienā: paraksta ar privāto atslēgu, pārbauda ar publisko. Tā jebkurš var pārliecināties, ka ziņu tiešām nosūtīja atslēgas īpašnieks, bet tikai īpašnieks var jaunas parakstīt.</p>
+        <p>Asimetriskā šifrēšana ir arī pamats <strong>digitālajam parakstam</strong> (JWT <code>RS256</code> algoritms, SSL sertifikāti, Git commit parakstīšana) - tikai apgrieztā virzienā: paraksta ar privāto atslēgu, pārbauda ar publisko. Tā jebkurš var pārliecināties, ka ziņu tiešām nosūtīja atslēgas īpašnieks, bet tikai īpašnieks var jaunas parakstīt.</p>
       </div>
     </section>
 
     <section class="doc-section" id="authn-vs-authz">
       <h2>Autentifikācija vs autorizācija</h2>
-      <p>Divi termini, ko pastāvīgi sajauc, jo angliski tie skan un raksta gandrīz vienādi (authentication / authorization) — bet tie atbild uz pilnīgi dažādiem jautājumiem.</p>
+      <p>Divi termini, ko pastāvīgi sajauc, jo angliski tie skan un raksta gandrīz vienādi (authentication / authorization) - bet tie atbild uz pilnīgi dažādiem jautājumiem.</p>
       <div class="doc-cards">
-        <div class="doc-mini-card"><h4>Autentifikācija <span class="tag easy">"Kas tu esi?"</span></h4><p>Pārbauda <strong>identitāti</strong> — pieteikšanās ar lietotājvārdu/paroli, 2FA kodu, piekļuves tokenu. Rezultāts: sistēma zina, KURŠ lietotājs tas ir.</p></div>
-        <div class="doc-mini-card"><h4>Autorizācija <span class="tag mid">"Ko tu drīksti?"</span></h4><p>Pārbauda <strong>tiesības</strong> — vai šim jau zināmajam lietotājam ir atļauts veikt konkrēto darbību (rediģēt šo rakstu, redzēt šo lapu). Notiek PĒC autentifikācijas.</p></div>
+        <div class="doc-mini-card"><h4>Autentifikācija <span class="tag easy">"Kas tu esi?"</span></h4><p>Pārbauda <strong>identitāti</strong> - pieteikšanās ar lietotājvārdu/paroli, 2FA kodu, piekļuves tokenu. Rezultāts: sistēma zina, KURŠ lietotājs tas ir.</p></div>
+        <div class="doc-mini-card"><h4>Autorizācija <span class="tag mid">"Ko tu drīksti?"</span></h4><p>Pārbauda <strong>tiesības</strong> - vai šim jau zināmajam lietotājam ir atļauts veikt konkrēto darbību (rediģēt šo rakstu, redzēt šo lapu). Notiek PĒC autentifikācijas.</p></div>
       </div>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// AUTENTIFIKĀCIJA — WordPress: "vai lietotājs vispār ir pieteicies?"</span>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// AUTENTIFIKĀCIJA - WordPress: "vai lietotājs vispār ir pieteicies?"</span>
 <span class="tok-kw">if</span> (!<span class="tok-fn">is_user_logged_in</span>()) {
     <span class="tok-fn">wp_die</span>(<span class="tok-str">'Lūdzu, piesakies.'</span>);
 }
 
-<span class="tok-com">// AUTORIZĀCIJA — WordPress: "vai ŠIM KONKRĒTAJAM lietotājam ir tiesības to darīt?"</span>
+<span class="tok-com">// AUTORIZĀCIJA - WordPress: "vai ŠIM KONKRĒTAJAM lietotājam ir tiesības to darīt?"</span>
 <span class="tok-kw">if</span> (!<span class="tok-fn">current_user_can</span>(<span class="tok-str">'edit_posts'</span>)) {
     <span class="tok-fn">wp_die</span>(<span class="tok-str">'Nav tiesību rediģēt rakstus.'</span>);
 }</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p><strong>Klasiska HTTP statusu kļūda:</strong> statuss <code>401 Unauthorized</code> vēsturiski nosaukts maldinoši — tas patiesībā nozīmē "nav autentificējies" (nav pieteicies vispār), nevis "nav autorizēts". Pareizais statuss trūkstošai <strong>autorizācijai</strong> (pieteicies, bet nav tiesību) ir <code>403 Forbidden</code>. Daudzi API to sajauc — pievēršot tam uzmanību, savā kodā to var izdarīt pareizi.</p>
+        <p><strong>Klasiska HTTP statusu kļūda:</strong> statuss <code>401 Unauthorized</code> vēsturiski nosaukts maldinoši - tas patiesībā nozīmē "nav autentificējies" (nav pieteicies vispār), nevis "nav autorizēts". Pareizais statuss trūkstošai <strong>autorizācijai</strong> (pieteicies, bet nav tiesību) ir <code>403 Forbidden</code>. Daudzi API to sajauc - pievēršot tam uzmanību, savā kodā to var izdarīt pareizi.</p>
       </div>
     </section>
 
     <section class="doc-section" id="jwt-vs-sessions">
       <h2>JWT (tokeni) vs sesijas</h2>
-      <p>Divi izplatīti veidi, kā lietotni "atceras", ka lietotājs ir pieteicies starp pieprasījumiem — fundamentāli atšķirīga arhitektūra ar dažādiem kompromisiem.</p>
+      <p>Divi izplatīti veidi, kā lietotni "atceras", ka lietotājs ir pieteicies starp pieprasījumiem - fundamentāli atšķirīga arhitektūra ar dažādiem kompromisiem.</p>
       <div class="cheat-table-wrap">
         <table class="cheat-table">
           <thead><tr><th></th><th>Sesijas</th><th>JWT</th></tr></thead>
           <tbody>
             <tr><td><strong>Kur glabājas dati</strong></td><td>Serverī (datubāze/Redis), klientam tikai ID</td><td>Pašā tokenā, klienta pusē</td></tr>
             <tr><td><strong>Servera atmiņa</strong></td><td>Jāglabā katra aktīvā sesija</td><td>Nav jāglabā nekas ("bezstāvokļa")</td></tr>
-            <tr><td><strong>Atsaukšana pirms termiņa</strong></td><td>Vienkārši — izdzēš ierakstu serverī</td><td>Sarežģīti — tokens derīgs līdz termiņam, ja vien neuztur "melno sarakstu"</td></tr>
+            <tr><td><strong>Atsaukšana pirms termiņa</strong></td><td>Vienkārši - izdzēš ierakstu serverī</td><td>Sarežģīti - tokens derīgs līdz termiņam, ja vien neuztur "melno sarakstu"</td></tr>
             <tr><td><strong>Der labi</strong></td><td>Klasiskai vietnei ar vienu backend serveri</td><td>API starp vairākiem servisiem/mikroservisiem, mobilajām app</td></tr>
           </tbody>
         </table>
       </div>
-      <p>WordPress pēc noklusējuma izmanto sesiju/cookie modeli (skat. <a href="#session-security">Sesiju drošība</a> augstāk) — JWT tur parasti parādās tikai tad, ja vietnei ir atsevišķs REST API, ko lieto mobilā app vai cita ārēja sistēma, nevis pats WordPress admin panelis.</p>
+      <p>WordPress pēc noklusējuma izmanto sesiju/cookie modeli (skat. <a href="#session-security">Sesiju drošība</a> augstāk) - JWT tur parasti parādās tikai tad, ja vietnei ir atsevišķs REST API, ko lieto mobilā app vai cita ārēja sistēma, nevis pats WordPress admin panelis.</p>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>JWT galvenā priekšrocība (nav jāglabā stāvoklis serverī) ir vienlaikus arī tā galvenais trūkums: ja lietotāju vajag nekavējoties izslēgt (piem., viņu atlaida no darba), parasts JWT paliks derīgs līdz izbeigšanās laikam — parasti risina ar <strong>īsu</strong> derīguma termiņu (5-15 min) plus atsevišķu "refresh token", ko VAR atsaukt serverī.</p>
+        <p>JWT galvenā priekšrocība (nav jāglabā stāvoklis serverī) ir vienlaikus arī tā galvenais trūkums: ja lietotāju vajag nekavējoties izslēgt (piem., viņu atlaida no darba), parasts JWT paliks derīgs līdz izbeigšanās laikam - parasti risina ar <strong>īsu</strong> derīguma termiņu (5-15 min) plus atsevišķu "refresh token", ko VAR atsaukt serverī.</p>
       </div>
     </section>
 
     <section class="doc-section" id="xss">
       <h2>XSS (Cross-Site Scripting)</h2>
-      <p>Uzbrucējs iesmidzina ļaunprātīgu JavaScript kodu lapā, ko pēc tam izpilda cita lietotāja pārlūks — piem., nozogot viņa sesijas sīkdatni. Notiek, kad lietotāja ievade tiek izvadīta HTML bez attīrīšanas.</p>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// NEDROŠI — lietotāja ievade tiek izvadīta tieši HTML</span>
+      <p>Uzbrucējs iesmidzina ļaunprātīgu JavaScript kodu lapā, ko pēc tam izpilda cita lietotāja pārlūks - piem., nozogot viņa sesijas sīkdatni. Notiek, kad lietotāja ievade tiek izvadīta HTML bez attīrīšanas.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// NEDROŠI - lietotāja ievade tiek izvadīta tieši HTML</span>
 <span class="tok-kw">echo</span> <span class="tok-str">"Sveiks, "</span> . <span class="tok-fn">$_GET</span>[<span class="tok-str">'vards'</span>];
 <span class="tok-com">// Ja ?vards=&lt;script&gt;alert(document.cookie)&lt;/script&gt;, tas IZPILDĀS pārlūkā</span>
 
-<span class="tok-com">// DROŠI — htmlspecialchars() pārvērš &lt; &gt; " ' & par HTML entītijām</span>
+<span class="tok-com">// DROŠI - htmlspecialchars() pārvērš &lt; &gt; " ' & par HTML entītijām</span>
 <span class="tok-kw">echo</span> <span class="tok-str">"Sveiks, "</span> . <span class="tok-fn">htmlspecialchars</span>(<span class="tok-fn">$_GET</span>[<span class="tok-str">'vards'</span>], ENT_QUOTES, <span class="tok-str">'UTF-8'</span>);</code></pre>
       <p>Tas pats princips JavaScript pusē:</p>
-      <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// NEDROŠI — innerHTML izpilda jebkuru HTML/JS, kas ir mainīgajā</span>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// NEDROŠI - innerHTML izpilda jebkuru HTML/JS, kas ir mainīgajā</span>
 element.innerHTML = lietotajaIevade;
 
-<span class="tok-com">// DROŠI — textContent vienmēr rāda tekstu burtiski, neizpildot HTML</span>
+<span class="tok-com">// DROŠI - textContent vienmēr rāda tekstu burtiski, neizpildot HTML</span>
 element.textContent = lietotajaIevade;</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>WordPress šim nolūkam piedāvā veselu funkciju saimi — <code>esc_html()</code>, <code>esc_attr()</code>, <code>esc_url()</code> — katra paredzēta konkrētam kontekstam (HTML teksts, atribūts, URL). Nekad neizmanto vienu universālu "escaping" funkciju visur.</p>
+        <p>WordPress šim nolūkam piedāvā veselu funkciju saimi - <code>esc_html()</code>, <code>esc_attr()</code>, <code>esc_url()</code> - katra paredzēta konkrētam kontekstam (HTML teksts, atribūts, URL). Nekad neizmanto vienu universālu "escaping" funkciju visur.</p>
       </div>
     </section>
 
     <section class="doc-section" id="sql-injection">
       <h2>SQL Injection</h2>
-      <p>Uzbrucējs ievada SQL kodu formas laukā tā, lai tas mainītu paša vaicājuma nozīmi — var izgūt visu datubāzi, apiet pieteikšanos vai dzēst datus.</p>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// NEDROŠI — lietotāja ievade tieši SQL vaicājumā (string konkatenācija)</span>
+      <p>Uzbrucējs ievada SQL kodu formas laukā tā, lai tas mainītu paša vaicājuma nozīmi - var izgūt visu datubāzi, apiet pieteikšanos vai dzēst datus.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// NEDROŠI - lietotāja ievade tieši SQL vaicājumā (string konkatenācija)</span>
 <span class="tok-fn">$rezultats</span> = <span class="tok-fn">$pdo</span>->query(<span class="tok-str">"SELECT * FROM lietotaji WHERE epasts = '"</span> . <span class="tok-fn">$_POST</span>[<span class="tok-str">'epasts'</span>] . <span class="tok-str">"'"</span>);
 <span class="tok-com">// Ievade: ' OR '1'='1  ⇒ vaicājums kļūst PATIESS visām rindām, atgriež VISUS lietotājus</span>
 
-<span class="tok-com">// DROŠI — sagatavotie vaicājumi (prepared statements) ar parametru saistīšanu</span>
+<span class="tok-com">// DROŠI - sagatavotie vaicājumi (prepared statements) ar parametru saistīšanu</span>
 <span class="tok-fn">$stmt</span> = <span class="tok-fn">$pdo</span>->prepare(<span class="tok-str">"SELECT * FROM lietotaji WHERE epasts = :epasts"</span>);
 <span class="tok-fn">$stmt</span>->execute([<span class="tok-str">'epasts'</span> => <span class="tok-fn">$_POST</span>[<span class="tok-str">'epasts'</span>]]);
 <span class="tok-fn">$rezultats</span> = <span class="tok-fn">$stmt</span>->fetchAll();</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Prepared statements strādā, jo PDO parametrus (<code>:epasts</code>) nosūta serverim <strong>atsevišķi</strong> no paša SQL vaicājuma teksta — datubāze tos nekad neinterpretē kā daļu no SQL sintakses, lai arī ko lietotājs ievadītu. Pilnu PDO piemēru skati <a href="php.html#datubaze">PHP → Datubāzes (PDO)</a>.</p>
+        <p>Prepared statements strādā, jo PDO parametrus (<code>:epasts</code>) nosūta serverim <strong>atsevišķi</strong> no paša SQL vaicājuma teksta - datubāze tos nekad neinterpretē kā daļu no SQL sintakses, lai arī ko lietotājs ievadītu. Pilnu PDO piemēru skati <a href="php.html#datubaze">PHP → Datubāzes (PDO)</a>.</p>
       </div>
     </section>
 
     <section class="doc-section" id="input-validation">
       <h2>Ievades validācija &amp; sanitizācija</h2>
       <p>Divi atšķirīgi jēdzieni: <strong>validācija</strong> pārbauda, vai dati atbilst gaidītajam formātam (un noraida, ja ne), <strong>sanitizācija</strong> tīra/pārveido datus, noņemot bīstamo saturu.</p>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Validācija — noraida, ja e-pasts nav derīgā formātā</span>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Validācija - noraida, ja e-pasts nav derīgā formātā</span>
 <span class="tok-fn">$epasts</span> = <span class="tok-fn">filter_var</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'epasts'</span>], FILTER_VALIDATE_EMAIL);
 <span class="tok-kw">if</span> (<span class="tok-fn">$epasts</span> === <span class="tok-kw">false</span>) {
     <span class="tok-kw">die</span>(<span class="tok-str">'Nederīga e-pasta adrese'</span>);
 }
 
-<span class="tok-com">// Sanitizācija — noņem bīstamās rakstzīmes, neatgriežot kļūdu</span>
+<span class="tok-com">// Sanitizācija - noņem bīstamās rakstzīmes, neatgriežot kļūdu</span>
 <span class="tok-fn">$komentars</span> = <span class="tok-fn">filter_var</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'komentars'</span>], FILTER_SANITIZE_FULL_SPECIAL_CHARS);</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Validācija JavaScript pusē (piem., HTML5 <code>required</code> atribūts) ir <strong>tikai lietotāja ērtībai</strong> — jebkurš var apiet klienta pusi ar DevTools vai tiešu pieprasījumu. Vienmēr validē <strong>arī</strong> serverī — tā ir vienīgā validācija, kurai tiešām var uzticēties.</p>
+        <p>Validācija JavaScript pusē (piem., HTML5 <code>required</code> atribūts) ir <strong>tikai lietotāja ērtībai</strong> - jebkurš var apiet klienta pusi ar DevTools vai tiešu pieprasījumu. Vienmēr validē <strong>arī</strong> serverī - tā ir vienīgā validācija, kurai tiešām var uzticēties.</p>
       </div>
     </section>
 
     <section class="doc-section" id="csrf">
       <h2>CSRF (Cross-Site Request Forgery)</h2>
-      <p>Uzbrucēja lapa liek Tavam pārlūkam (kamēr esi pieteicies citā vietnē) nosūtīt pieprasījumu tavā vārdā — piem., paroles maiņu — izmantojot to, ka pārlūks automātiski pievieno sesijas sīkdatnes jebkuram pieprasījumam uz to domēnu.</p>
+      <p>Uzbrucēja lapa liek Tavam pārlūkam (kamēr esi pieteicies citā vietnē) nosūtīt pieprasījumu tavā vārdā - piem., paroles maiņu - izmantojot to, ka pārlūks automātiski pievieno sesijas sīkdatnes jebkuram pieprasījumam uz to domēnu.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 1) Ģenerē tokenu un saglabā sesijā (vienu reizi uz formu/sesiju)</span>
 <span class="tok-fn">session_start</span>();
 <span class="tok-kw">if</span> (<span class="tok-fn">empty</span>(<span class="tok-fn">$_SESSION</span>[<span class="tok-str">'csrf_token'</span>])) {
@@ -246,16 +246,16 @@ element.textContent = lietotajaIevade;</code></pre>
 }</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>WordPress šo mehānismu jau realizē pats ar <strong>nonces</strong> (<code>wp_nonce_field()</code> + <code>wp_verify_nonce()</code>) — sk. <a href="wordpress.html#drosiba">WordPress → Drošība (nonce &amp; escaping)</a>. <code>hash_equals()</code>, nevis <code>===</code>, tiek izmantots tāpēc, ka tas salīdzina virknes nemainīgā laikā, novēršot "timing attack" — uzbrukumu, kas mēra atbildes laiku, lai uzminētu pareizo tokenu simbolu pa simbolam.</p>
+        <p>WordPress šo mehānismu jau realizē pats ar <strong>nonces</strong> (<code>wp_nonce_field()</code> + <code>wp_verify_nonce()</code>) - sk. <a href="wordpress.html#drosiba">WordPress → Drošība (nonce &amp; escaping)</a>. <code>hash_equals()</code>, nevis <code>===</code>, tiek izmantots tāpēc, ka tas salīdzina virknes nemainīgā laikā, novēršot "timing attack" - uzbrukumu, kas mēra atbildes laiku, lai uzminētu pareizo tokenu simbolu pa simbolam.</p>
       </div>
     </section>
 
     <section class="doc-section" id="password-hashing">
       <h2>Paroļu hashošana</h2>
-      <p>Paroles datubāzē nekad neglabā tekstā vai ar novecojušiem algoritmiem (MD5, SHA1) — tos var uzlauzt sekundēs ar gatavām "rainbow table" tabulām. PHP iebūvētās funkcijas dara visu pareizi automātiski.</p>
+      <p>Paroles datubāzē nekad neglabā tekstā vai ar novecojušiem algoritmiem (MD5, SHA1) - tos var uzlauzt sekundēs ar gatavām "rainbow table" tabulām. PHP iebūvētās funkcijas dara visu pareizi automātiski.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Saglabājot paroli (piem., reģistrācijas laikā)</span>
 <span class="tok-fn">$hash</span> = <span class="tok-fn">password_hash</span>(<span class="tok-fn">$parole</span>, PASSWORD_DEFAULT); <span class="tok-com">// bcrypt/Argon2, atkarībā no PHP versijas</span>
-<span class="tok-com">// Saglabā $hash datubāzē — NEVIS pašu $parole</span>
+<span class="tok-com">// Saglabā $hash datubāzē - NEVIS pašu $parole</span>
 
 <span class="tok-com">// Pārbaudot pieteikšanos</span>
 <span class="tok-kw">if</span> (<span class="tok-fn">password_verify</span>(<span class="tok-fn">$ievaditaParole</span>, <span class="tok-fn">$hash</span>)) {
@@ -263,30 +263,30 @@ element.textContent = lietotajaIevade;</code></pre>
 }</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>PASSWORD_DEFAULT</code> tīši nenorāda konkrētu algoritmu — PHP izvēlas labāko pieejamo, un tas var mainīties nākotnes versijās. Tāpēc hash garums datubāzes kolonnā vienmēr jāatstāj vismaz 255 rakstzīmes, nevis fiksēts 32/40 (kā MD5/SHA1 laikos).</p>
+        <p><code>PASSWORD_DEFAULT</code> tīši nenorāda konkrētu algoritmu - PHP izvēlas labāko pieejamo, un tas var mainīties nākotnes versijās. Tāpēc hash garums datubāzes kolonnā vienmēr jāatstāj vismaz 255 rakstzīmes, nevis fiksēts 32/40 (kā MD5/SHA1 laikos).</p>
       </div>
     </section>
 
     <section class="doc-section" id="session-security">
       <h2>Sesiju drošība</h2>
-      <p>PHP sesiju sīkdatnes pēc noklusējuma nav pilnībā aizsargātas — daži iestatījumi jāpieslēdz manuāli, pirms sesija sākas.</p>
+      <p>PHP sesiju sīkdatnes pēc noklusējuma nav pilnībā aizsargātas - daži iestatījumi jāpieslēdz manuāli, pirms sesija sākas.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Jāiestata PIRMS session_start()</span>
-<span class="tok-fn">ini_set</span>(<span class="tok-str">'session.cookie_httponly'</span>, 1); <span class="tok-com">// JS nevar piekļūt cookie — aizsardzība pret XSS zādzību</span>
+<span class="tok-fn">ini_set</span>(<span class="tok-str">'session.cookie_httponly'</span>, 1); <span class="tok-com">// JS nevar piekļūt cookie - aizsardzība pret XSS zādzību</span>
 <span class="tok-fn">ini_set</span>(<span class="tok-str">'session.cookie_secure'</span>, 1);   <span class="tok-com">// cookie sūta TIKAI pār HTTPS</span>
 <span class="tok-fn">ini_set</span>(<span class="tok-str">'session.cookie_samesite'</span>, <span class="tok-str">'Lax'</span>); <span class="tok-com">// papildu aizsardzība pret CSRF</span>
 <span class="tok-fn">session_start</span>();
 
-<span class="tok-com">// Pēc VEIKSMĪGAS pieteikšanās — vienmēr reģenerē sesijas ID</span>
+<span class="tok-com">// Pēc VEIKSMĪGAS pieteikšanās - vienmēr reģenerē sesijas ID</span>
 <span class="tok-fn">session_regenerate_id</span>(<span class="tok-kw">true</span>);</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p><code>session_regenerate_id(true)</code> pēc pieteikšanās novērš "session fixation" uzbrukumu — kad uzbrucējs uzspiež zināmu sesijas ID upurim PIRMS pieteikšanās, cerot to izmantot PĒC. Jauna ID ģenerēšana pēc pieteikšanās šo iepriekš zināmo ID padara nederīgu.</p>
+        <p><code>session_regenerate_id(true)</code> pēc pieteikšanās novērš "session fixation" uzbrukumu - kad uzbrucējs uzspiež zināmu sesijas ID upurim PIRMS pieteikšanās, cerot to izmantot PĒC. Jauna ID ģenerēšana pēc pieteikšanās šo iepriekš zināmo ID padara nederīgu.</p>
       </div>
     </section>
 
     <section class="doc-section" id="rate-limiting">
       <h2>Brute-force aizsardzība (rate limiting)</h2>
-      <p>Bez ierobežojuma uzbrucējs var automātiski izmēģināt tūkstošiem paroļu sekundē. Vienkāršākais aizsardzības līmenis — skaitīt neveiksmīgos mēģinājumus un īslaicīgi bloķēt.</p>
+      <p>Bez ierobežojuma uzbrucējs var automātiski izmēģināt tūkstošiem paroļu sekundē. Vienkāršākais aizsardzības līmenis - skaitīt neveiksmīgos mēģinājumus un īslaicīgi bloķēt.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">session_start</span>();
 <span class="tok-fn">$meginejumi</span> = <span class="tok-fn">$_SESSION</span>[<span class="tok-str">'login_attempts'</span>] ?? 0;
 
@@ -297,7 +297,7 @@ element.textContent = lietotajaIevade;</code></pre>
 <span class="tok-com">// ... pēc NEVEIKSMĪGA pieteikšanās mēģinājuma:</span>
 <span class="tok-fn">$_SESSION</span>[<span class="tok-str">'login_attempts'</span>] = <span class="tok-fn">$meginejumi</span> + 1;
 
-<span class="tok-com">// ... pēc VEIKSMĪGAS pieteikšanās — atiestata skaitītāju</span>
+<span class="tok-com">// ... pēc VEIKSMĪGAS pieteikšanās - atiestata skaitītāju</span>
 <span class="tok-fn">unset</span>(<span class="tok-fn">$_SESSION</span>[<span class="tok-str">'login_attempts'</span>]);</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
@@ -307,46 +307,46 @@ element.textContent = lietotajaIevade;</code></pre>
 
     <section class="doc-section" id="https-tls">
       <h2>HTTPS/TLS pamati</h2>
-      <p>HTTPS šifrē datus starp pārlūku un serveri — bez tā jebkurš tajā pašā tīklā (piem., publiskā WiFi) var nolasīt paroles un sīkdatnes vienkāršā tekstā. Mūsdienās HTTPS ir obligāts standarts, ne izvēle.</p>
-      <pre class="code-block"><span class="lang">text</span><code># .htaccess — piespiedu novirzīšana no HTTP uz HTTPS
+      <p>HTTPS šifrē datus starp pārlūku un serveri - bez tā jebkurš tajā pašā tīklā (piem., publiskā WiFi) var nolasīt paroles un sīkdatnes vienkāršā tekstā. Mūsdienās HTTPS ir obligāts standarts, ne izvēle.</p>
+      <pre class="code-block"><span class="lang">text</span><code># .htaccess - piespiedu novirzīšana no HTTP uz HTTPS
 RewriteEngine On
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Bezmaksas, automātiski atjaunojamu SSL sertifikātu (Let's Encrypt) šodien piedāvā gandrīz katrs hostings — nav iemesla maksāt par sertifikātu. Vairāk par pašiem SSL/TLS pamatiem un DNS ierakstiem skati <a href="web-izveide.html">Tīkls</a> kategorijā.</p>
+        <p>Bezmaksas, automātiski atjaunojamu SSL sertifikātu (Let's Encrypt) šodien piedāvā gandrīz katrs hostings - nav iemesla maksāt par sertifikātu. Vairāk par pašiem SSL/TLS pamatiem un DNS ierakstiem skati <a href="web-izveide.html">Tīkls</a> kategorijā.</p>
       </div>
     </section>
 
     <section class="doc-section" id="security-headers">
       <h2>Drošības HTTP galvenes</h2>
-      <p>HTTP atbildes galvenes, kas pasaka pārlūkam ievērot papildu drošības noteikumus — lēts, ātrs veids, kā aizvērt veselas uzbrukumu klases.</p>
+      <p>HTTP atbildes galvenes, kas pasaka pārlūkam ievērot papildu drošības noteikumus - lēts, ātrs veids, kā aizvērt veselas uzbrukumu klases.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">header</span>(<span class="tok-str">'X-Content-Type-Options: nosniff'</span>);       <span class="tok-com">// aizliedz pārlūkam "uzminēt" faila tipu</span>
 <span class="tok-fn">header</span>(<span class="tok-str">'X-Frame-Options: DENY'</span>);                 <span class="tok-com">// aizliedz lapu ielikt &lt;iframe&gt; (clickjacking)</span>
 <span class="tok-fn">header</span>(<span class="tok-str">'Strict-Transport-Security: max-age=31536000; includeSubDomains'</span>); <span class="tok-com">// piespiež HTTPS</span>
 <span class="tok-fn">header</span>(<span class="tok-str">'Referrer-Policy: strict-origin-when-cross-origin'</span>); <span class="tok-com">// ierobežo URL noplūdi caur Referer</span></code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Pārbaudi savas vietnes galvenes bez koda rakstīšanas ar <a href="https://securityheaders.com/" target="_blank" rel="noopener">securityheaders.com</a> — ielīmē URL un tas parāda, kuras galvenes trūkst un kāpēc katra svarīga.</p>
+        <p>Pārbaudi savas vietnes galvenes bez koda rakstīšanas ar <a href="https://securityheaders.com/" target="_blank" rel="noopener">securityheaders.com</a> - ielīmē URL un tas parāda, kuras galvenes trūkst un kāpēc katra svarīga.</p>
       </div>
     </section>
 
     <section class="doc-section" id="csp">
       <h2>Content Security Policy (CSP)</h2>
-      <p>Galvene, kas norāda pārlūkam, no kurām vietnēm drīkst ielādēt skriptus, stilus, attēlus u.c. — pat ja XSS uzbrukums izdodas iesmidzināt <code>&lt;script&gt;</code> tagu, CSP var neļaut tam izpildīties, ja tas nenāk no atļautā avota.</p>
+      <p>Galvene, kas norāda pārlūkam, no kurām vietnēm drīkst ielādēt skriptus, stilus, attēlus u.c. - pat ja XSS uzbrukums izdodas iesmidzināt <code>&lt;script&gt;</code> tagu, CSP var neļaut tam izpildīties, ja tas nenāk no atļautā avota.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">header</span>(<span class="tok-str">"Content-Security-Policy: default-src 'self'; script-src 'self' https://www.google-analytics.com; style-src 'self' 'unsafe-inline';"</span>);</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Ieviešot CSP esošā projektā, vispirms izmanto <code>Content-Security-Policy-Report-Only</code> galveni tā vietā — tā ziņo par pārkāpumiem konsolē, bet <strong>nebloķē</strong> neko. Tas ļauj redzēt, ko politika sabojātu, pirms to reāli aktivizē un salauž vietni.</p>
+        <p>Ieviešot CSP esošā projektā, vispirms izmanto <code>Content-Security-Policy-Report-Only</code> galveni tā vietā - tā ziņo par pārkāpumiem konsolē, bet <strong>nebloķē</strong> neko. Tas ļauj redzēt, ko politika sabojātu, pirms to reāli aktivizē un salauž vietni.</p>
       </div>
     </section>
 
     <section class="doc-section" id="owasp-top10">
       <h2>OWASP Top 10 pārskats</h2>
-      <p>OWASP (Open Worldwide Application Security Project) reizi pāris gados publicē sarakstu ar biežākajām, nopietnākajām web ievainojamībām — nozares standarta atskaites punkts.</p>
+      <p>OWASP (Open Worldwide Application Security Project) reizi pāris gados publicē sarakstu ar biežākajām, nopietnākajām web ievainojamībām - nozares standarta atskaites punkts.</p>
       <div class="doc-cards">
-        <div class="doc-mini-card"><h4>Injekcijas</h4><p>SQL Injection, XSS un līdzīgi — nefiltrēta lietotāja ievade nonāk tur, kur tā tiek interpretēta kā kods. Skat. augstāk šajā lapā.</p></div>
-        <div class="doc-mini-card"><h4>Salauzta piekļuves kontrole</h4><p>Lietotājs var piekļūt datiem/darbībām, kurām viņam nevajadzētu — piem., mainot URL parametru <code>?user_id=5</code> uz <code>6</code> un redzot cita lietotāja datus.</p></div>
+        <div class="doc-mini-card"><h4>Injekcijas</h4><p>SQL Injection, XSS un līdzīgi - nefiltrēta lietotāja ievade nonāk tur, kur tā tiek interpretēta kā kods. Skat. augstāk šajā lapā.</p></div>
+        <div class="doc-mini-card"><h4>Salauzta piekļuves kontrole</h4><p>Lietotājs var piekļūt datiem/darbībām, kurām viņam nevajadzētu - piem., mainot URL parametru <code>?user_id=5</code> uz <code>6</code> un redzot cita lietotāja datus.</p></div>
         <div class="doc-mini-card"><h4>Kriptogrāfijas kļūdas</h4><p>Paroles vienkāršā tekstā, novecojuši hash algoritmi (MD5), trūkstošs HTTPS. Skat. Paroļu hashošana un HTTPS/TLS augstāk.</p></div>
         <div class="doc-mini-card"><h4>Drošības nepareizi iestatījumi</h4><p>Noklusējuma paroles, ieslēgti debug režīmi ražošanā, nevajadzīgi atvērti porti/pakalpojumi.</p></div>
         <div class="doc-mini-card"><h4>Novecojušas/ievainojamas komponentes</h4><p>Neatjaunināti spraudņi, bibliotēkas ar zināmām ievainojamībām. Skat. Atkarību ievainojamības zemāk.</p></div>
@@ -357,7 +357,7 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]</code></pre>
 
     <section class="doc-section" id="dependency-vulns">
       <h2>Atkarību ievainojamības</h2>
-      <p>Lielākā daļa mūsdienu projektu izmanto simtiem trešo pušu bibliotēku (npm/Composer pakotnes) — ja kādā no tām atklāj drošības caurumu, tas ietekmē arī tavu projektu, pat ja pats kods ir nevainojams.</p>
+      <p>Lielākā daļa mūsdienu projektu izmanto simtiem trešo pušu bibliotēku (npm/Composer pakotnes) - ja kādā no tām atklāj drošības caurumu, tas ietekmē arī tavu projektu, pat ja pats kods ir nevainojams.</p>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># JavaScript/Node.js projektiem</span>
 npm audit
 npm audit fix
@@ -366,13 +366,13 @@ npm audit fix
 composer audit</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>GitHub repozitorijiem ieslēdz "Dependabot" (Settings → Security) — tas automātiski skenē atkarības un atver Pull Request ar labojumu, tiklīdz atklāj ievainojamību, bez manuālas <code>npm audit</code> palaišanas.</p>
+        <p>GitHub repozitorijiem ieslēdz "Dependabot" (Settings → Security) - tas automātiski skenē atkarības un atver Pull Request ar labojumu, tiklīdz atklāj ievainojamību, bez manuālas <code>npm audit</code> palaišanas.</p>
       </div>
     </section>
 
     <section class="doc-section" id="file-upload-security">
       <h2>Failu augšupielādes drošība</h2>
-      <p>Ja lapa ļauj lietotājiem augšupielādēt failus, tā ir viena no biežākajām ievainojamībām — uzbrucējs var augšupielādēt izpildāmu PHP failu, izliekoties par attēlu.</p>
+      <p>Ja lapa ļauj lietotājiem augšupielādēt failus, tā ir viena no biežākajām ievainojamībām - uzbrucējs var augšupielādēt izpildāmu PHP failu, izliekoties par attēlu.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">$atlautie</span> = [<span class="tok-str">'image/jpeg'</span>, <span class="tok-str">'image/png'</span>, <span class="tok-str">'image/webp'</span>];
 <span class="tok-fn">$failaTips</span> = <span class="tok-fn">mime_content_type</span>(<span class="tok-fn">$_FILES</span>[<span class="tok-str">'attels'</span>][<span class="tok-str">'tmp_name'</span>]); <span class="tok-com">// pārbauda REĀLO tipu, ne tikai .jpg paplašinājumu</span>
 
@@ -380,25 +380,25 @@ composer audit</code></pre>
     <span class="tok-kw">die</span>(<span class="tok-str">'Nederīgs faila tips'</span>);
 }
 
-<span class="tok-com">// Pārsauc failu ar nejaušu nosaukumu — novērš path traversal un uzminamus URL</span>
+<span class="tok-com">// Pārsauc failu ar nejaušu nosaukumu - novērš path traversal un uzminamus URL</span>
 <span class="tok-fn">$jaunaisNosaukums</span> = <span class="tok-fn">bin2hex</span>(<span class="tok-fn">random_bytes</span>(16)) . <span class="tok-str">'.jpg'</span>;
 <span class="tok-fn">move_uploaded_file</span>(<span class="tok-fn">$_FILES</span>[<span class="tok-str">'attels'</span>][<span class="tok-str">'tmp_name'</span>], <span class="tok-fn">$uploadDir</span> . <span class="tok-fn">$jaunaisNosaukums</span>);</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Faila <strong>paplašinājums</strong> (<code>.jpg</code>) ir tikai nosaukums, ne garantija — uzbrucējs var nosaukt PHP failu par <code>attels.jpg.php</code> vai pat <code>attels.jpg</code> ar PHP saturu iekšā. <code>mime_content_type()</code> pārbauda faila reālo saturu, ne tikai nosaukumu, kas ir daudz drošāk. Augšupielāžu mapei arī vēlams liegt PHP izpildi servera konfigurācijā.</p>
+        <p>Faila <strong>paplašinājums</strong> (<code>.jpg</code>) ir tikai nosaukums, ne garantija - uzbrucējs var nosaukt PHP failu par <code>attels.jpg.php</code> vai pat <code>attels.jpg</code> ar PHP saturu iekšā. <code>mime_content_type()</code> pārbauda faila reālo saturu, ne tikai nosaukumu, kas ir daudz drošāk. Augšupielāžu mapei arī vēlams liegt PHP izpildi servera konfigurācijā.</p>
       </div>
     </section>
 
     <section class="doc-section" id="error-disclosure">
       <h2>Kļūdu ziņojumi &amp; informācijas noplūde</h2>
-      <p>PHP kļūdu ziņojumi izstrādes vidē ir noderīgi, bet ražošanā tie atklāj uzbrucējam faila ceļus, datubāzes struktūru un pat daļu no koda — informāciju, kas atvieglo turpmāku uzbrukumu plānošanu.</p>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Ražošanā (production) — NEKAD nerādi kļūdas apmeklētājam</span>
+      <p>PHP kļūdu ziņojumi izstrādes vidē ir noderīgi, bet ražošanā tie atklāj uzbrucējam faila ceļus, datubāzes struktūru un pat daļu no koda - informāciju, kas atvieglo turpmāku uzbrukumu plānošanu.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Ražošanā (production) - NEKAD nerādi kļūdas apmeklētājam</span>
 <span class="tok-fn">ini_set</span>(<span class="tok-str">'display_errors'</span>, 0);
 <span class="tok-fn">ini_set</span>(<span class="tok-str">'log_errors'</span>, 1);
 <span class="tok-fn">ini_set</span>(<span class="tok-str">'error_log'</span>, <span class="tok-str">'/var/log/php-errors.log'</span>);</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Kļūdas nekur nepazūd — tās joprojām tiek pilnībā <strong>pierakstītas</strong> (<code>error_log</code>), tikai vairs netiek rādītas apmeklētājam. Šī ir tā pati loģika, kas jau apskatīta <a href="wordpress-problemas.html#kritiska-kluda">WordPress → "There has been a critical error"</a> — WordPress šo pašu pieeju izmanto pēc noklusējuma.</p>
+        <p>Kļūdas nekur nepazūd - tās joprojām tiek pilnībā <strong>pierakstītas</strong> (<code>error_log</code>), tikai vairs netiek rādītas apmeklētājam. Šī ir tā pati loģika, kas jau apskatīta <a href="wordpress-problemas.html#kritiska-kluda">WordPress → "There has been a critical error"</a> - WordPress šo pašu pieeju izmanto pēc noklusējuma.</p>
       </div>
     </section>
 
@@ -409,7 +409,7 @@ composer audit</code></pre>
   </main>
 </div>
 
-<script src="../js/theme.js?v=20"></script>
-<script src="../js/main.js?v=20"></script>
+<script src="../js/theme.js?v=21"></script>
+<script src="../js/main.js?v=21"></script>
 </body>
 </html>

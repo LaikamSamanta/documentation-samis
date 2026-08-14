@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
-<title>JavaScript dokumentācija — Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=20" />
+<title>JavaScript dokumentācija - Documentation Samis</title>
+<link rel="stylesheet" href="../css/style.css?v=21" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -82,14 +82,14 @@
     </div>
     <section class="doc-section" id="ievads">
       <h2>Ievads JavaScript</h2>
-      <p>JavaScript ir programmēšanas valoda, kas ļauj tīmekļa lapām būt <strong>interaktīvām</strong> — bez tās vietne var tikai parādīt statisku tekstu un attēlus, bet ar JS tā var reaģēt uz klikšķiem, ielādēt datus bez lapas pārlādēšanas, validēt formas un daudz ko citu. JavaScript darbojas divās vietās: <strong>pārlūkā</strong> (katrā mūsdienu pārlūkā tā jau ir iebūvēta) un <strong>serverī</strong> caur Node.js vidi.</p>
-      <p>Valoda ir <strong>dinamiski tipizēta</strong> — mainīgajam nav jānorāda tips iepriekš, tas tiek noteikts automātiski pēc piešķirtās vērtības.</p>
+      <p>JavaScript ir programmēšanas valoda, kas ļauj tīmekļa lapām būt <strong>interaktīvām</strong> - bez tās vietne var tikai parādīt statisku tekstu un attēlus, bet ar JS tā var reaģēt uz klikšķiem, ielādēt datus bez lapas pārlādēšanas, validēt formas un daudz ko citu. JavaScript darbojas divās vietās: <strong>pārlūkā</strong> (katrā mūsdienu pārlūkā tā jau ir iebūvēta) un <strong>serverī</strong> caur Node.js vidi.</p>
+      <p>Valoda ir <strong>dinamiski tipizēta</strong> - mainīgajam nav jānorāda tips iepriekš, tas tiek noteikts automātiski pēc piešķirtās vērtības.</p>
       <p><strong>Kā palaist savu pirmo JS kodu (izvēlies vienu no diviem):</strong></p>
-      <pre class="code-block"><span class="lang">text</span><code>1. Ātrākais veids — pārlūka konsole:
+      <pre class="code-block"><span class="lang">text</span><code>1. Ātrākais veids - pārlūka konsole:
    Atver jebkuru vietni → nospied F12 (vai Ctrl+Shift+J Chrome) →
    cilnē "Console" ieraksti kodu un spied Enter.
 
-2. HTML failā — saglabā šo kā mans-fails.html un atver pārlūkā:</code></pre>
+2. HTML failā - saglabā šo kā mans-fails.html un atver pārlūkā:</code></pre>
       <pre class="code-block"><span class="lang">html</span><code>&lt;!doctype html&gt;
 &lt;html&gt;
 &lt;body&gt;
@@ -103,37 +103,37 @@
 &lt;/html&gt;</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Visi šīs lapas piemēri ir uzrakstīti tā, lai tos varētu iekopēt tieši pārlūka konsolē un tie uzreiz strādātu — nav jāpievieno nekādi papildu mainīgie no citām sadaļām.</p>
+        <p>Visi šīs lapas piemēri ir uzrakstīti tā, lai tos varētu iekopēt tieši pārlūka konsolē un tie uzreiz strādātu - nav jāpievieno nekādi papildu mainīgie no citām sadaļām.</p>
       </div>
     </section>
 
     <section class="doc-section" id="mainigie">
       <h2>Mainīgie &amp; tipi</h2>
-      <p>Mainīgo veido ar <code>let</code> (vērtību var mainīt vēlāk) vai <code>const</code> (vērtību pēc piešķiršanas vairs nemainīs). Veco <code>var</code> mūsdienās neizmanto — tam ir savādāka un mulsinoša darbības joma (scope), kas var izraisīt grūti atrodamas kļūdas.</p>
+      <p>Mainīgo veido ar <code>let</code> (vērtību var mainīt vēlāk) vai <code>const</code> (vērtību pēc piešķiršanas vairs nemainīs). Veco <code>var</code> mūsdienās neizmanto - tam ir savādāka un mulsinoša darbības joma (scope), kas var izraisīt grūti atrodamas kļūdas.</p>
       <p>JavaScript ir vairāki pamata datu tipi: <code>string</code> (teksts), <code>number</code> (skaitlis), <code>boolean</code> (true/false), <code>null</code> un <code>undefined</code> (tukšas vērtības), kā arī salikti tipi <code>object</code> un <code>array</code>.</p>
-      <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">const</span> vards = <span class="tok-str">"Anna"</span>;      <span class="tok-com">// string — nemainīgs</span>
-<span class="tok-kw">let</span> vecums = 25;               <span class="tok-com">// number — mainīgs</span>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">const</span> vards = <span class="tok-str">"Anna"</span>;      <span class="tok-com">// string - nemainīgs</span>
+<span class="tok-kw">let</span> vecums = 25;               <span class="tok-com">// number - mainīgs</span>
 <span class="tok-kw">let</span> aktivs = <span class="tok-kw">true</span>;             <span class="tok-com">// boolean</span>
 <span class="tok-kw">let</span> adrese = <span class="tok-kw">null</span>;             <span class="tok-com">// apzināti tukšs</span>
 
-<span class="tok-kw">const</span> lietotajs = {              <span class="tok-com">// object — atslēga: vērtība</span>
+<span class="tok-kw">const</span> lietotajs = {              <span class="tok-com">// object - atslēga: vērtība</span>
   vards: vards,
   vecums: vecums,
 };
 
-<span class="tok-kw">const</span> skaitli = [1, 2, 3];       <span class="tok-com">// array — sarakstots</span>
+<span class="tok-kw">const</span> skaitli = [1, 2, 3];       <span class="tok-com">// array - sarakstots</span>
 
 <span class="tok-fn">console</span>.log(<span class="tok-kw">typeof</span> vards);     <span class="tok-com">// "string"</span>
 <span class="tok-fn">console</span>.log(lietotajs);          <span class="tok-com">// { vards: "Anna", vecums: 25 }</span></code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p><code>const</code> nenozīmē "pilnīgi nemaināms" objektam/masīvam — tas nozīmē, ka mainīgais vienmēr norādīs uz <em>to pašu</em> objektu, bet paša objekta īpašības tomēr var mainīt (<code>lietotajs.vecums = 26</code> strādās).</p>
+        <p><code>const</code> nenozīmē "pilnīgi nemaināms" objektam/masīvam - tas nozīmē, ka mainīgais vienmēr norādīs uz <em>to pašu</em> objektu, bet paša objekta īpašības tomēr var mainīt (<code>lietotajs.vecums = 26</code> strādās).</p>
       </div>
     </section>
 
     <section class="doc-section" id="nosacijumi">
       <h2>Nosacījumi (if/else)</h2>
-      <p>Nosacījumi ļauj kodam pieņemt lēmumus — izpildīt vienu bloku, ja nosacījums ir <code>true</code>, citu, ja <code>false</code>. Salīdzinot vērtības, vienmēr izmanto <code>===</code> (stingra salīdzināšana, pārbauda arī tipu), nevis <code>==</code>, kas mēģina tipus automātiski konvertēt un var dot negaidītus rezultātus (<code>"5" == 5</code> ir <code>true</code>, bet <code>"5" === 5</code> ir <code>false</code>).</p>
+      <p>Nosacījumi ļauj kodam pieņemt lēmumus - izpildīt vienu bloku, ja nosacījums ir <code>true</code>, citu, ja <code>false</code>. Salīdzinot vērtības, vienmēr izmanto <code>===</code> (stingra salīdzināšana, pārbauda arī tipu), nevis <code>==</code>, kas mēģina tipus automātiski konvertēt un var dot negaidītus rezultātus (<code>"5" == 5</code> ir <code>true</code>, bet <code>"5" === 5</code> ir <code>false</code>).</p>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">const</span> vecums = 16;
 
 <span class="tok-kw">if</span> (vecums >= 18) {
@@ -145,7 +145,7 @@
 }
 <span class="tok-com">// izvads: "Pusaudzis"</span>
 
-<span class="tok-com">// Īsākais variants sarežģītam if/else — ternārais operators</span>
+<span class="tok-com">// Īsākais variants sarežģītam if/else - ternārais operators</span>
 <span class="tok-kw">const</span> statuss = vecums >= 18 ? <span class="tok-str">"pieaugušais"</span> : <span class="tok-str">"nepilngadīgais"</span>;
 <span class="tok-fn">console</span>.log(statuss); <span class="tok-com">// "nepilngadīgais"</span></code></pre>
     </section>
@@ -153,18 +153,18 @@
     <section class="doc-section" id="cikli">
       <h2>Cikli (for/while)</h2>
       <p>Cikli izpilda kodu atkārtoti. <code>for</code> der, kad zini, cik reižu jāatkārto; <code>for...of</code> der, lai izietu cauri masīva elementiem; <code>while</code> der, kad atkārto, kamēr nosacījums ir patiess (nezinot iepriekš, cik reižu).</p>
-      <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// Klasiskais for — no 0 līdz 4</span>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// Klasiskais for - no 0 līdz 4</span>
 <span class="tok-kw">for</span> (<span class="tok-kw">let</span> i = 0; i < 5; i++) {
   <span class="tok-fn">console</span>.log(i);
 }
 
-<span class="tok-com">// for...of — iziet cauri masīva vērtībām</span>
+<span class="tok-com">// for...of - iziet cauri masīva vērtībām</span>
 <span class="tok-kw">const</span> lietotaji = [<span class="tok-str">"Anna"</span>, <span class="tok-str">"Kārlis"</span>, <span class="tok-str">"Līga"</span>];
 <span class="tok-kw">for</span> (<span class="tok-kw">const</span> lietotajs <span class="tok-kw">of</span> lietotaji) {
   <span class="tok-fn">console</span>.log(lietotajs);
 }
 
-<span class="tok-com">// while — atkārto, kamēr nosacījums patiess</span>
+<span class="tok-com">// while - atkārto, kamēr nosacījums patiess</span>
 <span class="tok-kw">let</span> mesginajumi = 0;
 <span class="tok-kw">while</span> (mesginajumi < 3) {
   <span class="tok-fn">console</span>.log(<span class="tok-str">"Mēģinājums Nr."</span> + (mesginajumi + 1));
@@ -172,19 +172,19 @@
 }</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p><code>while</code> ciklā vienmēr pārliecinies, ka mainīgais nosacījumā (piem., <code>mesginajumi++</code>) tiešām mainās — pretējā gadījumā cikls turpināsies mūžīgi un iesaldēs pārlūka cilni.</p>
+        <p><code>while</code> ciklā vienmēr pārliecinies, ka mainīgais nosacījumā (piem., <code>mesginajumi++</code>) tiešām mainās - pretējā gadījumā cikls turpināsies mūžīgi un iesaldēs pārlūka cilni.</p>
       </div>
     </section>
 
     <section class="doc-section" id="funkcijas">
       <h2>Funkcijas</h2>
-      <p>Funkcija ir koda bloks, ko var izsaukt atkārtoti ar dažādiem ievaddatiem (parametriem). JavaScript ir vairāki veidi, kā tās uzrakstīt — biežāk lieto klasisko <code>function</code> deklarāciju un īsāko <strong>arrow funkciju</strong> (<code>=&gt;</code>). Galvenā atšķirība: arrow funkcijas nesaista savu <code>this</code> vērtību — tās manto to no ietverošā konteksta, kas ir īpaši noderīgi callback funkcijās (piem., <code>forEach</code> iekšienē).</p>
+      <p>Funkcija ir koda bloks, ko var izsaukt atkārtoti ar dažādiem ievaddatiem (parametriem). JavaScript ir vairāki veidi, kā tās uzrakstīt - biežāk lieto klasisko <code>function</code> deklarāciju un īsāko <strong>arrow funkciju</strong> (<code>=&gt;</code>). Galvenā atšķirība: arrow funkcijas nesaista savu <code>this</code> vērtību - tās manto to no ietverošā konteksta, kas ir īpaši noderīgi callback funkcijās (piem., <code>forEach</code> iekšienē).</p>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// Klasiska funkcijas deklarācija</span>
 <span class="tok-kw">function</span> <span class="tok-fn">saskaitit</span>(a, b) {
   <span class="tok-kw">return</span> a + b;
 }
 
-<span class="tok-com">// Arrow funkcija — īsāks pieraksts</span>
+<span class="tok-com">// Arrow funkcija - īsāks pieraksts</span>
 <span class="tok-kw">const</span> reizinat = (a, b) => a * b;
 
 <span class="tok-fn">console</span>.log(<span class="tok-fn">saskaitit</span>(2, 3));  <span class="tok-com">// 5</span>
@@ -200,11 +200,11 @@
 
     <section class="doc-section" id="masivu-metodes">
       <h2>Masīvu metodes</h2>
-      <p>Masīviem ir iebūvētas metodes, kas ļauj tos apstrādāt bez manuāla cikla rakstīšanas. Trīs visbiežāk lietotās — visas atgriež <strong>jaunu</strong> masīvu, nemainot oriģinālu:</p>
+      <p>Masīviem ir iebūvētas metodes, kas ļauj tos apstrādāt bez manuāla cikla rakstīšanas. Trīs visbiežāk lietotās - visas atgriež <strong>jaunu</strong> masīvu, nemainot oriģinālu:</p>
       <ul style="color:var(--text-secondary); line-height:1.8; margin: 0 0 16px;">
-        <li><code>map()</code> — pārveido katru elementu un atgriež jaunu masīvu ar tādu pašu garumu.</li>
-        <li><code>filter()</code> — atstāj tikai elementus, kas iztur pārbaudi.</li>
-        <li><code>reduce()</code> — "sasummē" visu masīvu vienā vērtībā.</li>
+        <li><code>map()</code> - pārveido katru elementu un atgriež jaunu masīvu ar tādu pašu garumu.</li>
+        <li><code>filter()</code> - atstāj tikai elementus, kas iztur pārbaudi.</li>
+        <li><code>reduce()</code> - "sasummē" visu masīvu vienā vērtībā.</li>
       </ul>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">const</span> skaitli = [1, 2, 3, 4, 5];
 
@@ -252,8 +252,8 @@
 
     <section class="doc-section" id="async">
       <h2>Async/Await</h2>
-      <p>Daudzas darbības (datu ielāde no interneta, faila lasīšana) aizņem laiku un nenotiek uzreiz — tās sauc par <strong>asinhronām</strong>. JavaScript tās apstrādā ar <strong>Promise</strong> objektiem, bet <code>async</code>/<code>await</code> ir sintaktiskais cukurs, kas ļauj asinhronu kodu rakstīt tā, it kā tas būtu parasts, secīgs kods — daudz vieglāk lasāms.</p>
-      <p>Zemāk piemērs, kas <strong>strādā uzreiz jebkurā konsolē</strong> bez interneta — <code>simuletApiZvanu()</code> ar <code>setTimeout</code> imitē lēnu tīkla pieprasījumu:</p>
+      <p>Daudzas darbības (datu ielāde no interneta, faila lasīšana) aizņem laiku un nenotiek uzreiz - tās sauc par <strong>asinhronām</strong>. JavaScript tās apstrādā ar <strong>Promise</strong> objektiem, bet <code>async</code>/<code>await</code> ir sintaktiskais cukurs, kas ļauj asinhronu kodu rakstīt tā, it kā tas būtu parasts, secīgs kods - daudz vieglāk lasāms.</p>
+      <p>Zemāk piemērs, kas <strong>strādā uzreiz jebkurā konsolē</strong> bez interneta - <code>simuletApiZvanu()</code> ar <code>setTimeout</code> imitē lēnu tīkla pieprasījumu:</p>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// Simulē lēnu API pieprasījumu (imitē tīklu, strādā bez interneta)</span>
 <span class="tok-kw">function</span> <span class="tok-fn">simuletApiZvanu</span>() {
   <span class="tok-kw">return new</span> <span class="tok-fn">Promise</span>((resolve) => {
@@ -282,7 +282,7 @@
 <span class="tok-fn">iegutLietotajus</span>();</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Otro piemēru vari iekopēt tieši pārlūka konsolē — <code>jsonplaceholder.typicode.com</code> ir publisks bezmaksas testa API, kas tieši šim nolūkam vienmēr atbild ar testa datiem.</p>
+        <p>Otro piemēru vari iekopēt tieši pārlūka konsolē - <code>jsonplaceholder.typicode.com</code> ir publisks bezmaksas testa API, kas tieši šim nolūkam vienmēr atbild ar testa datiem.</p>
       </div>
     </section>
 
@@ -291,12 +291,12 @@
       <p>Destrukturēšana ļauj vienā rindā "izvilkt" vērtības no objekta vai masīva atsevišķos mainīgajos, nevis piekļūt katrai ar <code>objekts.lauks</code> atsevišķi.</p>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">const</span> lietotajs = { vards: <span class="tok-str">"Anna"</span>, vecums: 25, pilseta: <span class="tok-str">"Rīga"</span> };
 
-<span class="tok-com">// Objekta destrukturēšana — nosaukumiem jāsakrīt ar lauku nosaukumiem</span>
+<span class="tok-com">// Objekta destrukturēšana - nosaukumiem jāsakrīt ar lauku nosaukumiem</span>
 <span class="tok-kw">const</span> { vards, epasts = <span class="tok-str">"nav norādīts"</span> } = lietotajs;
 <span class="tok-fn">console</span>.log(vards);  <span class="tok-com">// "Anna"</span>
-<span class="tok-fn">console</span>.log(epasts); <span class="tok-com">// "nav norādīts" — jo objektā tāda lauka nav, izmanto noklusējumu</span>
+<span class="tok-fn">console</span>.log(epasts); <span class="tok-com">// "nav norādīts" - jo objektā tāda lauka nav, izmanto noklusējumu</span>
 
-<span class="tok-com">// Masīva destrukturēšana — pēc secības</span>
+<span class="tok-com">// Masīva destrukturēšana - pēc secības</span>
 <span class="tok-kw">const</span> [pirmais, ...pareja] = [1, 2, 3, 4];
 <span class="tok-fn">console</span>.log(pirmais); <span class="tok-com">// 1</span>
 <span class="tok-fn">console</span>.log(pareja);   <span class="tok-com">// [2, 3, 4]</span>
@@ -310,7 +310,7 @@
 
     <section class="doc-section" id="optional-chaining">
       <h2>?. un ??</h2>
-      <p>Divi mazi, bet ārkārtīgi bieži lietoti operatori, kas pasargā no vienas no visbiežākajām JS kļūdām — <code>Cannot read properties of undefined</code>. <strong>Optional chaining</strong> (<code>?.</code>) pārtrauc piekļuvi un atgriež <code>undefined</code>, tiklīdz sastop <code>null</code>/<code>undefined</code>, nevis izmet kļūdu. <strong>Nullish coalescing</strong> (<code>??</code>) atgriež labo pusi tikai tad, ja kreisā ir tieši <code>null</code> vai <code>undefined</code> (atšķirībā no <code>||</code>, kas nostrādā arī uz <code>0</code>, <code>""</code> vai <code>false</code>).</p>
+      <p>Divi mazi, bet ārkārtīgi bieži lietoti operatori, kas pasargā no vienas no visbiežākajām JS kļūdām - <code>Cannot read properties of undefined</code>. <strong>Optional chaining</strong> (<code>?.</code>) pārtrauc piekļuvi un atgriež <code>undefined</code>, tiklīdz sastop <code>null</code>/<code>undefined</code>, nevis izmet kļūdu. <strong>Nullish coalescing</strong> (<code>??</code>) atgriež labo pusi tikai tad, ja kreisā ir tieši <code>null</code> vai <code>undefined</code> (atšķirībā no <code>||</code>, kas nostrādā arī uz <code>0</code>, <code>""</code> vai <code>false</code>).</p>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">const</span> lietotajs = {
   vards: <span class="tok-str">"Anna"</span>,
   adrese: {
@@ -319,19 +319,19 @@
   },
 };
 
-<span class="tok-com">// Bez ?. — šī rinda izmestu kļūdu, ja "adrese" nebūtu definēta:</span>
+<span class="tok-com">// Bez ?. - šī rinda izmestu kļūdu, ja "adrese" nebūtu definēta:</span>
 <span class="tok-fn">console</span>.log(lietotajs.adrese?.valsts);        <span class="tok-com">// undefined (bez kļūdas)</span>
-<span class="tok-fn">console</span>.log(lietotajs.kontakti?.epasts);     <span class="tok-com">// undefined — "kontakti" pat neeksistē</span>
+<span class="tok-fn">console</span>.log(lietotajs.kontakti?.epasts);     <span class="tok-com">// undefined - "kontakti" pat neeksistē</span>
 
 <span class="tok-com">// Var kombinēt ar funkciju izsaukumu</span>
 <span class="tok-kw">const</span> objekts = { <span class="tok-fn">saskaitit</span>(a, b) { <span class="tok-kw">return</span> a + b; } };
 <span class="tok-fn">console</span>.log(objekts.saskaitit?.(2, 3));       <span class="tok-com">// 5</span>
-<span class="tok-fn">console</span>.log(objekts.atnemt?.(5, 2));          <span class="tok-com">// undefined — metode neeksistē, bez kļūdas</span>
+<span class="tok-fn">console</span>.log(objekts.atnemt?.(5, 2));          <span class="tok-com">// undefined - metode neeksistē, bez kļūdas</span>
 
-<span class="tok-com">// ?? — noklusējuma vērtība TIKAI null/undefined gadījumā</span>
+<span class="tok-com">// ?? - noklusējuma vērtība TIKAI null/undefined gadījumā</span>
 <span class="tok-kw">const</span> atlaide = 0;
-<span class="tok-fn">console</span>.log(atlaide || <span class="tok-str">"nav atlaides"</span>);   <span class="tok-com">// "nav atlaides" — || uzskata 0 par "tukšu"! (kļūda)</span>
-<span class="tok-fn">console</span>.log(atlaide ?? <span class="tok-str">"nav atlaides"</span>);   <span class="tok-com">// 0 — ?? pareizi atpazīst, ka 0 ir derīga vērtība</span></code></pre>
+<span class="tok-fn">console</span>.log(atlaide || <span class="tok-str">"nav atlaides"</span>);   <span class="tok-com">// "nav atlaides" - || uzskata 0 par "tukšu"! (kļūda)</span>
+<span class="tok-fn">console</span>.log(atlaide ?? <span class="tok-str">"nav atlaides"</span>);   <span class="tok-com">// 0 - ?? pareizi atpazīst, ka 0 ir derīga vērtība</span></code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
         <p>Pēdējais piemērs parāda ļoti biežu kļūdu: ja vēlies noklusējuma vērtību tikai tad, kad dati patiešām nav norādīti (nevis kad tie ir <code>0</code>, tukšs teksts vai <code>false</code>), vienmēr izmanto <code>??</code>, nevis <code>||</code>.</p>
@@ -341,17 +341,17 @@
     <section class="doc-section" id="spread">
       <h2>Spread &amp; Rest (...)</h2>
       <p>Viena un tā pati sintakse (<code>...</code>) izmantojama diviem pretējiem mērķiem, atkarībā no konteksta: <strong>spread</strong> "izklāj" elementus (kopē masīvu/objektu vai apvieno vairākus), <strong>rest</strong> tos "savāc kopā" (piem., nezināmu skaitu funkcijas argumentu).</p>
-      <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// Spread — apvieno vai kopē masīvus</span>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// Spread - apvieno vai kopē masīvus</span>
 <span class="tok-kw">const</span> pirmie = [1, 2, 3];
 <span class="tok-kw">const</span> visi = [...pirmie, 4, 5];
 <span class="tok-fn">console</span>.log(visi); <span class="tok-com">// [1, 2, 3, 4, 5]</span>
 
-<span class="tok-com">// Spread — kopē objektu un pārraksta vienu lauku</span>
+<span class="tok-com">// Spread - kopē objektu un pārraksta vienu lauku</span>
 <span class="tok-kw">const</span> lietotajs = { vards: <span class="tok-str">"Anna"</span>, vecums: 25 };
 <span class="tok-kw">const</span> vecaksLietotajs = { ...lietotajs, vecums: 26 };
 <span class="tok-fn">console</span>.log(vecaksLietotajs); <span class="tok-com">// { vards: "Anna", vecums: 26 }</span>
 
-<span class="tok-com">// Rest — savāc atlikušos argumentus vienā masīvā</span>
+<span class="tok-com">// Rest - savāc atlikušos argumentus vienā masīvā</span>
 <span class="tok-kw">function</span> <span class="tok-fn">summa</span>(...skaitli) {
   <span class="tok-kw">return</span> skaitli.<span class="tok-fn">reduce</span>((a, b) => a + b, 0);
 }
@@ -371,13 +371,13 @@
 <span class="tok-fn">console</span>.log(<span class="tok-fn">formatCena</span>(9.5)); <span class="tok-com">// "€9.50"</span></code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Šo piemēru <strong>nevar</strong> vienkārši ielīmēt konsolē vai atvērt HTML failu dubultklikšķi — pārlūki moduļus bloķē drošības dēļ, ja lapa atvērta tieši no faila (<code>file://</code>). Lai to izmēģinātu: (1) HTML failā pievieno <code>&lt;script type="module" src="main.js"&gt;&lt;/script&gt;</code>, un (2) atver lapu caur lokālu serveri, piem., VS Code paplašinājumu "Live Server", vai palaižot terminālī <code>npx serve</code> mapē ar failiem.</p>
+        <p>Šo piemēru <strong>nevar</strong> vienkārši ielīmēt konsolē vai atvērt HTML failu dubultklikšķi - pārlūki moduļus bloķē drošības dēļ, ja lapa atvērta tieši no faila (<code>file://</code>). Lai to izmēģinātu: (1) HTML failā pievieno <code>&lt;script type="module" src="main.js"&gt;&lt;/script&gt;</code>, un (2) atver lapu caur lokālu serveri, piem., VS Code paplašinājumu "Live Server", vai palaižot terminālī <code>npx serve</code> mapē ar failiem.</p>
       </div>
     </section>
 
     <section class="doc-section" id="json">
       <h2>JSON</h2>
-      <p>JSON (JavaScript Object Notation) ir teksta formāts datu apmaiņai — ar to strādā gandrīz katrs tīmekļa API un arī <code>localStorage</code>. <code>JSON.stringify()</code> pārvērš JS objektu tekstā (lai to varētu nosūtīt/saglabāt), <code>JSON.parse()</code> dara pretējo.</p>
+      <p>JSON (JavaScript Object Notation) ir teksta formāts datu apmaiņai - ar to strādā gandrīz katrs tīmekļa API un arī <code>localStorage</code>. <code>JSON.stringify()</code> pārvērš JS objektu tekstā (lai to varētu nosūtīt/saglabāt), <code>JSON.parse()</code> dara pretējo.</p>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">const</span> lietotajs = { vards: <span class="tok-str">"Anna"</span>, vecums: 25 };
 
 <span class="tok-kw">const</span> teksts = JSON.<span class="tok-fn">stringify</span>(lietotajs);
@@ -385,12 +385,12 @@
 <span class="tok-com">// '{"vards":"Anna","vecums":25}'  ← tas ir teksts (string), ne objekts</span>
 
 <span class="tok-kw">const</span> atpakalObjekts = JSON.<span class="tok-fn">parse</span>(teksts);
-<span class="tok-fn">console</span>.log(atpakalObjekts.vards); <span class="tok-com">// "Anna" — atkal parasts objekts</span></code></pre>
+<span class="tok-fn">console</span>.log(atpakalObjekts.vards); <span class="tok-com">// "Anna" - atkal parasts objekts</span></code></pre>
     </section>
 
     <section class="doc-section" id="klaudas">
       <h2>Kļūdu apstrāde</h2>
-      <p><code>try/catch</code> noder ne tikai <code>async</code> kodam — jebkurš kods, kas var neizdoties (piem., nederīgs JSON, nepareizs lietotāja ievads), jāietver blokā, lai kļūda nesagāztu visu skriptu. <code>finally</code> bloks izpildās vienmēr — gan ja bija kļūda, gan ja nebija.</p>
+      <p><code>try/catch</code> noder ne tikai <code>async</code> kodam - jebkurš kods, kas var neizdoties (piem., nederīgs JSON, nepareizs lietotāja ievads), jāietver blokā, lai kļūda nesagāztu visu skriptu. <code>finally</code> bloks izpildās vienmēr - gan ja bija kļūda, gan ja nebija.</p>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">function</span> <span class="tok-fn">nolasitDatus</span>(teksts) {
   <span class="tok-kw">try</span> {
     <span class="tok-kw">const</span> dati = JSON.<span class="tok-fn">parse</span>(teksts);
@@ -408,7 +408,7 @@
 
     <section class="doc-section" id="storage">
       <h2>localStorage</h2>
-      <p>Saglabā datus tieši pārlūkā, starp lapas ielādēm un pat pēc datora pārstartēšanas — dati paliek, kamēr lietotājs manuāli neiztīra pārlūka datus. Noder iestatījumiem, tēmas izvēlei, iepirkumu grozam u.tml. Glabā <strong>tikai tekstu</strong>, tāpēc objekti pirms saglabāšanas jāpārvērš ar <code>JSON.stringify()</code>.</p>
+      <p>Saglabā datus tieši pārlūkā, starp lapas ielādēm un pat pēc datora pārstartēšanas - dati paliek, kamēr lietotājs manuāli neiztīra pārlūka datus. Noder iestatījumiem, tēmas izvēlei, iepirkumu grozam u.tml. Glabā <strong>tikai tekstu</strong>, tāpēc objekti pirms saglabāšanas jāpārvērš ar <code>JSON.stringify()</code>.</p>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// Saglabā vienkāršu vērtību</span>
 localStorage.<span class="tok-fn">setItem</span>(<span class="tok-str">"tema"</span>, <span class="tok-str">"tumsa"</span>);
 <span class="tok-fn">console</span>.log(localStorage.<span class="tok-fn">getItem</span>(<span class="tok-str">"tema"</span>)); <span class="tok-com">// "tumsa"</span>
@@ -423,13 +423,13 @@ localStorage.<span class="tok-fn">setItem</span>(<span class="tok-str">"iestatij
 localStorage.<span class="tok-fn">removeItem</span>(<span class="tok-str">"tema"</span>); <span class="tok-com">// izdzēš vienu ierakstu</span></code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Iekopē šo tieši jebkuras vietnes pārlūka konsolē (F12) — <code>localStorage</code> ir pieejams jebkurā lapā, nav vajadzīga papildu iestatīšana.</p>
+        <p>Iekopē šo tieši jebkuras vietnes pārlūka konsolē (F12) - <code>localStorage</code> ir pieejams jebkurā lapā, nav vajadzīga papildu iestatīšana.</p>
       </div>
     </section>
 
     <section class="doc-section" id="timers">
       <h2>setTimeout / setInterval</h2>
-      <p>JavaScript izpilda kodu <strong>vienā pavedienā</strong> (single-threaded) — nevar divas lietas darīt burtiski vienlaicīgi, taču <code>setTimeout</code> un <code>setInterval</code> ļauj ieplānot koda izpildi nākotnē, neapturot pārējo skriptu. <code>setTimeout</code> izpildās vienreiz pēc norādītā laika, <code>setInterval</code> — atkārtoti ik pēc norādītā intervāla.</p>
+      <p>JavaScript izpilda kodu <strong>vienā pavedienā</strong> (single-threaded) - nevar divas lietas darīt burtiski vienlaicīgi, taču <code>setTimeout</code> un <code>setInterval</code> ļauj ieplānot koda izpildi nākotnē, neapturot pārējo skriptu. <code>setTimeout</code> izpildās vienreiz pēc norādītā laika, <code>setInterval</code> - atkārtoti ik pēc norādītā intervāla.</p>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-fn">console</span>.log(<span class="tok-str">"1. Sākums"</span>);
 
 <span class="tok-fn">setTimeout</span>(() => {
@@ -451,8 +451,8 @@ localStorage.<span class="tok-fn">removeItem</span>(<span class="tok-str">"tema"
 
     <section class="doc-section" id="dom">
       <h2>DOM manipulācija</h2>
-      <p>DOM (Document Object Model) ir tas, kā pārlūks HTML lapu "redz" kā koku ar elementiem, ko JavaScript var atrast, mainīt vai izveidot no jauna. Tas ir pamats jebkurai interaktīvai vietnei — bez DOM manipulācijas JS varētu tikai skaitļot fonā, bet neko nemainītu ekrānā.</p>
-      <p>Zemāk ir <strong>pilns, patstāvīgs HTML fails</strong> — saglabā to kā <code>dom-piemers.html</code> un atver ar dubultklikšķi jebkurā pārlūkā, lai redzētu to strādājam:</p>
+      <p>DOM (Document Object Model) ir tas, kā pārlūks HTML lapu "redz" kā koku ar elementiem, ko JavaScript var atrast, mainīt vai izveidot no jauna. Tas ir pamats jebkurai interaktīvai vietnei - bez DOM manipulācijas JS varētu tikai skaitļot fonā, bet neko nemainītu ekrānā.</p>
+      <p>Zemāk ir <strong>pilns, patstāvīgs HTML fails</strong> - saglabā to kā <code>dom-piemers.html</code> un atver ar dubultklikšķi jebkurā pārlūkā, lai redzētu to strādājam:</p>
       <pre class="code-block"><span class="lang">html</span><code>&lt;!doctype html&gt;
 &lt;html&gt;
 &lt;body&gt;
@@ -472,12 +472,12 @@ localStorage.<span class="tok-fn">removeItem</span>(<span class="tok-str">"tema"
   &lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-      <p>Biežāk lietotās DOM metodes: <code>querySelector()</code> (atrod vienu elementu pēc CSS selektora), <code>querySelectorAll()</code> (atrod visus atbilstošos), <code>addEventListener()</code> (reaģē uz notikumiem — klikšķi, ievadi u.c.), <code>textContent</code>/<code>innerHTML</code> (maina saturu).</p>
+      <p>Biežāk lietotās DOM metodes: <code>querySelector()</code> (atrod vienu elementu pēc CSS selektora), <code>querySelectorAll()</code> (atrod visus atbilstošos), <code>addEventListener()</code> (reaģē uz notikumiem - klikšķi, ievadi u.c.), <code>textContent</code>/<code>innerHTML</code> (maina saturu).</p>
     </section>
 
     <section class="doc-section" id="rīki">
       <h2>Build rīki</h2>
-      <p>Reālos projektos JS kodu parasti neraksta vienā failā — izmanto rīkus, kas apvieno, optimizē un pārbauda kodu pirms tas nonāk pārlūkā. Zemāk komandas, ar ko no nulles izveidot un palaist projektu ar <strong>Vite</strong> (mūsdienās populārākais, ātrākais variants):</p>
+      <p>Reālos projektos JS kodu parasti neraksta vienā failā - izmanto rīkus, kas apvieno, optimizē un pārbauda kodu pirms tas nonāk pārlūkā. Zemāk komandas, ar ko no nulles izveidot un palaist projektu ar <strong>Vite</strong> (mūsdienās populārākais, ātrākais variants):</p>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Izveido jaunu projektu (jautās projekta nosaukumu un veidu)</span>
 npm create vite@latest mans-projekts
 
@@ -491,23 +491,23 @@ npm install
 npm run dev</code></pre>
       <div class="doc-cards">
         <div class="doc-mini-card"><h4>⚡ Vite</h4><p>Ātrs dev serveris ar automātisku pārlūka atsvaidzināšanu (HMR) un moderna build sistēma gatavajai versijai.</p></div>
-        <div class="doc-mini-card"><h4>📦 npm / pnpm</h4><p>Pakotņu pārvaldnieki — instalē un pārvalda projekta atkarības (bibliotēkas), kas uzskaitītas <code>package.json</code> failā.</p></div>
+        <div class="doc-mini-card"><h4>📦 npm / pnpm</h4><p>Pakotņu pārvaldnieki - instalē un pārvalda projekta atkarības (bibliotēkas), kas uzskaitītas <code>package.json</code> failā.</p></div>
         <div class="doc-mini-card"><h4>🧹 ESLint / Prettier</h4><p>ESLint atrod iespējamas kļūdas un stila problēmas kodā; Prettier automātiski formatē kodu vienotā stilā.</p></div>
       </div>
-      <p><strong>Kur atrast bibliotēkas?</strong> — <a href="https://www.npmjs.com" target="_blank" rel="noopener">npmjs.com</a> ir centrālais JavaScript pakotņu katalogs (tas pats, kas PHP pasaulē ir <a href="php.html#composer">Packagist</a>). Meklē pēc vajadzības, tad instalē tieši ar to nosaukumu, ko atradi tur:</p>
+      <p><strong>Kur atrast bibliotēkas?</strong> - <a href="https://www.npmjs.com" target="_blank" rel="noopener">npmjs.com</a> ir centrālais JavaScript pakotņu katalogs (tas pats, kas PHP pasaulē ir <a href="php.html#composer">Packagist</a>). Meklē pēc vajadzības, tad instalē tieši ar to nosaukumu, ko atradi tur:</p>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Instalē konkrētu bibliotēku (piem., datumu formatēšanai)</span>
 npm install dayjs</code></pre>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">import</span> dayjs <span class="tok-kw">from</span> <span class="tok-str">'dayjs'</span>;
 <span class="tok-fn">console.log</span>(<span class="tok-fn">dayjs</span>().format(<span class="tok-str">'YYYY-MM-DD'</span>));</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>npmjs.com pakotnes lapā pārbaudi to pašu, ko Packagist lapā — lejupielāžu skaitu (populārāka = uzticamāka), pēdējā atjauninājuma datumu un vai bibliotēka tiek aktīvi uzturēta. Instalētās bibliotēkas nonāk <code>node_modules/</code> mapē — tāpat kā PHP <code>vendor/</code>, arī šo mapi <strong>nekad</strong> nepievieno Git repozitorijā.</p>
+        <p>npmjs.com pakotnes lapā pārbaudi to pašu, ko Packagist lapā - lejupielāžu skaitu (populārāka = uzticamāka), pēdējā atjauninājuma datumu un vai bibliotēka tiek aktīvi uzturēta. Instalētās bibliotēkas nonāk <code>node_modules/</code> mapē - tāpat kā PHP <code>vendor/</code>, arī šo mapi <strong>nekad</strong> nepievieno Git repozitorijā.</p>
       </div>
     </section>
 
     <section class="doc-section" id="devtools">
       <h2>DevTools &amp; atkļūdošana</h2>
-      <p>Pārlūka izstrādātāju rīki (F12) piedāvā daudz vairāk par <code>console.log()</code> — šīs tehnikas ietaupa stundas, salīdzinot ar mēģinājumu atrast kļūdu, tikai skatoties uz kodu.</p>
+      <p>Pārlūka izstrādātāju rīki (F12) piedāvā daudz vairāk par <code>console.log()</code> - šīs tehnikas ietaupa stundas, salīdzinot ar mēģinājumu atrast kļūdu, tikai skatoties uz kodu.</p>
 
       <h3 style="font-size:17px; margin:32px 0 10px;">Console metodes papildus console.log()</h3>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-fn">console.table</span>([{ vards: <span class="tok-str">'Anna'</span>, vecums: 25 }, { vards: <span class="tok-str">'Kārlis'</span>, vecums: 30 }]);
@@ -523,7 +523,7 @@ npm install dayjs</code></pre>
 <span class="tok-fn">console.timeEnd</span>(<span class="tok-str">'vaicajums'</span>); <span class="tok-com">// izvada: "vaicajums: 123.45ms"</span>
 
 <span class="tok-fn">console.assert</span>(<span class="tok-fn">lietotajs</span>.vecums >= 18, <span class="tok-str">'Lietotājs nav pilngadīgs!'</span>);
-<span class="tok-com">// izvada kļūdu TIKAI tad, ja nosacījums ir false — klusē, ja true</span></code></pre>
+<span class="tok-com">// izvada kļūdu TIKAI tad, ja nosacījums ir false - klusē, ja true</span></code></pre>
 
       <h3 style="font-size:17px; margin:32px 0 10px;">debugger; un breakpoints</h3>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">function</span> <span class="tok-fn">apstradatMaksajumu</span>(<span class="tok-fn">summa</span>) {
@@ -532,26 +532,26 @@ npm install dayjs</code></pre>
 }</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>debugger;</code> aptur izpildi un ļauj cilnē "Sources" apskatīt <strong>visu</strong> mainīgo vērtības tajā brīdī, iet cauri kodam rindu pa rindai (step over/into) un pat mainīt mainīgo vērtības uz vietas — daudz jaudīgāk nekā mēģināt uzminēt problēmu, izkaisot <code>console.log()</code> pa visu funkciju. Pēc atkļūdošanas neaizmirsti izdzēst <code>debugger;</code> rindu.</p>
+        <p><code>debugger;</code> aptur izpildi un ļauj cilnē "Sources" apskatīt <strong>visu</strong> mainīgo vērtības tajā brīdī, iet cauri kodam rindu pa rindai (step over/into) un pat mainīt mainīgo vērtības uz vietas - daudz jaudīgāk nekā mēģināt uzminēt problēmu, izkaisot <code>console.log()</code> pa visu funkciju. Pēc atkļūdošanas neaizmirsti izdzēst <code>debugger;</code> rindu.</p>
       </div>
 
       <h3 style="font-size:17px; margin:32px 0 10px;">Network cilne</h3>
-      <p>Rāda katru tīkla pieprasījumu, ko lapa nosūta — API izsaukumus, attēlus, skriptus.</p>
+      <p>Rāda katru tīkla pieprasījumu, ko lapa nosūta - API izsaukumus, attēlus, skriptus.</p>
       <div class="doc-cards">
-        <div class="doc-mini-card"><h4>Statusa kods</h4><p>200 (OK), 404 (nav atrasts), 500 (servera kļūda) — pirmais, kas jāpārbauda, ja pieprasījums "neko nedara".</p></div>
-        <div class="doc-mini-card"><h4>Response/Preview</h4><p>Skati tieši to, ko serveris atsūtīja — der pārbaudīt, vai API tiešām atgriež gaidītos datus.</p></div>
-        <div class="doc-mini-card"><h4>Filtrs: Fetch/XHR</h4><p>Paslēpj attēlus/fontus/CSS, atstājot redzamus tikai API izsaukumus — daudz vieglāk atrast vajadzīgo starp desmitiem pieprasījumu.</p></div>
-        <div class="doc-mini-card"><h4>Preserve log</h4><p>Saglabā pieprasījumu sarakstu arī pēc lapas pārlādes — noder, atkļūdojot pāradresācijas vai pieteikšanās plūsmas.</p></div>
+        <div class="doc-mini-card"><h4>Statusa kods</h4><p>200 (OK), 404 (nav atrasts), 500 (servera kļūda) - pirmais, kas jāpārbauda, ja pieprasījums "neko nedara".</p></div>
+        <div class="doc-mini-card"><h4>Response/Preview</h4><p>Skati tieši to, ko serveris atsūtīja - der pārbaudīt, vai API tiešām atgriež gaidītos datus.</p></div>
+        <div class="doc-mini-card"><h4>Filtrs: Fetch/XHR</h4><p>Paslēpj attēlus/fontus/CSS, atstājot redzamus tikai API izsaukumus - daudz vieglāk atrast vajadzīgo starp desmitiem pieprasījumu.</p></div>
+        <div class="doc-mini-card"><h4>Preserve log</h4><p>Saglabā pieprasījumu sarakstu arī pēc lapas pārlādes - noder, atkļūdojot pāradresācijas vai pieteikšanās plūsmas.</p></div>
       </div>
 
       <h3 style="font-size:17px; margin:32px 0 10px;">Konsoles saīsinājumi</h3>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// Ieraksti TIEŠI konsolē (ne kodā!):</span>
 $0        <span class="tok-com">// pēdējais elements, ko izvēlējies cilnē "Elements"</span>
 $_        <span class="tok-com">// pēdējās konsolē izpildītās izteiksmes rezultāts</span>
-copy(dati) <span class="tok-com">// nokopē mainīgā vērtību starpliktuvē kā JSON — der ielīmēt citur</span></code></pre>
+copy(dati) <span class="tok-com">// nokopē mainīgā vērtību starpliktuvē kā JSON - der ielīmēt citur</span></code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p><code>$0</code> darbojas tikai <strong>tieši pēc</strong> tam, kad izvēlēts elements cilnē "Elements" (vai ar labo peles klikšķi → "Inspect") — ne jebkurā brīdī. Šie saīsinājumi pieejami tikai pašā DevTools konsolē, ne parastā JS failā.</p>
+        <p><code>$0</code> darbojas tikai <strong>tieši pēc</strong> tam, kad izvēlēts elements cilnē "Elements" (vai ar labo peles klikšķi → "Inspect") - ne jebkurā brīdī. Šie saīsinājumi pieejami tikai pašā DevTools konsolē, ne parastā JS failā.</p>
       </div>
     </section>
 
@@ -562,7 +562,7 @@ copy(dati) <span class="tok-com">// nokopē mainīgā vērtību starpliktuvē k�
   </main>
 </div>
 
-<script src="../js/theme.js?v=20"></script>
-<script src="../js/main.js?v=20"></script>
+<script src="../js/theme.js?v=21"></script>
+<script src="../js/main.js?v=21"></script>
 </body>
 </html>

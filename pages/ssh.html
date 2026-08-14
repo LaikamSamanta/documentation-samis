@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
-<title>SSH dokumentācija — Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=20" />
+<title>SSH dokumentācija - Documentation Samis</title>
+<link rel="stylesheet" href="../css/style.css?v=21" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -84,16 +84,16 @@
       </div>
       <h1 style="margin-bottom:0;">SSH</h1>
     </div>
-    <p class="doc-lead">Pilns iesācēja ceļvedis: kā pieslēgties serverim un pārvaldīt WordPress vietni caur termināli — ar WP-CLI komandām, failu/datubāzes darbībām un reāliem, darbojošos piemēriem.</p>
+    <p class="doc-lead">Pilns iesācēja ceļvedis: kā pieslēgties serverim un pārvaldīt WordPress vietni caur termināli - ar WP-CLI komandām, failu/datubāzes darbībām un reāliem, darbojošos piemēriem.</p>
 
     <section class="doc-section" id="ievads">
       <h2>Kas ir SSH un kāpēc tas WordPress izstrādātājam</h2>
-      <p><strong>SSH</strong> (Secure Shell) ir šifrēts protokols attālinātai pieslēgšanās serverim caur termināli — tā vietā, lai serverim piekļūtu fiziski vai tikai caur FTP failu pārlūku, nosūti komandas pa tīklu, un tās izpildās tieši tur, ar pilnu šifrēšanu starp tavu datoru un serveri. Strādā pāri portam <strong>22</strong>.</p>
+      <p><strong>SSH</strong> (Secure Shell) ir šifrēts protokols attālinātai pieslēgšanās serverim caur termināli - tā vietā, lai serverim piekļūtu fiziski vai tikai caur FTP failu pārlūku, nosūti komandas pa tīklu, un tās izpildās tieši tur, ar pilnu šifrēšanu starp tavu datoru un serveri. Strādā pāri portam <strong>22</strong>.</p>
       <p>Lielākajai daļai WordPress darba (tēmas rediģēšana, spraudņu uzstādīšana) FTP/failu pārvaldnieks pietiek. Bet SSH kļūst nepieciešams, tiklīdz:</p>
       <div class="doc-cards">
-        <div class="doc-mini-card"><h4>⚡ Ātrums</h4><p>WP-CLI komanda izpilda spraudņa atjaunināšanu vai datubāzes migrāciju sekundēs — administrācijas panelī tas var aizņemt minūtes vai pat neizdoties timeout dēļ.</p></div>
+        <div class="doc-mini-card"><h4>⚡ Ātrums</h4><p>WP-CLI komanda izpilda spraudņa atjaunināšanu vai datubāzes migrāciju sekundēs - administrācijas panelī tas var aizņemt minūtes vai pat neizdoties timeout dēļ.</p></div>
         <div class="doc-mini-card"><h4>🔍 Kļūdu logi</h4><p>Kad vietne parāda balto ekrānu (WSOD) bez paskaidrojuma, reālais iemesls parasti redzams tikai servera error logā.</p></div>
-        <div class="doc-mini-card"><h4>💾 Datubāzes darbi</h4><p>Domēna maiņa, backup, lielu tabulu tīrīšana — administrācijas panelī bieži pārsniedz servera laika/atmiņas limitus.</p></div>
+        <div class="doc-mini-card"><h4>💾 Datubāzes darbi</h4><p>Domēna maiņa, backup, lielu tabulu tīrīšana - administrācijas panelī bieži pārsniedz servera laika/atmiņas limitus.</p></div>
         <div class="doc-mini-card"><h4>🤖 Automatizācija</h4><p>Skripti, kas dara vairākas darbības pēc kārtas (deploy, backup, cache tīrīšana) bez manuālas klikšķināšanas katru reizi.</p></div>
       </div>
     </section>
@@ -104,17 +104,17 @@
 
 <span class="tok-com"># Ja serveris klausās nestandarta portā (ne 22)</span>
 ssh -p 2222 lietotajvards@servera-ip-vai-domens.lv</code></pre>
-      <p>Pieslēgšanās datus (lietotājvārdu, adresi, portu) atrodi sava WordPress hostinga panelī — parasti sadaļā "SSH pieeja" vai "Advanced". Dažiem koplietošanas (shared) hostingiem SSH pieeja jāieslēdz atsevišķi vai jāpieprasa no atbalsta.</p>
-      <p>Pirmajā reizē pieslēdzoties konkrētam serverim, terminālis parādīs servera "pirkstu nospiedumu" (fingerprint) un jautās, vai uzticies tam — apstiprini tikai tad, ja esi pārliecināts, ka adrese ir pareiza.</p>
+      <p>Pieslēgšanās datus (lietotājvārdu, adresi, portu) atrodi sava WordPress hostinga panelī - parasti sadaļā "SSH pieeja" vai "Advanced". Dažiem koplietošanas (shared) hostingiem SSH pieeja jāieslēdz atsevišķi vai jāpieprasa no atbalsta.</p>
+      <p>Pirmajā reizē pieslēdzoties konkrētam serverim, terminālis parādīs servera "pirkstu nospiedumu" (fingerprint) un jautās, vai uzticies tam - apstiprini tikai tad, ja esi pārliecināts, ka adrese ir pareiza.</p>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Pēc pieslēgšanās parasti nonāc mājas mapē, ne uzreiz WordPress instalācijas vietā. Atrodi to ar <code>find / -name wp-config.php 2&gt;/dev/null</code> (meklē visā serverī, ignorējot "atteikts" kļūdas) vai jautā hostingam, kur tā atrodas — tipiski <code>/var/www/html/</code>, <code>/home/lietotajs/public_html/</code> vai līdzīgi.</p>
+        <p>Pēc pieslēgšanās parasti nonāc mājas mapē, ne uzreiz WordPress instalācijas vietā. Atrodi to ar <code>find / -name wp-config.php 2&gt;/dev/null</code> (meklē visā serverī, ignorējot "atteikts" kļūdas) vai jautā hostingam, kur tā atrodas - tipiski <code>/var/www/html/</code>, <code>/home/lietotajs/public_html/</code> vai līdzīgi.</p>
       </div>
     </section>
 
     <section class="doc-section" id="ssh-atslegas">
       <h2>SSH atslēgas</h2>
-      <p>Parole strādā, bet katru reizi jāievada no jauna un ir jutīgāka pret uzminēšanu. Praksē izmanto <strong>SSH atslēgu pāri</strong>: privātā atslēga paliek tavā datorā, publiskā — serverī.</p>
+      <p>Parole strādā, bet katru reizi jāievada no jauna un ir jutīgāka pret uzminēšanu. Praksē izmanto <strong>SSH atslēgu pāri</strong>: privātā atslēga paliek tavā datorā, publiskā - serverī.</p>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Izveido jaunu atslēgu pāri</span>
 ssh-keygen -t ed25519 -C <span class="tok-str">"tavs@epasts.lv"</span>
 
@@ -129,23 +129,23 @@ Host klienta-vietne
       <p>Pēc tam pieslēgšanās saīsinās līdz <code>ssh klienta-vietne</code>.</p>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Visbiežākā kļūda — <code>Permission denied (publickey)</code> — nozīmē, ka serveris nesaņēma vai neatpazina tavu publisko atslēgu. Nekad neglabā un nesūti privāto atslēgu (<code>id_ed25519</code> bez <code>.pub</code>) nekur citur, tikai savā datorā — tā ir līdzvērtīga parolei. (Ja tev vajag SSH atslēgu Git/GitHub autentifikācijai, nevis servera pieejai — tas ir atsevišķs process, skat. <a href="git.html#ssh-atslegas">Git dokumentācijā</a>.)</p>
+        <p>Visbiežākā kļūda - <code>Permission denied (publickey)</code> - nozīmē, ka serveris nesaņēma vai neatpazina tavu publisko atslēgu. Nekad neglabā un nesūti privāto atslēgu (<code>id_ed25519</code> bez <code>.pub</code>) nekur citur, tikai savā datorā - tā ir līdzvērtīga parolei. (Ja tev vajag SSH atslēgu Git/GitHub autentifikācijai, nevis servera pieejai - tas ir atsevišķs process, skat. <a href="git.html#ssh-atslegas">Git dokumentācijā</a>.)</p>
       </div>
     </section>
 
     <section class="doc-section" id="wp-cli-ievads">
       <h2>Kas ir WP-CLI</h2>
-      <p><strong>WP-CLI</strong> (WordPress Command Line Interface) ir oficiāls WordPress komandrindas rīks — praktiski visu, ko dari administrācijas panelī (uzstādi spraudni, atjaunini tēmu, izveido lietotāju), var izdarīt ar vienu komandu, bez pārlūka un bez klikšķināšanas.</p>
+      <p><strong>WP-CLI</strong> (WordPress Command Line Interface) ir oficiāls WordPress komandrindas rīks - praktiski visu, ko dari administrācijas panelī (uzstādi spraudni, atjaunini tēmu, izveido lietotāju), var izdarīt ar vienu komandu, bez pārlūka un bez klikšķināšanas.</p>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Pārbauda, vai WP-CLI jau instalēts serverī (daudzos WP hostingos ir pēc noklusējuma)</span>
 wp --info
 
-<span class="tok-com"># Ja nav — instalē (vienreiz, serverim jābūt PHP CLI pieejai)</span>
+<span class="tok-com"># Ja nav - instalē (vienreiz, serverim jābūt PHP CLI pieejai)</span>
 curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 chmod +x wp-cli.phar
 sudo mv wp-cli.phar /usr/local/bin/wp</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Visas <code>wp</code> komandas jāpalaiž, atrodoties WordPress instalācijas mapē (kur ir <code>wp-config.php</code>) — WP-CLI pats to atrod, izmantojot pašreizējo termināļa atrašanās vietu. Ja saņem kļūdu "This does not seem to be a WordPress installation", pārbaudi ar <code>pwd</code>, vai esi pareizajā mapē.</p>
+        <p>Visas <code>wp</code> komandas jāpalaiž, atrodoties WordPress instalācijas mapē (kur ir <code>wp-config.php</code>) - WP-CLI pats to atrod, izmantojot pašreizējo termināļa atrašanās vietu. Ja saņem kļūdu "This does not seem to be a WordPress installation", pārbaudi ar <code>pwd</code>, vai esi pareizajā mapē.</p>
       </div>
     </section>
 
@@ -155,19 +155,19 @@ sudo mv wp-cli.phar /usr/local/bin/wp</code></pre>
 wp core update
 wp core version
 
-<span class="tok-com"># Spraudņi — saraksts, uzstādīšana, aktivizēšana, atjaunināšana</span>
+<span class="tok-com"># Spraudņi - saraksts, uzstādīšana, aktivizēšana, atjaunināšana</span>
 wp plugin list
 wp plugin install contact-form-7 --activate
 wp plugin update --all
 wp plugin deactivate spraudna-nosaukums
 
-<span class="tok-com"># Tēmas — tas pats princips</span>
+<span class="tok-com"># Tēmas - tas pats princips</span>
 wp theme list
 wp theme activate mana-tema
 wp theme update --all</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>wp plugin update --all</code> vienā komandā atjaunina VISUS spraudņus uzreiz — noderīgi, bet vienmēr vispirms izveido dublējumu (skat. <a href="#datubaze-mysql">MySQL &amp; dublējumi</a>), jo atjauninājums var salauzt saderību ar tēmu vai citu spraudni.</p>
+        <p><code>wp plugin update --all</code> vienā komandā atjaunina VISUS spraudņus uzreiz - noderīgi, bet vienmēr vispirms izveido dublējumu (skat. <a href="#datubaze-mysql">MySQL &amp; dublējumi</a>), jo atjauninājums var salauzt saderību ar tēmu vai citu spraudni.</p>
       </div>
     </section>
 
@@ -178,15 +178,15 @@ wp db export dublejums.sql
 
 <span class="tok-com"># Importē atpakaļ (piem., pēc atjaunošanas no dublējuma)</span>
 wp db import dublejums.sql</code></pre>
-      <p>Visbiežākais WP-CLI datubāzes uzdevums — <strong>domēna maiņa</strong> (piem., pārceļot vietni no <code>vecais-domens.lv</code> uz <code>jauns-domens.lv</code>, vai no staging uz production). WordPress saglabā pilnu domēna adresi tieši datubāzē (tabulās, iestatījumos), tāpēc vienkārša failu kopēšana to nemaina:</p>
+      <p>Visbiežākais WP-CLI datubāzes uzdevums - <strong>domēna maiņa</strong> (piem., pārceļot vietni no <code>vecais-domens.lv</code> uz <code>jauns-domens.lv</code>, vai no staging uz production). WordPress saglabā pilnu domēna adresi tieši datubāzē (tabulās, iestatījumos), tāpēc vienkārša failu kopēšana to nemaina:</p>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># --dry-run vispirms parāda, CIK reižu vārds tiktu aizvietots, bez reālas maiņas</span>
 wp search-replace <span class="tok-str">'vecais-domens.lv'</span> <span class="tok-str">'jauns-domens.lv'</span> --dry-run
 
-<span class="tok-com"># Kad pārliecināts — palaid bez --dry-run, lai tiešām aizvieto</span>
+<span class="tok-com"># Kad pārliecināts - palaid bez --dry-run, lai tiešām aizvieto</span>
 wp search-replace <span class="tok-str">'vecais-domens.lv'</span> <span class="tok-str">'jauns-domens.lv'</span></code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p><code>search-replace</code> ir daudz drošāks par manuālu SQL <code>UPDATE</code> vaicājumu, jo WP-CLI automātiski pareizi apstrādā WordPress serializētos datus (piem., masīvus, kas saglabāti kā teksts ar precīzu garuma skaitīšanu) — manuāla teksta aizvietošana šos serializētos laukus salauztu. <strong>Vienmēr</strong> vispirms izveido dublējumu (<code>wp db export</code>) pirms search-replace bez <code>--dry-run</code>.</p>
+        <p><code>search-replace</code> ir daudz drošāks par manuālu SQL <code>UPDATE</code> vaicājumu, jo WP-CLI automātiski pareizi apstrādā WordPress serializētos datus (piem., masīvus, kas saglabāti kā teksts ar precīzu garuma skaitīšanu) - manuāla teksta aizvietošana šos serializētos laukus salauztu. <strong>Vienmēr</strong> vispirms izveido dublējumu (<code>wp db export</code>) pirms search-replace bez <code>--dry-run</code>.</p>
       </div>
     </section>
 
@@ -204,14 +204,14 @@ wp option update blogname <span class="tok-str">"Jauns Vietnes Nosaukums"</span>
 
 <span class="tok-com"># Notīra WordPress objektu kešu (ne vienmēr to pašu, ko hostinga/CDN kešs)</span>
 wp cache flush</code></pre>
-      <p><strong>Tikai administratori</strong> — noder drošības auditam, lai pārbaudītu, vai nav parādījies svešs/neatpazīts admin konts:</p>
+      <p><strong>Tikai administratori</strong> - noder drošības auditam, lai pārbaudītu, vai nav parādījies svešs/neatpazīts admin konts:</p>
       <pre class="code-block"><span class="lang">bash</span><code>wp user list --role=administrator --fields=ID,user_login,user_email,user_registered</code></pre>
-      <p><strong>Info par konkrētu lietotāju</strong> — visi tā dati un atsevišķie meta lauki:</p>
+      <p><strong>Info par konkrētu lietotāju</strong> - visi tā dati un atsevišķie meta lauki:</p>
       <pre class="code-block"><span class="lang">bash</span><code>wp user get lietotajvards --fields=all
 wp user meta list lietotajvards</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>wp user create</code> ar administratora lomu ir ātrākais veids atgūt piekļuvi vietnei, ja pazaudēta gan admin parole, gan e-pasta piekļuve atiestatīšanai — tiešā datubāzes/failu piekļuve caur SSH šo situāciju atrisina pāris sekundēs. <code>wp user list --role=administrator</code> der arī otrādi — regulāri pārbaudīt, vai vietnē nav parādījies admin konts, ko tu neizveidoji (bieža pazīme, ka vietne uzlauzta).</p>
+        <p><code>wp user create</code> ar administratora lomu ir ātrākais veids atgūt piekļuvi vietnei, ja pazaudēta gan admin parole, gan e-pasta piekļuve atiestatīšanai - tiešā datubāzes/failu piekļuve caur SSH šo situāciju atrisina pāris sekundēs. <code>wp user list --role=administrator</code> der arī otrādi - regulāri pārbaudīt, vai vietnē nav parādījies admin konts, ko tu neizveidoji (bieža pazīme, ka vietne uzlauzta).</p>
       </div>
     </section>
 
@@ -225,23 +225,23 @@ ls -la
 nano wp-config.php
 <span class="tok-com"># Ctrl+O = saglabāt, Ctrl+X = iziet</span></code></pre>
       <p><strong>Failu tiesības</strong> (permissions) WordPress serverī parasti jābūt: mapes <code>755</code>, faili <code>644</code>, izņemot <code>wp-config.php</code>, kam ieteicams <code>600</code> (lasa/raksta tikai īpašnieks):</p>
-      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Visām mapēm rekursīvi — 755</span>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Visām mapēm rekursīvi - 755</span>
 find . -type d -exec chmod 755 {} \;
 
-<span class="tok-com"># Visiem failiem rekursīvi — 644</span>
+<span class="tok-com"># Visiem failiem rekursīvi - 644</span>
 find . -type f -exec chmod 644 {} \;
 
-<span class="tok-com"># wp-config.php stingrāk — tikai īpašniekam</span>
+<span class="tok-com"># wp-config.php stingrāk - tikai īpašniekam</span>
 chmod 600 wp-config.php</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Nekad neuzstādi <code>chmod 777</code> "lai vienkārši strādātu" — tas dod RAKSTĪŠANAS tiesības ikvienam serverī, ieskaitot potenciāli ļaunprātīgus skriptus, ja serveris koplietots. Ja fails/mape nesaglabājas, reālais iemesls parasti ir nepareizs failu <strong>īpašnieks</strong> (owner), nevis tiesības — pārbaudi ar <code>ls -la</code> un salīdzini ar to, kā PHP process darbojas (bieži <code>www-data</code>).</p>
+        <p>Nekad neuzstādi <code>chmod 777</code> "lai vienkārši strādātu" - tas dod RAKSTĪŠANAS tiesības ikvienam serverī, ieskaitot potenciāli ļaunprātīgus skriptus, ja serveris koplietots. Ja fails/mape nesaglabājas, reālais iemesls parasti ir nepareizs failu <strong>īpašnieks</strong> (owner), nevis tiesības - pārbaudi ar <code>ls -la</code> un salīdzini ar to, kā PHP process darbojas (bieži <code>www-data</code>).</p>
       </div>
-      <p><strong>Faila datumi</strong> — kad izveidots, mainīts vai pēdējoreiz atvērts:</p>
+      <p><strong>Faila datumi</strong> - kad izveidots, mainīts vai pēdējoreiz atvērts:</p>
       <pre class="code-block"><span class="lang">bash</span><code>stat fails.php</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>stat</code> izvadā trīs laikus — <code>Access</code> (pēdējoreiz nolasīts), <code>Modify</code> (pēdējoreiz mainīts saturs — svarīgākais, meklējot ļaunprātīgi ievietotus failus) un <code>Change</code> (pēdējoreiz mainīti faila metadati, piem., tiesības). Lielākā daļa Linux failsistēmu <strong>nesaglabā</strong> reālu "izveidošanas" datumu — <code>Modify</code> ir tuvākais praktiskais aizstājējs.</p>
+        <p><code>stat</code> izvadā trīs laikus - <code>Access</code> (pēdējoreiz nolasīts), <code>Modify</code> (pēdējoreiz mainīts saturs - svarīgākais, meklējot ļaunprātīgi ievietotus failus) un <code>Change</code> (pēdējoreiz mainīti faila metadati, piem., tiesības). Lielākā daļa Linux failsistēmu <strong>nesaglabā</strong> reālu "izveidošanas" datumu - <code>Modify</code> ir tuvākais praktiskais aizstājējs.</p>
       </div>
     </section>
 
@@ -266,7 +266,7 @@ df -h
 du -sh */ | sort -rh | head -10</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Ja WordPress vietne kļūst lēna vai serveris "karājas", <code>ps aux --sort=-%mem</code> parasti uzreiz parāda vainīgo — bieži tas ir neierobežots PHP process, aizmirsts backup skripts vai spraudnis ar atmiņas noplūdi. <code>du -sh */ | sort -rh</code> palīdz atrast, kas piepildījis disku (bieži — logi vai veci dublējumi, kas nekad netika izdzēsti).</p>
+        <p>Ja WordPress vietne kļūst lēna vai serveris "karājas", <code>ps aux --sort=-%mem</code> parasti uzreiz parāda vainīgo - bieži tas ir neierobežots PHP process, aizmirsts backup skripts vai spraudnis ar atmiņas noplūdi. <code>du -sh */ | sort -rh</code> palīdz atrast, kas piepildījis disku (bieži - logi vai veci dublējumi, kas nekad netika izdzēsti).</p>
       </div>
     </section>
 
@@ -288,7 +288,7 @@ telnet domena.lv 25
 <span class="tok-com"># Ctrl+] tad "quit", lai izietu no telnet sesijas</span></code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>telnet domena.lv 25</code> ir klasisks veids pārbaudīt, kāpēc WordPress e-pasti (paroles atiestatīšana, kontaktformas) nenonāk galā — ja savienojums uz 25. portu neizdodas, problēma ir servera/hostinga pusē (bloķēts izejošais SMTP), nevis WordPress kodā. Plašāk par DNS/MX ierakstiem — <a href="web-izveide.html#dns-records">Tīkla dokumentācijā</a>.</p>
+        <p><code>telnet domena.lv 25</code> ir klasisks veids pārbaudīt, kāpēc WordPress e-pasti (paroles atiestatīšana, kontaktformas) nenonāk galā - ja savienojums uz 25. portu neizdodas, problēma ir servera/hostinga pusē (bloķēts izejošais SMTP), nevis WordPress kodā. Plašāk par DNS/MX ierakstiem - <a href="web-izveide.html#dns-records">Tīkla dokumentācijā</a>.</p>
       </div>
     </section>
 
@@ -307,13 +307,13 @@ tail -f /var/log/apache2/error.log</code></pre>
 <span class="tok-kw">define</span>(<span class="tok-str">'WP_DEBUG_DISPLAY'</span>, <span class="tok-kw">false</span>); <span class="tok-com">// nerāda kļūdas apmeklētājiem, tikai logā</span></code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>tail -f</code> (nevis vienkārši <code>cat</code>) turpina rādīt jaunas rindas reāllaikā, kamēr komanda darbojas — atver to, tad izpildi darbību, kas izraisa kļūdu (piem., atsvaidzini lapu), un skaties, kas parādās uzreiz. Beidz ar <code>Ctrl+C</code>. Vienmēr izslēdz <code>WP_DEBUG_DISPLAY</code> produkcijas vietnē — redzamas PHP kļūdas apmeklētājiem var atklāt servera failu ceļus un citu tehnisku info uzbrucējiem.</p>
+        <p><code>tail -f</code> (nevis vienkārši <code>cat</code>) turpina rādīt jaunas rindas reāllaikā, kamēr komanda darbojas - atver to, tad izpildi darbību, kas izraisa kļūdu (piem., atsvaidzini lapu), un skaties, kas parādās uzreiz. Beidz ar <code>Ctrl+C</code>. Vienmēr izslēdz <code>WP_DEBUG_DISPLAY</code> produkcijas vietnē - redzamas PHP kļūdas apmeklētājiem var atklāt servera failu ceļus un citu tehnisku info uzbrucējiem.</p>
       </div>
     </section>
 
     <section class="doc-section" id="sintakses-parbaude">
       <h2>Sintakses pārbaude (php -l)</h2>
-      <p>Pirms rediģēta faila (piem., <code>functions.php</code>) augšupielādes vai aizvietošanas uz dzīvas vietnes vienmēr der pārbaudīt, vai tajā nav sintakses kļūdu — pat viena trūkstoša iekava vai semikols nozīmē tūlītēju "critical error" / balto ekrānu visai vietnei. <code>php -l</code> ("lint") pārbauda faila sintaksi, <strong>nepalaižot</strong> to:</p>
+      <p>Pirms rediģēta faila (piem., <code>functions.php</code>) augšupielādes vai aizvietošanas uz dzīvas vietnes vienmēr der pārbaudīt, vai tajā nav sintakses kļūdu - pat viena trūkstoša iekava vai semikols nozīmē tūlītēju "critical error" / balto ekrānu visai vietnei. <code>php -l</code> ("lint") pārbauda faila sintaksi, <strong>nepalaižot</strong> to:</p>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Pārbauda vienu konkrētu failu</span>
 php -l wp-content/themes/mana-tema/functions.php</code></pre>
       <p>Ja viss kārtībā, redzēsi:</p>
@@ -326,17 +326,17 @@ Errors parsing wp-content/themes/mana-tema/functions.php</code></pre>
 find . -name <span class="tok-str">"*.php"</span> -exec php -l {} \; | grep -v <span class="tok-str">"No syntax errors"</span></code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Šis paradums glābj no visbiežāk sastopamā "izsalabotā vietne" scenārija: rediģē <code>functions.php</code> tieši serverī (piem., ar <code>nano</code>), aizmirsti aizvērt iekavu, saglabā — un vietne uzreiz krīt visiem apmeklētājiem. Palaižot <code>php -l</code> pirms saglabāšanas ietekmes (vai kā daļu no deploy skripta), kļūdu noķer <strong>pirms</strong> tā nonāk dzīvajā vietnē.</p>
+        <p>Šis paradums glābj no visbiežāk sastopamā "izsalabotā vietne" scenārija: rediģē <code>functions.php</code> tieši serverī (piem., ar <code>nano</code>), aizmirsti aizvērt iekavu, saglabā - un vietne uzreiz krīt visiem apmeklētājiem. Palaižot <code>php -l</code> pirms saglabāšanas ietekmes (vai kā daļu no deploy skripta), kļūdu noķer <strong>pirms</strong> tā nonāk dzīvajā vietnē.</p>
       </div>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p><code>php -l</code> noķer tikai <strong>sintakses</strong> (parsēšanas laika) kļūdas — trūkstošas iekavas, semikolus, neaizvērtas pēdiņas. Tas <strong>neatklāj</strong> loģikas vai izpildlaika kļūdas (piem., izsaukumu neesošai funkcijai, nepareizu mainīgo), jo kods faktiski netiek palaists. Tādām kļūdām vajag <code>WP_DEBUG</code> un kļūdu logu (skat. <a href="#logi">augstāk</a>).</p>
+        <p><code>php -l</code> noķer tikai <strong>sintakses</strong> (parsēšanas laika) kļūdas - trūkstošas iekavas, semikolus, neaizvērtas pēdiņas. Tas <strong>neatklāj</strong> loģikas vai izpildlaika kļūdas (piem., izsaukumu neesošai funkcijai, nepareizu mainīgo), jo kods faktiski netiek palaists. Tādām kļūdām vajag <code>WP_DEBUG</code> un kļūdu logu (skat. <a href="#logi">augstāk</a>).</p>
       </div>
     </section>
 
     <section class="doc-section" id="datubaze-mysql">
       <h2>MySQL &amp; dublējumi</h2>
-      <p>Alternatīva <code>wp db export</code>/<code>import</code> (skat. <a href="#wp-cli-db">augstāk</a>) — tiešs <code>mysqldump</code>, ja WP-CLI nav pieejams vai vajag precīzāku kontroli:</p>
+      <p>Alternatīva <code>wp db export</code>/<code>import</code> (skat. <a href="#wp-cli-db">augstāk</a>) - tiešs <code>mysqldump</code>, ja WP-CLI nav pieejams vai vajag precīzāku kontroli:</p>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Datubāzes datus (lietotājvārds, parole, nosaukums) atrodi wp-config.php</span>
 mysqldump -u db_lietotajs -p db_nosaukums &gt; dublejums.sql
 
@@ -347,14 +347,14 @@ mysql -u db_lietotajs -p db_nosaukums &lt; dublejums.sql
 mysql -u db_lietotajs -p db_nosaukums</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Pirms JEBKURAS datubāzes darbības (search-replace, spraudņu masveida atjaunināšana, manuāli SQL vaicājumi) vienmēr vispirms izveido svaigu dublējumu. WordPress datubāzes izmaiņas parasti nav atsaucamas ar "Undo" — dublējums ir vienīgais drošības tīkls.</p>
+        <p>Pirms JEBKURAS datubāzes darbības (search-replace, spraudņu masveida atjaunināšana, manuāli SQL vaicājumi) vienmēr vispirms izveido svaigu dublējumu. WordPress datubāzes izmaiņas parasti nav atsaucamas ar "Undo" - dublējums ir vienīgais drošības tīkls.</p>
       </div>
     </section>
 
     <section class="doc-section" id="wp-cron">
       <h2>WP-Cron vs īstais cron</h2>
-      <p>WordPress ieplānotos uzdevumus (publicēšana nākotnē, e-pasta paziņojumi, spraudņu grafiki) pēc noklusējuma pārbauda <strong>WP-Cron</strong> — bet tas nav īsts, vienmēr strādājošs fona process, tas palaižas <strong>tikai</strong> tad, kad kāds apmeklētājs atver lapu. Zemas apmeklētības vietnēm ieplānotie uzdevumi var kavēties vai vispār neizpildīties.</p>
-      <p>Risinājums — izslēdz WordPress "pseido-cron" un aizstāj ar īstu servera cron uzdevumu:</p>
+      <p>WordPress ieplānotos uzdevumus (publicēšana nākotnē, e-pasta paziņojumi, spraudņu grafiki) pēc noklusējuma pārbauda <strong>WP-Cron</strong> - bet tas nav īsts, vienmēr strādājošs fona process, tas palaižas <strong>tikai</strong> tad, kad kāds apmeklētājs atver lapu. Zemas apmeklētības vietnēm ieplānotie uzdevumi var kavēties vai vispār neizpildīties.</p>
+      <p>Risinājums - izslēdz WordPress "pseido-cron" un aizstāj ar īstu servera cron uzdevumu:</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// wp-config.php</span>
 <span class="tok-kw">define</span>(<span class="tok-str">'DISABLE_WP_CRON'</span>, <span class="tok-kw">true</span>);</code></pre>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># crontab -e atver servera cron sarakstu rediģēšanai; šī rinda palaiž</span>
@@ -362,48 +362,48 @@ mysql -u db_lietotajs -p db_nosaukums</code></pre>
 */5 * * * * wp cron event run --due-now --path=/celjs/uz/wordpress &gt; /dev/null 2&gt;&1</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Cron rindas piecas zvaigznītes/skaitļi apzīmē: minūte, stunda, mēneša diena, mēnesis, nedēļas diena. <code>*/5 * * * *</code> nozīmē "katras 5 minūtes, vienmēr" — <code>*</code> katrā pozīcijā nozīmē "jebkurš". <code>--due-now</code> nozīmē — WP-CLI palaiž tikai tos uzdevumus, kam pienācis laiks, ne visus uzreiz.</p>
+        <p>Cron rindas piecas zvaigznītes/skaitļi apzīmē: minūte, stunda, mēneša diena, mēnesis, nedēļas diena. <code>*/5 * * * *</code> nozīmē "katras 5 minūtes, vienmēr" - <code>*</code> katrā pozīcijā nozīmē "jebkurš". <code>--due-now</code> nozīmē - WP-CLI palaiž tikai tos uzdevumus, kam pienācis laiks, ne visus uzreiz.</p>
       </div>
     </section>
 
     <section class="doc-section" id="drosiba-virusi">
       <h2>Vīrusu &amp; aizdomīgu failu meklēšana</h2>
-      <p><strong>Core failu integritāte</strong> — WordPress salīdzina tavus kodola failus ar oficiālajiem, nemainītajiem failiem un uzreiz parāda, kuri atšķiras:</p>
+      <p><strong>Core failu integritāte</strong> - WordPress salīdzina tavus kodola failus ar oficiālajiem, nemainītajiem failiem un uzreiz parāda, kuri atšķiras:</p>
       <pre class="code-block"><span class="lang">bash</span><code>wp core verify-checksums</code></pre>
-      <p><strong>Nesen mainīti faili</strong> — bieži pirmā pazīme, ka vietne uzlauzta, ir faili, kas mainīti brīdī, kad tu pats neko nedarīji:</p>
+      <p><strong>Nesen mainīti faili</strong> - bieži pirmā pazīme, ka vietne uzlauzta, ir faili, kas mainīti brīdī, kad tu pats neko nedarīji:</p>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Visi .php faili, kas mainīti pēdējo 7 dienu laikā</span>
 find . -name <span class="tok-str">"*.php"</span> -mtime -7
 
 <span class="tok-com"># Tas pats, bet ar precīzu datumu/laiku katram failam, sakārtots pēc laika</span>
 find . -name <span class="tok-str">"*.php"</span> -mtime -7 -printf <span class="tok-str">"%T@ %p\n"</span> | sort -n</code></pre>
-      <p><strong>Aizdomīgi koda paraugi</strong> — ļaunprātīgs WordPress kods bieži izmanto konkrētas, atpazīstamas PHP funkcijas, lai paslēptu/izpildītu injicētu kodu:</p>
+      <p><strong>Aizdomīgi koda paraugi</strong> - ļaunprātīgs WordPress kods bieži izmanto konkrētas, atpazīstamas PHP funkcijas, lai paslēptu/izpildītu injicētu kodu:</p>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Meklē failus ar bieži ļaunprātīgi izmantotiem paraugiem visā wp-content</span>
 grep -rl <span class="tok-str">"eval(base64_decode"</span> wp-content/ --include=<span class="tok-str">"*.php"</span>
 grep -rl <span class="tok-str">"eval(gzinflate"</span> wp-content/ --include=<span class="tok-str">"*.php"</span>
 grep -rl <span class="tok-str">"eval(\$_POST"</span> wp-content/ --include=<span class="tok-str">"*.php"</span></code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Šīs komandas <strong>norāda uz aizdomām</strong>, ne pierāda vīrusu — daži leģitīmi spraudņi arī izmanto <code>eval()</code> vai <code>base64</code> nešķīstiem mērķiem (piem., licenču pārbaudei). Katru atrasto sakritību pārbaudi manuāli, salīdzinot ar to, kas failā bija PIRMS aizdomīgā perioda (skat. <a href="git.html">Git vēsturi</a>, ja tēma/spraudnis versionēts). Nopietnākai, automatizētai skenēšanai der specializēts rīks — <code>clamscan</code> (ClamAV) vai hostinga/WordPress drošības spraudnis (Wordfence, Sucuri).</p>
+        <p>Šīs komandas <strong>norāda uz aizdomām</strong>, ne pierāda vīrusu - daži leģitīmi spraudņi arī izmanto <code>eval()</code> vai <code>base64</code> nešķīstiem mērķiem (piem., licenču pārbaudei). Katru atrasto sakritību pārbaudi manuāli, salīdzinot ar to, kas failā bija PIRMS aizdomīgā perioda (skat. <a href="git.html">Git vēsturi</a>, ja tēma/spraudnis versionēts). Nopietnākai, automatizētai skenēšanai der specializēts rīks - <code>clamscan</code> (ClamAV) vai hostinga/WordPress drošības spraudnis (Wordfence, Sucuri).</p>
       </div>
     </section>
 
     <section class="doc-section" id="failu-parsutisana">
       <h2>Failu pārsūtīšana (scp/rsync)</h2>
-      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># scp — vienkārša kopēšana caur SSH, bez papildu FTP servera</span>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># scp - vienkārša kopēšana caur SSH, bez papildu FTP servera</span>
 scp mana-tema.zip lietotajvards@serveris.lv:/mapes/celjs/
 scp -r wp-content/themes/mana-tema/ lietotajvards@serveris.lv:/mapes/celjs/
 
-<span class="tok-com"># rsync — gudrāks: kopē TIKAI mainītos failus, ne visu katru reizi</span>
+<span class="tok-com"># rsync - gudrāks: kopē TIKAI mainītos failus, ne visu katru reizi</span>
 rsync -avz --progress ./mana-mape/ lietotajvards@serveris.lv:/mapes/celjs/</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>rsync</code> ir daudz ātrāks lielu projektu regulārai izvietošanai (deploy), jo pārsūta tikai izmaiņas — pirmā reize kopē visu, bet katra nākamā tikai to, kas mainījies kopš pēdējās reizes. <code>-a</code> saglabā tiesības/laika zīmogus, <code>-v</code> parāda progresu, <code>-z</code> saspiež pārsūtīšanas laikā.</p>
+        <p><code>rsync</code> ir daudz ātrāks lielu projektu regulārai izvietošanai (deploy), jo pārsūta tikai izmaiņas - pirmā reize kopē visu, bet katra nākamā tikai to, kas mainījies kopš pēdējās reizes. <code>-a</code> saglabā tiesības/laika zīmogus, <code>-v</code> parāda progresu, <code>-z</code> saspiež pārsūtīšanas laikā.</p>
       </div>
     </section>
 
     <section class="doc-section" id="noderigas-komandas">
       <h2>Noderīgas komandas</h2>
-      <p>Kopsavilkums — visas komandas, kas parādījās šajā lapā, vienuviet ātrai uzziņai:</p>
+      <p>Kopsavilkums - visas komandas, kas parādījās šajā lapā, vienuviet ātrai uzziņai:</p>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Pieslēgšanās</span>
 ssh lietotajvards@serveris.lv
 
@@ -448,7 +448,7 @@ grep -rl <span class="tok-str">"eval(base64_decode"</span> wp-content/ --include
   </main>
 </div>
 
-<script src="../js/theme.js?v=20"></script>
-<script src="../js/main.js?v=20"></script>
+<script src="../js/theme.js?v=21"></script>
+<script src="../js/main.js?v=21"></script>
 </body>
 </html>

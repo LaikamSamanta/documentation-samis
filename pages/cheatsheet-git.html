@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
-<title>Git Cheatsheet — Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=20" />
+<title>Git Cheatsheet - Documentation Samis</title>
+<link rel="stylesheet" href="../css/style.css?v=21" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -46,7 +46,7 @@
     </div>
     <h1 style="margin-bottom:0;">Git Cheatsheet</h1>
   </div>
-  <p class="doc-lead">Ātrās uzziņas lapa — katrai kartiņai īss skaidrojums un komandas fragments. Pilnus piemērus un paskaidrojumus skaties <a href="git.html">pilnajā Git dokumentācijā</a>.</p>
+  <p class="doc-lead">Ātrās uzziņas lapa - katrai kartiņai īss skaidrojums un komandas fragments. Pilnus piemērus un paskaidrojumus skaties <a href="git.html">pilnajā Git dokumentācijā</a>.</p>
 
   <nav class="cheat-jump">
     <a href="#ct-basics">Pamati</a>
@@ -66,7 +66,7 @@
       <div class="cheat-card"><h4>git init</h4><p>Sāk jaunu, tukšu repozitoriju pašreizējā mapē.</p><pre><code>git init</code></pre></div>
       <div class="cheat-card"><h4>git clone</h4><p>Lejupielādē esošu repozitoriju ar visu vēsturi.</p><pre><code>git clone url</code></pre></div>
       <div class="cheat-card"><h4>git status</h4><p>Rāda, kuri faili mainīti, jauni vai gatavi commit'am.</p><pre><code>git status</code></pre></div>
-      <div class="cheat-card"><h4>git add</h4><p>Sagatavo failus nākamajam commit — konkrētu vai visus.</p><pre><code>git add fails.txt
+      <div class="cheat-card"><h4>git add</h4><p>Sagatavo failus nākamajam commit - konkrētu vai visus.</p><pre><code>git add fails.txt
 git add .</code></pre></div>
       <div class="cheat-card"><h4>git commit</h4><p>Saglabā sagatavotās izmaiņas kā jaunu momentuzņēmumu.</p><pre><code>git commit -m "Ziņojums"</code></pre></div>
       <div class="cheat-card"><h4>git config</h4><p>Iestata autora vārdu/e-pastu, kas parādās pie commit'iem.</p><pre><code>git config --global user.name "Vārds"</code></pre></div>
@@ -99,7 +99,7 @@ git branch jauns-zars</code></pre></div>
 git merge jauns-zars</code></pre></div>
       <div class="cheat-card"><h4>Konflikta atzīmes</h4><p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; tava versija, ======= dalītājs, &gt;&gt;&gt;&gt;&gt;&gt;&gt; otra versija.</p></div>
       <div class="cheat-card"><h4>git merge --abort</h4><p>Atceļ visu merge mēģinājumu, atgriežot stāvokli pirms tā.</p><pre><code>git merge --abort</code></pre></div>
-      <div class="cheat-card"><h4>git rebase</h4><p>Pārliek commit'us uz jaunākās main versijas — lineāra vēsture. Nekad jau push'otiem zariem.</p><pre><code>git rebase main</code></pre></div>
+      <div class="cheat-card"><h4>git rebase</h4><p>Pārliek commit'us uz jaunākās main versijas - lineāra vēsture. Nekad jau push'otiem zariem.</p><pre><code>git rebase main</code></pre></div>
     </div>
   </section>
 
@@ -107,7 +107,7 @@ git merge jauns-zars</code></pre></div>
     <h2>Remotes</h2>
     <div class="cheat-grid">
       <div class="cheat-card"><h4>git push</h4><p>Nosūta lokālos commit'us uz remote.</p><pre><code>git push origin main</code></pre></div>
-      <div class="cheat-card"><h4>git pull</h4><p>fetch + merge vienā komandā — lejupielādē un apvieno.</p><pre><code>git pull</code></pre></div>
+      <div class="cheat-card"><h4>git pull</h4><p>fetch + merge vienā komandā - lejupielādē un apvieno.</p><pre><code>git pull</code></pre></div>
       <div class="cheat-card"><h4>git fetch</h4><p>Tikai lejupielādē info, neko neapvieno.</p><pre><code>git fetch</code></pre></div>
       <div class="cheat-card"><h4>git remote add</h4><p>Pievieno remote saiti esošam lokālam repo.</p><pre><code>git remote add origin url</code></pre></div>
     </div>
@@ -118,7 +118,7 @@ git merge jauns-zars</code></pre></div>
     <div class="cheat-grid">
       <div class="cheat-card"><h4>Ģenerē atslēgu</h4><p>Modernais, ieteicamais tips.</p><pre><code>ssh-keygen -t ed25519 -C "e@pasts.lv"</code></pre></div>
       <div class="cheat-card"><h4>Pārbauda savienojumu</h4><p>Apstiprina, ka GitHub atpazīst tavu atslēgu.</p><pre><code>ssh -T git@github.com</code></pre></div>
-      <div class="cheat-card"><h4>Klonē ar SSH</h4><p>git@ adrese, ne https:// — autentifikācija automātiska.</p><pre><code>git clone git@github.com:u/repo.git</code></pre></div>
+      <div class="cheat-card"><h4>Klonē ar SSH</h4><p>git@ adrese, ne https:// - autentifikācija automātiska.</p><pre><code>git clone git@github.com:u/repo.git</code></pre></div>
     </div>
   </section>
 
@@ -138,7 +138,7 @@ git merge jauns-zars</code></pre></div>
       <div class="cheat-card"><h4>git restore</h4><p>Atceļ nesaglabātas izmaiņas failā.</p><pre><code>git restore fails.txt</code></pre></div>
       <div class="cheat-card"><h4>git reset --soft</h4><p>Atceļ pēdējo commit, izmaiņas paliek sagatavotas.</p><pre><code>git reset --soft HEAD~1</code></pre></div>
       <div class="cheat-card"><h4>git reset --hard</h4><p>Neatgriezeniski dzēš pēdējo commit un tā izmaiņas.</p><pre><code>git reset --hard HEAD~1</code></pre></div>
-      <div class="cheat-card"><h4>git revert</h4><p>Izveido jaunu commit, kas atceļ norādīto — droši jau push'otam kodam.</p><pre><code>git revert a1b2c3d</code></pre></div>
+      <div class="cheat-card"><h4>git revert</h4><p>Izveido jaunu commit, kas atceļ norādīto - droši jau push'otam kodam.</p><pre><code>git revert a1b2c3d</code></pre></div>
     </div>
   </section>
 
@@ -156,7 +156,7 @@ git merge jauns-zars</code></pre></div>
   </div>
 </main>
 
-<script src="../js/theme.js?v=20"></script>
-<script src="../js/main.js?v=20"></script>
+<script src="../js/theme.js?v=21"></script>
+<script src="../js/main.js?v=21"></script>
 </body>
 </html>

@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
-<title>SSH Cheatsheet — Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=20" />
+<title>SSH Cheatsheet - Documentation Samis</title>
+<link rel="stylesheet" href="../css/style.css?v=21" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -46,7 +46,7 @@
     </div>
     <h1 style="margin-bottom:0;">SSH Cheatsheet</h1>
   </div>
-  <p class="doc-lead">Ātrās uzziņas lapa — katrai kartiņai īss skaidrojums un komandas fragments. Pilnus piemērus un paskaidrojumus skaties <a href="ssh.html">pilnajā SSH dokumentācijā</a>.</p>
+  <p class="doc-lead">Ātrās uzziņas lapa - katrai kartiņai īss skaidrojums un komandas fragments. Pilnus piemērus un paskaidrojumus skaties <a href="ssh.html">pilnajā SSH dokumentācijā</a>.</p>
 
   <nav class="cheat-jump">
     <a href="#ct-connect">Pieslēgšanās</a>
@@ -89,7 +89,7 @@
 wp plugin update --all</code></pre></div>
       <div class="cheat-card"><h4>Tēmas</h4><p>Aktivizēšana un atjaunināšana.</p><pre><code>wp theme activate mana-tema</code></pre></div>
       <div class="cheat-card"><h4>Lietotāji</h4><p>Jauna admin lietotāja izveide (paroles atgūšanai).</p><pre><code>wp user create adminis e@pasts.lv --role=administrator</code></pre></div>
-      <div class="cheat-card"><h4>Tikai administratori</h4><p>Drošības audits — pārbaudi, vai nav svešu admin kontu.</p><pre><code>wp user list --role=administrator</code></pre></div>
+      <div class="cheat-card"><h4>Tikai administratori</h4><p>Drošības audits - pārbaudi, vai nav svešu admin kontu.</p><pre><code>wp user list --role=administrator</code></pre></div>
       <div class="cheat-card"><h4>Konkrēta lietotāja info</h4><p>Visi dati par vienu lietotāju.</p><pre><code>wp user get lietotajvards --fields=all</code></pre></div>
       <div class="cheat-card"><h4>Opcijas</h4><p>Nolasa/maina jebkuru WordPress iestatījumu.</p><pre><code>wp option update blogname "Jauns nosaukums"</code></pre></div>
       <div class="cheat-card"><h4>Cache</h4><p>Notīra WordPress objektu kešu.</p><pre><code>wp cache flush</code></pre></div>
@@ -121,11 +121,11 @@ wp plugin update --all</code></pre></div>
   <section class="cheat-section" id="ct-files">
     <h2>Faili &amp; tiesības</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>Rediģēt failu</h4><p>nano — vienkāršākais termināļa redaktors.</p><pre><code>nano wp-config.php</code></pre></div>
-      <div class="cheat-card"><h4>Mapju tiesības</h4><p>Standarta drošas tiesības — 755.</p><pre><code>find . -type d -exec chmod 755 {} \;</code></pre></div>
-      <div class="cheat-card"><h4>Failu tiesības</h4><p>Standarta drošas tiesības — 644.</p><pre><code>find . -type f -exec chmod 644 {} \;</code></pre></div>
-      <div class="cheat-card"><h4>wp-config.php</h4><p>Stingrāk — tikai īpašniekam.</p><pre><code>chmod 600 wp-config.php</code></pre></div>
-      <div class="cheat-card"><h4>Faila datumi</h4><p>Modify laiks — svarīgākais, meklējot mainītus failus.</p><pre><code>stat fails.php</code></pre></div>
+      <div class="cheat-card"><h4>Rediģēt failu</h4><p>nano - vienkāršākais termināļa redaktors.</p><pre><code>nano wp-config.php</code></pre></div>
+      <div class="cheat-card"><h4>Mapju tiesības</h4><p>Standarta drošas tiesības - 755.</p><pre><code>find . -type d -exec chmod 755 {} \;</code></pre></div>
+      <div class="cheat-card"><h4>Failu tiesības</h4><p>Standarta drošas tiesības - 644.</p><pre><code>find . -type f -exec chmod 644 {} \;</code></pre></div>
+      <div class="cheat-card"><h4>wp-config.php</h4><p>Stingrāk - tikai īpašniekam.</p><pre><code>chmod 600 wp-config.php</code></pre></div>
+      <div class="cheat-card"><h4>Faila datumi</h4><p>Modify laiks - svarīgākais, meklējot mainītus failus.</p><pre><code>stat fails.php</code></pre></div>
     </div>
   </section>
 
@@ -171,7 +171,7 @@ define('WP_DEBUG_LOG', true);</code></pre></div>
     <h2>Pārsūtīšana</h2>
     <div class="cheat-grid">
       <div class="cheat-card"><h4>scp uz serveri</h4><p>Vienkārša kopēšana caur SSH.</p><pre><code>scp fails.zip lietotajs@serveris.lv:/celjs/</code></pre></div>
-      <div class="cheat-card"><h4>rsync</h4><p>Kopē tikai mainītos failus — ātrāk regulāram deploy.</p><pre><code>rsync -avz ./mape/ lietotajs@serveris.lv:/celjs/</code></pre></div>
+      <div class="cheat-card"><h4>rsync</h4><p>Kopē tikai mainītos failus - ātrāk regulāram deploy.</p><pre><code>rsync -avz ./mape/ lietotajs@serveris.lv:/celjs/</code></pre></div>
     </div>
   </section>
 
@@ -181,7 +181,7 @@ define('WP_DEBUG_LOG', true);</code></pre></div>
   </div>
 </main>
 
-<script src="../js/theme.js?v=20"></script>
-<script src="../js/main.js?v=20"></script>
+<script src="../js/theme.js?v=21"></script>
+<script src="../js/main.js?v=21"></script>
 </body>
 </html>

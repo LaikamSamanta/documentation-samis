@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
-<title>Datubāzes / SQL — Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=20" />
+<title>Datubāzes / SQL - Documentation Samis</title>
+<link rel="stylesheet" href="../css/style.css?v=21" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -74,11 +74,11 @@
       </div>
       <h1 style="margin-bottom:0;">Datubāzes / SQL</h1>
     </div>
-    <p class="doc-lead">SQL valodas pamati neatkarīgi no WordPress vai konkrēta CMS — kā rakstīt vaicājumus, saprast tabulu attiecības un izvairīties no biežākajām veiktspējas kļūdām.</p>
+    <p class="doc-lead">SQL valodas pamati neatkarīgi no WordPress vai konkrēta CMS - kā rakstīt vaicājumus, saprast tabulu attiecības un izvairīties no biežākajām veiktspējas kļūdām.</p>
 
     <section class="doc-section" id="select-where">
       <h2>SELECT &amp; WHERE</h2>
-      <p><code>SELECT</code> nosaka, kuras kolonnas iegūt, <code>WHERE</code> — kuras rindas atlasīt. Šie divi vārdi ir 90% no ikdienas SQL lietošanas.</p>
+      <p><code>SELECT</code> nosaka, kuras kolonnas iegūt, <code>WHERE</code> - kuras rindas atlasīt. Šie divi vārdi ir 90% no ikdienas SQL lietošanas.</p>
       <pre class="code-block"><span class="lang">sql</span><code>SELECT vards, epasts FROM lietotaji WHERE vecums >= 18;
 
 SELECT * FROM produkti WHERE cena BETWEEN 10 AND 50;
@@ -88,20 +88,20 @@ SELECT * FROM lietotaji WHERE vards LIKE 'A%'; -- sākas ar burtu "A"
 SELECT * FROM lietotaji WHERE pilseta IN ('Rīga', 'Liepāja', 'Daugavpils');</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>SELECT *</code> (visas kolonnas) ir ērts izpētei, bet ražošanas kodā vienmēr norādi konkrētas kolonnas (<code>SELECT vards, epasts</code>) — tas ir ātrāk (mazāk dati jāpārsūta) un pasargā kodu, ja kāds vēlāk tabulai pievieno jaunu kolonnu.</p>
+        <p><code>SELECT *</code> (visas kolonnas) ir ērts izpētei, bet ražošanas kodā vienmēr norādi konkrētas kolonnas (<code>SELECT vards, epasts</code>) - tas ir ātrāk (mazāk dati jāpārsūta) un pasargā kodu, ja kāds vēlāk tabulai pievieno jaunu kolonnu.</p>
       </div>
     </section>
 
     <section class="doc-section" id="order-limit">
       <h2>Sakārtošana &amp; limitēšana</h2>
-      <p><code>ORDER BY</code> nosaka secību, <code>LIMIT</code> ierobežo rezultātu skaitu — kopā tie ir pamats jebkurai lapošanai (pagination).</p>
+      <p><code>ORDER BY</code> nosaka secību, <code>LIMIT</code> ierobežo rezultātu skaitu - kopā tie ir pamats jebkurai lapošanai (pagination).</p>
       <pre class="code-block"><span class="lang">sql</span><code>SELECT * FROM produkti ORDER BY cena DESC LIMIT 10; -- 10 dārgākie
 
 -- Lapošana: 3. lapa, ja katrā lapā 10 ieraksti
 SELECT * FROM produkti ORDER BY cena ASC LIMIT 10 OFFSET 20;</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Bez <code>ORDER BY</code> datubāze <strong>negarantē</strong> nekādu konkrētu secību — dažreiz tā var sagadīties tāda pati katru reizi, bet paļauties uz to nedrīkst. Ja secība ir svarīga (piem., lapošanai), vienmēr norādi <code>ORDER BY</code> tieši.</p>
+        <p>Bez <code>ORDER BY</code> datubāze <strong>negarantē</strong> nekādu konkrētu secību - dažreiz tā var sagadīties tāda pati katru reizi, bet paļauties uz to nedrīkst. Ja secība ir svarīga (piem., lapošanai), vienmēr norādi <code>ORDER BY</code> tieši.</p>
       </div>
     </section>
 
@@ -109,12 +109,12 @@ SELECT * FROM produkti ORDER BY cena ASC LIMIT 10 OFFSET 20;</code></pre>
       <h2>Datu tipi</h2>
       <p>Katrai kolonnai jānorāda tips, kas nosaka, kādus datus tā var glabāt un cik vietas tas aizņem.</p>
       <div class="doc-cards">
-        <div class="doc-mini-card"><h4><code>INT</code></h4><p>Vesels skaitlis — ID, skaitīšana, vecums. <code>AUTO_INCREMENT</code> to bieži izmanto primārajai atslēgai.</p></div>
-        <div class="doc-mini-card"><h4><code>VARCHAR(n)</code></h4><p>Mainīga garuma teksts, maksimums n rakstzīmes — vārdi, e-pasti, nosaukumi.</p></div>
-        <div class="doc-mini-card"><h4><code>TEXT</code></h4><p>Garš teksts bez fiksēta limita — raksti, apraksti, komentāri.</p></div>
-        <div class="doc-mini-card"><h4><code>DECIMAL(p,s)</code></h4><p>Precīzs decimālskaitlis — <strong>vienmēr</strong> naudas summām, nekad <code>FLOAT</code> (noapaļošanas kļūdas).</p></div>
-        <div class="doc-mini-card"><h4><code>DATETIME</code></h4><p>Datums + laiks — izveides datumi, notikumu laiki.</p></div>
-        <div class="doc-mini-card"><h4><code>BOOLEAN</code> / <code>TINYINT(1)</code></h4><p>Patiess/aplams karogi — <code>aktivs</code>, <code>publicets</code>. MySQL to iekšēji glabā kā mazu skaitli.</p></div>
+        <div class="doc-mini-card"><h4><code>INT</code></h4><p>Vesels skaitlis - ID, skaitīšana, vecums. <code>AUTO_INCREMENT</code> to bieži izmanto primārajai atslēgai.</p></div>
+        <div class="doc-mini-card"><h4><code>VARCHAR(n)</code></h4><p>Mainīga garuma teksts, maksimums n rakstzīmes - vārdi, e-pasti, nosaukumi.</p></div>
+        <div class="doc-mini-card"><h4><code>TEXT</code></h4><p>Garš teksts bez fiksēta limita - raksti, apraksti, komentāri.</p></div>
+        <div class="doc-mini-card"><h4><code>DECIMAL(p,s)</code></h4><p>Precīzs decimālskaitlis - <strong>vienmēr</strong> naudas summām, nekad <code>FLOAT</code> (noapaļošanas kļūdas).</p></div>
+        <div class="doc-mini-card"><h4><code>DATETIME</code></h4><p>Datums + laiks - izveides datumi, notikumu laiki.</p></div>
+        <div class="doc-mini-card"><h4><code>BOOLEAN</code> / <code>TINYINT(1)</code></h4><p>Patiess/aplams karogi - <code>aktivs</code>, <code>publicets</code>. MySQL to iekšēji glabā kā mazu skaitli.</p></div>
       </div>
     </section>
 
@@ -128,13 +128,13 @@ UPDATE lietotaji SET epasts = 'jauns@example.com' WHERE id = 5;
 DELETE FROM lietotaji WHERE id = 5;</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p><code>UPDATE</code> vai <code>DELETE</code> bez <code>WHERE</code> ietekmē <strong>VISAS</strong> rindas tabulā — tas ir viens no biežākajiem, sāpīgākajiem iesācēju negadījumiem. Pirms izpildes vienmēr vispirms palaid to pašu nosacījumu kā <code>SELECT</code>, lai redzētu, kuras rindas tieši tiks ietekmētas.</p>
+        <p><code>UPDATE</code> vai <code>DELETE</code> bez <code>WHERE</code> ietekmē <strong>VISAS</strong> rindas tabulā - tas ir viens no biežākajiem, sāpīgākajiem iesācēju negadījumiem. Pirms izpildes vienmēr vispirms palaid to pašu nosacījumu kā <code>SELECT</code>, lai redzētu, kuras rindas tieši tiks ietekmētas.</p>
       </div>
     </section>
 
     <section class="doc-section" id="atslegas">
       <h2>Primārās &amp; ārējās atslēgas</h2>
-      <p><strong>Primārā atslēga</strong> (primary key) unikāli identificē katru rindu tabulā. <strong>Ārējā atslēga</strong> (foreign key) savieno rindu ar rindu citā tabulā — tā veido attiecības starp tabulām.</p>
+      <p><strong>Primārā atslēga</strong> (primary key) unikāli identificē katru rindu tabulā. <strong>Ārējā atslēga</strong> (foreign key) savieno rindu ar rindu citā tabulā - tā veido attiecības starp tabulām.</p>
       <pre class="code-block"><span class="lang">sql</span><code>CREATE TABLE lietotaji (
     id INT AUTO_INCREMENT PRIMARY KEY,
     vards VARCHAR(100)
@@ -148,43 +148,43 @@ CREATE TABLE pasutijumi (
 );</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>FOREIGN KEY</code> ne tikai dokumentē attiecību — datubāze to arī <strong>uzspiež</strong>: nevar izveidot pasūtījumu ar <code>lietotajs_id</code>, kas neeksistē <code>lietotaji</code> tabulā, un pēc noklusējuma nevar dzēst lietotāju, kuram vēl ir pasūtījumi.</p>
+        <p><code>FOREIGN KEY</code> ne tikai dokumentē attiecību - datubāze to arī <strong>uzspiež</strong>: nevar izveidot pasūtījumu ar <code>lietotajs_id</code>, kas neeksistē <code>lietotaji</code> tabulā, un pēc noklusējuma nevar dzēst lietotāju, kuram vēl ir pasūtījumi.</p>
       </div>
     </section>
 
     <section class="doc-section" id="joins">
       <h2>JOIN veidi</h2>
       <p><code>JOIN</code> apvieno rindas no divām (vai vairāk) tabulām vienā rezultātā, pamatojoties uz kopīgu atslēgu.</p>
-      <pre class="code-block"><span class="lang">sql</span><code>-- INNER JOIN — tikai rindas, kur ir sakritība ABĀS tabulās
+      <pre class="code-block"><span class="lang">sql</span><code>-- INNER JOIN - tikai rindas, kur ir sakritība ABĀS tabulās
 SELECT p.id, l.vards
 FROM pasutijumi p
 INNER JOIN lietotaji l ON p.lietotajs_id = l.id;
 
--- LEFT JOIN — VISAS rindas no kreisās (lietotaji) tabulas,
+-- LEFT JOIN - VISAS rindas no kreisās (lietotaji) tabulas,
 -- arī tad, ja lietotājam vēl nav neviena pasūtījuma (p.id būs NULL)
 SELECT l.vards, p.id
 FROM lietotaji l
 LEFT JOIN pasutijumi p ON l.id = p.lietotajs_id;</code></pre>
       <div class="doc-cards">
-        <div class="doc-mini-card"><h4>INNER JOIN</h4><p>Der, ja interesē tikai pilnas attiecības — piem., pasūtījumi, kuriem noteikti ir lietotājs.</p></div>
-        <div class="doc-mini-card"><h4>LEFT JOIN</h4><p>Der, ja jāredz visi ieraksti no galvenās tabulas, pat ja saistītajā tabulā nav neviena atbilstoša ieraksta — piem., "visi lietotāji, arī tie bez pasūtījumiem".</p></div>
+        <div class="doc-mini-card"><h4>INNER JOIN</h4><p>Der, ja interesē tikai pilnas attiecības - piem., pasūtījumi, kuriem noteikti ir lietotājs.</p></div>
+        <div class="doc-mini-card"><h4>LEFT JOIN</h4><p>Der, ja jāredz visi ieraksti no galvenās tabulas, pat ja saistītajā tabulā nav neviena atbilstoša ieraksta - piem., "visi lietotāji, arī tie bez pasūtījumiem".</p></div>
       </div>
     </section>
 
     <section class="doc-section" id="normalizacija">
       <h2>Normalizācija (vienkārši)</h2>
       <p>Process, kā datus sadalīt vairākās saistītās tabulās, lai izvairītos no dublēšanās un pretrunīgiem datiem.</p>
-      <pre class="code-block"><span class="lang">text</span><code>SLIKTI (nenormalizēts) — lietotāja vārds atkārtojas katrā pasūtījuma rindā:
+      <pre class="code-block"><span class="lang">text</span><code>SLIKTI (nenormalizēts) - lietotāja vārds atkārtojas katrā pasūtījuma rindā:
 | pasutijuma_id | lietotaja_vards | lietotaja_epasts     | produkts |
 | 1              | Anna             | anna@example.com     | Krekls   |
 | 2              | Anna             | anna@example.com     | Bikses   |
 
-LABI (normalizēts) — lietotāja dati VIENĀ vietā, pasūtījumi atsaucas uz to:
+LABI (normalizēts) - lietotāja dati VIENĀ vietā, pasūtījumi atsaucas uz to:
 lietotaji: | id | vards | epasts            |
 pasutijumi: | id | lietotajs_id | produkts |</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Ja e-pasts glabāts katrā pasūtījuma rindā atsevišķi, mainot lietotāja e-pastu, jāatjaunina <strong>katra</strong> rinda — aizmirsti kaut vienu, un dati kļūst pretrunīgi. Normalizācija to novērš, glabājot katru faktu tikai <strong>vienā</strong> vietā.</p>
+        <p>Ja e-pasts glabāts katrā pasūtījuma rindā atsevišķi, mainot lietotāja e-pastu, jāatjaunina <strong>katra</strong> rinda - aizmirsti kaut vienu, un dati kļūst pretrunīgi. Normalizācija to novērš, glabājot katru faktu tikai <strong>vienā</strong> vietā.</p>
       </div>
     </section>
 
@@ -197,39 +197,39 @@ GROUP BY lietotajs_id
 HAVING COUNT(*) > 3; -- tikai lietotāji ar VAIRĀK nekā 3 pasūtījumiem</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>WHERE</code> filtrē rindas <strong>pirms</strong> grupēšanas, <code>HAVING</code> filtrē grupas <strong>pēc</strong> grupēšanas — tāpēc <code>HAVING COUNT(*) > 3</code> strādā, bet <code>WHERE COUNT(*) > 3</code> izmestu kļūdu (COUNT vēl neeksistē WHERE izpildes brīdī).</p>
+        <p><code>WHERE</code> filtrē rindas <strong>pirms</strong> grupēšanas, <code>HAVING</code> filtrē grupas <strong>pēc</strong> grupēšanas - tāpēc <code>HAVING COUNT(*) > 3</code> strādā, bet <code>WHERE COUNT(*) > 3</code> izmestu kļūdu (COUNT vēl neeksistē WHERE izpildes brīdī).</p>
       </div>
     </section>
 
     <section class="doc-section" id="subqueries">
       <h2>Apakšvaicājumi (subqueries)</h2>
-      <p>Vaicājums vaicājuma iekšā — iekšējais izpildās vispirms, un ārējais izmanto tā rezultātu.</p>
+      <p>Vaicājums vaicājuma iekšā - iekšējais izpildās vispirms, un ārējais izmanto tā rezultātu.</p>
       <pre class="code-block"><span class="lang">sql</span><code>SELECT * FROM produkti
 WHERE id IN (
     SELECT produkts_id FROM pasutijuma_rindas WHERE daudzums > 5
 );</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Daudzus apakšvaicājumus var pārrakstīt kā <code>JOIN</code> — parasti <code>JOIN</code> ir ātrāks, jo datubāze to var labāk optimizēt. Apakšvaicājumi der, ja loģika tā ir daudz skaidrāk lasāma, vai konkrētajam gadījumam nav dabiska JOIN varianta.</p>
+        <p>Daudzus apakšvaicājumus var pārrakstīt kā <code>JOIN</code> - parasti <code>JOIN</code> ir ātrāks, jo datubāze to var labāk optimizēt. Apakšvaicājumi der, ja loģika tā ir daudz skaidrāk lasāma, vai konkrētajam gadījumam nav dabiska JOIN varianta.</p>
       </div>
     </section>
 
     <section class="doc-section" id="indeksi">
       <h2>Indeksi &amp; veiktspēja</h2>
-      <p>Indekss ir papildu datu struktūra, kas paātrina meklēšanu pēc konkrētas kolonnas — līdzīgi kā grāmatas satura rādītājs, nevis lapu šķirstīšana pēc kārtas.</p>
+      <p>Indekss ir papildu datu struktūra, kas paātrina meklēšanu pēc konkrētas kolonnas - līdzīgi kā grāmatas satura rādītājs, nevis lapu šķirstīšana pēc kārtas.</p>
       <pre class="code-block"><span class="lang">sql</span><code>CREATE INDEX idx_epasts ON lietotaji(epasts);
 
 -- Parāda, VAI vaicājums izmanto indeksu, vai skenē visu tabulu
 EXPLAIN SELECT * FROM lietotaji WHERE epasts = 'anna@example.com';</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Indeksi paātrina <strong>lasīšanu</strong>, bet nedaudz palēnina <strong>rakstīšanu</strong> (katrai <code>INSERT</code>/<code>UPDATE</code> jāatjaunina arī indekss) — nelieto indeksu katrai kolonnai "gadījumam ja". Pievieno indeksu kolonnām, kuras bieži izmantoto <code>WHERE</code>, <code>JOIN</code> vai <code>ORDER BY</code> nosacījumos. Primārā atslēga jau automātiski ir indeksēta.</p>
+        <p>Indeksi paātrina <strong>lasīšanu</strong>, bet nedaudz palēnina <strong>rakstīšanu</strong> (katrai <code>INSERT</code>/<code>UPDATE</code> jāatjaunina arī indekss) - nelieto indeksu katrai kolonnai "gadījumam ja". Pievieno indeksu kolonnām, kuras bieži izmantoto <code>WHERE</code>, <code>JOIN</code> vai <code>ORDER BY</code> nosacījumos. Primārā atslēga jau automātiski ir indeksēta.</p>
       </div>
     </section>
 
     <section class="doc-section" id="transakcijas">
       <h2>Transakcijas</h2>
-      <p>Vairākas darbības, kas jāizpilda kopā, "visu vai neko" — ja kāda no tām neizdodas, visas pārējās tiek atceltas.</p>
+      <p>Vairākas darbības, kas jāizpilda kopā, "visu vai neko" - ja kāda no tām neizdodas, visas pārējās tiek atceltas.</p>
       <pre class="code-block"><span class="lang">sql</span><code>BEGIN;
 
 UPDATE konti SET atlikums = atlikums - 100 WHERE id = 1; -- noņem naudu
@@ -239,17 +239,17 @@ COMMIT; -- apstiprina abas izmaiņas kopā
 -- Ja kaut kas neizdodas pa vidu: ROLLBACK; (atceļ visu)</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Bez transakcijas, ja serveris avarē tieši starp abiem <code>UPDATE</code> vaicājumiem augstāk, nauda "pazūd" — noņemta no viena konta, bet nekad nepievienota otram. Transakcija garantē, ka tas nekad nenotiek: vai nu izpildās <strong>abas</strong> darbības, vai <strong>neviena</strong>.</p>
+        <p>Bez transakcijas, ja serveris avarē tieši starp abiem <code>UPDATE</code> vaicājumiem augstāk, nauda "pazūd" - noņemta no viena konta, bet nekad nepievienota otram. Transakcija garantē, ka tas nekad nenotiek: vai nu izpildās <strong>abas</strong> darbības, vai <strong>neviena</strong>.</p>
       </div>
     </section>
 
     <section class="doc-section" id="prepared-statements">
       <h2>Prepared statements</h2>
-      <p>Nekad neveido SQL vaicājumus, saliekot lietotāja ievadi tieši teksta virknē — tas atver SQL injection ievainojamību.</p>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// NEDROŠI — lietotāja ievade tieši SQL tekstā</span>
+      <p>Nekad neveido SQL vaicājumus, saliekot lietotāja ievadi tieši teksta virknē - tas atver SQL injection ievainojamību.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// NEDROŠI - lietotāja ievade tieši SQL tekstā</span>
 <span class="tok-fn">$pdo</span>->query(<span class="tok-str">"SELECT * FROM lietotaji WHERE epasts = '"</span> . <span class="tok-fn">$_POST</span>[<span class="tok-str">'epasts'</span>] . <span class="tok-str">"'"</span>);
 
-<span class="tok-com">// DROŠI — parametri saistīti atsevišķi no vaicājuma teksta</span>
+<span class="tok-com">// DROŠI - parametri saistīti atsevišķi no vaicājuma teksta</span>
 <span class="tok-fn">$stmt</span> = <span class="tok-fn">$pdo</span>->prepare(<span class="tok-str">"SELECT * FROM lietotaji WHERE epasts = :epasts"</span>);
 <span class="tok-fn">$stmt</span>->execute([<span class="tok-str">'epasts'</span> => <span class="tok-fn">$_POST</span>[<span class="tok-str">'epasts'</span>]]);</code></pre>
       <div class="callout tip">
@@ -260,15 +260,15 @@ COMMIT; -- apstiprina abas izmaiņas kopā
 
     <section class="doc-section" id="n-plus-1">
       <h2>N+1 problēma</h2>
-      <p>Bieža veiktspējas kļūda — cilpā izpilda pa vienam vaicājumam katrai rindai, tā vietā, lai iegūtu visus datus <strong>vienā</strong> vaicājumā.</p>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// SLIKTI — 1 vaicājums lietotājiem + PA VIENAM vaicājumam KATRAM lietotājam (N+1)</span>
+      <p>Bieža veiktspējas kļūda - cilpā izpilda pa vienam vaicājumam katrai rindai, tā vietā, lai iegūtu visus datus <strong>vienā</strong> vaicājumā.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// SLIKTI - 1 vaicājums lietotājiem + PA VIENAM vaicājumam KATRAM lietotājam (N+1)</span>
 <span class="tok-fn">$lietotaji</span> = <span class="tok-fn">$pdo</span>->query(<span class="tok-str">"SELECT * FROM lietotaji"</span>)->fetchAll();
 <span class="tok-kw">foreach</span> (<span class="tok-fn">$lietotaji</span> <span class="tok-kw">as</span> <span class="tok-fn">$l</span>) {
     <span class="tok-fn">$pasutijumi</span> = <span class="tok-fn">$pdo</span>->query(<span class="tok-str">"SELECT * FROM pasutijumi WHERE lietotajs_id = {$l['id']}"</span>)->fetchAll();
 }
 <span class="tok-com">// 100 lietotāju = 101 vaicājums</span>
 
-<span class="tok-com">// LABI — VIENS JOIN vaicājums iegūst visu uzreiz</span>
+<span class="tok-com">// LABI - VIENS JOIN vaicājums iegūst visu uzreiz</span>
 <span class="tok-fn">$rezultats</span> = <span class="tok-fn">$pdo</span>->query(<span class="tok-str">"
     SELECT l.*, p.id AS pasutijuma_id
     FROM lietotaji l
@@ -277,7 +277,7 @@ COMMIT; -- apstiprina abas izmaiņas kopā
 <span class="tok-com">// 100 lietotāju = joprojām TIKAI 1 vaicājums</span></code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>N+1 ir mānīgs, jo lokāli (ar 10 testa ierakstiem) tas šķiet ātrs — problēma parādās tikai ražošanā, kad tabulā ir tūkstošiem rindu, un lapa pēkšņi ielādējas sekundēm ilgi vai timeoutē.</p>
+        <p>N+1 ir mānīgs, jo lokāli (ar 10 testa ierakstiem) tas šķiet ātrs - problēma parādās tikai ražošanā, kad tabulā ir tūkstošiem rindu, un lapa pēkšņi ielādējas sekundēm ilgi vai timeoutē.</p>
       </div>
     </section>
 
@@ -291,7 +291,7 @@ mysqldump -u lietotajs -p datubaze > dublejums.sql
 mysql -u lietotajs -p datubaze < dublejums.sql</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>WordPress projektos ērtāk lietot <code>wp db export</code>/<code>wp db import</code> (WP-CLI) — skati <a href="ssh.html#datubaze-mysql">SSH → MySQL &amp; dublējumi</a>. Vienmēr uzglabā dublējumus <strong>ārpus</strong> tā paša servera — ja serveris tiek uzlauzts vai sabojāts, dublējums tajā pašā vietā nepalīdzēs.</p>
+        <p>WordPress projektos ērtāk lietot <code>wp db export</code>/<code>wp db import</code> (WP-CLI) - skati <a href="ssh.html#datubaze-mysql">SSH → MySQL &amp; dublējumi</a>. Vienmēr uzglabā dublējumus <strong>ārpus</strong> tā paša servera - ja serveris tiek uzlauzts vai sabojāts, dublējums tajā pašā vietā nepalīdzēs.</p>
       </div>
     </section>
 
@@ -302,7 +302,7 @@ mysql -u lietotajs -p datubaze < dublejums.sql</code></pre>
   </main>
 </div>
 
-<script src="../js/theme.js?v=20"></script>
-<script src="../js/main.js?v=20"></script>
+<script src="../js/theme.js?v=21"></script>
+<script src="../js/main.js?v=21"></script>
 </body>
 </html>

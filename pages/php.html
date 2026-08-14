@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
-<title>PHP dokumentācija — Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=20" />
+<title>PHP dokumentācija - Documentation Samis</title>
+<link rel="stylesheet" href="../css/style.css?v=21" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -83,18 +83,18 @@
     </div>
     <section class="doc-section" id="ievads">
       <h2>Ievads PHP</h2>
-      <p>PHP ir servera puses skriptvaloda — kods izpildās <strong>serverī</strong>, pirms rezultāts (parasti HTML) tiek nosūtīts apmeklētāja pārlūkam. Apmeklētājs pats PHP kodu nekad neredz, tikai gala rezultātu. Tā ir viena no visizplatītākajām valodām web izstrādē un darbina arī WordPress.</p>
+      <p>PHP ir servera puses skriptvaloda - kods izpildās <strong>serverī</strong>, pirms rezultāts (parasti HTML) tiek nosūtīts apmeklētāja pārlūkam. Apmeklētājs pats PHP kodu nekad neredz, tikai gala rezultātu. Tā ir viena no visizplatītākajām valodām web izstrādē un darbina arī WordPress.</p>
       <p><strong>Kā palaist PHP kodu savā datorā (izvēlies vienu no diviem):</strong></p>
-      <pre class="code-block"><span class="lang">text</span><code>1. Vienkāršākais veids — iebūvētais PHP serveris:
+      <pre class="code-block"><span class="lang">text</span><code>1. Vienkāršākais veids - iebūvētais PHP serveris:
    Instalē PHP (php.net) → izveido failu index.php ar kodu →
    terminālī tajā pašā mapē palaid: php -S localhost:8000
    → atver pārlūkā http://localhost:8000
 
-2. Vai izmanto gatavu vidi: XAMPP / Local / Laragon —
+2. Vai izmanto gatavu vidi: XAMPP / Local / Laragon -
    tie uzreiz iekļauj PHP + MySQL + serveri vienā instalācijā.</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Visi šīs lapas piemēri sākas ar <code>&lt;?php</code> — tieši tā jāsāk jebkurš <code>.php</code> fails, lai serveris zinātu, kur sākas PHP kods (pretstatā parastam HTML).</p>
+        <p>Visi šīs lapas piemēri sākas ar <code>&lt;?php</code> - tieši tā jāsāk jebkurš <code>.php</code> fails, lai serveris zinātu, kur sākas PHP kods (pretstatā parastam HTML).</p>
       </div>
     </section>
 
@@ -114,13 +114,13 @@
 <span class="tok-kw">echo</span> <span class="tok-fn">gettype</span>(<span class="tok-fn">$vecums</span>);   <span class="tok-com">// izvada: integer</span></code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>"Sveiks, {$vards}!"</code> — teksts pēdiņās (dubultajās) automātiski ievieto mainīgo vērtību. Vienpēdiņu tekstā (<code>'...'</code>) tas nenotiek — <code>$vards</code> tur paliktu kā burtisks teksts.</p>
+        <p><code>"Sveiks, {$vards}!"</code> - teksts pēdiņās (dubultajās) automātiski ievieto mainīgo vērtību. Vienpēdiņu tekstā (<code>'...'</code>) tas nenotiek - <code>$vards</code> tur paliktu kā burtisks teksts.</p>
       </div>
     </section>
 
     <section class="doc-section" id="konstantes">
       <h2>Konstantes</h2>
-      <p>Konstante ir vērtība, kas pēc definēšanas nekad nemainās visa skripta izpildes laikā — atšķirībā no mainīgā, to nevar vēlāk pārrakstīt. Noder iestatījumiem, konfigurācijas vērtībām un "burtiskiem" skaitļiem, kuriem vēlies aprakstošu nosaukumu.</p>
+      <p>Konstante ir vērtība, kas pēc definēšanas nekad nemainās visa skripta izpildes laikā - atšķirībā no mainīgā, to nevar vēlāk pārrakstīt. Noder iestatījumiem, konfigurācijas vērtībām un "burtiskiem" skaitļiem, kuriem vēlies aprakstošu nosaukumu.</p>
       <pre class="code-block"><span class="lang">php</span><code>&lt;?php
 <span class="tok-kw">define</span>(<span class="tok-str">'SITE_NAME'</span>, <span class="tok-str">'Mana Vietne'</span>);
 <span class="tok-kw">const</span> MAX_MEGINAJUMI = 3;
@@ -134,7 +134,7 @@
 
     <section class="doc-section" id="nosacijumi-cikli">
       <h2>Nosacījumi &amp; cikli</h2>
-      <p>Tāpat kā citās valodās, <code>if</code>/<code>elseif</code>/<code>else</code> ļauj pieņemt lēmumus, bet cikli (<code>for</code>, <code>foreach</code>, <code>while</code>) atkārto kodu. <code>foreach</code> ir īpaši ērts masīviem — PHP to izmanto biežāk nekā klasisko <code>for</code>.</p>
+      <p>Tāpat kā citās valodās, <code>if</code>/<code>elseif</code>/<code>else</code> ļauj pieņemt lēmumus, bet cikli (<code>for</code>, <code>foreach</code>, <code>while</code>) atkārto kodu. <code>foreach</code> ir īpaši ērts masīviem - PHP to izmanto biežāk nekā klasisko <code>for</code>.</p>
       <pre class="code-block"><span class="lang">php</span><code>&lt;?php
 <span class="tok-fn">$vecums</span> = 16;
 
@@ -159,7 +159,7 @@
     <span class="tok-kw">echo</span> <span class="tok-str">"Mēģinājums "</span> . <span class="tok-fn">$i</span> . <span class="tok-str">"\n"</span>;
     <span class="tok-fn">$i</span>++;
 }</code></pre>
-      <p>Salīdzinot vērtības, <code>===</code> pārbauda arī tipu, ne tikai vērtību — <code>"5" == 5</code> ir <code>true</code>, bet <code>"5" === 5</code> ir <code>false</code>. Droši ieteicams vienmēr izmantot <code>===</code>.</p>
+      <p>Salīdzinot vērtības, <code>===</code> pārbauda arī tipu, ne tikai vērtību - <code>"5" == 5</code> ir <code>true</code>, bet <code>"5" === 5</code> ir <code>false</code>. Droši ieteicams vienmēr izmantot <code>===</code>.</p>
     </section>
 
     <section class="doc-section" id="masivi">
@@ -185,14 +185,14 @@
 <span class="tok-com">// vards: Kārlis
 // vecums: 30</span>
 
-<span class="tok-kw">echo</span> <span class="tok-fn">count</span>(<span class="tok-fn">$augli</span>); <span class="tok-com">// 3 — elementu skaits</span></code></pre>
+<span class="tok-kw">echo</span> <span class="tok-fn">count</span>(<span class="tok-fn">$augli</span>); <span class="tok-com">// 3 - elementu skaits</span></code></pre>
     </section>
 
     <section class="doc-section" id="strings">
       <h2>String funkcijas</h2>
-      <p>PHP piedāvā simtiem iebūvētu funkciju teksta apstrādei — biežāk lietotās:</p>
+      <p>PHP piedāvā simtiem iebūvētu funkciju teksta apstrādei - biežāk lietotās:</p>
       <pre class="code-block"><span class="lang">php</span><code>&lt;?php
-<span class="tok-kw">echo</span> <span class="tok-fn">strlen</span>(<span class="tok-str">"Sveiki"</span>) . <span class="tok-str">"\n"</span>;                      <span class="tok-com">// 6 — garums</span>
+<span class="tok-kw">echo</span> <span class="tok-fn">strlen</span>(<span class="tok-str">"Sveiki"</span>) . <span class="tok-str">"\n"</span>;                      <span class="tok-com">// 6 - garums</span>
 <span class="tok-kw">echo</span> <span class="tok-fn">str_replace</span>(<span class="tok-str">"a"</span>, <span class="tok-str">"o"</span>, <span class="tok-str">"banāns"</span>) . <span class="tok-str">"\n"</span>;      <span class="tok-com">// "bonāns"</span>
 <span class="tok-kw">echo</span> <span class="tok-fn">strtoupper</span>(<span class="tok-str">"sveiki"</span>) . <span class="tok-str">"\n"</span>;                <span class="tok-com">// "SVEIKI"</span>
 
@@ -217,16 +217,16 @@
 <span class="tok-fn">$lietotaja_id</span> = <span class="tok-fn">$_SESSION</span>[<span class="tok-str">'user_id'</span>] ?? <span class="tok-kw">null</span>;
 
 <span class="tok-kw">echo</span> <span class="tok-str">"ID no URL: "</span> . (<span class="tok-fn">$id</span> ?? <span class="tok-str">'nav norādīts'</span>);</code></pre>
-      <p><code>??</code> ir "null coalescing" operators — atgriež kreiso pusi, ja tā nav <code>null</code>, citādi labo. Tas pasargā no kļūdas, ja parametrs vispār nav nosūtīts.</p>
+      <p><code>??</code> ir "null coalescing" operators - atgriež kreiso pusi, ja tā nav <code>null</code>, citādi labo. Tas pasargā no kļūdas, ja parametrs vispār nav nosūtīts.</p>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Šie dati nāk tieši no lietotāja — nekad neuzticies tiem tieši. Vienmēr pārbaudi/attīri ar <code>htmlspecialchars()</code> pirms izvadīšanas HTML, lai novērstu XSS uzbrukumus.</p>
+        <p>Šie dati nāk tieši no lietotāja - nekad neuzticies tiem tieši. Vienmēr pārbaudi/attīri ar <code>htmlspecialchars()</code> pirms izvadīšanas HTML, lai novērstu XSS uzbrukumus.</p>
       </div>
     </section>
 
     <section class="doc-section" id="sesijas">
       <h2>Sesijas &amp; sīkdatnes</h2>
-      <p><strong>Sesija</strong> saglabā datus serverī starp lapas ielādēm (piem., vai lietotājs ir pieteicies) — jāsāk ar <code>session_start()</code> pašā faila sākumā, pirms jebkāda izvada. <strong>Sīkdatne</strong> (cookie) tā vietā saglabā nelielu datu daudzumu pašā lietotāja pārlūkā.</p>
+      <p><strong>Sesija</strong> saglabā datus serverī starp lapas ielādēm (piem., vai lietotājs ir pieteicies) - jāsāk ar <code>session_start()</code> pašā faila sākumā, pirms jebkāda izvada. <strong>Sīkdatne</strong> (cookie) tā vietā saglabā nelielu datu daudzumu pašā lietotāja pārlūkā.</p>
       <pre class="code-block"><span class="lang">php</span><code>&lt;?php
 <span class="tok-fn">session_start</span>(); <span class="tok-com">// vienmēr pirmā rinda, pirms echo/HTML</span>
 
@@ -237,63 +237,63 @@
 <span class="tok-fn">setcookie</span>(<span class="tok-str">'valoda'</span>, <span class="tok-str">'lv'</span>, time() + 3600);</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Ja <code>session_start()</code> izsauc pēc tam, kad kaut kas jau izvadīts (pat viena atstarpe pirms <code>&lt;?php</code>), PHP izmet kļūdu "headers already sent" — tas ir viens no biežākajiem iesācēju stiķiem.</p>
+        <p>Ja <code>session_start()</code> izsauc pēc tam, kad kaut kas jau izvadīts (pat viena atstarpe pirms <code>&lt;?php</code>), PHP izmet kļūdu "headers already sent" - tas ir viens no biežākajiem iesācēju stiķiem.</p>
       </div>
     </section>
 
     <section class="doc-section" id="unix-timestamps">
       <h2>Unix laika zīmogi &amp; "expires" teorija</h2>
-      <p><strong>Unix laika zīmogs</strong> (timestamp) ir vienkārši skaitlis — cik sekundes pagājušas kopš <strong>1970. gada 1. janvāra, 00:00:00 UTC</strong>. Šo brīdi sauc par "Unix epoch" un tas ir vēsturiska konvencija no paša Unix operētājsistēmas izstrādes — pilnīgi patvaļīgs, bet visur pieņemts sākumpunkts. <code>time()</code> PHP, <code>UNIX_TIMESTAMP()</code> MySQL, <code>Date.now()</code> JavaScript — visi rēķina no tā paša punkta.</p>
+      <p><strong>Unix laika zīmogs</strong> (timestamp) ir vienkārši skaitlis - cik sekundes pagājušas kopš <strong>1970. gada 1. janvāra, 00:00:00 UTC</strong>. Šo brīdi sauc par "Unix epoch" un tas ir vēsturiska konvencija no paša Unix operētājsistēmas izstrādes - pilnīgi patvaļīgs, bet visur pieņemts sākumpunkts. <code>time()</code> PHP, <code>UNIX_TIMESTAMP()</code> MySQL, <code>Date.now()</code> JavaScript - visi rēķina no tā paša punkta.</p>
       <pre class="code-block"><span class="lang">php</span><code>&lt;?php
-<span class="tok-fn">$tagad</span> = <span class="tok-fn">time</span>(); <span class="tok-com">// piem. 1769866925 — sekundes kopš 1970-01-01 00:00:00 UTC</span>
+<span class="tok-fn">$tagad</span> = <span class="tok-fn">time</span>(); <span class="tok-com">// piem. 1769866925 - sekundes kopš 1970-01-01 00:00:00 UTC</span>
 <span class="tok-kw">echo</span> <span class="tok-fn">$tagad</span> . <span class="tok-str">"\n"</span>;
 
 <span class="tok-kw">echo</span> <span class="tok-fn">date</span>(<span class="tok-str">'Y-m-d H:i:s'</span>, <span class="tok-fn">$tagad</span>) . <span class="tok-str">"\n"</span>; <span class="tok-com">// cilvēkam lasāms formāts</span>
-<span class="tok-kw">echo</span> <span class="tok-fn">date</span>(<span class="tok-str">'Y-m-d H:i:s'</span>, 0) . <span class="tok-str">"\n"</span>;      <span class="tok-com">// "1970-01-01 00:00:00" — pats epoch</span></code></pre>
+<span class="tok-kw">echo</span> <span class="tok-fn">date</span>(<span class="tok-str">'Y-m-d H:i:s'</span>, 0) . <span class="tok-str">"\n"</span>;      <span class="tok-com">// "1970-01-01 00:00:00" - pats epoch</span></code></pre>
 
       <p><strong>Kāpēc "expires 0 = 1970"?</strong> Šī ir bieža, bet nedaudz neprecīza tautas gudrība. Patiesībā:</p>
       <ul style="margin:0 0 16px 20px; color: var(--text-soft); line-height:1.8;">
-        <li>PHP <code>setcookie($vards, $vertiba)</code> bez trešā parametra (vai ar <code>0</code>) nozīmē <strong>sesijas sīkdatni</strong> — tā izdzēšas, kad lietotājs aizver pārlūku. Tas <strong>nav</strong> tas pats, kas "izdzēst tagad" un <strong>nav</strong> saistīts ar 1970. gadu.</li>
-        <li>Lai sīkdatni izdzēstu <strong>uzreiz</strong>, jāiestata derīguma termiņš PAGĀTNĒ — parasti izmanto <code>time() - 3600</code> (pirms stundas). Pārlūks to atmet, jo redz, ka termiņš "jau ir beidzies".</li>
-        <li>1970. gads te parādās tikai tāpēc, ka daudzi rīki (piem., raw <code>Set-Cookie</code> HTTP galvenes, kā tās redzamas pārlūka izstrādātāja rīkos) sīkdatnes dzēšanai izmanto burtiski epoch datumu (<code>Thu, 01 Jan 1970 00:00:00 GMT</code>) — jebkurš pagātnes datums derētu, bet epoch ir ērts un vienmēr garantēti "pagātnē", tāpēc kļuvis par de facto konvenciju.</li>
+        <li>PHP <code>setcookie($vards, $vertiba)</code> bez trešā parametra (vai ar <code>0</code>) nozīmē <strong>sesijas sīkdatni</strong> - tā izdzēšas, kad lietotājs aizver pārlūku. Tas <strong>nav</strong> tas pats, kas "izdzēst tagad" un <strong>nav</strong> saistīts ar 1970. gadu.</li>
+        <li>Lai sīkdatni izdzēstu <strong>uzreiz</strong>, jāiestata derīguma termiņš PAGĀTNĒ - parasti izmanto <code>time() - 3600</code> (pirms stundas). Pārlūks to atmet, jo redz, ka termiņš "jau ir beidzies".</li>
+        <li>1970. gads te parādās tikai tāpēc, ka daudzi rīki (piem., raw <code>Set-Cookie</code> HTTP galvenes, kā tās redzamas pārlūka izstrādātāja rīkos) sīkdatnes dzēšanai izmanto burtiski epoch datumu (<code>Thu, 01 Jan 1970 00:00:00 GMT</code>) - jebkurš pagātnes datums derētu, bet epoch ir ērts un vienmēr garantēti "pagātnē", tāpēc kļuvis par de facto konvenciju.</li>
       </ul>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Iestata sīkdatni, derīga 1 stundu (redzēts iepriekšējā sadaļā)</span>
 <span class="tok-fn">setcookie</span>(<span class="tok-str">'valoda'</span>, <span class="tok-str">'lv'</span>, time() + 3600);
 
-<span class="tok-com">// Lai sīkdatni IZDZĒSTU nekavējoties — derīguma termiņš jāliek PAGĀTNĒ</span>
+<span class="tok-com">// Lai sīkdatni IZDZĒSTU nekavējoties - derīguma termiņš jāliek PAGĀTNĒ</span>
 <span class="tok-fn">setcookie</span>(<span class="tok-str">'valoda'</span>, <span class="tok-str">''</span>, time() - 3600);</code></pre>
 
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p><strong>"null" un "0" NAV tas pats.</strong> Datubāzē nullable datuma laukā <code>NULL</code> nozīmē "vērtība vispār nav iestatīta" (piem., "lietotājs vēl nav apstiprinājis e-pastu"). Savukārt <code>0</code> kā laika zīmogs ir <strong>konkrēts, reāls datums</strong> — 1970-01-01 00:00:00 UTC. Šīs divas lietas sajaukt ir izplatīta kļūdu izcelsme: pārbaude <code>if ($datums)</code> abus gadījumus (arī <code>null</code>, arī <code>0</code>) uztvers kā "nav vērtības" (jo abi ir "falsy" PHP), bet <code>$datums === null</code> pret <code>$datums === 0</code> uzvedas pavisam citādi.</p>
+        <p><strong>"null" un "0" NAV tas pats.</strong> Datubāzē nullable datuma laukā <code>NULL</code> nozīmē "vērtība vispār nav iestatīta" (piem., "lietotājs vēl nav apstiprinājis e-pastu"). Savukārt <code>0</code> kā laika zīmogs ir <strong>konkrēts, reāls datums</strong> - 1970-01-01 00:00:00 UTC. Šīs divas lietas sajaukt ir izplatīta kļūdu izcelsme: pārbaude <code>if ($datums)</code> abus gadījumus (arī <code>null</code>, arī <code>0</code>) uztvers kā "nav vērtības" (jo abi ir "falsy" PHP), bet <code>$datums === null</code> pret <code>$datums === 0</code> uzvedas pavisam citādi.</p>
       </div>
 
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><strong>Sekundes pret milisekundēm.</strong> PHP <code>time()</code> un MySQL <code>UNIX_TIMESTAMP()</code> atgriež laika zīmogu <strong>sekundēs</strong>, bet JavaScript <code>Date.now()</code> un <code>new Date().getTime()</code> atgriež to <strong>milisekundēs</strong>. Ja servera laika zīmogu padod tieši JS <code>Date</code> konstruktoram bez reizināšanas ar 1000, iznāk datums 1970. gada tuvumā — viens no biežākajiem "kāpēc mans datums rāda 1970" kļūdu cēloņiem.</p>
+        <p><strong>Sekundes pret milisekundēm.</strong> PHP <code>time()</code> un MySQL <code>UNIX_TIMESTAMP()</code> atgriež laika zīmogu <strong>sekundēs</strong>, bet JavaScript <code>Date.now()</code> un <code>new Date().getTime()</code> atgriež to <strong>milisekundēs</strong>. Ja servera laika zīmogu padod tieši JS <code>Date</code> konstruktoram bez reizināšanas ar 1000, iznāk datums 1970. gada tuvumā - viens no biežākajiem "kāpēc mans datums rāda 1970" kļūdu cēloņiem.</p>
       </div>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// No servera saņemts laika zīmogs (sekundēs)</span>
 <span class="tok-kw">const</span> serverisLaiks = 1769866925;
 
-<span class="tok-com">// NEPAREIZI — JS domā, ka tās ir milisekundes, iznāk ~1970. gads</span>
+<span class="tok-com">// NEPAREIZI - JS domā, ka tās ir milisekundes, iznāk ~1970. gads</span>
 <span class="tok-kw">console</span>.log(<span class="tok-kw">new</span> Date(serverisLaiks).toISOString());
 
-<span class="tok-com">// PAREIZI — reizini ar 1000, lai pārvērstu sekundes milisekundēs</span>
+<span class="tok-com">// PAREIZI - reizini ar 1000, lai pārvērstu sekundes milisekundēs</span>
 <span class="tok-kw">console</span>.log(<span class="tok-kw">new</span> Date(serverisLaiks * 1000).toISOString());</code></pre>
 
-      <p>Vēl viens fakts, ko vērts zināt teorētiski — <strong>"2038. gada problēma"</strong>: vecākās, 32-bitu sistēmās Unix laika zīmogu glabā kā parakstītu 32-bitu skaitli, kas pārplūst 2038. gada 19. janvārī, plkst. 03:14:07 UTC (tāpat kā Y2K problēma, bet Unix pasaulē). Mūsdienu 64-bitu sistēmas to vairs neskar, bet dažkārt tas joprojām parādās vecākā aparatūrā, iegultajās sistēmās vai 32-bitu datubāzu laukos.</p>
+      <p>Vēl viens fakts, ko vērts zināt teorētiski - <strong>"2038. gada problēma"</strong>: vecākās, 32-bitu sistēmās Unix laika zīmogu glabā kā parakstītu 32-bitu skaitli, kas pārplūst 2038. gada 19. janvārī, plkst. 03:14:07 UTC (tāpat kā Y2K problēma, bet Unix pasaulē). Mūsdienu 64-bitu sistēmas to vairs neskar, bet dažkārt tas joprojām parādās vecākā aparatūrā, iegultajās sistēmās vai 32-bitu datubāzu laukos.</p>
     </section>
 
     <section class="doc-section" id="include">
       <h2>include / require</h2>
-      <p>Ielādē citu PHP failu tieši pašreizējā vietā — noder koda sadalīšanai vairākos failos (galvene, kājene, konfigurācija), lai neatkārtotu vienu un to pašu kodu katrā lapā. <code>require</code> apstādina visu skriptu, ja fails nav atrasts; <code>include</code> tikai izmet brīdinājumu un turpina tālāk.</p>
+      <p>Ielādē citu PHP failu tieši pašreizējā vietā - noder koda sadalīšanai vairākos failos (galvene, kājene, konfigurācija), lai neatkārtotu vienu un to pašu kodu katrā lapā. <code>require</code> apstādina visu skriptu, ja fails nav atrasts; <code>include</code> tikai izmet brīdinājumu un turpina tālāk.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// config.php</span>
 &lt;?php
 <span class="tok-fn">$site_name</span> = <span class="tok-str">"Mana Vietne"</span>;
 
 <span class="tok-com">// index.php</span>
 &lt;?php
-<span class="tok-fn">require_once</span> <span class="tok-str">'config.php'</span>; <span class="tok-com">// "once" — ielādē tikai vienreiz, pat ja izsauc vairākkārt</span>
+<span class="tok-fn">require_once</span> <span class="tok-str">'config.php'</span>; <span class="tok-com">// "once" - ielādē tikai vienreiz, pat ja izsauc vairākkārt</span>
 
 <span class="tok-kw">echo</span> <span class="tok-str">"Laipni lūdzam vietnē "</span> . <span class="tok-fn">$site_name</span>;</code></pre>
     </section>
@@ -337,12 +337,12 @@
 <span class="tok-fn">$lietotajs</span> = <span class="tok-kw">new</span> <span class="tok-fn">Lietotajs</span>(<span class="tok-str">"Anna"</span>, 25);
 <span class="tok-kw">echo</span> <span class="tok-fn">$lietotajs</span>->sveicies();
 <span class="tok-com">// "Sveiks, es esmu Anna un man ir 25 gadi"</span></code></pre>
-      <p>Konstruktora argumenti ar <code>private</code>/<code>public</code> priekšā (PHP 8+) automātiski izveido un aizpilda attiecīgās klases īpašības — bez šī saīsinājuma vajadzētu rakstīt <code>$this-&gt;vards = $vards;</code> katram parametram atsevišķi.</p>
+      <p>Konstruktora argumenti ar <code>private</code>/<code>public</code> priekšā (PHP 8+) automātiski izveido un aizpilda attiecīgās klases īpašības - bez šī saīsinājuma vajadzētu rakstīt <code>$this-&gt;vards = $vards;</code> katram parametram atsevišķi.</p>
     </section>
 
     <section class="doc-section" id="mantojums">
       <h2>Mantojums</h2>
-      <p>Klase var pārmantot citas klases funkcionalitāti ar <code>extends</code> — noder, kad vairākām klasēm ir kopīga bāze. <code>abstract</code> klase pati nevar tikt izveidota (<code>new</code>), tā ir tikai "veidne" citām klasēm.</p>
+      <p>Klase var pārmantot citas klases funkcionalitāti ar <code>extends</code> - noder, kad vairākām klasēm ir kopīga bāze. <code>abstract</code> klase pati nevar tikt izveidota (<code>new</code>), tā ir tikai "veidne" citām klasēm.</p>
       <pre class="code-block"><span class="lang">php</span><code>&lt;?php
 <span class="tok-kw">abstract class</span> <span class="tok-fn">Dzivnieks</span> {
     <span class="tok-kw">public function</span> <span class="tok-fn">__construct</span>(<span class="tok-kw">protected string</span> <span class="tok-fn">$vards</span>) {}
@@ -364,13 +364,13 @@
 <span class="tok-kw">echo</span> <span class="tok-fn">$suns</span>->apraksts(); <span class="tok-com">// "Reksis saka: Vau!"</span></code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Dod priekšroku <strong>composition over inheritance</strong> ("sastāvs pār mantojumu") — ja hierarhija kļūst dziļa un sarežģīta, interfeisi un mazākas, koplietojamas klases bieži ir elastīgāks risinājums.</p>
+        <p>Dod priekšroku <strong>composition over inheritance</strong> ("sastāvs pār mantojumu") - ja hierarhija kļūst dziļa un sarežģīta, interfeisi un mazākas, koplietojamas klases bieži ir elastīgāks risinājums.</p>
       </div>
     </section>
 
     <section class="doc-section" id="interfeisi">
       <h2>Interfeisi</h2>
-      <p>Interfeiss apraksta, <strong>kādas funkcijas</strong> klasei jāievieš, bet ne to, kā tās strādā iekšēji. Tas ļauj dažādām, nesaistītām klasēm strādāt savstarpēji aizvietojami — jebkur, kur sagaida <code>Maksajums</code>, var padot jebkuru klasi, kas šo interfeisu ievieš.</p>
+      <p>Interfeiss apraksta, <strong>kādas funkcijas</strong> klasei jāievieš, bet ne to, kā tās strādā iekšēji. Tas ļauj dažādām, nesaistītām klasēm strādāt savstarpēji aizvietojami - jebkur, kur sagaida <code>Maksajums</code>, var padot jebkuru klasi, kas šo interfeisu ievieš.</p>
       <pre class="code-block"><span class="lang">php</span><code>&lt;?php
 <span class="tok-kw">interface</span> <span class="tok-fn">Maksajums</span> {
     <span class="tok-kw">public function</span> <span class="tok-fn">apstradat</span>(<span class="tok-kw">float</span> <span class="tok-fn">$summa</span>): <span class="tok-kw">bool</span>;
@@ -393,7 +393,7 @@
 
     <section class="doc-section" id="traits">
       <h2>Traits</h2>
-      <p>PHP klase var <code>extends</code> tikai <strong>vienu</strong> vecākklasi — atšķirībā no dažām citām valodām, PHP neatbalsta vairākkārtēju mantojumu. Bet bieži gadās, ka divām nesaistītām klasēm (piem., <code>Lietotajs</code> un <code>Produkts</code>) vajag tieši to pašu, gatavo funkcionalitāti — piem., laika zīmogu izsekošanu. <strong>Trait</strong> atrisina šo: tas ir gatavu metožu "gabals", ko var iekopēt jebkurā klasē ar <code>use</code>, neatkarīgi no klases mantojuma hierarhijas.</p>
+      <p>PHP klase var <code>extends</code> tikai <strong>vienu</strong> vecākklasi - atšķirībā no dažām citām valodām, PHP neatbalsta vairākkārtēju mantojumu. Bet bieži gadās, ka divām nesaistītām klasēm (piem., <code>Lietotajs</code> un <code>Produkts</code>) vajag tieši to pašu, gatavo funkcionalitāti - piem., laika zīmogu izsekošanu. <strong>Trait</strong> atrisina šo: tas ir gatavu metožu "gabals", ko var iekopēt jebkurā klasē ar <code>use</code>, neatkarīgi no klases mantojuma hierarhijas.</p>
       <pre class="code-block"><span class="lang">php</span><code>&lt;?php
 <span class="tok-kw">trait</span> <span class="tok-fn">Laikazimogojams</span> {
     <span class="tok-kw">private</span> ?<span class="tok-kw">string</span> <span class="tok-fn">$izveidots</span> = <span class="tok-kw">null</span>;
@@ -434,7 +434,7 @@
 
     <section class="doc-section" id="datubaze">
       <h2>Datubāzes (PDO)</h2>
-      <p>PDO ir vienota saskarne darbam ar dažādām datubāzēm (MySQL, PostgreSQL, SQLite) — kods paliek līdzīgs, nomainot tikai savienojuma rindu. Zemāk pilns piemērs SQLite datubāzei, ko var izmēģināt uzreiz bez servera iestatīšanas (SQLite ir viens fails, iebūvēts PHP):</p>
+      <p>PDO ir vienota saskarne darbam ar dažādām datubāzēm (MySQL, PostgreSQL, SQLite) - kods paliek līdzīgs, nomainot tikai savienojuma rindu. Zemāk pilns piemērs SQLite datubāzei, ko var izmēģināt uzreiz bez servera iestatīšanas (SQLite ir viens fails, iebūvēts PHP):</p>
       <pre class="code-block"><span class="lang">php</span><code>&lt;?php
 <span class="tok-com">// Izveido datubāzi atmiņā un tabulu (viss vienā failā, bez servera)</span>
 <span class="tok-fn">$pdo</span> = <span class="tok-kw">new</span> <span class="tok-fn">PDO</span>(<span class="tok-str">'sqlite::memory:'</span>);
@@ -451,21 +451,21 @@
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">$pdo</span> = <span class="tok-kw">new</span> <span class="tok-fn">PDO</span>(<span class="tok-str">"mysql:host=localhost;dbname=veikals"</span>, <span class="tok-str">"root"</span>, <span class="tok-str">"secret"</span>);</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Vienmēr izmanto <strong>prepared statements</strong> (kā piemērā, ar <code>?</code> vietturiem) — nekad nesalīmē lietotāja ievadi tieši SQL vaicājuma tekstā, jo tas atver ceļu SQL injection uzbrukumiem.</p>
+        <p>Vienmēr izmanto <strong>prepared statements</strong> (kā piemērā, ar <code>?</code> vietturiem) - nekad nesalīmē lietotāja ievadi tieši SQL vaicājuma tekstā, jo tas atver ceļu SQL injection uzbrukumiem.</p>
       </div>
     </section>
 
     <section class="doc-section" id="composer">
       <h2>Composer</h2>
-      <p>Composer ir PHP pakotņu pārvaldnieks — ļauj instalēt un pārvaldīt gatavas bibliotēkas, nevis rakstīt visu no nulles. Instalētās bibliotēkas nonāk <code>vendor/</code> mapē un tiek automātiski ielādētas.</p>
-      <p><strong>Kāpēc tas vajadzīgs — reāls piemērs.</strong> Pieņemsim, vajag ģenerēt PDF rēķinu. PDF ir sarežģīts binārs failu formāts — pats no nulles to uzrakstīt aizņemtu nedēļas. Ar Composer bibliotēku <code>dompdf/dompdf</code> to izdara dažās rindās:</p>
+      <p>Composer ir PHP pakotņu pārvaldnieks - ļauj instalēt un pārvaldīt gatavas bibliotēkas, nevis rakstīt visu no nulles. Instalētās bibliotēkas nonāk <code>vendor/</code> mapē un tiek automātiski ielādētas.</p>
+      <p><strong>Kāpēc tas vajadzīgs - reāls piemērs.</strong> Pieņemsim, vajag ģenerēt PDF rēķinu. PDF ir sarežģīts binārs failu formāts - pats no nulles to uzrakstīt aizņemtu nedēļas. Ar Composer bibliotēku <code>dompdf/dompdf</code> to izdara dažās rindās:</p>
       <pre class="code-block"><span class="lang">bash</span><code>composer require dompdf/dompdf</code></pre>
       <pre class="code-block"><span class="lang">php</span><code>&lt;?php
 <span class="tok-fn">require</span> <span class="tok-str">'vendor/autoload.php'</span>; <span class="tok-com">// ielādē dompdf (un jebkuru citu instalēto bibliotēku)</span>
 
 <span class="tok-fn">$dompdf</span> = <span class="tok-kw">new</span> <span class="tok-fn">\Dompdf\Dompdf</span>();
 
-<span class="tok-com">// Padod parastu HTML — dompdf pats parūpējas par visu PDF formāta sarežģītību</span>
+<span class="tok-com">// Padod parastu HTML - dompdf pats parūpējas par visu PDF formāta sarežģītību</span>
 <span class="tok-fn">$dompdf</span>->loadHtml(<span class="tok-str">'&lt;h1&gt;Rēķins Nr. 001&lt;/h1&gt;&lt;p&gt;Summa: 49.00 EUR&lt;/p&gt;'</span>);
 <span class="tok-fn">$dompdf</span>->setPaper(<span class="tok-str">'A4'</span>);
 <span class="tok-fn">$dompdf</span>->render();
@@ -474,23 +474,23 @@
 <span class="tok-fn">$dompdf</span>->stream(<span class="tok-str">'rekins.pdf'</span>);</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Tieši šeit ir Composer vērtība: <code>\Dompdf\Dompdf</code> klase, <code>loadHtml()</code>, <code>render()</code>, <code>stream()</code> — visas šīs metodes uzrakstīja <strong>kāds cits</strong>, un tu tās tikai izmanto. Bez Composer būtu jāatrod bibliotēkas kods manuāli internetā, jālejupielādē, jāsaprot pats jāieliek pareizajā mapē un pats jāraksta <code>require</code> katram failam atsevišķi — Composer visu šo automatizē vienā komandā.</p>
+        <p>Tieši šeit ir Composer vērtība: <code>\Dompdf\Dompdf</code> klase, <code>loadHtml()</code>, <code>render()</code>, <code>stream()</code> - visas šīs metodes uzrakstīja <strong>kāds cits</strong>, un tu tās tikai izmanto. Bez Composer būtu jāatrod bibliotēkas kods manuāli internetā, jālejupielādē, jāsaprot pats jāieliek pareizajā mapē un pats jāraksta <code>require</code> katram failam atsevišķi - Composer visu šo automatizē vienā komandā.</p>
       </div>
-      <p><strong>Kur atrast bibliotēkas?</strong> — <a href="https://packagist.org" target="_blank" rel="noopener">packagist.org</a> ir oficiālais, centrālais Composer pakotņu katalogs (tas pats, kas <code>npmjs.com</code> ir JavaScript pasaulē). Tur meklē pēc vajadzības (piem., "PDF", "email", "excel"), nevis pēc konkrēta pakotnes nosaukuma, ko jau iepriekš vajadzētu zināt:</p>
+      <p><strong>Kur atrast bibliotēkas?</strong> - <a href="https://packagist.org" target="_blank" rel="noopener">packagist.org</a> ir oficiālais, centrālais Composer pakotņu katalogs (tas pats, kas <code>npmjs.com</code> ir JavaScript pasaulē). Tur meklē pēc vajadzības (piem., "PDF", "email", "excel"), nevis pēc konkrēta pakotnes nosaukuma, ko jau iepriekš vajadzētu zināt:</p>
       <pre class="code-block"><span class="lang">text</span><code>1. Atver packagist.org, meklēšanas laukā ieraksti, KO vajag darīt
    (piem. "pdf generator", "send email", "excel export")
 2. Katras pakotnes lapā redzams:
    - Instalēšanas komanda (kopē tieši no turienes, precīzi ar
-     versijas ierobežojumu — nekad nepārraksti ar roku)
+     versijas ierobežojumu - nekad nepārraksti ar roku)
    - README ar lietošanas piemēriem
-   - Downloads skaits — populārāka pakotne parasti drošāka izvēle
-   - "Requires" — vai der ar tavu PHP versiju
+   - Downloads skaits - populārāka pakotne parasti drošāka izvēle
+   - "Requires" - vai der ar tavu PHP versiju
 3. Atver pakotnes GitHub saiti (parasti augšā) un paskaties,
    vai tā tiek aktīvi uzturēta (pēdējais commit ne pārāk sen,
    atvērtie issues tiek risināti, ne tikai uzkrājas)</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Pakotnes nosaukums vienmēr ir formātā <code>autors/pakotne</code> (piem., <code>dompdf/dompdf</code>, <code>monolog/monolog</code>) — tā pirmā daļa NAV nejauša, tā ir konkrētā izstrādātāja/organizācijas vārds Packagist. Nekad neuzmini vai neizdomā šo nosaukumu — vienmēr kopē to tieši no Packagist lapas.</p>
+        <p>Pakotnes nosaukums vienmēr ir formātā <code>autors/pakotne</code> (piem., <code>dompdf/dompdf</code>, <code>monolog/monolog</code>) - tā pirmā daļa NAV nejauša, tā ir konkrētā izstrādātāja/organizācijas vārds Packagist. Nekad neuzmini vai neizdomā šo nosaukumu - vienmēr kopē to tieši no Packagist lapas.</p>
       </div>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Izveido jaunu projektu ar composer.json failu</span>
 composer init
@@ -504,22 +504,22 @@ composer install</code></pre>
       <pre class="code-block"><span class="lang">php</span><code>&lt;?php
 <span class="tok-fn">require</span> <span class="tok-str">'vendor/autoload.php'</span>; <span class="tok-com">// ielādē visas Composer bibliotēkas</span></code></pre>
       <h3 style="font-size:17px; margin:32px 0 10px;">Composer WordPress projektā</h3>
-      <p>WordPress pats kodols <strong>nav</strong> paredzēts instalēšanai caur Composer kā parasta bibliotēka — to lejupielādē kā gatavu CMS pakotni (piem., no wordpress.org vai caur hostinga instalatoru). Composer WordPress projektos parasti izmanto vienā no diviem veidiem:</p>
+      <p>WordPress pats kodols <strong>nav</strong> paredzēts instalēšanai caur Composer kā parasta bibliotēka - to lejupielādē kā gatavu CMS pakotni (piem., no wordpress.org vai caur hostinga instalatoru). Composer WordPress projektos parasti izmanto vienā no diviem veidiem:</p>
       <div class="doc-cards">
-        <div class="doc-mini-card"><h4>✅ Iekšā tēmā/spraudnī <span class="tag easy">Visbiežāk</span></h4><p>Composer pārvalda tikai TAVA koda atkarības (piem., PDF ģenerēšanas bibliotēku pielāgotā spraudnī) — <code>vendor/</code> paliek tēmas/spraudņa mapē, WordPress kodols to neskar.</p></div>
-        <div class="doc-mini-card"><h4>⚙️ Visam projektam <span class="tag mid">Progresīvāk</span></h4><p>Composer pārvalda arī pašus WordPress spraudņus/tēmas caur "WordPress Packagist" — visa projekta atkarības (kodols, spraudņi, tēmas) vienuviet <code>composer.json</code> failā.</p></div>
+        <div class="doc-mini-card"><h4>✅ Iekšā tēmā/spraudnī <span class="tag easy">Visbiežāk</span></h4><p>Composer pārvalda tikai TAVA koda atkarības (piem., PDF ģenerēšanas bibliotēku pielāgotā spraudnī) - <code>vendor/</code> paliek tēmas/spraudņa mapē, WordPress kodols to neskar.</p></div>
+        <div class="doc-mini-card"><h4>⚙️ Visam projektam <span class="tag mid">Progresīvāk</span></h4><p>Composer pārvalda arī pašus WordPress spraudņus/tēmas caur "WordPress Packagist" - visa projekta atkarības (kodols, spraudņi, tēmas) vienuviet <code>composer.json</code> failā.</p></div>
       </div>
-      <p><strong>1. variants</strong> — der lielākajai daļai projektu. Pielāgotā spraudņa mapē:</p>
+      <p><strong>1. variants</strong> - der lielākajai daļai projektu. Pielāgotā spraudņa mapē:</p>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Palaiž tieši spraudņa mapē, piem. wp-content/plugins/mans-spraudnis/</span>
 composer require dompdf/dompdf</code></pre>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// mans-spraudnis.php — spraudņa galvenajā failā</span>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// mans-spraudnis.php - spraudņa galvenajā failā</span>
 &lt;?php
 <span class="tok-com">/* Plugin Name: Mans spraudnis */</span>
 <span class="tok-fn">require_once</span> __DIR__ . <span class="tok-str">'/vendor/autoload.php'</span>;
 
 <span class="tok-com">// Tagad pieejama Dompdf klase, tāpat kā jebkurā PHP projektā</span>
 <span class="tok-fn">$pdf</span> = <span class="tok-kw">new</span> <span class="tok-fn">\Dompdf\Dompdf</span>();</code></pre>
-      <p><strong>2. variants</strong> — pārvalda arī spraudņus/tēmas caur Composer, izmantojot <a href="https://wpackagist.org" target="_blank" rel="noopener">WordPress Packagist</a> (spogulis, kas WordPress.org spraudņu/tēmu katalogu padara pieejamu kā Composer pakotnes):</p>
+      <p><strong>2. variants</strong> - pārvalda arī spraudņus/tēmas caur Composer, izmantojot <a href="https://wpackagist.org" target="_blank" rel="noopener">WordPress Packagist</a> (spogulis, kas WordPress.org spraudņu/tēmu katalogu padara pieejamu kā Composer pakotnes):</p>
       <pre class="code-block"><span class="lang">json</span><code>{
     <span class="tok-str">"repositories"</span>: [
         { <span class="tok-str">"type"</span>: <span class="tok-str">"composer"</span>, <span class="tok-str">"url"</span>: <span class="tok-str">"https://wpackagist.org"</span> }
@@ -537,11 +537,11 @@ composer require dompdf/dompdf</code></pre>
 }</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Ja spraudni pārvalda Composer (2. variants), <strong>izslēdz</strong> tā automātisko atjaunināšanu WordPress admin panelī — pretējā gadījumā WordPress pats atjauninās failus, un <code>composer.json</code> vairs neatbildīs reālajai instalētajai versijai. Izvēlies <strong>vienu</strong> pārvaldības veidu katram spraudnim, nekad abus vienlaikus.</p>
+        <p>Ja spraudni pārvalda Composer (2. variants), <strong>izslēdz</strong> tā automātisko atjaunināšanu WordPress admin panelī - pretējā gadījumā WordPress pats atjauninās failus, un <code>composer.json</code> vairs neatbildīs reālajai instalētajai versijai. Izvēlies <strong>vienu</strong> pārvaldības veidu katram spraudnim, nekad abus vienlaikus.</p>
       </div>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>vendor/</code> mapi (tāpat kā jebkurā PHP projektā) <strong>nekad</strong> nepievieno Git repozitorijā — pievieno to <a href="git.html#gitignore"><code>.gitignore</code></a> failam. Katrs, kas klonē projektu, atjauno <code>vendor/</code> pats ar <code>composer install</code>, izmantojot <code>composer.lock</code> failu, kas nodrošina, ka visiem instalējas <strong>tieši tās pašas</strong> bibliotēku versijas.</p>
+        <p><code>vendor/</code> mapi (tāpat kā jebkurā PHP projektā) <strong>nekad</strong> nepievieno Git repozitorijā - pievieno to <a href="git.html#gitignore"><code>.gitignore</code></a> failam. Katrs, kas klonē projektu, atjauno <code>vendor/</code> pats ar <code>composer install</code>, izmantojot <code>composer.lock</code> failu, kas nodrošina, ka visiem instalējas <strong>tieši tās pašas</strong> bibliotēku versijas.</p>
       </div>
     </section>
 
@@ -552,7 +552,7 @@ composer require dompdf/dompdf</code></pre>
   </main>
 </div>
 
-<script src="../js/theme.js?v=20"></script>
-<script src="../js/main.js?v=20"></script>
+<script src="../js/theme.js?v=21"></script>
+<script src="../js/main.js?v=21"></script>
 </body>
 </html>

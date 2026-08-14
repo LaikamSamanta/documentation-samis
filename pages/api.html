@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
-<title>API dokumentācija — Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=20" />
+<title>API dokumentācija - Documentation Samis</title>
+<link rel="stylesheet" href="../css/style.css?v=21" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -79,22 +79,22 @@
       </div>
       <h1 style="margin-bottom:0;">API</h1>
     </div>
-    <p class="doc-lead">Pilns iesācēja ceļvedis: kas ir API, kādi ir tā veidi, kā to droši lietot un kā uzbūvēt savu — ar reāliem, darbojošos koda piemēriem, ko var iekopēt un uzreiz palaist.</p>
+    <p class="doc-lead">Pilns iesācēja ceļvedis: kas ir API, kādi ir tā veidi, kā to droši lietot un kā uzbūvēt savu - ar reāliem, darbojošos koda piemēriem, ko var iekopēt un uzreiz palaist.</p>
 
     <section class="doc-section" id="ievads">
       <h2>Kas ir API?</h2>
-      <p><strong>API</strong> (Application Programming Interface) ir "līgums" starp divām programmām — tas apraksta, kā viena programma var pieprasīt datus vai darbību no otras, nezinot neko par to, kā otra programma iekšēji strādā. Tu izsauc noteiktu adresi ar noteiktiem parametriem un saņem atpakaļ paredzamu atbildi.</p>
-      <p>Vienkāršākā analoģija — <strong>restorāns</strong>: tu (klients) pats neej uz virtuvi gatavot ēdienu. Tu dod pasūtījumu viesmīlim (API), viesmīlis aiznes to uz virtuvi (serveris), un atnes atpakaļ gatavu ēdienu (atbilde). Tev nekad nav jāzina, <strong>KĀ</strong> virtuve strādā iekšēji — tikai jāzina, <strong>KO</strong> un <strong>KĀ</strong> pasūtīt.</p>
+      <p><strong>API</strong> (Application Programming Interface) ir "līgums" starp divām programmām - tas apraksta, kā viena programma var pieprasīt datus vai darbību no otras, nezinot neko par to, kā otra programma iekšēji strādā. Tu izsauc noteiktu adresi ar noteiktiem parametriem un saņem atpakaļ paredzamu atbildi.</p>
+      <p>Vienkāršākā analoģija - <strong>restorāns</strong>: tu (klients) pats neej uz virtuvi gatavot ēdienu. Tu dod pasūtījumu viesmīlim (API), viesmīlis aiznes to uz virtuvi (serveris), un atnes atpakaļ gatavu ēdienu (atbilde). Tev nekad nav jāzina, <strong>KĀ</strong> virtuve strādā iekšēji - tikai jāzina, <strong>KO</strong> un <strong>KĀ</strong> pasūtīt.</p>
       <div class="doc-cards">
-        <div class="doc-mini-card"><h4>🙋 Klients</h4><p>Tavs kods (pārlūks, mobilā app, cits serveris) — sūta pieprasījumu.</p></div>
-        <div class="doc-mini-card"><h4>📨 Pieprasījums</h4><p>Adrese + metode + (dažreiz) dati — kas tieši jāizdara.</p></div>
+        <div class="doc-mini-card"><h4>🙋 Klients</h4><p>Tavs kods (pārlūks, mobilā app, cits serveris) - sūta pieprasījumu.</p></div>
+        <div class="doc-mini-card"><h4>📨 Pieprasījums</h4><p>Adrese + metode + (dažreiz) dati - kas tieši jāizdara.</p></div>
         <div class="doc-mini-card"><h4>🖥️ Serveris</h4><p>Apstrādā pieprasījumu, piekļūst datubāzei vai citai loģikai.</p></div>
         <div class="doc-mini-card"><h4>📬 Atbilde</h4><p>Dati (parasti JSON) vai apstiprinājums, ka darbība izdevās.</p></div>
       </div>
-      <p>Web izstrādē visbiežāk sastopamais API tips ir <strong>Web API</strong> — tas strādā pāri HTTP protokolam, tam pašam, ko lieto pārlūks, atverot jebkuru vietni. Tāpēc, lai saprastu API, vispirms jāsaprot HTTP pamati — nākamajā sadaļā.</p>
+      <p>Web izstrādē visbiežāk sastopamais API tips ir <strong>Web API</strong> - tas strādā pāri HTTP protokolam, tam pašam, ko lieto pārlūks, atverot jebkuru vietni. Tāpēc, lai saprastu API, vispirms jāsaprot HTTP pamati - nākamajā sadaļā.</p>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>API nav specifiska tehnoloģija vai valoda — tas ir <strong>jēdziens/princips</strong>. API var būt starp diviem serveriem, starp pārlūku un serveri (visbiežāk sastopamais gadījums) vai pat starp divām funkcijām vienā programmā (bibliotēkas API). Šī lapa fokusējas uz <strong>web API</strong>, ko izsauc caur internetu.</p>
+        <p>API nav specifiska tehnoloģija vai valoda - tas ir <strong>jēdziens/princips</strong>. API var būt starp diviem serveriem, starp pārlūku un serveri (visbiežāk sastopamais gadījums) vai pat starp divām funkcijām vienā programmā (bibliotēkas API). Šī lapa fokusējas uz <strong>web API</strong>, ko izsauc caur internetu.</p>
       </div>
     </section>
 
@@ -105,19 +105,19 @@
         <table class="cheat-table">
           <thead><tr><th>Metode</th><th>Nozīme</th><th>Piemērs</th></tr></thead>
           <tbody>
-            <tr><td><code>GET</code></td><td>Iegūt datus, neko nemainot</td><td><code>GET /users</code> — visi lietotāji</td></tr>
-            <tr><td><code>POST</code></td><td>Izveidot jaunu resursu</td><td><code>POST /users</code> — jauns lietotājs</td></tr>
-            <tr><td><code>PUT</code></td><td>Aizvietot resursu pilnībā</td><td><code>PUT /users/5</code> — pārraksta visu ierakstu</td></tr>
-            <tr><td><code>PATCH</code></td><td>Mainīt tikai daļu resursa</td><td><code>PATCH /users/5</code> — maina tikai e-pastu</td></tr>
+            <tr><td><code>GET</code></td><td>Iegūt datus, neko nemainot</td><td><code>GET /users</code> - visi lietotāji</td></tr>
+            <tr><td><code>POST</code></td><td>Izveidot jaunu resursu</td><td><code>POST /users</code> - jauns lietotājs</td></tr>
+            <tr><td><code>PUT</code></td><td>Aizvietot resursu pilnībā</td><td><code>PUT /users/5</code> - pārraksta visu ierakstu</td></tr>
+            <tr><td><code>PATCH</code></td><td>Mainīt tikai daļu resursa</td><td><code>PATCH /users/5</code> - maina tikai e-pastu</td></tr>
             <tr><td><code>DELETE</code></td><td>Izdzēst resursu</td><td><code>DELETE /users/5</code></td></tr>
           </tbody>
         </table>
       </div>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>GET</code>, <code>PUT</code> un <code>DELETE</code> ir <strong>idempotentas</strong> — izsaucot tās vairākas reizes ar tiem pašiem datiem, rezultāts ir tāds pats kā izsaucot vienu reizi. <code>POST</code> <strong>nav</strong> idempotenta — divi vienādi <code>POST /users</code> pieprasījumi izveidos <strong>divus</strong> lietotājus. Tas svarīgi zināt, plānojot atkārtotus mēģinājumus (retry) pēc tīkla kļūdas.</p>
+        <p><code>GET</code>, <code>PUT</code> un <code>DELETE</code> ir <strong>idempotentas</strong> - izsaucot tās vairākas reizes ar tiem pašiem datiem, rezultāts ir tāds pats kā izsaucot vienu reizi. <code>POST</code> <strong>nav</strong> idempotenta - divi vienādi <code>POST /users</code> pieprasījumi izveidos <strong>divus</strong> lietotājus. Tas svarīgi zināt, plānojot atkārtotus mēģinājumus (retry) pēc tīkla kļūdas.</p>
       </div>
-      <p>Katra atbilde satur <strong>statusa kodu</strong> — trīs ciparu skaitli, kas uzreiz pasaka, vai pieprasījums izdevās:</p>
+      <p>Katra atbilde satur <strong>statusa kodu</strong> - trīs ciparu skaitli, kas uzreiz pasaka, vai pieprasījums izdevās:</p>
       <div class="cheat-table-wrap">
         <table class="cheat-table">
           <thead><tr><th>Kods</th><th>Grupa</th><th>Nozīme</th></tr></thead>
@@ -138,13 +138,13 @@
       </div>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Nekad nepaļaujies tikai uz atbildes <strong>saturu</strong>, lai noteiktu, vai pieprasījums izdevās — vienmēr vispirms pārbaudi statusa kodu. Dažas API atgriež <code>200 OK</code> pat kļūdas gadījumā, ar kļūdu tikai JSON ķermenī — tāpēc katras API dokumentācija jāizlasa, nevis jāpieņem, ka tā strādā "kā parasti".</p>
+        <p>Nekad nepaļaujies tikai uz atbildes <strong>saturu</strong>, lai noteiktu, vai pieprasījums izdevās - vienmēr vispirms pārbaudi statusa kodu. Dažas API atgriež <code>200 OK</code> pat kļūdas gadījumā, ar kļūdu tikai JSON ķermenī - tāpēc katras API dokumentācija jāizlasa, nevis jāpieņem, ka tā strādā "kā parasti".</p>
       </div>
     </section>
 
     <section class="doc-section" id="json">
       <h2>JSON formāts</h2>
-      <p>Gandrīz visi mūsdienu web API sūta un saņem datus <strong>JSON</strong> (JavaScript Object Notation) formātā — cilvēkam lasāms teksta formāts, kas dabiski atbilst JavaScript objektiem, bet ko saprot praktiski katra programmēšanas valoda.</p>
+      <p>Gandrīz visi mūsdienu web API sūta un saņem datus <strong>JSON</strong> (JavaScript Object Notation) formātā - cilvēkam lasāms teksta formāts, kas dabiski atbilst JavaScript objektiem, bet ko saprot praktiski katra programmēšanas valoda.</p>
       <pre class="code-block"><span class="lang">json</span><code>{
   <span class="tok-str">"id"</span>: 5,
   <span class="tok-str">"vards"</span>: <span class="tok-str">"Anna"</span>,
@@ -156,8 +156,8 @@
     <span class="tok-str">"indekss"</span>: <span class="tok-str">"LV-1010"</span>
   }
 }</code></pre>
-      <p>Pamata tipi: teksts pēdiņās <code>"..."</code>, skaitļi bez pēdiņām, <code>true</code>/<code>false</code>, <code>null</code> (tukša vērtība), masīvi <code>[...]</code> un iegultie objekti <code>{...}</code>. Atslēgas <strong>vienmēr</strong> dubultpēdiņās — JSON, atšķirībā no JS, neatļauj vienpēdiņas vai atslēgas bez pēdiņām.</p>
-      <p><strong>JavaScript</strong> — pārvēršana starp JS objektu un JSON tekstu:</p>
+      <p>Pamata tipi: teksts pēdiņās <code>"..."</code>, skaitļi bez pēdiņām, <code>true</code>/<code>false</code>, <code>null</code> (tukša vērtība), masīvi <code>[...]</code> un iegultie objekti <code>{...}</code>. Atslēgas <strong>vienmēr</strong> dubultpēdiņās - JSON, atšķirībā no JS, neatļauj vienpēdiņas vai atslēgas bez pēdiņām.</p>
+      <p><strong>JavaScript</strong> - pārvēršana starp JS objektu un JSON tekstu:</p>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">const</span> objekts = { vards: <span class="tok-str">"Anna"</span>, vecums: 25 };
 
 <span class="tok-com">// Objekts → JSON teksts (piem., lai nosūtītu API pieprasījumā)</span>
@@ -167,29 +167,29 @@
 <span class="tok-com">// JSON teksts → JS objekts (piem., API atbildi apstrādājot)</span>
 <span class="tok-kw">const</span> atpakal = <span class="tok-fn">JSON.parse</span>(teksts);
 <span class="tok-fn">console.log</span>(atpakal.vards); <span class="tok-com">// "Anna"</span></code></pre>
-      <p><strong>PHP</strong> — tas pats ar <code>json_encode</code>/<code>json_decode</code>:</p>
+      <p><strong>PHP</strong> - tas pats ar <code>json_encode</code>/<code>json_decode</code>:</p>
       <pre class="code-block"><span class="lang">php</span><code>&lt;?php
 <span class="tok-fn">$masivs</span> = [<span class="tok-str">'vards'</span> => <span class="tok-str">'Anna'</span>, <span class="tok-str">'vecums'</span> => 25];
 
 <span class="tok-fn">$teksts</span> = <span class="tok-fn">json_encode</span>(<span class="tok-fn">$masivs</span>);
 <span class="tok-com">// '{"vards":"Anna","vecums":25}'</span>
 
-<span class="tok-com">// "true" otrais parametrs — atgriež PHP masīvu, nevis objektu</span>
+<span class="tok-com">// "true" otrais parametrs - atgriež PHP masīvu, nevis objektu</span>
 <span class="tok-fn">$atpakal</span> = <span class="tok-fn">json_decode</span>(<span class="tok-fn">$teksts</span>, <span class="tok-kw">true</span>);
 <span class="tok-kw">echo</span> <span class="tok-fn">$atpakal</span>[<span class="tok-str">'vards'</span>]; <span class="tok-com">// Anna</span></code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Sūtot JSON pieprasījuma ķermenī (<code>POST</code>/<code>PUT</code>), vienmēr pievieno galveni <code>Content-Type: application/json</code> — bez tās serveris nezina, kā parsēt saņemto tekstu, un bieži atmet pieprasījumu ar <code>400</code> vai <code>415</code> kļūdu.</p>
+        <p>Sūtot JSON pieprasījuma ķermenī (<code>POST</code>/<code>PUT</code>), vienmēr pievieno galveni <code>Content-Type: application/json</code> - bez tās serveris nezina, kā parsēt saņemto tekstu, un bieži atmet pieprasījumu ar <code>400</code> vai <code>415</code> kļūdu.</p>
       </div>
     </section>
 
     <section class="doc-section" id="rest-principi">
       <h2>REST principi</h2>
-      <p><strong>REST</strong> (Representational State Transfer) nav tehnoloģija vai standarts, ko var "instalēt" — tas ir principu kopums, kā organizēt API, lai tas būtu paredzams un viegli saprotams. Lielākā daļa mūsdienu web API sauc sevi par "RESTful", kaut arī reti ievēro visus principus stingri.</p>
+      <p><strong>REST</strong> (Representational State Transfer) nav tehnoloģija vai standarts, ko var "instalēt" - tas ir principu kopums, kā organizēt API, lai tas būtu paredzams un viegli saprotams. Lielākā daļa mūsdienu web API sauc sevi par "RESTful", kaut arī reti ievēro visus principus stingri.</p>
       <div class="doc-cards">
-        <div class="doc-mini-card"><h4>📦 Resursi ir lietvārdi</h4><p>URL apraksta LIETU (<code>/users</code>), nevis darbību — darbību jau pasaka HTTP metode.</p></div>
+        <div class="doc-mini-card"><h4>📦 Resursi ir lietvārdi</h4><p>URL apraksta LIETU (<code>/users</code>), nevis darbību - darbību jau pasaka HTTP metode.</p></div>
         <div class="doc-mini-card"><h4>🚫 Bezstāvokļa</h4><p>Katrs pieprasījums satur visu nepieciešamo informāciju; serveris neatceras iepriekšējos pieprasījumus.</p></div>
-        <div class="doc-mini-card"><h4>🔗 Vienota saskarne</h4><p>Konsekventa URL un atbilžu struktūra visā API — nav pārsteigumu no endpointa uz endpointu.</p></div>
+        <div class="doc-mini-card"><h4>🔗 Vienota saskarne</h4><p>Konsekventa URL un atbilžu struktūra visā API - nav pārsteigumu no endpointa uz endpointu.</p></div>
         <div class="doc-mini-card"><h4>🔢 Versionēšana</h4><p><code>/api/v1/...</code> ļauj vēlāk mainīt API, nesalaužot vecos klientus.</p></div>
       </div>
       <p>Prakse: URL vienmēr veido no lietvārda, HTTP metode nosaka darbību, ligzdošana apraksta piederību:</p>
@@ -206,30 +206,30 @@
       </div>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>GET /users/5/orders</code> — ligzdots URL, kas nolasāms kā teikums: "iegūsti lietotāja 5 pasūtījumus". Tā ir laba prakse attēlot piederību starp resursiem tieši URL struktūrā.</p>
+        <p><code>GET /users/5/orders</code> - ligzdots URL, kas nolasāms kā teikums: "iegūsti lietotāja 5 pasūtījumus". Tā ir laba prakse attēlot piederību starp resursiem tieši URL struktūrā.</p>
       </div>
     </section>
 
     <section class="doc-section" id="api-veidi">
       <h2>Pārskats: REST, GraphQL, SOAP, WebSocket, gRPC, Webhooks</h2>
-      <p>"API" ir plašs jēdziens — pastāv vairāki atšķirīgi veidi, kā to realizēt. Zemāk īss pārskats, kad kuru izmantot:</p>
+      <p>"API" ir plašs jēdziens - pastāv vairāki atšķirīgi veidi, kā to realizēt. Zemāk īss pārskats, kad kuru izmantot:</p>
       <div class="doc-cards">
-        <div class="doc-mini-card"><h4>🌐 REST</h4><p>Visizplatītākais — HTTP + JSON, resursu-orientēts. Lielākā daļa publisko API (šajā lapā fokusējamies uz to).</p></div>
+        <div class="doc-mini-card"><h4>🌐 REST</h4><p>Visizplatītākais - HTTP + JSON, resursu-orientēts. Lielākā daļa publisko API (šajā lapā fokusējamies uz to).</p></div>
         <div class="doc-mini-card"><h4>🔷 GraphQL</h4><p>Klients pats izvēlas, kādus laukus grib atpakaļ, vienā endpointā. Der elastīgiem frontend datu pieprasījumiem.</p></div>
         <div class="doc-mini-card"><h4>📄 SOAP</h4><p>Vecāks, XML-balstīts, stingrs standarts. Joprojām sastopams bankās/valsts sistēmās, retāk jaunos projektos.</p></div>
-        <div class="doc-mini-card"><h4>🔌 WebSocket</h4><p>Divvirzienu, pastāvīgs savienojums reāllaika datiem — čats, live cenas, paziņojumi.</p></div>
+        <div class="doc-mini-card"><h4>🔌 WebSocket</h4><p>Divvirzienu, pastāvīgs savienojums reāllaika datiem - čats, live cenas, paziņojumi.</p></div>
         <div class="doc-mini-card"><h4>⚡ gRPC</h4><p>Ātrs, binārs protokols starp serveriem (mikroservisi). Reti izmantots tieši no pārlūka.</p></div>
-        <div class="doc-mini-card"><h4>🪝 Webhooks</h4><p>"Apgrieztais API" — serveris PATS zvana tavam endpointam, kad kaut kas notiek. Pilns piemērs <a href="integracijas.html#stripe-webhooks-why">Stripe integrācijā</a>.</p></div>
+        <div class="doc-mini-card"><h4>🪝 Webhooks</h4><p>"Apgrieztais API" - serveris PATS zvana tavam endpointam, kad kaut kas notiek. Pilns piemērs <a href="integracijas.html#stripe-webhooks-why">Stripe integrācijā</a>.</p></div>
       </div>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Iesācējam gandrīz vienmēr pietiek ar <strong>REST</strong> — tas ir visizplatītākais, vienkāršākais saprast un lielākā daļa dokumentācijas/rīku ir tam veidoti. Pārējie veidi der specifiskiem gadījumiem (reāllaiks, ļoti elastīgi datu pieprasījumi), nevis kā noklusējuma izvēle.</p>
+        <p>Iesācējam gandrīz vienmēr pietiek ar <strong>REST</strong> - tas ir visizplatītākais, vienkāršākais saprast un lielākā daļa dokumentācijas/rīku ir tam veidoti. Pārējie veidi der specifiskiem gadījumiem (reāllaiks, ļoti elastīgi datu pieprasījumi), nevis kā noklusējuma izvēle.</p>
       </div>
     </section>
 
     <section class="doc-section" id="rest-piemers">
       <h2>REST API piemērs (reāls)</h2>
-      <p>Lai neizgudrotu neko mākslīgu, šeit lieto <strong>JSONPlaceholder</strong> (<code>jsonplaceholder.typicode.com</code>) — bezmaksas, publisku testa API, kas domāts tieši mācībām. Var brīvi sūtīt pieprasījumus, nekas reāli netiek saglabāts.</p>
+      <p>Lai neizgudrotu neko mākslīgu, šeit lieto <strong>JSONPlaceholder</strong> (<code>jsonplaceholder.typicode.com</code>) - bezmaksas, publisku testa API, kas domāts tieši mācībām. Var brīvi sūtīt pieprasījumus, nekas reāli netiek saglabāts.</p>
       <p><strong>GET pieprasījums terminālī (cURL):</strong></p>
       <pre class="code-block"><span class="lang">bash</span><code>curl https://jsonplaceholder.typicode.com/posts/1</code></pre>
       <p>Atbilde (statuss <code>200 OK</code>):</p>
@@ -239,7 +239,7 @@
   <span class="tok-str">"title"</span>: <span class="tok-str">"sunt aut facere repellat..."</span>,
   <span class="tok-str">"body"</span>: <span class="tok-str">"quia et suscipit..."</span>
 }</code></pre>
-      <p><strong>POST pieprasījums</strong> — jauna ieraksta izveide (JSONPlaceholder to reāli nesaglabā, bet atgriež, it kā būtu izveidots):</p>
+      <p><strong>POST pieprasījums</strong> - jauna ieraksta izveide (JSONPlaceholder to reāli nesaglabā, bet atgriež, it kā būtu izveidots):</p>
       <pre class="code-block"><span class="lang">bash</span><code>curl -X POST https://jsonplaceholder.typicode.com/posts \
   -H <span class="tok-str">"Content-Type: application/json"</span> \
   -d <span class="tok-str">'{"title":"Mans raksts","body":"Saturs...","userId":1}'</span></code></pre>
@@ -252,14 +252,14 @@
 }</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Laba prakse — pirms API integrācijas savā projektā vienmēr vispirms izmēģini to terminālī ar cURL vai Postman (skat. <a href="#testesana">Testēšana</a>), lai zinātu, kāda tieši ir atbilde, <strong>pirms</strong> raksti kodu, kas to apstrādā.</p>
+        <p>Laba prakse - pirms API integrācijas savā projektā vienmēr vispirms izmēģini to terminālī ar cURL vai Postman (skat. <a href="#testesana">Testēšana</a>), lai zinātu, kāda tieši ir atbilde, <strong>pirms</strong> raksti kodu, kas to apstrādā.</p>
       </div>
     </section>
 
     <section class="doc-section" id="graphql">
       <h2>GraphQL</h2>
-      <p>REST problēma: dažreiz endpoints atgriež <strong>pārāk daudz</strong> datu (over-fetching) vai <strong>pārāk maz</strong>, liekot taisīt vairākus secīgus pieprasījumus (under-fetching). GraphQL to risina — klients pats apraksta, tieši kādus laukus grib, vienā pieprasījumā, uz <strong>vienu</strong> endpointu.</p>
-      <p>Piemērs ar publisku GraphQL testa API (<code>countries.trevorblades.com</code>) — pieprasa TIKAI nosaukumu un galvaspilsētu, neko vairāk:</p>
+      <p>REST problēma: dažreiz endpoints atgriež <strong>pārāk daudz</strong> datu (over-fetching) vai <strong>pārāk maz</strong>, liekot taisīt vairākus secīgus pieprasījumus (under-fetching). GraphQL to risina - klients pats apraksta, tieši kādus laukus grib, vienā pieprasījumā, uz <strong>vienu</strong> endpointu.</p>
+      <p>Piemērs ar publisku GraphQL testa API (<code>countries.trevorblades.com</code>) - pieprasa TIKAI nosaukumu un galvaspilsētu, neko vairāk:</p>
       <pre class="code-block"><span class="lang">graphql</span><code>{
   country(code: <span class="tok-str">"LV"</span>) {
     name
@@ -282,7 +282,7 @@
           <thead><tr><th></th><th>REST</th><th>GraphQL</th></tr></thead>
           <tbody>
             <tr><td>Endpointu skaits</td><td>Daudzi (viens resursam)</td><td>Viens visam</td></tr>
-            <tr><td>Over/under-fetching</td><td>Bieži problēma</td><td>Nav — pieprasi tieši to, kas vajag</td></tr>
+            <tr><td>Over/under-fetching</td><td>Bieži problēma</td><td>Nav - pieprasi tieši to, kas vajag</td></tr>
             <tr><td>HTTP kešošana</td><td>Vienkārša (GET pēc noklusējuma kešojas)</td><td>Sarežģītāka (viens POST endpoints)</td></tr>
             <tr><td>Mācīšanās līkne</td><td>Zemāka</td><td>Augstāka</td></tr>
           </tbody>
@@ -292,7 +292,7 @@
 
     <section class="doc-section" id="websocket">
       <h2>WebSocket (reāllaika)</h2>
-      <p>REST un GraphQL abi strādā pēc "pieprasījums → atbilde" principa — klients vienmēr sāk sarunu. Bet ko darīt, ja <strong>serverim</strong> jāpaziņo klientam uzreiz, kad kaut kas notiek (jauna čata ziņa, cenas izmaiņa), bez klienta jautāšanas ik pēc pāris sekundēm (polling)? Tur der <strong>WebSocket</strong> — pastāvīgs, divvirzienu savienojums, kas paliek atvērts.</p>
+      <p>REST un GraphQL abi strādā pēc "pieprasījums → atbilde" principa - klients vienmēr sāk sarunu. Bet ko darīt, ja <strong>serverim</strong> jāpaziņo klientam uzreiz, kad kaut kas notiek (jauna čata ziņa, cenas izmaiņa), bez klienta jautāšanas ik pēc pāris sekundēm (polling)? Tur der <strong>WebSocket</strong> - pastāvīgs, divvirzienu savienojums, kas paliek atvērts.</p>
       <p>Piemērs ar publisku, bezmaksas echo testa serveri (viss, ko nosūti, atnāk atpakaļ nemainīts):</p>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">const</span> soks = <span class="tok-kw">new</span> <span class="tok-fn">WebSocket</span>(<span class="tok-str">'wss://echo.websocket.org'</span>);
 
@@ -314,12 +314,12 @@ soks.onclose = <span class="tok-kw">function</span> () {
 };</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>"Polling" (parasts <code>fetch()</code> ik pēc N sekundēm) ir vienkāršāk implementēt un pietiek lielākajai daļai gadījumu. WebSocket ir efektīvāks augstas biežuma datiem, bet sarežģītāk uzturēt — jārisina savienojuma pārtraukumi (<code>onclose</code>) un atkārtota pieslēgšanās (reconnect). Sāc ar polling un pāriet uz WebSocket tikai, ja reāli jūti nepieciešamību.</p>
+        <p>"Polling" (parasts <code>fetch()</code> ik pēc N sekundēm) ir vienkāršāk implementēt un pietiek lielākajai daļai gadījumu. WebSocket ir efektīvāks augstas biežuma datiem, bet sarežģītāk uzturēt - jārisina savienojuma pārtraukumi (<code>onclose</code>) un atkārtota pieslēgšanās (reconnect). Sāc ar polling un pāriet uz WebSocket tikai, ja reāli jūti nepieciešamību.</p>
       </div>
     </section>
 
     <section class="doc-section" id="autentifikacija">
-      <h2>Autentifikācija — API atslēgas, Bearer, OAuth 2.0, JWT</h2>
+      <h2>Autentifikācija - API atslēgas, Bearer, OAuth 2.0, JWT</h2>
       <p>Lielākā daļa API pieprasa pierādīt, <strong>kas</strong> tu esi, pirms atļauj piekļuvi datiem. Pastāv vairāki veidi, kā to izdarīt:</p>
       <div class="cheat-table-wrap">
         <table class="cheat-table">
@@ -333,7 +333,7 @@ soks.onclose = <span class="tok-kw">function</span> () {
           </tbody>
         </table>
       </div>
-      <p>Praksē visbiežāk sastopamais gadījums — Bearer token, ko pievieno <code>Authorization</code> galvenei:</p>
+      <p>Praksē visbiežāk sastopamais gadījums - Bearer token, ko pievieno <code>Authorization</code> galvenei:</p>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">const</span> atbilde = <span class="tok-kw">await</span> <span class="tok-fn">fetch</span>(<span class="tok-str">'https://api.piemers.lv/mani-dati'</span>, {
     headers: {
         <span class="tok-str">'Authorization'</span>: <span class="tok-str">`Bearer ${tavsTokens}`</span>
@@ -341,21 +341,21 @@ soks.onclose = <span class="tok-kw">function</span> () {
 });</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Nekad neieliec slepenu API atslēgu tieši frontend JS kodā, kas nonāk pārlūkā — jebkurš var to nokopēt no lapas avota (View Source / DevTools). Slepenas atslēgas glabā <strong>serverī</strong> (piem., <code>wp-config.php</code>, kā jebkurā citā šīs dokumentācijas integrācijā) un sūti pieprasījumus <strong>caur</strong> savu serveri, nevis tieši no pārlūka.</p>
+        <p>Nekad neieliec slepenu API atslēgu tieši frontend JS kodā, kas nonāk pārlūkā - jebkurš var to nokopēt no lapas avota (View Source / DevTools). Slepenas atslēgas glabā <strong>serverī</strong> (piem., <code>wp-config.php</code>, kā jebkurā citā šīs dokumentācijas integrācijā) un sūti pieprasījumus <strong>caur</strong> savu serveri, nevis tieši no pārlūka.</p>
       </div>
     </section>
 
     <section class="doc-section" id="drosiba">
-      <h2>Drošība — CORS, HTTPS, rate limiting</h2>
-      <p><strong>CORS</strong> (Cross-Origin Resource Sharing) — pārlūks pēc noklusējuma bloķē JavaScript pieprasījumus uz citu domēnu, nevis to, no kura ielādēta lapa (drošības iemeslu dēļ). Ja API serveris nav skaidri atļāvis tavu domēnu, konsolē redzēsi kļūdu, un pieprasījums neizpildīsies, pat ja serveris atbild pareizi:</p>
+      <h2>Drošība - CORS, HTTPS, rate limiting</h2>
+      <p><strong>CORS</strong> (Cross-Origin Resource Sharing) - pārlūks pēc noklusējuma bloķē JavaScript pieprasījumus uz citu domēnu, nevis to, no kura ielādēta lapa (drošības iemeslu dēļ). Ja API serveris nav skaidri atļāvis tavu domēnu, konsolē redzēsi kļūdu, un pieprasījums neizpildīsies, pat ja serveris atbild pareizi:</p>
       <pre class="code-block"><span class="lang">text</span><code>Access to fetch at 'https://api.piemers.lv/dati' from origin
 'https://tavavietne.lv' has been blocked by CORS policy: No
 'Access-Control-Allow-Origin' header is present on the requested
 resource.</code></pre>
-      <p>To risina <strong>serveris</strong> (ne klients) — pievienojot atbildes galveni, kas skaidri atļauj konkrētu domēnu:</p>
+      <p>To risina <strong>serveris</strong> (ne klients) - pievienojot atbildes galveni, kas skaidri atļauj konkrētu domēnu:</p>
       <pre class="code-block"><span class="lang">text</span><code>Access-Control-Allow-Origin: https://tavavietne.lv</code></pre>
-      <p><strong>HTTPS</strong> — jebkuram API, kas pārsūta autentifikācijas datus (tokenus, atslēgas, paroles), <strong>obligāti</strong> jāstrādā pāri HTTPS, nevis HTTP. Bez tā dati ceļo tīklā atklātā tekstā, un jebkurš pa vidu var tos nolasīt.</p>
-      <p><strong>Rate limiting</strong> — lielākā daļa publisko API ierobežo, cik pieprasījumu drīksti sūtīt noteiktā laika periodā. Pārsniedzot limitu, saņemsi <code>429 Too Many Requests</code>, bieži ar galveni <code>Retry-After</code>, kas pasaka, cik ilgi jāgaida:</p>
+      <p><strong>HTTPS</strong> - jebkuram API, kas pārsūta autentifikācijas datus (tokenus, atslēgas, paroles), <strong>obligāti</strong> jāstrādā pāri HTTPS, nevis HTTP. Bez tā dati ceļo tīklā atklātā tekstā, un jebkurš pa vidu var tos nolasīt.</p>
+      <p><strong>Rate limiting</strong> - lielākā daļa publisko API ierobežo, cik pieprasījumu drīksti sūtīt noteiktā laika periodā. Pārsniedzot limitu, saņemsi <code>429 Too Many Requests</code>, bieži ar galveni <code>Retry-After</code>, kas pasaka, cik ilgi jāgaida:</p>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">async</span> <span class="tok-kw">function</span> <span class="tok-fn">pieprasijumsArAtkartojumu</span>(url, meginajums = 1) {
     <span class="tok-kw">const</span> atbilde = <span class="tok-kw">await</span> <span class="tok-fn">fetch</span>(url);
 
@@ -366,7 +366,7 @@ resource.</code></pre>
     }
     <span class="tok-kw">return</span> atbilde;
 }</code></pre>
-      <p>Kods augstāk atkārto pieprasījumu, ja tas neizdodas — bet atkārtot <code>POST</code> ir bīstami (skat. <a href="#http-pamati">1. sadaļu</a>, <code>POST</code> nav idempotenta). Ja tīkla kļūda notiek <strong>pēc</strong> tam, kad serveris jau paspēja apstrādāt maksājumu vai citu "notiek tikai vienreiz" darbību, atkārtots <code>POST</code> var to izpildīt divreiz. Risinājums — <strong>Idempotency-Key</strong> galvene: klients pats ģenerē unikālu ID katram "loģiskajam" pieprasījumam un sūta to katrā mēģinājumā; serveris atceras, kuri ID jau apstrādāti, un otrreiz atgriež to pašu iepriekšējo rezultātu, neizpildot darbību atkārtoti.</p>
+      <p>Kods augstāk atkārto pieprasījumu, ja tas neizdodas - bet atkārtot <code>POST</code> ir bīstami (skat. <a href="#http-pamati">1. sadaļu</a>, <code>POST</code> nav idempotenta). Ja tīkla kļūda notiek <strong>pēc</strong> tam, kad serveris jau paspēja apstrādāt maksājumu vai citu "notiek tikai vienreiz" darbību, atkārtots <code>POST</code> var to izpildīt divreiz. Risinājums - <strong>Idempotency-Key</strong> galvene: klients pats ģenerē unikālu ID katram "loģiskajam" pieprasījumam un sūta to katrā mēģinājumā; serveris atceras, kuri ID jau apstrādāti, un otrreiz atgriež to pašu iepriekšējo rezultātu, neizpildot darbību atkārtoti.</p>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">const</span> unikalsId = <span class="tok-fn">crypto.randomUUID</span>(); <span class="tok-com">// ģenerē VIENU reizi šim mēģinājumam</span>
 
 <span class="tok-kw">await</span> <span class="tok-fn">fetch</span>(<span class="tok-str">'https://api.piemers.lv/pirkumi'</span>, {
@@ -379,18 +379,18 @@ resource.</code></pre>
 });</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Šī nav pašsaprotama funkcionalitāte — API <strong>serverim</strong> jābūt to skaidri implementējušam (kā, piemēram, Stripe dara reālajā <a href="integracijas.html#stripe-checkout-session">Checkout Session izveidē</a>). Ja API dokumentācija nemin <code>Idempotency-Key</code>, tas, visticamāk, netiek atbalstīts, un atkārtoti mēģinājumi maksājumu/pasūtījumu endpointiem jāveic ar īpašu piesardzību.</p>
+        <p>Šī nav pašsaprotama funkcionalitāte - API <strong>serverim</strong> jābūt to skaidri implementējušam (kā, piemēram, Stripe dara reālajā <a href="integracijas.html#stripe-checkout-session">Checkout Session izveidē</a>). Ja API dokumentācija nemin <code>Idempotency-Key</code>, tas, visticamāk, netiek atbalstīts, un atkārtoti mēģinājumi maksājumu/pasūtījumu endpointiem jāveic ar īpašu piesardzību.</p>
       </div>
     </section>
 
     <section class="doc-section" id="js-fetch">
       <h2>API patēriņš ar JavaScript (fetch)</h2>
-      <p>Pilns, reāli strādājošs piemērs — dati no JSONPlaceholder, ar pareizu kļūdu apstrādi:</p>
+      <p>Pilns, reāli strādājošs piemērs - dati no JSONPlaceholder, ar pareizu kļūdu apstrādi:</p>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">async</span> <span class="tok-kw">function</span> <span class="tok-fn">ieguvValu</span>() {
     <span class="tok-kw">try</span> {
         <span class="tok-kw">const</span> atbilde = <span class="tok-kw">await</span> <span class="tok-fn">fetch</span>(<span class="tok-str">'https://jsonplaceholder.typicode.com/posts/1'</span>);
 
-        <span class="tok-com">// fetch() NEsviest kļūdu 404/500 gadījumā — tas jāpārbauda pašrocīgi</span>
+        <span class="tok-com">// fetch() NEsviest kļūdu 404/500 gadījumā - tas jāpārbauda pašrocīgi</span>
         <span class="tok-kw">if</span> (!atbilde.ok) {
             <span class="tok-kw">throw</span> <span class="tok-kw">new</span> <span class="tok-fn">Error</span>(<span class="tok-str">`API kļūda: ${atbilde.status}`</span>);
         }
@@ -404,7 +404,7 @@ resource.</code></pre>
         <span class="tok-kw">return</span> <span class="tok-kw">null</span>;
     }
 }</code></pre>
-      <p>POST piemērs — jaunu datu nosūtīšana ar galvenēm un JSON ķermeni:</p>
+      <p>POST piemērs - jaunu datu nosūtīšana ar galvenēm un JSON ķermeni:</p>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">async</span> <span class="tok-kw">function</span> <span class="tok-fn">izveidotIerakstu</span>(virsraksts, saturs) {
     <span class="tok-kw">const</span> atbilde = <span class="tok-kw">await</span> <span class="tok-fn">fetch</span>(<span class="tok-str">'https://jsonplaceholder.typicode.com/posts'</span>, {
         method: <span class="tok-str">'POST'</span>,
@@ -417,9 +417,9 @@ resource.</code></pre>
 }</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>fetch()</code> noraida (reject) Promise <strong>tikai</strong> tīkla kļūdas gadījumā (piem., nav interneta) — <code>404</code> vai <code>500</code> atbildes tas uzskata par "veiksmīgu" pieprasījumu ar sliktu saturu. Tāpēc <strong>vienmēr</strong> pārbaudi <code>atbilde.ok</code> pašrocīgi, kā piemērā augstāk — pretējā gadījumā kļūdas paliks nepamanītas.</p>
+        <p><code>fetch()</code> noraida (reject) Promise <strong>tikai</strong> tīkla kļūdas gadījumā (piem., nav interneta) - <code>404</code> vai <code>500</code> atbildes tas uzskata par "veiksmīgu" pieprasījumu ar sliktu saturu. Tāpēc <strong>vienmēr</strong> pārbaudi <code>atbilde.ok</code> pašrocīgi, kā piemērā augstāk - pretējā gadījumā kļūdas paliks nepamanītas.</p>
       </div>
-      <p><code>fetch()</code> pēc noklusējuma <strong>negaida bezgalīgi</strong> — ja serveris karājas un neatbild vispār (nevis atgriež kļūdu, bet vienkārši klusē), pieprasījums var palikt "iekārts" uz nenoteiktu laiku, iesaldējot arī pārējo koda izpildi, kas gaida uz to. To risina <code>AbortController</code> — piespiedu kārtā atceļ pieprasījumu pēc noteikta laika:</p>
+      <p><code>fetch()</code> pēc noklusējuma <strong>negaida bezgalīgi</strong> - ja serveris karājas un neatbild vispār (nevis atgriež kļūdu, bet vienkārši klusē), pieprasījums var palikt "iekārts" uz nenoteiktu laiku, iesaldējot arī pārējo koda izpildi, kas gaida uz to. To risina <code>AbortController</code> - piespiedu kārtā atceļ pieprasījumu pēc noteikta laika:</p>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">async</span> <span class="tok-kw">function</span> <span class="tok-fn">ieguvValuArTimeoutu</span>(url, laiksMs = 5000) {
     <span class="tok-kw">const</span> kontrolieris = <span class="tok-kw">new</span> <span class="tok-fn">AbortController</span>();
     <span class="tok-kw">const</span> taimeris = <span class="tok-fn">setTimeout</span>(() => kontrolieris.<span class="tok-fn">abort</span>(), laiksMs);
@@ -440,7 +440,7 @@ resource.</code></pre>
 
     <section class="doc-section" id="php-curl">
       <h2>API patēriņš ar PHP (cURL / WordPress)</h2>
-      <p><strong>1. variants — tīrs PHP ar cURL paplašinājumu</strong> (strādā jebkurā PHP projektā):</p>
+      <p><strong>1. variants - tīrs PHP ar cURL paplašinājumu</strong> (strādā jebkurā PHP projektā):</p>
       <pre class="code-block"><span class="lang">php</span><code>&lt;?php
 <span class="tok-fn">$curl</span> = <span class="tok-fn">curl_init</span>();
 <span class="tok-fn">curl_setopt_array</span>(<span class="tok-fn">$curl</span>, [
@@ -459,7 +459,7 @@ resource.</code></pre>
 
 <span class="tok-fn">$dati</span> = <span class="tok-fn">json_decode</span>(<span class="tok-fn">$atbilde</span>, <span class="tok-kw">true</span>);
 <span class="tok-kw">echo</span> <span class="tok-fn">$dati</span>[<span class="tok-str">'title'</span>];</code></pre>
-      <p><strong>2. variants — WordPress</strong> ar <code>wp_remote_get</code>/<code>wp_remote_post</code> (tā pati funkcija, ko izmanto visas šīs dokumentācijas WordPress integrācijas — nav vajadzīgs cURL paplašinājums tiešā veidā, WordPress to iesaiņo automātiski):</p>
+      <p><strong>2. variants - WordPress</strong> ar <code>wp_remote_get</code>/<code>wp_remote_post</code> (tā pati funkcija, ko izmanto visas šīs dokumentācijas WordPress integrācijas - nav vajadzīgs cURL paplašinājums tiešā veidā, WordPress to iesaiņo automātiski):</p>
       <pre class="code-block"><span class="lang">php</span><code>&lt;?php
 <span class="tok-fn">$atbilde</span> = <span class="tok-fn">wp_remote_get</span>(<span class="tok-str">'https://jsonplaceholder.typicode.com/posts/1'</span>, [
     <span class="tok-str">'timeout'</span> => 10,
@@ -478,14 +478,14 @@ resource.</code></pre>
 }</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>WordPress projektā vienmēr izmanto <code>wp_remote_get</code>/<code>wp_remote_post</code> nevis tiešu <code>curl_*</code> — tas ievēro servera proxy iestatījumus, WordPress filtrus un strādā arī serveros, kur cURL paplašinājums nav pieejams (WordPress automātiski pārslēdzas uz alternatīvu metodi).</p>
+        <p>WordPress projektā vienmēr izmanto <code>wp_remote_get</code>/<code>wp_remote_post</code> nevis tiešu <code>curl_*</code> - tas ievēro servera proxy iestatījumus, WordPress filtrus un strādā arī serveros, kur cURL paplašinājums nav pieejams (WordPress automātiski pārslēdzas uz alternatīvu metodi).</p>
       </div>
     </section>
 
     <section class="doc-section" id="savs-api">
       <h2>Sava REST API endpointa izveide</h2>
-      <p><strong>1. variants — tīrs PHP</strong> (vienkāršs endpoints bez ietvara, der mazam projektam):</p>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// api.php — atver ar https://tavavietne.lv/api.php?id=5</span>
+      <p><strong>1. variants - tīrs PHP</strong> (vienkāršs endpoints bez ietvara, der mazam projektam):</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// api.php - atver ar https://tavavietne.lv/api.php?id=5</span>
 &lt;?php
 <span class="tok-kw">header</span>(<span class="tok-str">'Content-Type: application/json'</span>);
 
@@ -507,7 +507,7 @@ resource.</code></pre>
 
 <span class="tok-kw">http_response_code</span>(405);
 <span class="tok-kw">echo</span> <span class="tok-fn">json_encode</span>([<span class="tok-str">'kluda'</span> => <span class="tok-str">'Metode nav atbalstīta'</span>]);</code></pre>
-      <p><strong>2. variants — WordPress REST API</strong> (ieteicams, ja projekts jau ir WordPress — automātiski dabū URL routēšanu, autentifikāciju un daudz ko citu):</p>
+      <p><strong>2. variants - WordPress REST API</strong> (ieteicams, ja projekts jau ir WordPress - automātiski dabū URL routēšanu, autentifikāciju un daudz ko citu):</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// functions.php</span>
 <span class="tok-fn">add_action</span>(<span class="tok-str">'rest_api_init'</span>, <span class="tok-kw">function</span> () {
     <span class="tok-fn">register_rest_route</span>(<span class="tok-str">'mana-vietne/v1'</span>, <span class="tok-str">'/lietotajs/(?P&lt;id&gt;\d+)'</span>, [
@@ -529,16 +529,16 @@ resource.</code></pre>
 }</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p><code>intval()</code> šeit pasargā <code>$id</code>, jo skaitli nevar padarīt par SQL kodu. Bet <strong>jebkurš</strong> cits no ārpuses nākošs dati — teksta lauki, meklēšanas frāzes, filtri — pirms nokļūšanas datubāzes vaicājumā vienmēr jāiet cauri <code>$wpdb->prepare()</code>, nekad tieši jāieliek vaicājuma tekstā ar konkatenāciju. Pretējā gadījumā endpoints ir atvērts SQL injection uzbrukumam — apmeklētājs var nosūtīt SQL kodu URL parametra vietā, un tas izpildīsies tavā datubāzē.</p>
+        <p><code>intval()</code> šeit pasargā <code>$id</code>, jo skaitli nevar padarīt par SQL kodu. Bet <strong>jebkurš</strong> cits no ārpuses nākošs dati - teksta lauki, meklēšanas frāzes, filtri - pirms nokļūšanas datubāzes vaicājumā vienmēr jāiet cauri <code>$wpdb->prepare()</code>, nekad tieši jāieliek vaicājuma tekstā ar konkatenāciju. Pretējā gadījumā endpoints ir atvērts SQL injection uzbrukumam - apmeklētājs var nosūtīt SQL kodu URL parametra vietā, un tas izpildīsies tavā datubāzē.</p>
       </div>
       <p>Pēc pievienošanas endpoints ir sasniedzams zem <code>/wp-json/</code>:</p>
       <pre class="code-block"><span class="lang">bash</span><code>curl https://tavavietne.lv/wp-json/mana-vietne/v1/lietotajs/5</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p><code>permission_callback</code> ir <strong>obligāts</strong> parametrs — WordPress met brīdinājumu, ja to izlaiž. <code>__return_true</code> nozīmē "publiski pieejams visiem"; ja endpoints atgriež sensitīvus vai lietotājam specifiskus datus, tur jāliek reāla pārbaude, piem., <code>fn() => current_user_can('read')</code>, nevis vienmēr <code>true</code>.</p>
+        <p><code>permission_callback</code> ir <strong>obligāts</strong> parametrs - WordPress met brīdinājumu, ja to izlaiž. <code>__return_true</code> nozīmē "publiski pieejams visiem"; ja endpoints atgriež sensitīvus vai lietotājam specifiskus datus, tur jāliek reāla pārbaude, piem., <code>fn() => current_user_can('read')</code>, nevis vienmēr <code>true</code>.</p>
       </div>
-      <p>Kad savam API ir vairāki endpointi, tos aprakstīt ērtāk ir standartizēti, nevis brīvā tekstā — tam domāts <strong>OpenAPI</strong> (agrāk saukts Swagger). Tas ir YAML/JSON fails, kas apraksta katru endpointu, tā parametrus un iespējamās atbildes; no šī faila rīki (piem., Swagger UI) automātiski uzģenerē interaktīvu, testējamu dokumentācijas lapu — nav jāraksta atsevišķi.</p>
-      <pre class="code-block"><span class="lang">yaml</span><code><span class="tok-com"># openapi.yaml — fragments</span>
+      <p>Kad savam API ir vairāki endpointi, tos aprakstīt ērtāk ir standartizēti, nevis brīvā tekstā - tam domāts <strong>OpenAPI</strong> (agrāk saukts Swagger). Tas ir YAML/JSON fails, kas apraksta katru endpointu, tā parametrus un iespējamās atbildes; no šī faila rīki (piem., Swagger UI) automātiski uzģenerē interaktīvu, testējamu dokumentācijas lapu - nav jāraksta atsevišķi.</p>
+      <pre class="code-block"><span class="lang">yaml</span><code><span class="tok-com"># openapi.yaml - fragments</span>
 /lietotajs/{id}:
   get:
     summary: Iegūst lietotāju pēc ID
@@ -554,14 +554,14 @@ resource.</code></pre>
 
     <section class="doc-section" id="testesana">
       <h2>Testēšana (Postman, cURL, DevTools)</h2>
-      <p><strong>Postman</strong> — bezmaksas rīks API pieprasījumu sūtīšanai bez koda rakstīšanas:</p>
+      <p><strong>Postman</strong> - bezmaksas rīks API pieprasījumu sūtīšanai bez koda rakstīšanas:</p>
       <pre class="code-block"><span class="lang">text</span><code>1. Lejupielādē un uzstādi Postman (postman.com)
 2. "New" → "HTTP Request"
 3. Izvēlies metodi (GET/POST/...) un ievadi URL
-4. Ja vajag — cilnē "Headers" pievieno Authorization/Content-Type
-5. Ja vajag — cilnē "Body" pievieno JSON datus (POST/PUT)
-6. "Send" — apakšā uzreiz redzi statusa kodu un atbildi</code></pre>
-      <p><strong>cURL</strong> — tas pats terminālī, ērti kopēt tieši dokumentācijā vai skriptos:</p>
+4. Ja vajag - cilnē "Headers" pievieno Authorization/Content-Type
+5. Ja vajag - cilnē "Body" pievieno JSON datus (POST/PUT)
+6. "Send" - apakšā uzreiz redzi statusa kodu un atbildi</code></pre>
+      <p><strong>cURL</strong> - tas pats terminālī, ērti kopēt tieši dokumentācijā vai skriptos:</p>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># GET ar galveni</span>
 curl -H <span class="tok-str">"Authorization: Bearer TOKENS"</span> https://api.piemers.lv/dati
 
@@ -569,7 +569,7 @@ curl -H <span class="tok-str">"Authorization: Bearer TOKENS"</span> https://api.
 curl -v -X POST https://api.piemers.lv/dati \
   -H <span class="tok-str">"Content-Type: application/json"</span> \
   -d <span class="tok-str">'{"vards":"Anna"}'</span></code></pre>
-      <p><strong>Pārlūka DevTools</strong> — noderīgi, ja API izsauc pati tava vietne (nevis ārējs rīks):</p>
+      <p><strong>Pārlūka DevTools</strong> - noderīgi, ja API izsauc pati tava vietne (nevis ārējs rīks):</p>
       <pre class="code-block"><span class="lang">text</span><code>1. Atver DevTools (F12) → cilne "Network"
 2. Atzīmē filtru "Fetch/XHR", lai redzētu tikai API pieprasījumus
 3. Izpildi darbību savā vietnē, kas izsauc API
@@ -577,13 +577,13 @@ curl -v -X POST https://api.piemers.lv/dati \
    "Response" (kas saņemts atpakaļ), "Timing" (cik ilgi tas ņēma)</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Kad kods, kas izsauc API, nestrādā, kā gaidīts — vienmēr vispirms pārbaudi DevTools "Network" cilni, <strong>pirms</strong> sāc mainīt kodu. Bieži problēma nav tavā JS/PHP loģikā, bet gan pašā pieprasījumā (nepareizs URL, trūkstoša galvene, nepareizs metode) — tas uzreiz redzams tur.</p>
+        <p>Kad kods, kas izsauc API, nestrādā, kā gaidīts - vienmēr vispirms pārbaudi DevTools "Network" cilni, <strong>pirms</strong> sāc mainīt kodu. Bieži problēma nav tavā JS/PHP loģikā, bet gan pašā pieprasījumā (nepareizs URL, trūkstoša galvene, nepareizs metode) - tas uzreiz redzams tur.</p>
       </div>
     </section>
 
     <section class="doc-section" id="paginacija-kludas">
       <h2>Paginācija &amp; kļūdu apstrāde</h2>
-      <p>Kad resursu ir daudz (piem., tūkstošiem lietotāju), API tos neatgriež visus vienā atbildē — tas būtu lēni un patērētu daudz resursu. Tā vietā izmanto <strong>paginācija</strong> (lapošana):</p>
+      <p>Kad resursu ir daudz (piem., tūkstošiem lietotāju), API tos neatgriež visus vienā atbildē - tas būtu lēni un patērētu daudz resursu. Tā vietā izmanto <strong>paginācija</strong> (lapošana):</p>
       <div class="cheat-table-wrap">
         <table class="cheat-table">
           <thead><tr><th>Veids</th><th>Piemērs</th><th>Kad izmanto</th></tr></thead>
@@ -613,7 +613,7 @@ curl -v -X POST https://api.piemers.lv/dati \
 }</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Veidojot savu API (skat. <a href="#savs-api">Sava REST API endpointa izveide</a>), no paša sākuma izvēlies <strong>vienu</strong> konsekventu kļūdu formātu un lieto to visur — klientam, kas patērē tavu API, jāvar paļauties, ka kļūdas vienmēr izskatās vienādi, neatkarīgi no endpointa.</p>
+        <p>Veidojot savu API (skat. <a href="#savs-api">Sava REST API endpointa izveide</a>), no paša sākuma izvēlies <strong>vienu</strong> konsekventu kļūdu formātu un lieto to visur - klientam, kas patērē tavu API, jāvar paļauties, ka kļūdas vienmēr izskatās vienādi, neatkarīgi no endpointa.</p>
       </div>
     </section>
 
@@ -624,7 +624,7 @@ curl -v -X POST https://api.piemers.lv/dati \
   </main>
 </div>
 
-<script src="../js/theme.js?v=20"></script>
-<script src="../js/main.js?v=20"></script>
+<script src="../js/theme.js?v=21"></script>
+<script src="../js/main.js?v=21"></script>
 </body>
 </html>

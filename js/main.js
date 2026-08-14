@@ -12,13 +12,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // live filter for category cards — matches per WORD (order-independent),
+  // live filter for category cards - matches per WORD (order-independent),
   // not just one literal phrase, so "wordpress cache" also finds a card
   // whose text has those words in the opposite order or split apart
   var search = document.getElementById("category-search");
   var resultsBox = document.getElementById("search-results");
 
-  // site-wide section index — built lazily by fetching + parsing each page's
+  // site-wide section index - built lazily by fetching + parsing each page's
   // own HTML, so results always match real content without a separate index
   // file to keep in sync manually. Cached in sessionStorage per cache-bust version.
   var SEARCH_PAGES = [
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "pages/wordpress-problemas.html", "pages/wordpress-snippets.html",
     "pages/wordpress.html", "pages/python-riki.html"
   ];
-  var SEARCH_INDEX_VERSION = "20"; // bump together with the ?v= cache-bust number
+  var SEARCH_INDEX_VERSION = "21"; // bump together with the ?v= cache-bust number
   var searchIndex = null;
   var searchIndexPromise = null;
 
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }).slice(0, 8);
 
     if (matches.length === 0) {
-      resultsBox.innerHTML = '<div class="search-no-results">Sadaļās nekas netika atrasts — mēģini citu vārdu.</div>';
+      resultsBox.innerHTML = '<div class="search-no-results">Sadaļās nekas netika atrasts - mēģini citu vārdu.</div>';
       resultsBox.classList.add("open");
       return;
     }
@@ -165,7 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // accordion sidebar (used on pages that group many sections under a
-  // collapsible integration name, e.g. pages/integracijas.html) —
+  // collapsible integration name, e.g. pages/integracijas.html) -
   // clicking a header opens its body and closes any other open one
   document.querySelectorAll(".doc-accordion-toggle").forEach(function (btn) {
     btn.addEventListener("click", function () {
@@ -183,7 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // sidebar active link highlighting on scroll (doc pages)
-  // observes whatever element each sidebar link actually points to —
+  // observes whatever element each sidebar link actually points to -
   // a full .doc-section OR just a heading anchor nested inside one
   // (covers both flat .doc-sidebar-group lists and accordion bodies)
   var links = document.querySelectorAll(".doc-sidebar a[href^='#']");
@@ -207,7 +207,7 @@ document.addEventListener("DOMContentLoaded", function () {
       group.classList.add("open");
     }
 
-    // instant feedback on click — don't wait for the scroll/observer to
+    // instant feedback on click - don't wait for the scroll/observer to
     // settle, since a clicked heading can briefly land outside the
     // tracked band while the page is still scrolling to it
     links.forEach(function (l) {
@@ -219,7 +219,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function updateActiveLink() {
       // some sidebar links point to a heading nested INSIDE another
-      // observed section (e.g. CPT sub-topics inside the CPT section) —
+      // observed section (e.g. CPT sub-topics inside the CPT section) -
       // when both are visible at once, prefer the more specific (nested) one
       var candidates = Array.from(visible)
         .map(function (id) { return document.getElementById(id); })
@@ -251,7 +251,7 @@ document.addEventListener("DOMContentLoaded", function () {
     sections.forEach(function (s) { observer.observe(s); });
   }
 
-  // mobile "jump to section" dropdown — the real sidebar is hidden below
+  // mobile "jump to section" dropdown - the real sidebar is hidden below
   // 980px (see CSS), so build a native <select> from the same links
   // instead of leaving mobile readers to scroll through the whole page
   var jumpSidebar = document.querySelector(".doc-sidebar");
@@ -298,7 +298,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // copy-to-clipboard button on every code block — re-parents the existing
+  // copy-to-clipboard button on every code block - re-parents the existing
   // .lang badge into a shared toolbar alongside a new copy button, so no
   // HTML file needs to change, only this script + the matching CSS
   document.querySelectorAll("pre.code-block").forEach(function (block) {

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Documentation Samis — Design System
+   Documentation Samis - Design System
    ========================================================================== */
 
 :root {
@@ -44,7 +44,7 @@
   --c-python: #306998;
   --c-python-soft: rgba(48, 105, 152, 0.15);
 
-  /* page-scoped accent — falls back to the brand purple; category pages
+  /* page-scoped accent - falls back to the brand purple; category pages
      override these (see .cat-* below) so navigation/headings pick up the
      same color as that category's icon, making pages easier to tell apart
      and long pages easier to scan. Never used for code syntax highlighting
@@ -928,7 +928,7 @@ footer.site-footer a:hover {
   margin-bottom: 44px;
   scroll-margin-top: 90px;
 }
-/* sub-heading anchors (e.g. CPT sidebar sub-links) — land inside the
+/* sub-heading anchors (e.g. CPT sidebar sub-links) - land inside the
    band the scroll-spy observer tracks, so the highlight sticks after
    the jump settles, not just at the instant of the click */
 .doc-main h2[id] {

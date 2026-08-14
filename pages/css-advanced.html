@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
-<title>HTML &amp; CSS Advanced — Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=20" />
+<title>HTML &amp; CSS Advanced - Documentation Samis</title>
+<link rel="stylesheet" href="../css/style.css?v=21" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -74,11 +74,11 @@
       </div>
       <h1 style="margin-bottom:0;">HTML &amp; CSS Advanced</h1>
     </div>
-    <p class="doc-lead">Šeit nav pamatu — tikai tas, ko iesācēju kursi parasti izlaiž: modernais CSS layout, jauni selektori, native HTML5 elementi, kas aizstāj rokām rakstītu JS. Katrai tēmai — kāpēc tā ir noderīga un pilnībā strādājošs piemērs.</p>
+    <p class="doc-lead">Šeit nav pamatu - tikai tas, ko iesācēju kursi parasti izlaiž: modernais CSS layout, jauni selektori, native HTML5 elementi, kas aizstāj rokām rakstītu JS. Katrai tēmai - kāpēc tā ir noderīga un pilnībā strādājošs piemērs.</p>
 
     <section class="doc-section" id="css-grid-advanced">
       <h2>CSS Grid padziļināti</h2>
-      <p><code>grid-template-areas</code> ļauj aprakstīt izkārtojumu vizuāli, kā "karti" — daudz lasāmāk nekā skaitīt kolonnu/rindu numurus.</p>
+      <p><code>grid-template-areas</code> ļauj aprakstīt izkārtojumu vizuāli, kā "karti" - daudz lasāmāk nekā skaitīt kolonnu/rindu numurus.</p>
       <pre class="code-block"><span class="lang">css</span><code>.layout {
     display: grid;
     grid-template-columns: 250px 1fr;
@@ -91,18 +91,18 @@
 .sidebar { grid-area: sidebar; }
 .main    { grid-area: main; }
 .footer  { grid-area: footer; }</code></pre>
-      <p><code>subgrid</code> ļauj bērnelementam pārmantot vecāka grid līnijas — noder, lai kartītes rindā izlīdzinātu pēc vienādām kolonnām, pat ja katrai kartītei atšķirīgs saturs:</p>
+      <p><code>subgrid</code> ļauj bērnelementam pārmantot vecāka grid līnijas - noder, lai kartītes rindā izlīdzinātu pēc vienādām kolonnām, pat ja katrai kartītei atšķirīgs saturs:</p>
       <pre class="code-block"><span class="lang">css</span><code>.parent { display: grid; grid-template-columns: repeat(4, 1fr); }
 .child  { display: grid; grid-template-columns: subgrid; grid-column: span 4; }</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>repeat(auto-fit, minmax(200px, 1fr))</code> ir viena no visnoderīgākajām Grid kombinācijām — automātiski izveido tik kolonnu, cik ietilpst (katra vismaz 200px plata), bez neviena media query.</p>
+        <p><code>repeat(auto-fit, minmax(200px, 1fr))</code> ir viena no visnoderīgākajām Grid kombinācijām - automātiski izveido tik kolonnu, cik ietilpst (katra vismaz 200px plata), bez neviena media query.</p>
       </div>
     </section>
 
     <section class="doc-section" id="container-queries">
       <h2>Container Queries</h2>
-      <p>Media queries reaģē uz <strong>pārlūka loga</strong> platumu. Container queries reaģē uz <strong>vecākelementa</strong> platumu — komponente pati pielāgojas atkarībā no tā, kur tā ievietota (sānjoslā vs galvenajā saturā), nevis no visas lapas izmēra.</p>
+      <p>Media queries reaģē uz <strong>pārlūka loga</strong> platumu. Container queries reaģē uz <strong>vecākelementa</strong> platumu - komponente pati pielāgojas atkarībā no tā, kur tā ievietota (sānjoslā vs galvenajā saturā), nevis no visas lapas izmēra.</p>
       <pre class="code-block"><span class="lang">css</span><code>.card-wrap {
     container-type: inline-size;
     container-name: card;
@@ -116,13 +116,13 @@
 }</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Tā pati <code>.card</code> komponente tagad var izskatīties atšķirīgi platā galvenajā laukumā un šaurā sānjoslā — bez divām atsevišķām CSS klasēm vai JavaScript. Der patiesi atkārtoti lietojamiem komponentiem.</p>
+        <p>Tā pati <code>.card</code> komponente tagad var izskatīties atšķirīgi platā galvenajā laukumā un šaurā sānjoslā - bez divām atsevišķām CSS klasēm vai JavaScript. Der patiesi atkārtoti lietojamiem komponentiem.</p>
       </div>
     </section>
 
     <section class="doc-section" id="flexbox-advanced">
       <h2>Flexbox padziļināti</h2>
-      <p>Ne tikai <code>display: flex</code> — <code>order</code> un saliktais <code>flex</code> saīsinājums ļauj precīzi kontrolēt izkārtojumu bez HTML pārkārtošanas.</p>
+      <p>Ne tikai <code>display: flex</code> - <code>order</code> un saliktais <code>flex</code> saīsinājums ļauj precīzi kontrolēt izkārtojumu bez HTML pārkārtošanas.</p>
       <pre class="code-block"><span class="lang">css</span><code>.flex-row {
     display: flex;
     gap: 16px; /* mūsdienās der arī flexboxam, ne tikai gridam */
@@ -137,20 +137,20 @@
 }</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p><code>order</code> maina tikai <strong>vizuālo</strong> secību, ne DOM (dokumenta) secību — ekrāna lasītāji un tastatūras navigācija (Tab taustiņš) joprojām seko oriģinālajai HTML secībai. Nelieto <code>order</code>, lai "salabotu" nepareizu HTML struktūru — tas rada pieejamības problēmas.</p>
+        <p><code>order</code> maina tikai <strong>vizuālo</strong> secību, ne DOM (dokumenta) secību - ekrāna lasītāji un tastatūras navigācija (Tab taustiņš) joprojām seko oriģinālajai HTML secībai. Nelieto <code>order</code>, lai "salabotu" nepareizu HTML struktūru - tas rada pieejamības problēmas.</p>
       </div>
     </section>
 
     <section class="doc-section" id="custom-properties-advanced">
       <h2>Custom Properties padziļināti</h2>
-      <p>CSS mainīgie (<code>--mainigais</code>) ne tikai glabā vērtības — tos var pārrakstīt lokāli (kaskadē) un lasīt/rakstīt tieši no JavaScript.</p>
+      <p>CSS mainīgie (<code>--mainigais</code>) ne tikai glabā vērtības - tos var pārrakstīt lokāli (kaskadē) un lasīt/rakstīt tieši no JavaScript.</p>
       <pre class="code-block"><span class="lang">css</span><code>:root {
     --spacing: 8px;
     --spacing-lg: calc(var(--spacing) * 3); /* mainīgie var izmantot citus mainīgos */
 }
 
 .theme-dark {
-    --bg: #0a0a0a; /* pārraksta lokāli — VISI bērnelementi automātiski redz jauno vērtību */
+    --bg: #0a0a0a; /* pārraksta lokāli - VISI bērnelementi automātiski redz jauno vērtību */
 }</code></pre>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// Lasīt/rakstīt CSS mainīgos tieši no JS</span>
 <span class="tok-kw">const</span> root = <span class="tok-kw">document</span>.documentElement;
@@ -159,13 +159,13 @@ root.style.setProperty(<span class="tok-str">'--spacing'</span>, <span class="to
 <span class="tok-kw">const</span> vertiba = <span class="tok-kw">getComputedStyle</span>(root).getPropertyValue(<span class="tok-str">'--spacing'</span>);</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Tieši šis mehānisms ir pamatā Documentation Samis pašas tumšā/gaišā režīma pārslēgšanai — <code>--page-accent</code> un līdzīgi mainīgie tiek pārrakstīti pēc kategorijas un tēmas, un visi elementi, kas tos izmanto, atjaunojas automātiski, bez atsevišķas CSS klases katrai kombinācijai.</p>
+        <p>Tieši šis mehānisms ir pamatā Documentation Samis pašas tumšā/gaišā režīma pārslēgšanai - <code>--page-accent</code> un līdzīgi mainīgie tiek pārrakstīti pēc kategorijas un tēmas, un visi elementi, kas tos izmanto, atjaunojas automātiski, bez atsevišķas CSS klases katrai kombinācijai.</p>
       </div>
     </section>
 
     <section class="doc-section" id="fluid-typography">
       <h2>clamp() &amp; fluid typography</h2>
-      <p><code>clamp(min, ideāls, max)</code> ļauj vērtībai augt/samazināties plūstoši atkarībā no ekrāna izmēra, bet nekad nepārsniegt noteiktās robežas — bez desmitiem media query.</p>
+      <p><code>clamp(min, ideāls, max)</code> ļauj vērtībai augt/samazināties plūstoši atkarībā no ekrāna izmēra, bet nekad nepārsniegt noteiktās robežas - bez desmitiem media query.</p>
       <pre class="code-block"><span class="lang">css</span><code>h1 {
     font-size: clamp(1.5rem, 4vw + 1rem, 3rem); /* nekad mazāk par 1.5rem, nekad vairāk par 3rem */
 }
@@ -179,32 +179,32 @@ root.style.setProperty(<span class="tok-str">'--spacing'</span>, <span class="to
 }</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>4vw + 1rem</code> vidējā vērtībā apvieno divus mērvienību tipus — <code>vw</code> (atkarīgs no loga platuma) ar <code>rem</code> (fiksēts) — tas nodrošina, ka teksts skalējas ar ekrānu, bet nekad nekļūst absurdi mazs uz šauriem ekrāniem, jo <code>rem</code> daļa vienmēr piešķir minimālu bāzi.</p>
+        <p><code>4vw + 1rem</code> vidējā vērtībā apvieno divus mērvienību tipus - <code>vw</code> (atkarīgs no loga platuma) ar <code>rem</code> (fiksēts) - tas nodrošina, ka teksts skalējas ar ekrānu, bet nekad nekļūst absurdi mazs uz šauriem ekrāniem, jo <code>rem</code> daļa vienmēr piešķir minimālu bāzi.</p>
       </div>
     </section>
 
     <section class="doc-section" id="modern-selectors">
       <h2>:has() / :is() / :where()</h2>
       <p>Trīs jauni selektori, kas atrisina gadu desmitiem vecas CSS ierobežojumus.</p>
-      <pre class="code-block"><span class="lang">css</span><code>/* :has() — izvēlas TĒVU pēc BĒRNA klātbūtnes (agrāk vajadzēja JS) */
+      <pre class="code-block"><span class="lang">css</span><code>/* :has() - izvēlas TĒVU pēc BĒRNA klātbūtnes (agrāk vajadzēja JS) */
 .card:has(img) { padding-top: 0; }
 .form-group:has(input:invalid) { border-color: red; }
 
-/* :is() — saīsina atkārtotus selektorus */
+/* :is() - saīsina atkārtotus selektorus */
 :is(h1, h2, h3) { font-weight: 700; }
-/* tas pats, kas: h1, h2, h3 { font-weight: 700; } — bet noderīgāks garākiem selektoriem */
+/* tas pats, kas: h1, h2, h3 { font-weight: 700; } - bet noderīgāks garākiem selektoriem */
 
-/* :where() — TAS PATS kā :is(), bet specificity VIENMĒR ir 0 */
+/* :where() - TAS PATS kā :is(), bet specificity VIENMĒR ir 0 */
 :where(h1, h2, h3) { margin: 0; } /* viegli pārrakstāms ar jebkuru citu noteikumu */</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p><code>:has()</code> ir vienīgais veids tīrā CSS, kā stilizēt elementu, pamatojoties uz to, KAS atrodas tā iekšā — pirms tam tas prasīja JavaScript, kas klausās izmaiņas un pievieno/noņem klasi manuāli.</p>
+        <p><code>:has()</code> ir vienīgais veids tīrā CSS, kā stilizēt elementu, pamatojoties uz to, KAS atrodas tā iekšā - pirms tam tas prasīja JavaScript, kas klausās izmaiņas un pievieno/noņem klasi manuāli.</p>
       </div>
     </section>
 
     <section class="doc-section" id="css-layers">
       <h2>@layer (CSS Layers)</h2>
-      <p>Ļauj skaidri kontrolēt kaskādes secību — vēlāk deklarēts <code>@layer</code> vienmēr uzvar pār agrāko, <strong>neatkarīgi</strong> no specificity. Atrisina "CSS kara" problēmu ar trešo pušu bibliotēkām.</p>
+      <p>Ļauj skaidri kontrolēt kaskādes secību - vēlāk deklarēts <code>@layer</code> vienmēr uzvar pār agrāko, <strong>neatkarīgi</strong> no specificity. Atrisina "CSS kara" problēmu ar trešo pušu bibliotēkām.</p>
       <pre class="code-block"><span class="lang">css</span><code>@layer reset, base, components, utilities; /* nosaka secību VISAM failam */
 
 @layer base {
@@ -216,13 +216,13 @@ root.style.setProperty(<span class="tok-str">'--spacing'</span>, <span class="to
 }</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Bez slāņiem, lai pārrakstītu trešās puses bibliotēkas stilu (piem., no WordPress spraudņa), bieži vajadzēja <code>!important</code> vai mākslīgi garākus selektorus. Ar <code>@layer</code> vienkārši ieliec savu CSS vēlākā slānī — tas uzvar automātiski, tīri un paredzami.</p>
+        <p>Bez slāņiem, lai pārrakstītu trešās puses bibliotēkas stilu (piem., no WordPress spraudņa), bieži vajadzēja <code>!important</code> vai mākslīgi garākus selektorus. Ar <code>@layer</code> vienkārši ieliec savu CSS vēlākā slānī - tas uzvar automātiski, tīri un paredzami.</p>
       </div>
     </section>
 
     <section class="doc-section" id="css-animations-advanced">
       <h2>Animācijas padziļināti</h2>
-      <p>Katram sarakstā esošam elementam cita aizture (<code>animation-delay</code>), aprēķināta no CSS mainīgā — klasisks "staggered" (pakāpenisks) animācijas efekts bez JS.</p>
+      <p>Katram sarakstā esošam elementam cita aizture (<code>animation-delay</code>), aprēķināta no CSS mainīgā - klasisks "staggered" (pakāpenisks) animācijas efekts bez JS.</p>
       <pre class="code-block"><span class="lang">css</span><code>@keyframes slideIn {
     from { opacity: 0; transform: translateY(20px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -234,13 +234,13 @@ root.style.setProperty(<span class="tok-str">'--spacing'</span>, <span class="to
 }</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>--i</code> mainīgo katram elementam ieliek JS pusē (piem., <code>item.style.setProperty('--i', index)</code>) vai servera pusē veidnē — tas ļauj vienam CSS noteikumam radīt atšķirīgu aizturi katram sarakstā esošam elementam.</p>
+        <p><code>--i</code> mainīgo katram elementam ieliek JS pusē (piem., <code>item.style.setProperty('--i', index)</code>) vai servera pusē veidnē - tas ļauj vienam CSS noteikumam radīt atšķirīgu aizturi katram sarakstā esošam elementam.</p>
       </div>
     </section>
 
     <section class="doc-section" id="scroll-animations">
       <h2>Scroll-driven animations</h2>
-      <p>Animācija, kas progresē atkarībā no ritināšanas pozīcijas, nevis laika — elements pakāpeniski parādās, ritinot to redzamības zonā.</p>
+      <p>Animācija, kas progresē atkarībā no ritināšanas pozīcijas, nevis laika - elements pakāpeniski parādās, ritinot to redzamības zonā.</p>
       <pre class="code-block"><span class="lang">css</span><code>@keyframes fade-in-on-scroll {
     from { opacity: 0; transform: translateY(30px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -253,15 +253,15 @@ root.style.setProperty(<span class="tok-str">'--spacing'</span>, <span class="to
 }</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Šis ir jauns CSS API (2024+) — pārbaudi atbalstu <a href="https://caniuse.com/?search=animation-timeline" target="_blank" rel="noopener">caniuse.com</a>, pirms paļauties uz to kritiskam funkcionalitātei. Vecākiem pārlūkiem der pakāpeniska uzlabošana (progressive enhancement): elements bez atbalsta vienkārši paliek redzams uzreiz, bez animācijas.</p>
+        <p>Šis ir jauns CSS API (2024+) - pārbaudi atbalstu <a href="https://caniuse.com/?search=animation-timeline" target="_blank" rel="noopener">caniuse.com</a>, pirms paļauties uz to kritiskam funkcionalitātei. Vecākiem pārlūkiem der pakāpeniska uzlabošana (progressive enhancement): elements bez atbalsta vienkārši paliek redzams uzreiz, bez animācijas.</p>
       </div>
     </section>
 
     <section class="doc-section" id="view-transitions">
       <h2>View Transitions API</h2>
-      <p>Pārlūks automātiski animē pāreju starp diviem DOM stāvokļiem — nofotografē "pirms" un "pēc" un radī plūstošu pāreju starp tiem, bez rokām rakstītas animācijas loģikas.</p>
+      <p>Pārlūks automātiski animē pāreju starp diviem DOM stāvokļiem - nofotografē "pirms" un "pēc" un radī plūstošu pāreju starp tiem, bez rokām rakstītas animācijas loģikas.</p>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">document</span>.startViewTransition(() => {
-    <span class="tok-com">// DOM izmaiņas šeit — pārlūks AUTOMĀTISKI animē pāreju</span>
+    <span class="tok-com">// DOM izmaiņas šeit - pārlūks AUTOMĀTISKI animē pāreju</span>
     updateDOM();
 });</code></pre>
       <pre class="code-block"><span class="lang">css</span><code>::view-transition-old(root),
@@ -270,13 +270,13 @@ root.style.setProperty(<span class="tok-str">'--spacing'</span>, <span class="to
 }</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Der lieliski lapas pārejām vienas-lapas lietotnēs (SPA) — piem., pārejot no produktu saraksta uz produkta detaļām, attēls var vizuāli "izaugt" no sīktēla uz pilnu izmēru. Ja pārlūks neatbalsta šo API, <code>startViewTransition()</code> vienkārši izpilda funkciju uzreiz, bez animācijas — droši lietot kā uzlabojumu, ne kā obligātu atkarību.</p>
+        <p>Der lieliski lapas pārejām vienas-lapas lietotnēs (SPA) - piem., pārejot no produktu saraksta uz produkta detaļām, attēls var vizuāli "izaugt" no sīktēla uz pilnu izmēru. Ja pārlūks neatbalsta šo API, <code>startViewTransition()</code> vienkārši izpilda funkciju uzreiz, bez animācijas - droši lietot kā uzlabojumu, ne kā obligātu atkarību.</p>
       </div>
     </section>
 
     <section class="doc-section" id="web-components">
       <h2>Web Components</h2>
-      <p>Pašam definēts HTML tags ar iekapsulētu (encapsulated) stilu un uzvedību, izmantojot tikai pārlūkā iebūvētu, natīvu API — bez React/Vue vai jebkuras bibliotēkas.</p>
+      <p>Pašam definēts HTML tags ar iekapsulētu (encapsulated) stilu un uzvedību, izmantojot tikai pārlūkā iebūvētu, natīvu API - bez React/Vue vai jebkuras bibliotēkas.</p>
       <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">class</span> ManaPoga <span class="tok-kw">extends</span> HTMLElement {
     connectedCallback() {
         <span class="tok-kw">this</span>.attachShadow({ mode: <span class="tok-str">'open'</span> }).innerHTML = <span class="tok-str">`
@@ -292,13 +292,13 @@ root.style.setProperty(<span class="tok-str">'--spacing'</span>, <span class="to
       <pre class="code-block"><span class="lang">html</span><code>&lt;mana-poga&gt;Klikšķini šeit&lt;/mana-poga&gt;</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><strong>Shadow DOM</strong> (<code>attachShadow</code>) nozīmē, ka <code>&lt;style&gt;</code> šī komponenta iekšā <strong>neietekmē</strong> pārējo lapu, un otrādi — lapas globālais CSS neietekmē komponenta iekšpusi. <code>&lt;slot&gt;</code> ir vieta, kur ievietojas oriģinālais saturs starp atverošo un aizverošo tagu (šeit — "Klikšķini šeit").</p>
+        <p><strong>Shadow DOM</strong> (<code>attachShadow</code>) nozīmē, ka <code>&lt;style&gt;</code> šī komponenta iekšā <strong>neietekmē</strong> pārējo lapu, un otrādi - lapas globālais CSS neietekmē komponenta iekšpusi. <code>&lt;slot&gt;</code> ir vieta, kur ievietojas oriģinālais saturs starp atverošo un aizverošo tagu (šeit - "Klikšķini šeit").</p>
       </div>
     </section>
 
     <section class="doc-section" id="dialog-element">
       <h2>&lt;dialog&gt; elements</h2>
-      <p>Natīvs, iebūvēts modālā loga elements — fokusa slēdzene (focus trap), Esc aizvēršana un fons (backdrop) darbojas automātiski, bez pašrocīgi rakstīta JS.</p>
+      <p>Natīvs, iebūvēts modālā loga elements - fokusa slēdzene (focus trap), Esc aizvēršana un fons (backdrop) darbojas automātiski, bez pašrocīgi rakstīta JS.</p>
       <pre class="code-block"><span class="lang">html</span><code>&lt;dialog id="myDialog"&gt;
     &lt;p&gt;Šis ir natīvs modālais logs.&lt;/p&gt;
     &lt;button onclick="document.getElementById('myDialog').close()"&gt;Aizvērt&lt;/button&gt;
@@ -315,13 +315,13 @@ dialog {
 }</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Salīdzini ar pašrocīgi rakstīto modālo logu <a href="sagataves.html#modalis">Sagataves → Modālais logs</a> — tur vajadzēja pašiem rakstīt Esc taustiņa, klikšķa-ārpusē un fokusa loģiku. <code>&lt;dialog&gt;</code> to visu dara pats, uz <code>showModal()</code> izsaukuma.</p>
+        <p>Salīdzini ar pašrocīgi rakstīto modālo logu <a href="sagataves.html#modalis">Sagataves → Modālais logs</a> - tur vajadzēja pašiem rakstīt Esc taustiņa, klikšķa-ārpusē un fokusa loģiku. <code>&lt;dialog&gt;</code> to visu dara pats, uz <code>showModal()</code> izsaukuma.</p>
       </div>
     </section>
 
     <section class="doc-section" id="details-summary">
       <h2>&lt;details&gt;/&lt;summary&gt;</h2>
-      <p>Natīvs, iebūvēts akordeons — vienas rindiņas HTML, bez CSS vai JS.</p>
+      <p>Natīvs, iebūvēts akordeons - vienas rindiņas HTML, bez CSS vai JS.</p>
       <pre class="code-block"><span class="lang">html</span><code>&lt;details&gt;
     &lt;summary&gt;Kas ir WordPress?&lt;/summary&gt;
     &lt;p&gt;WordPress ir satura pārvaldības sistēma (CMS), kas darbina vairāk nekā 40% no visām interneta vietnēm.&lt;/p&gt;
@@ -333,13 +333,13 @@ dialog {
 &lt;/details&gt;</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Salīdzini ar pašrocīgi rakstīto akordeonu <a href="sagataves.html#akordeons">Sagataves → Akordeons</a> — tas dod pilnu kontroli pār animāciju un stilu (piem., tikai vienu atvērtu vienlaicīgi), bet <code>&lt;details&gt;</code> der ātriem, vienkāršiem gadījumiem, kur JS/CSS piepūle nav attaisnojama.</p>
+        <p>Salīdzini ar pašrocīgi rakstīto akordeonu <a href="sagataves.html#akordeons">Sagataves → Akordeons</a> - tas dod pilnu kontroli pār animāciju un stilu (piem., tikai vienu atvērtu vienlaicīgi), bet <code>&lt;details&gt;</code> der ātriem, vienkāršiem gadījumiem, kur JS/CSS piepūle nav attaisnojama.</p>
       </div>
     </section>
 
     <section class="doc-section" id="template-element">
       <h2>&lt;template&gt; elements</h2>
-      <p>Saturs <code>&lt;template&gt;</code> iekšā ir <strong>inertens</strong> — netiek renderēts, attēli neielādējas, skripti neizpildās — kamēr to neklonē DOM ar JavaScript. Efektīvs veids, kā sagatavot atkārtojamu HTML struktūru.</p>
+      <p>Saturs <code>&lt;template&gt;</code> iekšā ir <strong>inertens</strong> - netiek renderēts, attēli neielādējas, skripti neizpildās - kamēr to neklonē DOM ar JavaScript. Efektīvs veids, kā sagatavot atkārtojamu HTML struktūru.</p>
       <pre class="code-block"><span class="lang">html</span><code>&lt;template id="row-template"&gt;
     &lt;tr&gt;&lt;td class="name"&gt;&lt;/td&gt;&lt;td class="email"&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;/template&gt;
@@ -354,7 +354,7 @@ clone.querySelector(<span class="tok-str">'.email'</span>).textContent = <span c
 <span class="tok-kw">document</span>.getElementById(<span class="tok-str">'tabula'</span>).appendChild(clone);</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Alternatīva veidam, kā daudzi raksta HTML tieši JS virknēs (<code>innerHTML = '&lt;tr&gt;...'</code>) — <code>&lt;template&gt;</code> ļauj HTML struktūru rakstīt kā īstu HTML, ar sintakses izcelšanu un bez virkņu salikšanas kļūdu riska.</p>
+        <p>Alternatīva veidam, kā daudzi raksta HTML tieši JS virknēs (<code>innerHTML = '&lt;tr&gt;...'</code>) - <code>&lt;template&gt;</code> ļauj HTML struktūru rakstīt kā īstu HTML, ar sintakses izcelšanu un bez virkņu salikšanas kļūdu riska.</p>
       </div>
     </section>
 
@@ -365,7 +365,7 @@ clone.querySelector(<span class="tok-str">'.email'</span>).textContent = <span c
   </main>
 </div>
 
-<script src="../js/theme.js?v=20"></script>
-<script src="../js/main.js?v=20"></script>
+<script src="../js/theme.js?v=21"></script>
+<script src="../js/main.js?v=21"></script>
 </body>
 </html>

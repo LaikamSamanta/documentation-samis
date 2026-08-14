@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
-<title>Tīkls — Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=20" />
+<title>Tīkls - Documentation Samis</title>
+<link rel="stylesheet" href="../css/style.css?v=21" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -74,42 +74,42 @@
       </div>
       <h1 style="margin-bottom:0;">Tīkls</h1>
     </div>
-    <p class="doc-lead">Pilns iesācēja ceļvedis: kas ir IP adrese, DNS un SSL — katrai tēmai pilns skaidrojums un komandas, ko var iekopēt un uzreiz palaist. Meklē risinājumu, kad kaut kas nestrādā? Tas tagad ir atsevišķā sadaļā — <a href="web-problemas.html">Servera problēmas un risinājumi</a>.</p>
+    <p class="doc-lead">Pilns iesācēja ceļvedis: kas ir IP adrese, DNS un SSL - katrai tēmai pilns skaidrojums un komandas, ko var iekopēt un uzreiz palaist. Meklē risinājumu, kad kaut kas nestrādā? Tas tagad ir atsevišķā sadaļā - <a href="web-problemas.html">Servera problēmas un risinājumi</a>.</p>
 
     <div class="callout tip">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-      <p>Ja pārlūkā parādās kļūda (DNS_PROBE_FINISHED_NXDOMAIN, CONNECTION_REFUSED, SSL kļūdas, 502/503/504, CORS un citas) — pilni risinājumi ar SSH komandām un failu alternatīvām atrodas sadaļā <a href="web-problemas.html"><strong>Servera problēmas un risinājumi</strong></a>.</p>
+      <p>Ja pārlūkā parādās kļūda (DNS_PROBE_FINISHED_NXDOMAIN, CONNECTION_REFUSED, SSL kļūdas, 502/503/504, CORS un citas) - pilni risinājumi ar SSH komandām un failu alternatīvām atrodas sadaļā <a href="web-problemas.html"><strong>Servera problēmas un risinājumi</strong></a>.</p>
     </div>
 
     <section class="doc-section" id="ip-basics">
       <h2>Kas ir IP adrese</h2>
-      <p>Katrai ierīcei, kas ir tieši pieejama internetā, ir sava unikāla adrese — līdzīgi kā mājas adrese pasta piegādei. Visizplatītākais formāts ir <strong>IPv4</strong> — četri skaitļi no 0 līdz 255, atdalīti ar punktiem, piemēram, <code>81.198.171.19</code>. Domēns (<code>piemers.lv</code>) ir tikai cilvēkam ērtāks vārds šai adresei — DNS (skat. zemāk) tos savieno.</p>
-      <p>Tā kā IPv4 adrešu skaits (~4.3 miljardi) ir izsīcis, ieviests jaunāks formāts <strong>IPv6</strong> ar praktiski neierobežotu apjomu — piemēram, <code>2a02:6b8::1</code>. Ir arī adreses, kas strādā <strong>tikai</strong> vietējā tīklā, nevis internetā, piem. <code>192.168.1.1</code> (tipiska mājas rūtera adrese) vai <code>127.0.0.1</code> (adrese, ar kuru dators "runā pats ar sevi" — noder lokālai izstrādei).</p>
+      <p>Katrai ierīcei, kas ir tieši pieejama internetā, ir sava unikāla adrese - līdzīgi kā mājas adrese pasta piegādei. Visizplatītākais formāts ir <strong>IPv4</strong> - četri skaitļi no 0 līdz 255, atdalīti ar punktiem, piemēram, <code>81.198.171.19</code>. Domēns (<code>piemers.lv</code>) ir tikai cilvēkam ērtāks vārds šai adresei - DNS (skat. zemāk) tos savieno.</p>
+      <p>Tā kā IPv4 adrešu skaits (~4.3 miljardi) ir izsīcis, ieviests jaunāks formāts <strong>IPv6</strong> ar praktiski neierobežotu apjomu - piemēram, <code>2a02:6b8::1</code>. Ir arī adreses, kas strādā <strong>tikai</strong> vietējā tīklā, nevis internetā, piem. <code>192.168.1.1</code> (tipiska mājas rūtera adrese) vai <code>127.0.0.1</code> (adrese, ar kuru dators "runā pats ar sevi" - noder lokālai izstrādei).</p>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Uzzini savu publisko IP adresi (ar kuru tevi redz internets)</span>
 curl ifconfig.me</code></pre>
     </section>
 
     <section class="doc-section" id="ports">
       <h2>Porti</h2>
-      <p>Viena IP adrese var apkalpot vairākus pakalpojumus vienlaikus — <strong>ports</strong> (skaitlis no 0 līdz 65535) pasaka, kuram tieši pakalpojumam serverī adresēts konkrētais pieprasījums. Ja IP adrese ir kā mājas adrese, ports ir kā konkrēta dzīvokļa numurs tajā mājā.</p>
+      <p>Viena IP adrese var apkalpot vairākus pakalpojumus vienlaikus - <strong>ports</strong> (skaitlis no 0 līdz 65535) pasaka, kuram tieši pakalpojumam serverī adresēts konkrētais pieprasījums. Ja IP adrese ir kā mājas adrese, ports ir kā konkrēta dzīvokļa numurs tajā mājā.</p>
       <pre class="code-block"><span class="lang">text</span><code>80    → HTTP  (parastā, nešifrētā tīmekļa satiksme)
 443   → HTTPS (šifrētā tīmekļa satiksme)
 22    → SSH   (drošs attālinātais pieslēgums serverim)
 3306  → MySQL (datubāzes savienojumi)</code></pre>
-      <p>Adresējot vietni pārlūkā parasti portu neraksta, jo <code>http://</code> noklusēti nozīmē 80, bet <code>https://</code> — 443. Citiem servisiem to bieži norāda skaidri, piem. <code>piemers.lv:8080</code>.</p>
+      <p>Adresējot vietni pārlūkā parasti portu neraksta, jo <code>http://</code> noklusēti nozīmē 80, bet <code>https://</code> - 443. Citiem servisiem to bieži norāda skaidri, piem. <code>piemers.lv:8080</code>.</p>
     </section>
 
     <section class="doc-section" id="dns-basics">
       <h2>Kas ir DNS</h2>
-      <p>DNS (Domain Name System) ir sadalīta, hierarhiska "tālruņu grāmata" internetam — tā pārvērš cilvēkam ērtu domēna vārdu (<code>piemers.lv</code>) par IP adresi, kuru pārlūks tehniski var izmantot savienojuma izveidei.</p>
-      <p>Kad pārlūkā ieraksti adresi, notiek aptuveni šāda secība: pārlūks vaicā DNS resolverim (parasti interneta pakalpojumu sniedzēja vai publiskam, piem. 8.8.8.8) → resolvers vaicā root serveriem → tie norāda uz attiecīgā domēna zonas (<code>.lv</code>) serveriem → tie norāda uz domēna paša autoritatīvajiem nameserveriem → tie beidzot atbild ar konkrētu IP adresi. Rezultāts tiek <strong>kešots</strong> uz noteiktu laiku (<strong>TTL</strong>, Time To Live), lai nevajadzētu atkārtot visu ceļu katru reizi — tieši tāpēc DNS izmaiņas var kļūt redzamas ne uzreiz visiem, bet dažu minūšu līdz pat 48 stundu laikā ("propagācija").</p>
+      <p>DNS (Domain Name System) ir sadalīta, hierarhiska "tālruņu grāmata" internetam - tā pārvērš cilvēkam ērtu domēna vārdu (<code>piemers.lv</code>) par IP adresi, kuru pārlūks tehniski var izmantot savienojuma izveidei.</p>
+      <p>Kad pārlūkā ieraksti adresi, notiek aptuveni šāda secība: pārlūks vaicā DNS resolverim (parasti interneta pakalpojumu sniedzēja vai publiskam, piem. 8.8.8.8) → resolvers vaicā root serveriem → tie norāda uz attiecīgā domēna zonas (<code>.lv</code>) serveriem → tie norāda uz domēna paša autoritatīvajiem nameserveriem → tie beidzot atbild ar konkrētu IP adresi. Rezultāts tiek <strong>kešots</strong> uz noteiktu laiku (<strong>TTL</strong>, Time To Live), lai nevajadzētu atkārtot visu ceļu katru reizi - tieši tāpēc DNS izmaiņas var kļūt redzamas ne uzreiz visiem, bet dažu minūšu līdz pat 48 stundu laikā ("propagācija").</p>
       <pre class="code-block"><span class="lang">bash</span><code>dig piemers.lv +short
 <span class="tok-com"># izvada tikai IP adresi, piem.: 81.198.171.19</span></code></pre>
     </section>
 
     <section class="doc-section" id="dns-records">
       <h2>DNS ieraksti (A, CNAME, MX...)</h2>
-      <p>Domēnam pieder vairāki dažāda tipa ieraksti — katrs pasaka DNS sistēmai kaut ko citu par šo domēnu:</p>
+      <p>Domēnam pieder vairāki dažāda tipa ieraksti - katrs pasaka DNS sistēmai kaut ko citu par šo domēnu:</p>
       <pre class="code-block"><span class="lang">text</span><code>A       → domēns ved uz konkrētu IPv4 adresi
 AAAA    → tas pats, bet IPv6 adresei
 CNAME   → alias uz citu domēnu (piem. www → piemers.lv)
@@ -127,7 +127,7 @@ dig piemers.lv TXT</code></pre>
 
     <section class="doc-section" id="www-vs-non">
       <h2>www vs bez-www</h2>
-      <p>Tehniski <code>piemers.lv</code> un <code>www.piemers.lv</code> ir <strong>divas dažādas</strong> adreses DNS acīs, kaut arī cilvēkam tās šķiet vienādas. Vēsturiski <code>www</code> apzīmēja "World Wide Web" servisu atsevišķi no citiem tā paša domēna servisiem (piem., e-pasta). Mūsdienās izvēle, kuru versiju darīt par "galveno", ir tikai stila jautājums — abas parasti tiek sasaistītas, lai vietne strādātu neatkarīgi no tā, kā apmeklētājs to ieraksta.</p>
+      <p>Tehniski <code>piemers.lv</code> un <code>www.piemers.lv</code> ir <strong>divas dažādas</strong> adreses DNS acīs, kaut arī cilvēkam tās šķiet vienādas. Vēsturiski <code>www</code> apzīmēja "World Wide Web" servisu atsevišķi no citiem tā paša domēna servisiem (piem., e-pasta). Mūsdienās izvēle, kuru versiju darīt par "galveno", ir tikai stila jautājums - abas parasti tiek sasaistītas, lai vietne strādātu neatkarīgi no tā, kā apmeklētājs to ieraksta.</p>
       <p>Praksē to panāk ar <code>CNAME</code> ierakstu un pāradresāciju, piemēram:</p>
       <pre class="code-block"><span class="lang">text</span><code>www.piemers.lv.   CNAME   piemers.lv.</code></pre>
       <p>Un servera pusē (piem., Nginx) pievieno noteikumu, kas <code>www</code> versiju pāradresē uz galveno (vai otrādi) ar 301 (pastāvīgu) pāradresāciju, lai meklētājprogrammas neuzskatītu abas versijas par diviem atsevišķiem, dublētiem saturiem.</p>
@@ -135,8 +135,8 @@ dig piemers.lv TXT</code></pre>
 
     <section class="doc-section" id="cdn-basics">
       <h2>CDN īsumā</h2>
-      <p>CDN (Content Delivery Network, piem. Cloudflare, Fastly) ir tīkls no serveriem, kas izvietoti dažādās pasaules vietās un glabā vietnes satura kopijas. Kad apmeklētājs atver vietni, viņu apkalpo <strong>ģeogrāfiski tuvākais</strong> CDN serveris, nevis vienmēr tas pats oriģinālais serveris — tas ievērojami paātrina lapas ielādi, īpaši apmeklētājiem, kas atrodas tālu no oriģinālā servera.</p>
-      <p>Blakusefekts, kas iesācējus bieži mulsina: kad domēns ir "aiz" CDN, DNS uzziņas (<code>dig</code>) parāda <strong>CDN servera</strong> IP adresi, nevis īsto vietnes servera IP — tas apzināti tā, lai īstā servera adrese paliktu paslēpta un aizsargāta no tiešiem uzbrukumiem.</p>
+      <p>CDN (Content Delivery Network, piem. Cloudflare, Fastly) ir tīkls no serveriem, kas izvietoti dažādās pasaules vietās un glabā vietnes satura kopijas. Kad apmeklētājs atver vietni, viņu apkalpo <strong>ģeogrāfiski tuvākais</strong> CDN serveris, nevis vienmēr tas pats oriģinālais serveris - tas ievērojami paātrina lapas ielādi, īpaši apmeklētājiem, kas atrodas tālu no oriģinālā servera.</p>
+      <p>Blakusefekts, kas iesācējus bieži mulsina: kad domēns ir "aiz" CDN, DNS uzziņas (<code>dig</code>) parāda <strong>CDN servera</strong> IP adresi, nevis īsto vietnes servera IP - tas apzināti tā, lai īstā servera adrese paliktu paslēpta un aizsargāta no tiešiem uzbrukumiem.</p>
     </section>
 
     <section class="doc-section" id="ssl-basics">
@@ -145,14 +145,14 @@ dig piemers.lv TXT</code></pre>
       <p>Process, kā pārlūks un serveris vienojas par šifrēšanu, saucas <strong>TLS handshake</strong>: pārlūks piedāvā atbalstītās TLS versijas → serveris atbild ar savu sertifikātu → pārlūks pārbauda sertifikātu (izsniedzējs, derīgums, domēns) → abas puses vienojas par kopīgu, sesijai unikālu šifrēšanas atslēgu → sākas šifrēta saziņa.</p>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Bez HTTPS pārlūki atzīmē vietni kā "Nedrošu", paroļu lauki tiek īpaši brīdināti, un Google to izmanto arī kā ranžēšanas faktoru — mūsdienās HTTPS ir obligāts minimums jebkurai publiskai vietnei.</p>
+        <p>Bez HTTPS pārlūki atzīmē vietni kā "Nedrošu", paroļu lauki tiek īpaši brīdināti, un Google to izmanto arī kā ranžēšanas faktoru - mūsdienās HTTPS ir obligāts minimums jebkurai publiskai vietnei.</p>
       </div>
     </section>
 
     <section class="doc-section" id="ssl-certs">
       <h2>Sertifikāti īsumā</h2>
-      <p>SSL/TLS sertifikātu izsniedz uzticama iestāde — <strong>Sertifikācijas iestāde</strong> (Certificate Authority, CA), kurai pārlūki un operētājsistēmas jau uzticas "no rūpnīcas". Populārākā un bezmaksas — <strong>Let's Encrypt</strong>, kas sertifikātus izsniedz automatizēti. Sertifikāts apliecina, ka vietne, ar kuru sazinies, tiešām pieder norādītajam domēnam.</p>
-      <p>Let's Encrypt sertifikāti derīgi tikai 90 dienas — apzināti īss termiņš, lai piespiestu automatizēt atjaunošanu, nevis paļauties uz manuālu atcerēšanos. Rīks <code>certbot</code> to iestata automātiski:</p>
+      <p>SSL/TLS sertifikātu izsniedz uzticama iestāde - <strong>Sertifikācijas iestāde</strong> (Certificate Authority, CA), kurai pārlūki un operētājsistēmas jau uzticas "no rūpnīcas". Populārākā un bezmaksas - <strong>Let's Encrypt</strong>, kas sertifikātus izsniedz automatizēti. Sertifikāts apliecina, ka vietne, ar kuru sazinies, tiešām pieder norādītajam domēnam.</p>
+      <p>Let's Encrypt sertifikāti derīgi tikai 90 dienas - apzināti īss termiņš, lai piespiestu automatizēt atjaunošanu, nevis paļauties uz manuālu atcerēšanos. Rīks <code>certbot</code> to iestata automātiski:</p>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Uzstāda certbot (Ubuntu/Debian serverim ar Nginx)</span>
 sudo apt install certbot python3-certbot-nginx
 
@@ -163,12 +163,12 @@ sudo certbot --nginx -d piemers.lv -d www.piemers.lv
 sudo certbot renew --dry-run</code></pre>
       <p>Ja pēc uzstādīšanas jāpārbauda, kas tieši ir instalēts un cik ilgi tas vēl derīgs:</p>
       <pre class="code-block"><span class="lang">bash</span><code>echo | openssl s_client -connect piemers.lv:443 2>/dev/null | openssl x509 -noout -dates</code></pre>
-      <p>Šī komanda izvadīs divas rindas — <code>notBefore</code> (kopš kura brīža sertifikāts derīgs) un <code>notAfter</code> (kad tas beidzas).</p>
+      <p>Šī komanda izvadīs divas rindas - <code>notBefore</code> (kopš kura brīža sertifikāts derīgs) un <code>notAfter</code> (kad tas beidzas).</p>
     </section>
 
     <section class="doc-section" id="tools">
       <h2>Noderīgas komandas</h2>
-      <p>Kopsavilkums — visas komandas, kas parādījās šajā lapā, vienuviet ātrai uzziņai. Visas darbojas jebkura moderna operētājsistēmas terminālī (Windows: CMD/PowerShell ar <code>ipconfig</code>, Mac/Linux ar attiecīgajiem ekvivalentiem):</p>
+      <p>Kopsavilkums - visas komandas, kas parādījās šajā lapā, vienuviet ātrai uzziņai. Visas darbojas jebkura moderna operētājsistēmas terminālī (Windows: CMD/PowerShell ar <code>ipconfig</code>, Mac/Linux ar attiecīgajiem ekvivalentiem):</p>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># DNS pārbaude</span>
 nslookup piemers.lv
 dig piemers.lv +short
@@ -195,7 +195,7 @@ ipconfig /flushdns</code></pre>
   </main>
 </div>
 
-<script src="../js/theme.js?v=20"></script>
-<script src="../js/main.js?v=20"></script>
+<script src="../js/theme.js?v=21"></script>
+<script src="../js/main.js?v=21"></script>
 </body>
 </html>

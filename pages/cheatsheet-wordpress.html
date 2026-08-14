@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
-<title>WordPress Cheatsheet — Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=20" />
+<title>WordPress Cheatsheet - Documentation Samis</title>
+<link rel="stylesheet" href="../css/style.css?v=21" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -46,7 +46,7 @@
     </div>
     <h1 style="margin-bottom:0;">WordPress Cheatsheet</h1>
   </div>
-  <p class="doc-lead">Ātrās uzziņas lapa — katrai kartiņai īss skaidrojums, ko funkcija dara un kam tā domāta, plus sintakses fragments. Pilnus, soli-pa-solim piemērus skaties <a href="wordpress.html">pilnajā WordPress dokumentācijā</a>.</p>
+  <p class="doc-lead">Ātrās uzziņas lapa - katrai kartiņai īss skaidrojums, ko funkcija dara un kam tā domāta, plus sintakses fragments. Pilnus, soli-pa-solim piemērus skaties <a href="wordpress.html">pilnajā WordPress dokumentācijā</a>.</p>
 
   <nav class="cheat-jump">
     <a href="#ct-tags">Template Tags</a>
@@ -72,23 +72,23 @@
     <p class="cheat-sub">Izsauc The Loop iekšpusē, lai izvadītu ieraksta datus.</p>
     <div class="cheat-grid">
       <div class="cheat-card"><h4>the_title()</h4><p>Izvada ieraksta virsrakstu tieši lapā. Lieto The Loop iekšpusē, kad jāparāda nosaukums, piem., &lt;h2&gt; tagā.</p><pre><code>&lt;h2&gt;&lt;?php the_title(); ?&gt;&lt;/h2&gt;</code></pre></div>
-      <div class="cheat-card"><h4>the_content()</h4><p>Izvada pilnu ieraksta saturu ar visu formatējumu (rindkopas, attēli, bloki) — parāda to, ko lietotājs uzrakstīja redaktorā.</p><pre><code>&lt;?php the_content(); ?&gt;</code></pre></div>
-      <div class="cheat-card"><h4>the_excerpt()</h4><p>Izvada īsu, automātiski nogrieztu (vai manuāli uzrakstītu) izvilkumu — noder sarakstu/arhīva skatos, kur pilns saturs būtu par garu.</p><pre><code>&lt;?php the_excerpt(); ?&gt;</code></pre></div>
-      <div class="cheat-card"><h4>the_permalink()</h4><p>Izvada pilnu, gatavu URL uz šo konkrēto ierakstu — parasti liek href atribūtā, lai izveidotu saiti.</p><pre><code>&lt;a href="&lt;?php the_permalink(); ?&gt;"&gt;</code></pre></div>
-      <div class="cheat-card"><h4>get_the_ID()</h4><p>Atgriež (nevis izvada) pašreizējā ieraksta skaitlisko ID — noder, ja ID jānodod tālāk citai funkcijai, piem. get_post_meta().</p><pre><code>$id = get_the_ID();</code></pre></div>
-      <div class="cheat-card"><h4>the_date()</h4><p>Izvada ieraksta publicēšanas datumu — parametrā norāda formātu (piem. 'j.m.Y' = diena.mēnesis.gads).</p><pre><code>&lt;?php the_date('j.m.Y'); ?&gt;</code></pre></div>
-      <div class="cheat-card"><h4>the_author()</h4><p>Izvada tā lietotāja vārdu, kurš publicēja ierakstu — noder blogu/rakstu lapās, lai parādītu autoru.</p><pre><code>&lt;?php the_author(); ?&gt;</code></pre></div>
-      <div class="cheat-card"><h4>the_post_thumbnail()</h4><p>Izvada ieraksta izcēlattēlu gatavā &lt;img&gt; tagā — parametrā norāda izmēru (thumbnail/medium/large/full).</p><pre><code>&lt;?php the_post_thumbnail('medium'); ?&gt;</code></pre></div>
-      <div class="cheat-card"><h4>get_the_title($id)</h4><p>Tas pats, kas the_title(), bet atgriež virsrakstu kā tekstu, nevis izvada uzreiz — noder, ja virsraksts jāapstrādā pirms parādīšanas.</p><pre><code>$t = get_the_title($id);</code></pre></div>
-      <div class="cheat-card"><h4>bloginfo()</h4><p>Izvada vispārīgu vietnes informāciju — nosaukumu, aprakstu, valodu u.c. — atkarībā no parametra ('name', 'description', 'url').</p><pre><code>&lt;?php bloginfo('name'); ?&gt;</code></pre></div>
-      <div class="cheat-card"><h4>wp_title()</h4><p>Ģenerē teksta saturu lapas &lt;title&gt; tagam — mūsdienās to biežāk aizstāj SEO spraudņi (Yoast, Rank Math).</p><pre><code>&lt;?php wp_title('-'); ?&gt;</code></pre></div>
-      <div class="cheat-card"><h4>get_the_term_list()</h4><p>Atgriež HTML sarakstu (ar saitēm) no ierakstam piesaistītajiem taksonomijas terminiem — piem., visas kategorijas, kam ieraksts pieder.</p><pre><code>echo get_the_term_list($id, 'category');</code></pre></div>
+      <div class="cheat-card"><h4>the_content()</h4><p>Izvada pilnu ieraksta saturu ar visu formatējumu (rindkopas, attēli, bloki) - parāda to, ko lietotājs uzrakstīja redaktorā.</p><pre><code>&lt;?php the_content(); ?&gt;</code></pre></div>
+      <div class="cheat-card"><h4>the_excerpt()</h4><p>Izvada īsu, automātiski nogrieztu (vai manuāli uzrakstītu) izvilkumu - noder sarakstu/arhīva skatos, kur pilns saturs būtu par garu.</p><pre><code>&lt;?php the_excerpt(); ?&gt;</code></pre></div>
+      <div class="cheat-card"><h4>the_permalink()</h4><p>Izvada pilnu, gatavu URL uz šo konkrēto ierakstu - parasti liek href atribūtā, lai izveidotu saiti.</p><pre><code>&lt;a href="&lt;?php the_permalink(); ?&gt;"&gt;</code></pre></div>
+      <div class="cheat-card"><h4>get_the_ID()</h4><p>Atgriež (nevis izvada) pašreizējā ieraksta skaitlisko ID - noder, ja ID jānodod tālāk citai funkcijai, piem. get_post_meta().</p><pre><code>$id = get_the_ID();</code></pre></div>
+      <div class="cheat-card"><h4>the_date()</h4><p>Izvada ieraksta publicēšanas datumu - parametrā norāda formātu (piem. 'j.m.Y' = diena.mēnesis.gads).</p><pre><code>&lt;?php the_date('j.m.Y'); ?&gt;</code></pre></div>
+      <div class="cheat-card"><h4>the_author()</h4><p>Izvada tā lietotāja vārdu, kurš publicēja ierakstu - noder blogu/rakstu lapās, lai parādītu autoru.</p><pre><code>&lt;?php the_author(); ?&gt;</code></pre></div>
+      <div class="cheat-card"><h4>the_post_thumbnail()</h4><p>Izvada ieraksta izcēlattēlu gatavā &lt;img&gt; tagā - parametrā norāda izmēru (thumbnail/medium/large/full).</p><pre><code>&lt;?php the_post_thumbnail('medium'); ?&gt;</code></pre></div>
+      <div class="cheat-card"><h4>get_the_title($id)</h4><p>Tas pats, kas the_title(), bet atgriež virsrakstu kā tekstu, nevis izvada uzreiz - noder, ja virsraksts jāapstrādā pirms parādīšanas.</p><pre><code>$t = get_the_title($id);</code></pre></div>
+      <div class="cheat-card"><h4>bloginfo()</h4><p>Izvada vispārīgu vietnes informāciju - nosaukumu, aprakstu, valodu u.c. - atkarībā no parametra ('name', 'description', 'url').</p><pre><code>&lt;?php bloginfo('name'); ?&gt;</code></pre></div>
+      <div class="cheat-card"><h4>wp_title()</h4><p>Ģenerē teksta saturu lapas &lt;title&gt; tagam - mūsdienās to biežāk aizstāj SEO spraudņi (Yoast, Rank Math).</p><pre><code>&lt;?php wp_title('-'); ?&gt;</code></pre></div>
+      <div class="cheat-card"><h4>get_the_term_list()</h4><p>Atgriež HTML sarakstu (ar saitēm) no ierakstam piesaistītajiem taksonomijas terminiem - piem., visas kategorijas, kam ieraksts pieder.</p><pre><code>echo get_the_term_list($id, 'category');</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-conditional">
     <h2>Conditional Tags</h2>
-    <p class="cheat-sub">Atgriež true/false — kāds lapas veids pašlaik tiek rādīts. Noder koplietotos failos (header.php, footer.php), kur jāizvada dažāds saturs atkarībā no lapas.</p>
+    <p class="cheat-sub">Atgriež true/false - kāds lapas veids pašlaik tiek rādīts. Noder koplietotos failos (header.php, footer.php), kur jāizvada dažāds saturs atkarībā no lapas.</p>
     <div class="cheat-table-wrap">
       <table class="cheat-table">
         <tbody>
@@ -115,11 +115,11 @@
       <div class="cheat-card"><h4>The Loop</h4><p>Standarta WordPress cikls, kas iziet cauri atrastajiem ierakstiem un ļauj template tagiem (the_title() u.c.) zināt, par kuru ierakstu runāt.</p><pre><code>if (have_posts()) : while (have_posts()) : the_post();
   // saturs
 endwhile; endif;</code></pre></div>
-      <div class="cheat-card"><h4>WP_Query</h4><p>Izveido pielāgotu vaicājumu ārpus galvenā Loop — noder, kad jāparāda ieraksti pēc saviem kritērijiem (piem., "Populārākie raksti" sānjoslā).</p><pre><code>$q = new WP_Query([
+      <div class="cheat-card"><h4>WP_Query</h4><p>Izveido pielāgotu vaicājumu ārpus galvenā Loop - noder, kad jāparāda ieraksti pēc saviem kritērijiem (piem., "Populārākie raksti" sānjoslā).</p><pre><code>$q = new WP_Query([
   'post_type' =&gt; 'post',
   'posts_per_page' =&gt; 5,
 ]);</code></pre></div>
-      <div class="cheat-card"><h4>wp_reset_postdata()</h4><p>Obligāti jāizsauc pēc katra pielāgota WP_Query cikla — atjauno globālo $post mainīgo, lai pārējā lapa turpina rādīt pareizos datus.</p><pre><code>wp_reset_postdata();</code></pre></div>
+      <div class="cheat-card"><h4>wp_reset_postdata()</h4><p>Obligāti jāizsauc pēc katra pielāgota WP_Query cikla - atjauno globālo $post mainīgo, lai pārējā lapa turpina rādīt pareizos datus.</p><pre><code>wp_reset_postdata();</code></pre></div>
       <div class="cheat-card"><h4>get_posts()</h4><p>Īsāka alternatīva WP_Query, kad vajag vienkārši masīvu ar ierakstiem, bez pilnas cikla sintakses.</p><pre><code>$posts = get_posts(['numberposts' =&gt; 5]);</code></pre></div>
       <div class="cheat-card"><h4>meta_query</h4><p>WP_Query parametrs, kas filtrē ierakstus pēc pielāgotu lauku (post meta) vērtībām, piem., cenas diapazona.</p><pre><code>'meta_query' =&gt; [[
   'key' =&gt; 'cena', 'value' =&gt; 50,
@@ -129,28 +129,28 @@ endwhile; endif;</code></pre></div>
   'taxonomy' =&gt; 'category',
   'field' =&gt; 'slug', 'terms' =&gt; 'jaunumi',
 ]]</code></pre></div>
-      <div class="cheat-card"><h4>pre_get_posts</h4><p>Āķis, ar ko maina jau esošu (galveno) vaicājumu pirms tas izpildās — drošāk un efektīvāk nekā veidot jaunu WP_Query no nulles.</p><pre><code>add_action('pre_get_posts', function($q) {
+      <div class="cheat-card"><h4>pre_get_posts</h4><p>Āķis, ar ko maina jau esošu (galveno) vaicājumu pirms tas izpildās - drošāk un efektīvāk nekā veidot jaunu WP_Query no nulles.</p><pre><code>add_action('pre_get_posts', function($q) {
   if (!is_admin() && $q-&gt;is_main_query())
     $q-&gt;set('posts_per_page', 12);
 });</code></pre></div>
-      <div class="cheat-card"><h4>Pagination</h4><p>Iegūst pašreizējo lapas numuru no URL — izmanto WP_Query 'paged' parametrā, lai atbalstītu vairāku lapu pārlūkošanu.</p><pre><code>'paged' =&gt; get_query_var('paged') ?: 1</code></pre></div>
+      <div class="cheat-card"><h4>Pagination</h4><p>Iegūst pašreizējo lapas numuru no URL - izmanto WP_Query 'paged' parametrā, lai atbalstītu vairāku lapu pārlūkošanu.</p><pre><code>'paged' =&gt; get_query_var('paged') ?: 1</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-hooks">
     <h2>Biežākie Hooks</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>init</h4><p>Izsaucas, kad WordPress kodols ir ielādēts, bet pirms satura izvades — pareizā vieta CPT un taksonomiju reģistrēšanai.</p><pre><code>add_action('init', 'fn');</code></pre></div>
-      <div class="cheat-card"><h4>after_setup_theme</h4><p>Izsaucas ļoti agri tēmas ielādes laikā — izmanto tēmas atbalsta funkcijām (add_theme_support, register_nav_menus).</p><pre><code>add_action('after_setup_theme', 'fn');</code></pre></div>
-      <div class="cheat-card"><h4>wp_enqueue_scripts</h4><p>Vienīgā pareizā vieta, kur pievienot CSS/JS failus publiskajā daļā — nekad nepievieno tos tieši ar &lt;link&gt;/&lt;script&gt; veidnē.</p><pre><code>add_action('wp_enqueue_scripts', 'fn');</code></pre></div>
-      <div class="cheat-card"><h4>wp_head / wp_footer</h4><p>Izsaucas attiecīgi &lt;head&gt; tagā un tieši pirms &lt;/body&gt; — noder, lai ievietotu analītikas kodu bez tēmas failu rediģēšanas.</p><pre><code>add_action('wp_footer', 'fn');</code></pre></div>
-      <div class="cheat-card"><h4>save_post</h4><p>Izsaucas ikreiz, kad ieraksts tiek saglabāts (jauns vai atjaunināts) — noder datu automātiskai apstrādei saglabāšanas brīdī.</p><pre><code>add_action('save_post', 'fn');</code></pre></div>
-      <div class="cheat-card"><h4>admin_menu</h4><p>Izsaucas admin paneļa izvēlnes veidošanas laikā — izmanto, lai pievienotu savu jaunu sadaļu admin sānizvēlnē.</p><pre><code>add_action('admin_menu', 'fn');</code></pre></div>
-      <div class="cheat-card"><h4>the_title (filter)</h4><p>Filtrs, kas ļauj mainīt virsraksta tekstu tieši pirms tas tiek izvadīts — piem., pievienot prefiksu visiem virsrakstiem.</p><pre><code>add_filter('the_title', 'fn');</code></pre></div>
-      <div class="cheat-card"><h4>the_content (filter)</h4><p>Filtrs, kas ļauj mainīt vai papildināt ieraksta saturu pirms izvades — piem., automātiski pievienot tekstu ieraksta beigās.</p><pre><code>add_filter('the_content', 'fn');</code></pre></div>
-      <div class="cheat-card"><h4>do_action() / apply_filters()</h4><p>Ļauj izveidot savu, pielāgotu āķi — do_action() izpilda kodu konkrētā vietā, apply_filters() ļauj citiem (vai sev) mainīt vērtību.</p><pre><code>do_action('mans_akis');
+      <div class="cheat-card"><h4>init</h4><p>Izsaucas, kad WordPress kodols ir ielādēts, bet pirms satura izvades - pareizā vieta CPT un taksonomiju reģistrēšanai.</p><pre><code>add_action('init', 'fn');</code></pre></div>
+      <div class="cheat-card"><h4>after_setup_theme</h4><p>Izsaucas ļoti agri tēmas ielādes laikā - izmanto tēmas atbalsta funkcijām (add_theme_support, register_nav_menus).</p><pre><code>add_action('after_setup_theme', 'fn');</code></pre></div>
+      <div class="cheat-card"><h4>wp_enqueue_scripts</h4><p>Vienīgā pareizā vieta, kur pievienot CSS/JS failus publiskajā daļā - nekad nepievieno tos tieši ar &lt;link&gt;/&lt;script&gt; veidnē.</p><pre><code>add_action('wp_enqueue_scripts', 'fn');</code></pre></div>
+      <div class="cheat-card"><h4>wp_head / wp_footer</h4><p>Izsaucas attiecīgi &lt;head&gt; tagā un tieši pirms &lt;/body&gt; - noder, lai ievietotu analītikas kodu bez tēmas failu rediģēšanas.</p><pre><code>add_action('wp_footer', 'fn');</code></pre></div>
+      <div class="cheat-card"><h4>save_post</h4><p>Izsaucas ikreiz, kad ieraksts tiek saglabāts (jauns vai atjaunināts) - noder datu automātiskai apstrādei saglabāšanas brīdī.</p><pre><code>add_action('save_post', 'fn');</code></pre></div>
+      <div class="cheat-card"><h4>admin_menu</h4><p>Izsaucas admin paneļa izvēlnes veidošanas laikā - izmanto, lai pievienotu savu jaunu sadaļu admin sānizvēlnē.</p><pre><code>add_action('admin_menu', 'fn');</code></pre></div>
+      <div class="cheat-card"><h4>the_title (filter)</h4><p>Filtrs, kas ļauj mainīt virsraksta tekstu tieši pirms tas tiek izvadīts - piem., pievienot prefiksu visiem virsrakstiem.</p><pre><code>add_filter('the_title', 'fn');</code></pre></div>
+      <div class="cheat-card"><h4>the_content (filter)</h4><p>Filtrs, kas ļauj mainīt vai papildināt ieraksta saturu pirms izvades - piem., automātiski pievienot tekstu ieraksta beigās.</p><pre><code>add_filter('the_content', 'fn');</code></pre></div>
+      <div class="cheat-card"><h4>do_action() / apply_filters()</h4><p>Ļauj izveidot savu, pielāgotu āķi - do_action() izpilda kodu konkrētā vietā, apply_filters() ļauj citiem (vai sev) mainīt vērtību.</p><pre><code>do_action('mans_akis');
 $v = apply_filters('mans_filtrs', $v);</code></pre></div>
-      <div class="cheat-card"><h4>remove_action()</h4><p>Noņem iepriekš pievienotu āķi — jānorāda tieši tāda pati prioritāte, ar kādu āķis tika pievienots, citādi noņemšana nestrādās.</p><pre><code>remove_action('wp_head', 'wp_generator');</code></pre></div>
+      <div class="cheat-card"><h4>remove_action()</h4><p>Noņem iepriekš pievienotu āķi - jānorāda tieši tāda pati prioritāte, ar kādu āķis tika pievienots, citādi noņemšana nestrādās.</p><pre><code>remove_action('wp_head', 'wp_generator');</code></pre></div>
     </div>
   </section>
 
@@ -164,9 +164,9 @@ $v = apply_filters('mans_filtrs', $v);</code></pre></div>
       <div class="cheat-card"><h4>register_taxonomy()</h4><p>Reģistrē jaunu veidu, kā grupēt saturu (līdzīgi kategorijām/birkām), un piesaista to konkrētam ieraksta tipam.</p><pre><code>register_taxonomy('zime', 'post', [
   'hierarchical' =&gt; true,
 ]);</code></pre></div>
-      <div class="cheat-card"><h4>Template failu nosaukumi</h4><p>WordPress automātiski izmanto šos failus konkrētajam CPT, ja tie eksistē tēmas mapē — nekas papildus nav jāreģistrē koda pusē.</p><pre><code>single-produkts.php
+      <div class="cheat-card"><h4>Template failu nosaukumi</h4><p>WordPress automātiski izmanto šos failus konkrētajam CPT, ja tie eksistē tēmas mapē - nekas papildus nav jāreģistrē koda pusē.</p><pre><code>single-produkts.php
 archive-produkts.php</code></pre></div>
-      <div class="cheat-card"><h4>Pēc reģistrēšanas</h4><p>Jauna CPT publiskā lapa sākotnēji var rādīt 404 — šis saglabāšanas klikšķis piespiež WordPress pārbūvēt saišu noteikumus.</p><pre><code>Iestatījumi → Pastāvīgās
+      <div class="cheat-card"><h4>Pēc reģistrēšanas</h4><p>Jauna CPT publiskā lapa sākotnēji var rādīt 404 - šis saglabāšanas klikšķis piespiež WordPress pārbūvēt saišu noteikumus.</p><pre><code>Iestatījumi → Pastāvīgās
 saites → Saglabāt</code></pre></div>
     </div>
   </section>
@@ -174,45 +174,45 @@ saites → Saglabāt</code></pre></div>
   <section class="cheat-section" id="ct-meta">
     <h2>Post Meta (pielāgoti lauki)</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>update_post_meta()</h4><p>Saglabā jaunu vērtību vai pārraksta esošu pielāgotu lauku konkrētam ierakstam — visbiežāk lietotā no šīm četrām funkcijām.</p><pre><code>update_post_meta($id, 'cena', 49.99);</code></pre></div>
-      <div class="cheat-card"><h4>get_post_meta()</h4><p>Nolasa saglabātu pielāgotā lauka vērtību — trešais parametrs (true) nozīmē "atgriez vienu vērtību", nevis masīvu.</p><pre><code>get_post_meta($id, 'cena', true);</code></pre></div>
-      <div class="cheat-card"><h4>add_post_meta()</h4><p>Pievieno jaunu vērtību, bet tikai tad, ja tāda vēl neeksistē (ar pēdējo parametru true) — retāk lietota par update_post_meta().</p><pre><code>add_post_meta($id, 'cena', 49.99, true);</code></pre></div>
-      <div class="cheat-card"><h4>delete_post_meta()</h4><p>Pilnībā izdzēš pielāgoto lauku no ieraksta — noder tīrīšanai vai lauka atiestatīšanai.</p><pre><code>delete_post_meta($id, 'cena');</code></pre></div>
+      <div class="cheat-card"><h4>update_post_meta()</h4><p>Saglabā jaunu vērtību vai pārraksta esošu pielāgotu lauku konkrētam ierakstam - visbiežāk lietotā no šīm četrām funkcijām.</p><pre><code>update_post_meta($id, 'cena', 49.99);</code></pre></div>
+      <div class="cheat-card"><h4>get_post_meta()</h4><p>Nolasa saglabātu pielāgotā lauka vērtību - trešais parametrs (true) nozīmē "atgriez vienu vērtību", nevis masīvu.</p><pre><code>get_post_meta($id, 'cena', true);</code></pre></div>
+      <div class="cheat-card"><h4>add_post_meta()</h4><p>Pievieno jaunu vērtību, bet tikai tad, ja tāda vēl neeksistē (ar pēdējo parametru true) - retāk lietota par update_post_meta().</p><pre><code>add_post_meta($id, 'cena', 49.99, true);</code></pre></div>
+      <div class="cheat-card"><h4>delete_post_meta()</h4><p>Pilnībā izdzēš pielāgoto lauku no ieraksta - noder tīrīšanai vai lauka atiestatīšanai.</p><pre><code>delete_post_meta($id, 'cena');</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-enqueue">
     <h2>Enqueue (skripti/stili)</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>wp_enqueue_style()</h4><p>Pareizais veids, kā pievienot CSS failu — WordPress pats parūpējas par ielādes secību un izvairās no dubultas ielādes.</p><pre><code>wp_enqueue_style('id', get_stylesheet_uri());</code></pre></div>
-      <div class="cheat-card"><h4>wp_enqueue_script()</h4><p>Pareizais veids, kā pievienot JS failu — pēdējais parametrs (true) liek to ielādēt lapas beigās, kas paātrina lapas atvēršanos.</p><pre><code>wp_enqueue_script('id', $url, [], '1.0', true);</code></pre></div>
-      <div class="cheat-card"><h4>wp_localize_script()</h4><p>Nodod PHP mainīgos (piem., AJAX URL, nonce) uz JS pusi kā globālu objektu — vienīgais drošais veids piekļūt servera datiem no JS faila.</p><pre><code>wp_localize_script('id', 'Data', ['x' =&gt; 1]);</code></pre></div>
-      <div class="cheat-card"><h4>get_template_directory_uri()</h4><p>Atgriež tēmas mapes pilnu URL adresi — izmanto, lai izveidotu ceļu uz failiem tēmas iekšienē (attēliem, JS, CSS).</p><pre><code>get_template_directory_uri() . '/js/app.js'</code></pre></div>
+      <div class="cheat-card"><h4>wp_enqueue_style()</h4><p>Pareizais veids, kā pievienot CSS failu - WordPress pats parūpējas par ielādes secību un izvairās no dubultas ielādes.</p><pre><code>wp_enqueue_style('id', get_stylesheet_uri());</code></pre></div>
+      <div class="cheat-card"><h4>wp_enqueue_script()</h4><p>Pareizais veids, kā pievienot JS failu - pēdējais parametrs (true) liek to ielādēt lapas beigās, kas paātrina lapas atvēršanos.</p><pre><code>wp_enqueue_script('id', $url, [], '1.0', true);</code></pre></div>
+      <div class="cheat-card"><h4>wp_localize_script()</h4><p>Nodod PHP mainīgos (piem., AJAX URL, nonce) uz JS pusi kā globālu objektu - vienīgais drošais veids piekļūt servera datiem no JS faila.</p><pre><code>wp_localize_script('id', 'Data', ['x' =&gt; 1]);</code></pre></div>
+      <div class="cheat-card"><h4>get_template_directory_uri()</h4><p>Atgriež tēmas mapes pilnu URL adresi - izmanto, lai izveidotu ceļu uz failiem tēmas iekšienē (attēliem, JS, CSS).</p><pre><code>get_template_directory_uri() . '/js/app.js'</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-security">
     <h2>Drošība</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>esc_html()</h4><p>Padara tekstu drošu HTML izvadei — pārvērš speciālos simbolus (&lt;, &gt;, &amp;) par to HTML ekvivalentiem, novēršot XSS uzbrukumus.</p><pre><code>echo esc_html($teksts);</code></pre></div>
+      <div class="cheat-card"><h4>esc_html()</h4><p>Padara tekstu drošu HTML izvadei - pārvērš speciālos simbolus (&lt;, &gt;, &amp;) par to HTML ekvivalentiem, novēršot XSS uzbrukumus.</p><pre><code>echo esc_html($teksts);</code></pre></div>
       <div class="cheat-card"><h4>esc_attr()</h4><p>Tas pats, kas esc_html(), bet paredzēts izvadei HTML atribūta iekšienē (piem., value="...").</p><pre><code>value="&lt;?= esc_attr($v) ?&gt;"</code></pre></div>
-      <div class="cheat-card"><h4>esc_url()</h4><p>Attīra un pārbauda URL pirms izvades — novērš ļaunprātīga koda ievietošanu caur href/src atribūtiem.</p><pre><code>href="&lt;?= esc_url($url) ?&gt;"</code></pre></div>
-      <div class="cheat-card"><h4>sanitize_text_field()</h4><p>Attīra lietotāja ievadītu tekstu pirms saglabāšanas — noņem HTML tagus, liekās atstarpes un nederīgus rakstzīmju kodus.</p><pre><code>$v = sanitize_text_field($_POST['x']);</code></pre></div>
-      <div class="cheat-card"><h4>wp_nonce_field()</h4><p>Ievieto slēptu, unikālu drošības tokenu formā — nepieciešams, lai vēlāk pārbaudītu, ka pieprasījums patiešām nāk no šīs formas (CSRF aizsardzība).</p><pre><code>wp_nonce_field('darbiba', 'nonce_lauks');</code></pre></div>
-      <div class="cheat-card"><h4>wp_verify_nonce()</h4><p>Pārbauda, vai saņemtais nonce tokens ir derīgs un sakrīt ar sagaidāmo darbību — ja nē, pieprasījums jānoraida.</p><pre><code>wp_verify_nonce($_POST['n'], 'darbiba');</code></pre></div>
-      <div class="cheat-card"><h4>wp_kses()</h4><p>Atļauj tikai norādītos HTML tagus/atribūtus lietotāja ievadītā HTML, pārējo izfiltrē — noder, kad pilnīga esc_html() būtu par stingru (piem., komentāros ar ierobežotu formatējumu).</p><pre><code>wp_kses($html, ['a' =&gt; ['href' =&gt; true], 'strong' =&gt; []]);</code></pre></div>
-      <div class="cheat-card"><h4>current_user_can()</h4><p>Pārbauda, vai pašreizējam lietotājam ir konkrēta tiesība (capability) — pareizais veids kontrolēt piekļuvi, nevis pārbaudīt lomas nosaukumu tieši.</p><pre><code>if (current_user_can('edit_posts')) { }</code></pre></div>
+      <div class="cheat-card"><h4>esc_url()</h4><p>Attīra un pārbauda URL pirms izvades - novērš ļaunprātīga koda ievietošanu caur href/src atribūtiem.</p><pre><code>href="&lt;?= esc_url($url) ?&gt;"</code></pre></div>
+      <div class="cheat-card"><h4>sanitize_text_field()</h4><p>Attīra lietotāja ievadītu tekstu pirms saglabāšanas - noņem HTML tagus, liekās atstarpes un nederīgus rakstzīmju kodus.</p><pre><code>$v = sanitize_text_field($_POST['x']);</code></pre></div>
+      <div class="cheat-card"><h4>wp_nonce_field()</h4><p>Ievieto slēptu, unikālu drošības tokenu formā - nepieciešams, lai vēlāk pārbaudītu, ka pieprasījums patiešām nāk no šīs formas (CSRF aizsardzība).</p><pre><code>wp_nonce_field('darbiba', 'nonce_lauks');</code></pre></div>
+      <div class="cheat-card"><h4>wp_verify_nonce()</h4><p>Pārbauda, vai saņemtais nonce tokens ir derīgs un sakrīt ar sagaidāmo darbību - ja nē, pieprasījums jānoraida.</p><pre><code>wp_verify_nonce($_POST['n'], 'darbiba');</code></pre></div>
+      <div class="cheat-card"><h4>wp_kses()</h4><p>Atļauj tikai norādītos HTML tagus/atribūtus lietotāja ievadītā HTML, pārējo izfiltrē - noder, kad pilnīga esc_html() būtu par stingru (piem., komentāros ar ierobežotu formatējumu).</p><pre><code>wp_kses($html, ['a' =&gt; ['href' =&gt; true], 'strong' =&gt; []]);</code></pre></div>
+      <div class="cheat-card"><h4>current_user_can()</h4><p>Pārbauda, vai pašreizējam lietotājam ir konkrēta tiesība (capability) - pareizais veids kontrolēt piekļuvi, nevis pārbaudīt lomas nosaukumu tieši.</p><pre><code>if (current_user_can('edit_posts')) { }</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-users">
     <h2>Lietotāji &amp; lomas</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>wp_get_current_user()</h4><p>Atgriež pilnu lietotāja objektu pašreizējam pieteiktajam lietotājam — satur vārdu, e-pastu, lomas un citus datus.</p><pre><code>$u = wp_get_current_user();</code></pre></div>
-      <div class="cheat-card"><h4>is_user_logged_in()</h4><p>Ātra pārbaude, vai apmeklētājs vispār ir pieteicies — bieži lieto, lai rādītu dažādu saturu pieteiktiem/nepieteiktiem.</p><pre><code>if (is_user_logged_in()) { }</code></pre></div>
-      <div class="cheat-card"><h4>get_userdata($id)</h4><p>Iegūst konkrēta lietotāja pilnus datus pēc zināma ID — noder, kad ID jau ir zināms (piem., no ieraksta autora lauka).</p><pre><code>$u = get_userdata(5);</code></pre></div>
-      <div class="cheat-card"><h4>wp_insert_user()</h4><p>Programmatiski izveido jaunu WordPress lietotāju — noder automatizētai reģistrācijai (piem., pēc veiksmīga maksājuma).</p><pre><code>wp_insert_user(['user_login'=&gt;'x','user_pass'=&gt;'y']);</code></pre></div>
-      <div class="cheat-card"><h4>Lomas (zems→augsts)</h4><p>WordPress iebūvētās lietotāju lomas augošā tiesību secībā — katra augstāka loma manto zemākas lomas tiesības.</p><pre><code>Subscriber → Contributor →
+      <div class="cheat-card"><h4>wp_get_current_user()</h4><p>Atgriež pilnu lietotāja objektu pašreizējam pieteiktajam lietotājam - satur vārdu, e-pastu, lomas un citus datus.</p><pre><code>$u = wp_get_current_user();</code></pre></div>
+      <div class="cheat-card"><h4>is_user_logged_in()</h4><p>Ātra pārbaude, vai apmeklētājs vispār ir pieteicies - bieži lieto, lai rādītu dažādu saturu pieteiktiem/nepieteiktiem.</p><pre><code>if (is_user_logged_in()) { }</code></pre></div>
+      <div class="cheat-card"><h4>get_userdata($id)</h4><p>Iegūst konkrēta lietotāja pilnus datus pēc zināma ID - noder, kad ID jau ir zināms (piem., no ieraksta autora lauka).</p><pre><code>$u = get_userdata(5);</code></pre></div>
+      <div class="cheat-card"><h4>wp_insert_user()</h4><p>Programmatiski izveido jaunu WordPress lietotāju - noder automatizētai reģistrācijai (piem., pēc veiksmīga maksājuma).</p><pre><code>wp_insert_user(['user_login'=&gt;'x','user_pass'=&gt;'y']);</code></pre></div>
+      <div class="cheat-card"><h4>Lomas (zems→augsts)</h4><p>WordPress iebūvētās lietotāju lomas augošā tiesību secībā - katra augstāka loma manto zemākas lomas tiesības.</p><pre><code>Subscriber → Contributor →
 Author → Editor → Administrator</code></pre></div>
     </div>
   </section>
@@ -220,59 +220,59 @@ Author → Editor → Administrator</code></pre></div>
   <section class="cheat-section" id="ct-urls">
     <h2>URL &amp; Ceļi</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>home_url()</h4><p>Atgriež vietnes publiski redzamo pamata adresi — izmanto, lai izveidotu saites uz konkrētām lapām vietnē.</p><pre><code>home_url('/kontakti')</code></pre></div>
-      <div class="cheat-card"><h4>site_url()</h4><p>Atgriež adresi, kur atrodas pati WordPress instalācija — parasti sakrīt ar home_url(), bet var atšķirties, ja WordPress ir apakšmapē.</p><pre><code>site_url()</code></pre></div>
-      <div class="cheat-card"><h4>admin_url()</h4><p>Atgriež adresi uz admin paneļa daļu — visbiežāk izmanto, lai iegūtu admin-ajax.php pilnu URL AJAX pieprasījumiem.</p><pre><code>admin_url('admin-ajax.php')</code></pre></div>
-      <div class="cheat-card"><h4>get_permalink($id)</h4><p>Atgriež konkrēta ieraksta pastāvīgo saiti (URL) pēc tā ID — noder, ja saite jāizveido ārpus The Loop.</p><pre><code>get_permalink($id)</code></pre></div>
-      <div class="cheat-card"><h4>get_template_directory()</h4><p>Atgriež servera failu sistēmas ceļu (ne interneta adresi) uz tēmas mapi — izmanto PHP failu iekļaušanai (require/include).</p><pre><code>get_template_directory() . '/inc/x.php'</code></pre></div>
-      <div class="cheat-card"><h4>plugin_dir_url(__FILE__)</h4><p>Atgriež spraudņa mapes URL adresi no jebkura spraudņa faila — noder, lai pieslēgtu spraudņa paša CSS/JS failus.</p><pre><code>plugin_dir_url(__FILE__)</code></pre></div>
+      <div class="cheat-card"><h4>home_url()</h4><p>Atgriež vietnes publiski redzamo pamata adresi - izmanto, lai izveidotu saites uz konkrētām lapām vietnē.</p><pre><code>home_url('/kontakti')</code></pre></div>
+      <div class="cheat-card"><h4>site_url()</h4><p>Atgriež adresi, kur atrodas pati WordPress instalācija - parasti sakrīt ar home_url(), bet var atšķirties, ja WordPress ir apakšmapē.</p><pre><code>site_url()</code></pre></div>
+      <div class="cheat-card"><h4>admin_url()</h4><p>Atgriež adresi uz admin paneļa daļu - visbiežāk izmanto, lai iegūtu admin-ajax.php pilnu URL AJAX pieprasījumiem.</p><pre><code>admin_url('admin-ajax.php')</code></pre></div>
+      <div class="cheat-card"><h4>get_permalink($id)</h4><p>Atgriež konkrēta ieraksta pastāvīgo saiti (URL) pēc tā ID - noder, ja saite jāizveido ārpus The Loop.</p><pre><code>get_permalink($id)</code></pre></div>
+      <div class="cheat-card"><h4>get_template_directory()</h4><p>Atgriež servera failu sistēmas ceļu (ne interneta adresi) uz tēmas mapi - izmanto PHP failu iekļaušanai (require/include).</p><pre><code>get_template_directory() . '/inc/x.php'</code></pre></div>
+      <div class="cheat-card"><h4>plugin_dir_url(__FILE__)</h4><p>Atgriež spraudņa mapes URL adresi no jebkura spraudņa faila - noder, lai pieslēgtu spraudņa paša CSS/JS failus.</p><pre><code>plugin_dir_url(__FILE__)</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-db">
     <h2>Datubāze ($wpdb)</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>$wpdb->get_results()</h4><p>Izpilda SQL vaicājumu un atgriež visas atbilstošās rindas kā masīvu — izmanto, kad WP_Query nespēj izteikt vajadzīgo vaicājumu.</p><pre><code>global $wpdb;
+      <div class="cheat-card"><h4>$wpdb->get_results()</h4><p>Izpilda SQL vaicājumu un atgriež visas atbilstošās rindas kā masīvu - izmanto, kad WP_Query nespēj izteikt vajadzīgo vaicājumu.</p><pre><code>global $wpdb;
 $wpdb-&gt;get_results("SELECT * FROM {$wpdb-&gt;posts}");</code></pre></div>
-      <div class="cheat-card"><h4>$wpdb->get_row()</h4><p>Tas pats, kas get_results(), bet atgriež tikai vienu (pirmo atbilstošo) rindu — noder, ja zini, ka rezultāts būs viens ieraksts.</p><pre><code>$wpdb-&gt;get_row("... WHERE id=1");</code></pre></div>
-      <div class="cheat-card"><h4>$wpdb->prepare()</h4><p>Sagatavo SQL vaicājumu ar drošu vietturu aizvietošanu — vienmēr jāizmanto, kad vaicājumā iekļauj mainīgu (lietotāja) datu, lai novērstu SQL injection.</p><pre><code>$wpdb-&gt;prepare("... WHERE id=%d", $id)</code></pre></div>
-      <div class="cheat-card"><h4>$wpdb->prefix</h4><p>Pašreizējās instalācijas tabulu prefikss (noklusējumā wp_, bet var būt cits) — vienmēr izmanto šo mainīgo, nevis cietkodētu "wp_".</p><pre><code>{$wpdb-&gt;prefix}mana_tabula</code></pre></div>
+      <div class="cheat-card"><h4>$wpdb->get_row()</h4><p>Tas pats, kas get_results(), bet atgriež tikai vienu (pirmo atbilstošo) rindu - noder, ja zini, ka rezultāts būs viens ieraksts.</p><pre><code>$wpdb-&gt;get_row("... WHERE id=1");</code></pre></div>
+      <div class="cheat-card"><h4>$wpdb->prepare()</h4><p>Sagatavo SQL vaicājumu ar drošu vietturu aizvietošanu - vienmēr jāizmanto, kad vaicājumā iekļauj mainīgu (lietotāja) datu, lai novērstu SQL injection.</p><pre><code>$wpdb-&gt;prepare("... WHERE id=%d", $id)</code></pre></div>
+      <div class="cheat-card"><h4>$wpdb->prefix</h4><p>Pašreizējās instalācijas tabulu prefikss (noklusējumā wp_, bet var būt cits) - vienmēr izmanto šo mainīgo, nevis cietkodētu "wp_".</p><pre><code>{$wpdb-&gt;prefix}mana_tabula</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-media">
     <h2>Media</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>add_theme_support()</h4><p>Ieslēdz WordPress iebūvētu funkcionalitāti tēmai — parametrs "post-thumbnails" aktivizē izcēlattēlu atbalstu, bez kura the_post_thumbnail() nestrādās.</p><pre><code>add_theme_support('post-thumbnails');</code></pre></div>
-      <div class="cheat-card"><h4>the_post_thumbnail()</h4><p>Izvada ieraksta izcēlattēlu gatavā &lt;img&gt; tagā ar norādīto izmēru — prasa iepriekš ieslēgtu add_theme_support('post-thumbnails').</p><pre><code>the_post_thumbnail('large');</code></pre></div>
-      <div class="cheat-card"><h4>get_the_post_thumbnail_url()</h4><p>Atgriež tikai izcēlattēla URL adresi (nevis gatavu &lt;img&gt; tagu) — noder, ja attēls jāizmanto, piem., CSS background-image īpašībā.</p><pre><code>$url = get_the_post_thumbnail_url($id);</code></pre></div>
-      <div class="cheat-card"><h4>wp_get_attachment_image()</h4><p>Izvada jebkuru mediatēkas attēlu kā &lt;img&gt; tagu pēc tā pielikuma (attachment) ID — noder attēliem, kas nav ieraksta izcēlattēls.</p><pre><code>wp_get_attachment_image($att_id, 'medium');</code></pre></div>
+      <div class="cheat-card"><h4>add_theme_support()</h4><p>Ieslēdz WordPress iebūvētu funkcionalitāti tēmai - parametrs "post-thumbnails" aktivizē izcēlattēlu atbalstu, bez kura the_post_thumbnail() nestrādās.</p><pre><code>add_theme_support('post-thumbnails');</code></pre></div>
+      <div class="cheat-card"><h4>the_post_thumbnail()</h4><p>Izvada ieraksta izcēlattēlu gatavā &lt;img&gt; tagā ar norādīto izmēru - prasa iepriekš ieslēgtu add_theme_support('post-thumbnails').</p><pre><code>the_post_thumbnail('large');</code></pre></div>
+      <div class="cheat-card"><h4>get_the_post_thumbnail_url()</h4><p>Atgriež tikai izcēlattēla URL adresi (nevis gatavu &lt;img&gt; tagu) - noder, ja attēls jāizmanto, piem., CSS background-image īpašībā.</p><pre><code>$url = get_the_post_thumbnail_url($id);</code></pre></div>
+      <div class="cheat-card"><h4>wp_get_attachment_image()</h4><p>Izvada jebkuru mediatēkas attēlu kā &lt;img&gt; tagu pēc tā pielikuma (attachment) ID - noder attēliem, kas nav ieraksta izcēlattēls.</p><pre><code>wp_get_attachment_image($att_id, 'medium');</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-ajax">
     <h2>AJAX &amp; REST</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>wp_ajax_ / wp_ajax_nopriv_</h4><p>Divi āķi ar vienādu darbības nosaukumu — pirmais apstrādā pieteiktus lietotājus, otrais nepieteiktus. Jāreģistrē abi, ja AJAX jāstrādā arī viesiem.</p><pre><code>add_action('wp_ajax_x', 'fn');
+      <div class="cheat-card"><h4>wp_ajax_ / wp_ajax_nopriv_</h4><p>Divi āķi ar vienādu darbības nosaukumu - pirmais apstrādā pieteiktus lietotājus, otrais nepieteiktus. Jāreģistrē abi, ja AJAX jāstrādā arī viesiem.</p><pre><code>add_action('wp_ajax_x', 'fn');
 add_action('wp_ajax_nopriv_x', 'fn');</code></pre></div>
-      <div class="cheat-card"><h4>wp_send_json_success/error()</h4><p>Nosūta atbildi atpakaļ JS pusei gatavā JSON formātā ar "success" karodziņu — automātiski arī pārtrauc PHP skripta izpildi.</p><pre><code>wp_send_json_success(['ok' =&gt; true]);</code></pre></div>
-      <div class="cheat-card"><h4>register_rest_route()</h4><p>Reģistrē savu, pielāgotu REST API galapunktu — alternatīva admin-ajax.php pieejai, modernāka un vieglāk testējama.</p><pre><code>register_rest_route('ns/v1', '/x', [
+      <div class="cheat-card"><h4>wp_send_json_success/error()</h4><p>Nosūta atbildi atpakaļ JS pusei gatavā JSON formātā ar "success" karodziņu - automātiski arī pārtrauc PHP skripta izpildi.</p><pre><code>wp_send_json_success(['ok' =&gt; true]);</code></pre></div>
+      <div class="cheat-card"><h4>register_rest_route()</h4><p>Reģistrē savu, pielāgotu REST API galapunktu - alternatīva admin-ajax.php pieejai, modernāka un vieglāk testējama.</p><pre><code>register_rest_route('ns/v1', '/x', [
   'methods' =&gt; 'GET', 'callback' =&gt; 'fn',
 ]);</code></pre></div>
-      <div class="cheat-card"><h4>/wp-json/wp/v2/posts</h4><p>WordPress kodola iebūvēts REST galapunkts, kas jau strādā uzreiz — atgriež publicētos ierakstus JSON formātā bez papildu koda.</p><pre><code>GET /wp-json/wp/v2/posts</code></pre></div>
+      <div class="cheat-card"><h4>/wp-json/wp/v2/posts</h4><p>WordPress kodola iebūvēts REST galapunkts, kas jau strādā uzreiz - atgriež publicētos ierakstus JSON formātā bez papildu koda.</p><pre><code>GET /wp-json/wp/v2/posts</code></pre></div>
     </div>
   </section>
 
   <section class="cheat-section" id="ct-data-api">
     <h2>Options &amp; HTTP API</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>get_option() / update_option()</h4><p>Nolasa/saglabā vienkāršu iestatījumu vērtību pēc atslēgas — standarta veids, kā tēmas/spraudņi glabā savus iestatījumus wp_options tabulā.</p><pre><code>update_option('krasa', '#f00');
+      <div class="cheat-card"><h4>get_option() / update_option()</h4><p>Nolasa/saglabā vienkāršu iestatījumu vērtību pēc atslēgas - standarta veids, kā tēmas/spraudņi glabā savus iestatījumus wp_options tabulā.</p><pre><code>update_option('krasa', '#f00');
 get_option('krasa', '#000');</code></pre></div>
       <div class="cheat-card"><h4>add_option() / delete_option()</h4><p>add_option() pievieno tikai tad, ja opcija vēl neeksistē; delete_option() izdzēš to pilnībā.</p><pre><code>add_option('versija', '1.0');
 delete_option('versija');</code></pre></div>
-      <div class="cheat-card"><h4>wp_remote_get()</h4><p>Nosūta GET pieprasījumu uz ārēju API — WordPress ieteiktais veids, nevis tiešs cURL, jo ievēro servera proxy iestatījumus.</p><pre><code>$r = wp_remote_get('https://api.x.lv/dati');</code></pre></div>
+      <div class="cheat-card"><h4>wp_remote_get()</h4><p>Nosūta GET pieprasījumu uz ārēju API - WordPress ieteiktais veids, nevis tiešs cURL, jo ievēro servera proxy iestatījumus.</p><pre><code>$r = wp_remote_get('https://api.x.lv/dati');</code></pre></div>
       <div class="cheat-card"><h4>wp_remote_post()</h4><p>Tas pats, kas wp_remote_get(), bet POST pieprasījumam ar datiem un galvenēm.</p><pre><code>wp_remote_post($url, ['body' =&gt; $dati]);</code></pre></div>
-      <div class="cheat-card"><h4>is_wp_error()</h4><p>Vienmēr jāpārbauda pēc wp_remote_*() izsaukuma — pārbauda, vai pats pieprasījums tehniski izdevās (nevis servera atbildes statusu).</p><pre><code>if (is_wp_error($r)) { /* kļūda */ }</code></pre></div>
+      <div class="cheat-card"><h4>is_wp_error()</h4><p>Vienmēr jāpārbauda pēc wp_remote_*() izsaukuma - pārbauda, vai pats pieprasījums tehniski izdevās (nevis servera atbildes statusu).</p><pre><code>if (is_wp_error($r)) { /* kļūda */ }</code></pre></div>
       <div class="cheat-card"><h4>wp_remote_retrieve_body()</h4><p>Izvelk tikai atbildes saturu (tekstu/JSON) no pilnās wp_remote_*() atbildes struktūras.</p><pre><code>$dati = json_decode(wp_remote_retrieve_body($r), true);</code></pre></div>
     </div>
   </section>
@@ -280,12 +280,12 @@ delete_option('versija');</code></pre></div>
   <section class="cheat-section" id="ct-i18n">
     <h2>i18n &amp; Gutenberg</h2>
     <div class="cheat-grid">
-      <div class="cheat-card"><h4>__()</h4><p>Atgriež tulkotu tekstu (nevis izvada) — otrais parametrs vienmēr ir text domain, kas piesaista tekstu konkrētajai tēmai/spraudnim.</p><pre><code>$t = __('Sveiki', 'mana-tema');</code></pre></div>
-      <div class="cheat-card"><h4>_e()</h4><p>Tas pats, kas __(), bet uzreiz izvada tekstu — saīsinājums echo __(...).</p><pre><code>_e('Sveiki', 'mana-tema');</code></pre></div>
-      <div class="cheat-card"><h4>esc_html__()</h4><p>Apvieno tulkošanu ar drošu HTML izvadi vienā solī — visbiežāk lietotā kombinācija veidnēs.</p><pre><code>echo esc_html__('Sveiki', 'mana-tema');</code></pre></div>
+      <div class="cheat-card"><h4>__()</h4><p>Atgriež tulkotu tekstu (nevis izvada) - otrais parametrs vienmēr ir text domain, kas piesaista tekstu konkrētajai tēmai/spraudnim.</p><pre><code>$t = __('Sveiki', 'mana-tema');</code></pre></div>
+      <div class="cheat-card"><h4>_e()</h4><p>Tas pats, kas __(), bet uzreiz izvada tekstu - saīsinājums echo __(...).</p><pre><code>_e('Sveiki', 'mana-tema');</code></pre></div>
+      <div class="cheat-card"><h4>esc_html__()</h4><p>Apvieno tulkošanu ar drošu HTML izvadi vienā solī - visbiežāk lietotā kombinācija veidnēs.</p><pre><code>echo esc_html__('Sveiki', 'mana-tema');</code></pre></div>
       <div class="cheat-card"><h4>load_theme_textdomain()</h4><p>Reģistrē text domain un norāda mapi, kur meklēt .po/.mo tulkojumu failus.</p><pre><code>load_theme_textdomain('mana-tema', get_template_directory().'/languages');</code></pre></div>
-      <div class="cheat-card"><h4>register_block_type()</h4><p>Reģistrē Gutenberg bloku, nolasot tā block.json failu — bloks pēc tam parādās redaktora bloku sarakstā.</p><pre><code>register_block_type(__DIR__ . '/blocks/x');</code></pre></div>
-      <div class="cheat-card"><h4>block.json</h4><p>Bloka metadatu fails (nosaukums, kategorija, ikona, JS/CSS faili) — WordPress to nolasa automātiski, izsaucot register_block_type() ar mapes ceļu.</p><pre><code>{ "name": "ns/x", "editorScript": "file:./index.js" }</code></pre></div>
+      <div class="cheat-card"><h4>register_block_type()</h4><p>Reģistrē Gutenberg bloku, nolasot tā block.json failu - bloks pēc tam parādās redaktora bloku sarakstā.</p><pre><code>register_block_type(__DIR__ . '/blocks/x');</code></pre></div>
+      <div class="cheat-card"><h4>block.json</h4><p>Bloka metadatu fails (nosaukums, kategorija, ikona, JS/CSS faili) - WordPress to nolasa automātiski, izsaucot register_block_type() ar mapes ceļu.</p><pre><code>{ "name": "ns/x", "editorScript": "file:./index.js" }</code></pre></div>
     </div>
   </section>
 
@@ -293,12 +293,12 @@ delete_option('versija');</code></pre></div>
     <h2>Citas noderīgas</h2>
     <div class="cheat-grid">
       <div class="cheat-card"><h4>add_shortcode()</h4><p>Reģistrē pielāgotu [tagu], ko redaktorā var ierakstīt kā tekstu, un WordPress to automātiski aizvieto ar funkcijas atgriezto saturu.</p><pre><code>add_shortcode('gads', fn() =&gt; date('Y'));</code></pre></div>
-      <div class="cheat-card"><h4>set_transient() / get_transient()</h4><p>Saglabā/nolasa pagaidu, uz laiku ierobežotu kešoto vērtību — noder, lai izvairītos no dārgu aprēķinu vai ārēju API pieprasījumu atkārtošanas katrā lapas ielādē.</p><pre><code>set_transient('x', $v, HOUR_IN_SECONDS);</code></pre></div>
+      <div class="cheat-card"><h4>set_transient() / get_transient()</h4><p>Saglabā/nolasa pagaidu, uz laiku ierobežotu kešoto vērtību - noder, lai izvairītos no dārgu aprēķinu vai ārēju API pieprasījumu atkārtošanas katrā lapas ielādē.</p><pre><code>set_transient('x', $v, HOUR_IN_SECONDS);</code></pre></div>
       <div class="cheat-card"><h4>wp_schedule_event()</h4><p>Ieplāno funkciju, kas automātiski izpildīsies ar norādītu intervālu (WordPress "cron"). Vienmēr pirms tam pārbauda ar wp_next_scheduled(), lai nedublētu ieplānojumu.</p><pre><code>if (!wp_next_scheduled('h'))
   wp_schedule_event(time(), 'daily', 'h');</code></pre></div>
       <div class="cheat-card"><h4>register_sidebar()</h4><p>Reģistrē jaunu widžetu zonu (piem., sānjoslu), kuru pēc tam var aizpildīt admin panelī Izskats → Widžeti, neko papildus nekodējot.</p><pre><code>register_sidebar(['id' =&gt; 'main']);</code></pre></div>
       <div class="cheat-card"><h4>register_nav_menus()</h4><p>Reģistrē vietu (ar iekšēju nosaukumu) tēmā, kur vēlāk var piesaistīt izvēlni, ko lietotājs izveido admin panelī.</p><pre><code>register_nav_menus(['primary' =&gt; 'Galvenā']);</code></pre></div>
-      <div class="cheat-card"><h4>wp_mail()</h4><p>WordPress iebūvētā funkcija e-pastu sūtīšanai — pēc noklusējuma izmanto servera PHP mail() funkciju, kas daudzos hostingos ir neuzticama.</p><pre><code>wp_mail($to, $subject, $body);</code></pre></div>
+      <div class="cheat-card"><h4>wp_mail()</h4><p>WordPress iebūvētā funkcija e-pastu sūtīšanai - pēc noklusējuma izmanto servera PHP mail() funkciju, kas daudzos hostingos ir neuzticama.</p><pre><code>wp_mail($to, $subject, $body);</code></pre></div>
     </div>
   </section>
 
@@ -308,7 +308,7 @@ delete_option('versija');</code></pre></div>
   </div>
 </main>
 
-<script src="../js/theme.js?v=20"></script>
-<script src="../js/main.js?v=20"></script>
+<script src="../js/theme.js?v=21"></script>
+<script src="../js/main.js?v=21"></script>
 </body>
 </html>

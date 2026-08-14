@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
-<title>Ātrie risinājumi — Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=20" />
+<title>Ātrie risinājumi - Documentation Samis</title>
+<link rel="stylesheet" href="../css/style.css?v=21" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -63,7 +63,7 @@
       <a href="#snip-login-redirect"><span class="bullet"></span>Novirzīšana pēc pieteikšanās</a>
       <a href="#snip-admin-locale"><span class="bullet"></span>Piespiedu admin valoda</a>
       <a href="#snip-admin-colors"><span class="bullet"></span>Admin &amp; pieteikšanās krāsas</a>
-      <a href="#snip-editor-customizer"><span class="bullet"></span>Redaktoram — Customizer piekļuve</a>
+      <a href="#snip-editor-customizer"><span class="bullet"></span>Redaktoram - Customizer piekļuve</a>
       <a href="#snip-cache-button"><span class="bullet"></span>Kešatmiņas tīrīšanas poga admin joslā</a>
       <a href="#snip-hide-notices"><span class="bullet"></span>Paslēpt admin paziņojumus konkrētā ekrānā</a>
     </div>
@@ -96,7 +96,7 @@
     </div>
     <div class="doc-sidebar-group">
       <h4>Daudzvalodu (TranslatePress)</h4>
-      <a href="#snip-trp-indeksesana"><span class="bullet"></span>Indeksēšana citai valodai — soli pa solim</a>
+      <a href="#snip-trp-indeksesana"><span class="bullet"></span>Indeksēšana citai valodai - soli pa solim</a>
     </div>
     <div class="doc-sidebar-group">
       <h4>Contact Form 7</h4>
@@ -121,11 +121,11 @@
       </div>
       <h1 style="margin-bottom:0;">Ātrie risinājumi</h1>
     </div>
-    <p class="doc-lead">Populāri, patstāvīgi <code>functions.php</code> trikizi — katru var iekopēt tieši tādu, kāds tas ir, tēmas <code>functions.php</code> failā (vai izceltā failā, ko no turienes ielādē ar <code>require_once</code>). Meklē pilnas dziļās sadaļas? Skaties <a href="wordpress.html">pilnajā WordPress dokumentācijā</a>.</p>
+    <p class="doc-lead">Populāri, patstāvīgi <code>functions.php</code> trikizi - katru var iekopēt tieši tādu, kāds tas ir, tēmas <code>functions.php</code> failā (vai izceltā failā, ko no turienes ielādē ar <code>require_once</code>). Meklē pilnas dziļās sadaļas? Skaties <a href="wordpress.html">pilnajā WordPress dokumentācijā</a>.</p>
 
     <section class="doc-section" id="snip-svg">
       <h2>SVG augšupielāžu atbalsts</h2>
-      <p>WordPress pēc noklusējuma <strong>bloķē</strong> SVG augšupielādi — SVG faili ir teksta (XML) faili, kas var saturēt JavaScript kodu, tāpēc tie ir potenciāls XSS drošības risks. Šis kods atļauj SVG, bet <strong>tikai</strong> uzticamiem lietotājiem (administratoriem).</p>
+      <p>WordPress pēc noklusējuma <strong>bloķē</strong> SVG augšupielādi - SVG faili ir teksta (XML) faili, kas var saturēt JavaScript kodu, tāpēc tie ir potenciāls XSS drošības risks. Šis kods atļauj SVG, bet <strong>tikai</strong> uzticamiem lietotājiem (administratoriem).</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_filter</span>(<span class="tok-str">'upload_mimes'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$mimes</span>) {
     <span class="tok-kw">if</span> (<span class="tok-fn">current_user_can</span>(<span class="tok-str">'manage_options'</span>)) {
         <span class="tok-fn">$mimes</span>[<span class="tok-str">'svg'</span>] = <span class="tok-str">'image/svg+xml'</span>;
@@ -134,25 +134,25 @@
 });</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Nekad neatļauj SVG augšupielādi <strong>visiem</strong> lietotājiem (piem., <code>edit_posts</code> vietā <code>manage_options</code>) — jebkurš, kas var augšupielādēt SVG, teorētiski var ievietot ļaunprātīgu JavaScript kodu. Ražošanas vietnēm, kur SVG jāaugšupielādē arī parastiem redaktoriem, apsver specializētu spraudni (piem., "Safe SVG"), kas SVG failu attīra pirms saglabāšanas.</p>
+        <p>Nekad neatļauj SVG augšupielādi <strong>visiem</strong> lietotājiem (piem., <code>edit_posts</code> vietā <code>manage_options</code>) - jebkurš, kas var augšupielādēt SVG, teorētiski var ievietot ļaunprātīgu JavaScript kodu. Ražošanas vietnēm, kur SVG jāaugšupielādē arī parastiem redaktoriem, apsver specializētu spraudni (piem., "Safe SVG"), kas SVG failu attīra pirms saglabāšanas.</p>
       </div>
     </section>
 
     <section class="doc-section" id="snip-version">
       <h2>Noņemt WordPress versijas numuru</h2>
-      <p>WordPress pēc noklusējuma lapas HTML kodā atklāj savu versijas numuru — tas atvieglo uzbrucējiem atrast vietnes, kam vēl nav uzstādīts jaunākais drošības labojums.</p>
+      <p>WordPress pēc noklusējuma lapas HTML kodā atklāj savu versijas numuru - tas atvieglo uzbrucējiem atrast vietnes, kam vēl nav uzstādīts jaunākais drošības labojums.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">remove_action</span>(<span class="tok-str">'wp_head'</span>, <span class="tok-str">'wp_generator'</span>);</code></pre>
     </section>
 
     <section class="doc-section" id="snip-xmlrpc">
       <h2>Izslēgt XML-RPC</h2>
-      <p>XML-RPC ir vecāks WordPress interfeiss ārējiem savienojumiem (piem., senākām mobilajām lietotnēm) — tas ir arī izplatīts brute-force uzbrukumu mērķis. Ja to nelieto (lielākā daļa vietņu nelieto), droši izslēdz.</p>
+      <p>XML-RPC ir vecāks WordPress interfeiss ārējiem savienojumiem (piem., senākām mobilajām lietotnēm) - tas ir arī izplatīts brute-force uzbrukumu mērķis. Ja to nelieto (lielākā daļa vietņu nelieto), droši izslēdz.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_filter</span>(<span class="tok-str">'xmlrpc_enabled'</span>, <span class="tok-str">'__return_false'</span>);</code></pre>
     </section>
 
     <section class="doc-section" id="snip-comments">
       <h2>Izslēgt komentārus pilnībā</h2>
-      <p>Aizver komentārus visos esošajos ierakstos, noņem komentāru atbalstu no ierakstu/lapu tipiem un paslēpj "Komentāri" izvēlni admin panelī — der vietnēm, kur komentāri nemaz nav vajadzīgi.</p>
+      <p>Aizver komentārus visos esošajos ierakstos, noņem komentāru atbalstu no ierakstu/lapu tipiem un paslēpj "Komentāri" izvēlni admin panelī - der vietnēm, kur komentāri nemaz nav vajadzīgi.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 1) Aizver komentārus/trackback visiem esošajiem ierakstiem un lapām</span>
 <span class="tok-kw">function</span> <span class="tok-fn">wpds_disable_comments_status</span>() {
     <span class="tok-kw">return</span> <span class="tok-kw">false</span>;
@@ -181,7 +181,7 @@
     <span class="tok-fn">remove_menu_page</span>(<span class="tok-str">'tools.php'</span>);       <span class="tok-com">// Rīki</span>
     <span class="tok-fn">remove_menu_page</span>(<span class="tok-str">'edit-comments.php'</span>); <span class="tok-com">// Komentāri</span>
     <span class="tok-fn">remove_menu_page</span>(<span class="tok-str">'plugins.php'</span>);     <span class="tok-com">// Spraudņi</span>
-}, 999); <span class="tok-com">// liels skaitlis — izpildās PĒC visiem, kas izveido izvēlnes</span></code></pre>
+}, 999); <span class="tok-com">// liels skaitlis - izpildās PĒC visiem, kas izveido izvēlnes</span></code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
         <p>Standarta izvēlnes punktu identifikatorus (kā <code>tools.php</code>, <code>edit-comments.php</code>) atrodi WordPress oficiālajā <a href="https://developer.wordpress.org/reference/functions/remove_menu_page/" target="_blank" rel="noopener"><code>remove_menu_page()</code> dokumentācijā</a>. Pielāgota spraudņa izveidoto izvēlni (piem., no kāda uzstādīta spraudņa) paslēpj tāpat, izmantojot tā reģistrēto slug.</p>
@@ -205,10 +205,10 @@
     &lt;?php
 });
 
-<span class="tok-com">// Neobligāti — logo klikšķis ved uz tavu vietni, ne wordpress.org</span>
+<span class="tok-com">// Neobligāti - logo klikšķis ved uz tavu vietni, ne wordpress.org</span>
 <span class="tok-fn">add_filter</span>(<span class="tok-str">'login_headerurl'</span>, <span class="tok-str">'home_url'</span>);</code></pre>
-      <p>Piemērs augstāk izmanto <strong>fiksētu</strong> failu no tēmas mapes — labi der, ja logo maina reti, pats izstrādātājs. Ja logo <strong>un</strong> logo saite jāļauj mainīt klientam pašam (bez koda rediģēšanas), izmanto WordPress <strong>Customizer</strong> — <code>WP_Customize_Image_Control</code> uzreiz dod gatavu attēla augšupielādes lauku ar priekšskatījumu no Media Library, bez papildu JS rakstīšanas:</p>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 1) Reģistrē attēla LAUKU un URL LAUKU — abi Izskats → Pielāgot → Vietnes identitāte</span>
+      <p>Piemērs augstāk izmanto <strong>fiksētu</strong> failu no tēmas mapes - labi der, ja logo maina reti, pats izstrādātājs. Ja logo <strong>un</strong> logo saite jāļauj mainīt klientam pašam (bez koda rediģēšanas), izmanto WordPress <strong>Customizer</strong> - <code>WP_Customize_Image_Control</code> uzreiz dod gatavu attēla augšupielādes lauku ar priekšskatījumu no Media Library, bez papildu JS rakstīšanas:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 1) Reģistrē attēla LAUKU un URL LAUKU - abi Izskats → Pielāgot → Vietnes identitāte</span>
 <span class="tok-fn">add_action</span>(<span class="tok-str">'customize_register'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$wp_customize</span>) {
     <span class="tok-fn">$wp_customize</span>->add_setting(<span class="tok-str">'wpds_login_logo'</span>, [
         <span class="tok-str">'type'</span>    => <span class="tok-str">'option'</span>, <span class="tok-com">// saglabā wp_options tabulā, nevis theme mod</span>
@@ -220,11 +220,11 @@
         <span class="tok-str">'settings'</span> => <span class="tok-str">'wpds_login_logo'</span>,
     ]));
 
-    <span class="tok-com">// Otrs, pavisam atsevišķs lauks — kur ved klikšķis uz logo</span>
+    <span class="tok-com">// Otrs, pavisam atsevišķs lauks - kur ved klikšķis uz logo</span>
     <span class="tok-fn">$wp_customize</span>->add_setting(<span class="tok-str">'wpds_login_logo_url'</span>, [
         <span class="tok-str">'type'</span>              => <span class="tok-str">'option'</span>,
         <span class="tok-str">'default'</span>           => <span class="tok-str">''</span>,
-        <span class="tok-str">'sanitize_callback'</span> => <span class="tok-str">'esc_url_raw'</span>, <span class="tok-com">// obligāti — lauks ir brīvs teksts, ne attēla ID</span>
+        <span class="tok-str">'sanitize_callback'</span> => <span class="tok-str">'esc_url_raw'</span>, <span class="tok-com">// obligāti - lauks ir brīvs teksts, ne attēla ID</span>
     ]);
     <span class="tok-fn">$wp_customize</span>->add_control(<span class="tok-str">'wpds_login_logo_url'</span>, [
         <span class="tok-str">'label'</span>       => <span class="tok-str">'Logo saite (atstāj tukšu, lai vestu uz sākumlapu)'</span>,
@@ -232,7 +232,7 @@
         <span class="tok-str">'type'</span>        => <span class="tok-str">'url'</span>,
     ]);
 
-    <span class="tok-com">// Trešais lauks — fona krāsa. WP_Customize_Color_Control pats pievieno</span>
+    <span class="tok-com">// Trešais lauks - fona krāsa. WP_Customize_Color_Control pats pievieno</span>
     <span class="tok-com">// krāsu izvēlētāju (color picker), bez papildu JS</span>
     <span class="tok-fn">$wp_customize</span>->add_setting(<span class="tok-str">'wpds_login_bg_color'</span>, [
         <span class="tok-str">'type'</span>              => <span class="tok-str">'option'</span>,
@@ -246,12 +246,12 @@
     ]));
 });
 
-<span class="tok-com">// 2) Nolasa saglabāto attēlu un fona krāsu, izmanto tos — WP_Customize_Image_Control</span>
+<span class="tok-com">// 2) Nolasa saglabāto attēlu un fona krāsu, izmanto tos - WP_Customize_Image_Control</span>
 <span class="tok-com">// jau pats saglabā GATAVU attēla URL (nevis tikai ID), tāpēc get_option() pietiek</span>
 <span class="tok-fn">add_action</span>(<span class="tok-str">'login_enqueue_scripts'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-fn">$logo</span> = <span class="tok-fn">get_option</span>(<span class="tok-str">'wpds_login_logo'</span>);
     <span class="tok-fn">$bg_krasa</span> = <span class="tok-fn">get_option</span>(<span class="tok-str">'wpds_login_bg_color'</span>);
-    <span class="tok-kw">if</span> (!<span class="tok-fn">$logo</span> && !<span class="tok-fn">$bg_krasa</span>) <span class="tok-kw">return</span>; <span class="tok-com">// nekas nav iestatīts — paliek WordPress noklusējums</span>
+    <span class="tok-kw">if</span> (!<span class="tok-fn">$logo</span> && !<span class="tok-fn">$bg_krasa</span>) <span class="tok-kw">return</span>; <span class="tok-com">// nekas nav iestatīts - paliek WordPress noklusējums</span>
     ?&gt;
     &lt;style&gt;
         &lt;?php <span class="tok-kw">if</span> (<span class="tok-fn">$logo</span>): ?&gt;
@@ -271,20 +271,20 @@
     &lt;?php
 });
 
-<span class="tok-com">// 3) Nolasa saglabāto URL — ja lauks tukšs, atgriežas pie WordPress noklusējuma (home_url)</span>
+<span class="tok-com">// 3) Nolasa saglabāto URL - ja lauks tukšs, atgriežas pie WordPress noklusējuma (home_url)</span>
 <span class="tok-fn">add_filter</span>(<span class="tok-str">'login_headerurl'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$noklusejuma_url</span>) {
     <span class="tok-fn">$custom_url</span> = <span class="tok-fn">get_option</span>(<span class="tok-str">'wpds_login_logo_url'</span>);
     <span class="tok-kw">return</span> <span class="tok-fn">$custom_url</span> ? <span class="tok-fn">esc_url</span>(<span class="tok-fn">$custom_url</span>) : <span class="tok-fn">$noklusejuma_url</span>;
 });</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Šis piemērs ir <strong>pilnībā pašpietiekams</strong> — pēc iekopēšanas klients uzreiz redz jaunus "Pieteikšanās lapas logo", "Logo saite" un "Pieteikšanās lapas fona krāsa" laukus Izskats → Pielāgot → Vietnes identitāte, ar attēla augšupielādes pogu un krāsu izvēlētāju. Nekas papildus (admin lapa, JS) nav jāraksta — visi trīs ievades tipi to visu jau dara paši.</p>
+        <p>Šis piemērs ir <strong>pilnībā pašpietiekams</strong> - pēc iekopēšanas klients uzreiz redz jaunus "Pieteikšanās lapas logo", "Logo saite" un "Pieteikšanās lapas fona krāsa" laukus Izskats → Pielāgot → Vietnes identitāte, ar attēla augšupielādes pogu un krāsu izvēlētāju. Nekas papildus (admin lapa, JS) nav jāraksta - visi trīs ievades tipi to visu jau dara paši.</p>
       </div>
     </section>
 
     <section class="doc-section" id="snip-login-redirect">
       <h2>Novirzīšana pēc pieteikšanās (pēc lomas)</h2>
-      <p>Pēc pieteikšanās administratorus nosūta uz admin paneli, bet parastos lietotājus (piem., abonentus) — uz konta lapu, nevis noklusējuma admin dashboard.</p>
+      <p>Pēc pieteikšanās administratorus nosūta uz admin paneli, bet parastos lietotājus (piem., abonentus) - uz konta lapu, nevis noklusējuma admin dashboard.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_filter</span>(<span class="tok-str">'login_redirect'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$parasta_adrese</span>, <span class="tok-fn">$pieprasita_adrese</span>, <span class="tok-fn">$user</span>) {
     <span class="tok-kw">if</span> (<span class="tok-fn">$user</span> <span class="tok-kw">instanceof</span> WP_User && <span class="tok-fn">in_array</span>(<span class="tok-str">'administrator'</span>, <span class="tok-fn">$user</span>->roles, <span class="tok-kw">true</span>)) {
         <span class="tok-kw">return</span> <span class="tok-fn">admin_url</span>();
@@ -295,9 +295,9 @@
 
     <section class="doc-section" id="snip-admin-locale">
       <h2>Piespiedu admin valoda (latviski)</h2>
-      <p>Uzspiež WordPress administrācijas paneli vienmēr rādīt latviešu valodā, neatkarīgi no katra lietotāja profilā izvēlētās personīgās valodas (Lietotāji → Tavs profils → Valoda) — noder, ja vēlies, lai visi komandas locekļi redz vienu un to pašu admin saskarni. Vietnes publiskā daļa (front-end) šo filtru neskar, jo <code>is_admin()</code> pārbauda tikai admin paneli.</p>
+      <p>Uzspiež WordPress administrācijas paneli vienmēr rādīt latviešu valodā, neatkarīgi no katra lietotāja profilā izvēlētās personīgās valodas (Lietotāji → Tavs profils → Valoda) - noder, ja vēlies, lai visi komandas locekļi redz vienu un to pašu admin saskarni. Vietnes publiskā daļa (front-end) šo filtru neskar, jo <code>is_admin()</code> pārbauda tikai admin paneli.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_filter</span>(<span class="tok-str">'locale'</span>, <span class="tok-str">'wpds_uzspiest_admin_valodu'</span>);
-<span class="tok-fn">add_filter</span>(<span class="tok-str">'user_locale'</span>, <span class="tok-str">'wpds_uzspiest_admin_valodu'</span>); <span class="tok-com">// obligāti — bez šī katra lietotāja profila valoda (Lietotāji → Tavs profils) uzvarētu virs šī iestatījuma</span>
+<span class="tok-fn">add_filter</span>(<span class="tok-str">'user_locale'</span>, <span class="tok-str">'wpds_uzspiest_admin_valodu'</span>); <span class="tok-com">// obligāti - bez šī katra lietotāja profila valoda (Lietotāji → Tavs profils) uzvarētu virs šī iestatījuma</span>
 
 <span class="tok-kw">function</span> <span class="tok-fn">wpds_uzspiest_admin_valodu</span>(<span class="tok-fn">$valoda</span>) {
     <span class="tok-kw">if</span> (<span class="tok-fn">is_admin</span>()) {
@@ -307,16 +307,16 @@
 }</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Šis filtrs <strong>tikai norāda</strong>, kuru valodu WordPress mēģina lietot — tas nedarbosies, ja latviešu valodas pakotne serverī nav uzstādīta. Ja pēc šī koda admin panelis joprojām rādās angliski, dodies uz Iestatījumi → Vispārīgi → Vietnes valoda un izvēlies "Latviešu", lai WordPress lejupielādētu <code>lv_LV</code> tulkojuma failus (vai uzstādi ar WP-CLI: <code>wp language core install lv_LV</code>). Pēc tam šis filtrs turpinās strādāt automātiski visiem lietotājiem, arī tiem, kam profilā izvēlēta cita valoda.</p>
+        <p>Šis filtrs <strong>tikai norāda</strong>, kuru valodu WordPress mēģina lietot - tas nedarbosies, ja latviešu valodas pakotne serverī nav uzstādīta. Ja pēc šī koda admin panelis joprojām rādās angliski, dodies uz Iestatījumi → Vispārīgi → Vietnes valoda un izvēlies "Latviešu", lai WordPress lejupielādētu <code>lv_LV</code> tulkojuma failus (vai uzstādi ar WP-CLI: <code>wp language core install lv_LV</code>). Pēc tam šis filtrs turpinās strādāt automātiski visiem lietotājiem, arī tiem, kam profilā izvēlēta cita valoda.</p>
       </div>
     </section>
 
     <section class="doc-section" id="snip-admin-colors">
       <h2>Admin paneļa &amp; pieteikšanās lapas krāsas</h2>
-      <p>Šeit bieži iesācējs sajauc divas <strong>pavisam atšķirīgas</strong> lapas: <code>wp-admin</code> panelis (dashboard, redzams <strong>pēc</strong> pieteikšanās) un <code>wp-login.php</code> (pati pieteikšanās forma, <strong>pirms</strong> pieteikšanās). Katrai ir sava CSS un savs hooks — piemērs, kas maina vienu, otru vispār neietekmē.</p>
+      <p>Šeit bieži iesācējs sajauc divas <strong>pavisam atšķirīgas</strong> lapas: <code>wp-admin</code> panelis (dashboard, redzams <strong>pēc</strong> pieteikšanās) un <code>wp-login.php</code> (pati pieteikšanās forma, <strong>pirms</strong> pieteikšanās). Katrai ir sava CSS un savs hooks - piemērs, kas maina vienu, otru vispār neietekmē.</p>
 
       <h3 style="font-size:17px; margin:32px 0 10px;">1) Admin paneļa (dashboard) pamata krāsa</h3>
-      <p>Kopš WordPress 5.7 admin panelis linkiem, fokusa iezīmējumiem un primārajām pogām izmanto CSS mainīgos — tos pārrakstot, maina krāsu visur uzreiz, neatkarīgi no lietotāja izvēlētās "Admin Color Scheme".</p>
+      <p>Kopš WordPress 5.7 admin panelis linkiem, fokusa iezīmējumiem un primārajām pogām izmanto CSS mainīgos - tos pārrakstot, maina krāsu visur uzreiz, neatkarīgi no lietotāja izvēlētās "Admin Color Scheme".</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'admin_head'</span>, <span class="tok-kw">function</span>() {
     ?&gt;
     &lt;style&gt;
@@ -330,7 +330,7 @@
 });</code></pre>
 
       <h3 style="font-size:17px; margin:32px 0 10px;">2) Pieteikšanās lapas (wp-login.php) krāsa</h3>
-      <p><code>wp-login.php</code> šos CSS mainīgos <strong>nemaz nelasa</strong> — tai jāizmanto cits hooks (<code>login_enqueue_scripts</code>) un jāmērķē tieši uz lapā esošos selektorus (<code>#nav</code> — "Reģistrēties" / "Aizmirsāt paroli?", <code>#backtoblog</code> — "Atpakaļ uz vietni").</p>
+      <p><code>wp-login.php</code> šos CSS mainīgos <strong>nemaz nelasa</strong> - tai jāizmanto cits hooks (<code>login_enqueue_scripts</code>) un jāmērķē tieši uz lapā esošos selektorus (<code>#nav</code> - "Reģistrēties" / "Aizmirsāt paroli?", <code>#backtoblog</code> - "Atpakaļ uz vietni").</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'login_enqueue_scripts'</span>, <span class="tok-kw">function</span>() {
     ?&gt;
     &lt;style&gt;
@@ -343,7 +343,7 @@
             color: #a8324e;
         }
 
-        <span class="tok-com">/* Neobligāti — arī "Pieteikties" pogas krāsa */</span>
+        <span class="tok-com">/* Neobligāti - arī "Pieteikties" pogas krāsa */</span>
         .wp-core-ui .button-primary {
             background: #d94f70;
             border-color: #a8324e;
@@ -359,12 +359,12 @@
 
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p><code>admin_head</code> <strong>neizsaucas vispār</strong> <code>wp-login.php</code> lapā — tā ir sava, atsevišķa lapa ārpus admin paneļa, ne tā daļa. Ja liec pirmo piemēru un gaidi, ka mainīsies pieteikšanās lapas krāsa, kods vienkārši nekad neizpildīsies tur, kur skaties — bieži izskatās, it kā "nekas nemainās", lai gan kods faktiski strādā pareizi (dashboard krāsa gan mainījusies).</p>
+        <p><code>admin_head</code> <strong>neizsaucas vispār</strong> <code>wp-login.php</code> lapā - tā ir sava, atsevišķa lapa ārpus admin paneļa, ne tā daļa. Ja liec pirmo piemēru un gaidi, ka mainīsies pieteikšanās lapas krāsa, kods vienkārši nekad neizpildīsies tur, kur skaties - bieži izskatās, it kā "nekas nemainās", lai gan kods faktiski strādā pareizi (dashboard krāsa gan mainījusies).</p>
       </div>
 
       <h3 style="font-size:17px; margin:32px 0 10px;">3) Sekundārās (necaurspīdīgi apvilktās) pogas</h3>
-      <p>WordPress atšķir divus pogu veidus: <code>.button-primary</code> — pilnībā iekrāsota "galvenā" darbība (piem., "Pieteikties"), un parasta <code>.button</code> — bez fona, tikai ar apmali (piem., "Mainīt", "Atcelt"). <strong>Tās ir divi atšķirīgi selektori</strong> — otrās pogas krāsu <code>--wp-admin-theme-color</code> mainīgais <strong>neietekmē</strong>, tāpēc tai jāpieraksta sava CSS, neatkarīgi no tā, vai poga atrodas admin panelī vai pieteikšanās lapā.</p>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Der gan admin_head (dashboard), gan login_enqueue_scripts (wp-login.php) —</span>
+      <p>WordPress atšķir divus pogu veidus: <code>.button-primary</code> - pilnībā iekrāsota "galvenā" darbība (piem., "Pieteikties"), un parasta <code>.button</code> - bez fona, tikai ar apmali (piem., "Mainīt", "Atcelt"). <strong>Tās ir divi atšķirīgi selektori</strong> - otrās pogas krāsu <code>--wp-admin-theme-color</code> mainīgais <strong>neietekmē</strong>, tāpēc tai jāpieraksta sava CSS, neatkarīgi no tā, vai poga atrodas admin panelī vai pieteikšanās lapā.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Der gan admin_head (dashboard), gan login_enqueue_scripts (wp-login.php) -</span>
 <span class="tok-com">// izvēlies hooku atkarībā no tā, kurā lapā poga atrodas</span>
 <span class="tok-fn">add_action</span>(<span class="tok-str">'admin_head'</span>, <span class="tok-kw">function</span>() {
     ?&gt;
@@ -383,11 +383,11 @@
 });</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>:not(.button-primary)</code> pasargā no tā, lai šis noteikums netīšām nepārrakstītu pirmās apakšsadaļas primāro pogu stilu — abi noteikumi var droši dzīvot vienā un tajā pašā <code>&lt;style&gt;</code> blokā.</p>
+        <p><code>:not(.button-primary)</code> pasargā no tā, lai šis noteikums netīšām nepārrakstītu pirmās apakšsadaļas primāro pogu stilu - abi noteikumi var droši dzīvot vienā un tajā pašā <code>&lt;style&gt;</code> blokā.</p>
       </div>
 
-      <h3 style="font-size:17px; margin:32px 0 10px;">4) Pilnāks piemērs — vairāk elementu &amp; pacēluma efekts pogai</h3>
-      <p>Reālā projektā pieteikšanās lapā parasti jāstilizē vairāk nekā tikai divi-trīs elementi — arī privātuma politikas saite (redzama, ja iestatīta Privātuma politikas lapa) un valodas pārslēdzēja poga lapas apakšā (redzama, ja uzstādītas vairākas valodas). Šis piemērs apvieno visu iepriekšējo un pievieno arī nelielu "pacēluma" animāciju pogai, uzbraucot ar peli:</p>
+      <h3 style="font-size:17px; margin:32px 0 10px;">4) Pilnāks piemērs - vairāk elementu &amp; pacēluma efekts pogai</h3>
+      <p>Reālā projektā pieteikšanās lapā parasti jāstilizē vairāk nekā tikai divi-trīs elementi - arī privātuma politikas saite (redzama, ja iestatīta Privātuma politikas lapa) un valodas pārslēdzēja poga lapas apakšā (redzama, ja uzstādītas vairākas valodas). Šis piemērs apvieno visu iepriekšējo un pievieno arī nelielu "pacēluma" animāciju pogai, uzbraucot ar peli:</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'login_enqueue_scripts'</span>, <span class="tok-kw">function</span>() {
     ?&gt;
     &lt;style&gt;
@@ -437,13 +437,13 @@
 });</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Šeit parādās <code>!important</code> pie katras rindas — tas parasti ir "pēdējais līdzeklis" un labas prakses ziņā jāizvairās, bet šeit tas bieži <strong>nepieciešams</strong>, jo citi spraudņi (piem., sociālās pieteikšanās spraudņi) vai tēma paši ielādē savu CSS ar lielāku specifiskumu (specificity) pieteikšanās lapā. Ja bez <code>!important</code> stils netiek pielietots, tas nozīmē — kaut kas cits to jau pārraksta.</p>
+        <p>Šeit parādās <code>!important</code> pie katras rindas - tas parasti ir "pēdējais līdzeklis" un labas prakses ziņā jāizvairās, bet šeit tas bieži <strong>nepieciešams</strong>, jo citi spraudņi (piem., sociālās pieteikšanās spraudņi) vai tēma paši ielādē savu CSS ar lielāku specifiskumu (specificity) pieteikšanās lapā. Ja bez <code>!important</code> stils netiek pielietots, tas nozīmē - kaut kas cits to jau pārraksta.</p>
       </div>
     </section>
 
     <section class="doc-section" id="snip-editor-customizer">
-      <h2>Redaktoram (Editor lomai) — Customizer piekļuve, bet ierobežota</h2>
-      <p>Pēc noklusējuma tikai administratori var atvērt Izskats → Pielāgot (Customizer). Ja vēlies, lai arī <strong>Redaktora</strong> lomas lietotāji var mainīt logo, krāsas u.tml., bet <strong>nevar</strong> piekļūt tehniskākām sadaļām (izvēlnes, sīkrīki, pielāgots CSS) — vajadzīgas divas daļas: tiesību piešķiršana un pēc tam ierobežošana.</p>
+      <h2>Redaktoram (Editor lomai) - Customizer piekļuve, bet ierobežota</h2>
+      <p>Pēc noklusējuma tikai administratori var atvērt Izskats → Pielāgot (Customizer). Ja vēlies, lai arī <strong>Redaktora</strong> lomas lietotāji var mainīt logo, krāsas u.tml., bet <strong>nevar</strong> piekļūt tehniskākām sadaļām (izvēlnes, sīkrīki, pielāgots CSS) - vajadzīgas divas daļas: tiesību piešķiršana un pēc tam ierobežošana.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 1) Piešķir Redaktora lomai tiesības atvērt Customizer</span>
 <span class="tok-fn">add_action</span>(<span class="tok-str">'admin_init'</span>, <span class="tok-str">'wpds_atlaut_redaktoram_customizer'</span>);
 <span class="tok-kw">function</span> <span class="tok-fn">wpds_atlaut_redaktoram_customizer</span>() {
@@ -465,13 +465,13 @@
 }</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Prioritāte <code>999</code> otrajā funkcijā ir svarīga — tā izpildās <strong>pēc</strong> tam, kad WordPress un citi spraudņi jau ir reģistrējuši visas savas Customizer sadaļas, tāpēc ir kas noņemt. Ja izlaidīsi prioritāti, funkcija var izpildīties par agru un daļu sadaļu vēl nemaz nebūs, ko dzēst.</p>
+        <p>Prioritāte <code>999</code> otrajā funkcijā ir svarīga - tā izpildās <strong>pēc</strong> tam, kad WordPress un citi spraudņi jau ir reģistrējuši visas savas Customizer sadaļas, tāpēc ir kas noņemt. Ja izlaidīsi prioritāti, funkcija var izpildīties par agru un daļu sadaļu vēl nemaz nebūs, ko dzēst.</p>
       </div>
     </section>
 
     <section class="doc-section" id="snip-cache-button">
       <h2>Kešatmiņas tīrīšanas poga admin joslā</h2>
-      <p>Pievieno pogu WordPress augšējā admin joslā (redzama gan admin panelī, gan front-end pusē, ja lietotājs ielogojies), kas piespiedu kārtā pārlādē lapu, apejot pārlūka kešatmiņu — noder klientiem, kas bieži jautā "kāpēc neredzu savas izmaiņas".</p>
+      <p>Pievieno pogu WordPress augšējā admin joslā (redzama gan admin panelī, gan front-end pusē, ja lietotājs ielogojies), kas piespiedu kārtā pārlādē lapu, apejot pārlūka kešatmiņu - noder klientiem, kas bieži jautā "kāpēc neredzu savas izmaiņas".</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'admin_bar_menu'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$wp_admin_bar</span>) {
     <span class="tok-fn">$wp_admin_bar</span>->add_node([
         <span class="tok-str">'id'</span>    => <span class="tok-str">'wpds_clear_cache'</span>,
@@ -501,7 +501,7 @@
 }</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Šī poga apiet tikai <strong>pārlūka</strong> kešatmiņu, pievienojot mainīgu parametru URL. Ja vietnē uzstādīts servera puses kešošanas spraudnis (WP Rocket, W3 Total Cache u.tml.) vai CDN (Cloudflare), tam var būt sava, atsevišķa kešatmiņa, kas jāiztīra atsevišķi — šī poga to neskar. Vajadzības gadījumā <code>wpdsClearCacheAndReload()</code> vietā var izsaukt attiecīgā spraudņa savu "purge cache" AJAX galapunktu.</p>
+        <p>Šī poga apiet tikai <strong>pārlūka</strong> kešatmiņu, pievienojot mainīgu parametru URL. Ja vietnē uzstādīts servera puses kešošanas spraudnis (WP Rocket, W3 Total Cache u.tml.) vai CDN (Cloudflare), tam var būt sava, atsevišķa kešatmiņa, kas jāiztīra atsevišķi - šī poga to neskar. Vajadzības gadījumā <code>wpdsClearCacheAndReload()</code> vietā var izsaukt attiecīgā spraudņa savu "purge cache" AJAX galapunktu.</p>
       </div>
     </section>
 
@@ -524,18 +524,18 @@
 });</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Šis tikai <strong>vizuāli paslēpj</strong> (CSS <code>display: none</code>) — pati funkcionalitāte (piem., atjauninājumu pieejamība) nekur nepazūd, un administratora lietotājs, kas atver citu ekrānu, joprojām redzēs paziņojumus normāli. <code>$screen->post_type</code> pārbaudi vari aizstāt ar <code>$screen->id</code> (piem., <code>'dashboard'</code>), lai mērķētu uz citiem admin ekrāniem, ne tikai ierakstu tipiem.</p>
+        <p>Šis tikai <strong>vizuāli paslēpj</strong> (CSS <code>display: none</code>) - pati funkcionalitāte (piem., atjauninājumu pieejamība) nekur nepazūd, un administratora lietotājs, kas atver citu ekrānu, joprojām redzēs paziņojumus normāli. <code>$screen->post_type</code> pārbaudi vari aizstāt ar <code>$screen->id</code> (piem., <code>'dashboard'</code>), lai mērķētu uz citiem admin ekrāniem, ne tikai ierakstu tipiem.</p>
       </div>
     </section>
 
     <section class="doc-section" id="snip-excerpt">
       <h2>Izraksta (excerpt) garums</h2>
-      <p>Noklusējuma izraksta garums ir 55 vārdi — šis filtrs to pielāgo pēc vajadzības.</p>
+      <p>Noklusējuma izraksta garums ir 55 vārdi - šis filtrs to pielāgo pēc vajadzības.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_filter</span>(<span class="tok-str">'excerpt_length'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$garums</span>) {
     <span class="tok-kw">return</span> 20; <span class="tok-com">// vārdu skaits</span>
 });
 
-<span class="tok-com">// Neobligāti — nomaina noklusējuma "[...]" beigās uz kaut ko citu</span>
+<span class="tok-com">// Neobligāti - nomaina noklusējuma "[...]" beigās uz kaut ko citu</span>
 <span class="tok-fn">add_filter</span>(<span class="tok-str">'excerpt_more'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-kw">return</span> <span class="tok-str">'…'</span>;
 });</code></pre>
@@ -543,7 +543,7 @@
 
     <section class="doc-section" id="snip-image-size">
       <h2>Pielāgots attēla izmērs</h2>
-      <p>WordPress automātiski ģenerē vairākus attēla izmērus katrai augšupielādei (thumbnail, medium, large) — šis pievieno vēl vienu, savu, izmēru tam pašam mehānismam.</p>
+      <p>WordPress automātiski ģenerē vairākus attēla izmērus katrai augšupielādei (thumbnail, medium, large) - šis pievieno vēl vienu, savu, izmēru tam pašam mehānismam.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'after_setup_theme'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-com">// nosaukums, platums, augstums, vai apgriezt (true = precīzi izmēri)</span>
     <span class="tok-fn">add_image_size</span>(<span class="tok-str">'kartes-attels'</span>, 400, 300, <span class="tok-kw">true</span>);
@@ -554,13 +554,13 @@
 &lt;?php <span class="tok-kw">endif</span>; ?&gt;</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Jauns izmērs attiecas tikai uz <strong>jaunām</strong> augšupielādēm — jau esošajiem attēliem šī izmēra versijas nav. Lai ģenerētu trūkstošos izmērus arī vecajiem attēliem, izmanto spraudni "Regenerate Thumbnails" vai WP-CLI komandu <code>wp media regenerate</code>.</p>
+        <p>Jauns izmērs attiecas tikai uz <strong>jaunām</strong> augšupielādēm - jau esošajiem attēliem šī izmēra versijas nav. Lai ģenerētu trūkstošos izmērus arī vecajiem attēliem, izmanto spraudni "Regenerate Thumbnails" vai WP-CLI komandu <code>wp media regenerate</code>.</p>
       </div>
     </section>
 
     <section class="doc-section" id="snip-emoji">
       <h2>Izslēgt emoji skriptus (veiktspēja)</h2>
-      <p>WordPress pēc noklusējuma katrā lapā ielādē papildu skriptu emoji attēlošanai vecākos pārlūkos — lielākajai daļai vietņu tas nav vajadzīgs un nedaudz palēnina lapu.</p>
+      <p>WordPress pēc noklusējuma katrā lapā ielādē papildu skriptu emoji attēlošanai vecākos pārlūkos - lielākajai daļai vietņu tas nav vajadzīgs un nedaudz palēnina lapu.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'init'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-fn">remove_action</span>(<span class="tok-str">'wp_head'</span>, <span class="tok-str">'print_emoji_detection_script'</span>, 7);
     <span class="tok-fn">remove_action</span>(<span class="tok-str">'wp_print_styles'</span>, <span class="tok-str">'print_emoji_styles'</span>);
@@ -571,17 +571,17 @@
 
     <section class="doc-section" id="snip-classic-editor">
       <h2>Piespiedu klasiskais redaktors (izslēgt Gutenbergu)</h2>
-      <p>Ja tēma vai spraudņi ir veidoti ar veco, klasisko redaktoru prātā (vai vienkārši negribi blociņu redaktoru), viena rindiņa pilnībā izslēdz Gutenbergu — visiem ierakstu tipiem, visiem lietotājiem.</p>
+      <p>Ja tēma vai spraudņi ir veidoti ar veco, klasisko redaktoru prātā (vai vienkārši negribi blociņu redaktoru), viena rindiņa pilnībā izslēdz Gutenbergu - visiem ierakstu tipiem, visiem lietotājiem.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_filter</span>(<span class="tok-str">'use_block_editor_for_post'</span>, <span class="tok-str">'__return_false'</span>);</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Šis filtrs ietekmē <strong>tikai</strong> to, vai redaktors atveras kā Gutenbergs vai klasiskais TinyMCE — pati "Classic Editor" spraudņa uzstādīšana nav nepieciešama. Ja vajag izslēgt tikai konkrētam ierakstu tipam, pievieno pārbaudi: <code>if ($post_type === 'produkts') return false;</code> pirms atgriešanas.</p>
+        <p>Šis filtrs ietekmē <strong>tikai</strong> to, vai redaktors atveras kā Gutenbergs vai klasiskais TinyMCE - pati "Classic Editor" spraudņa uzstādīšana nav nepieciešama. Ja vajag izslēgt tikai konkrētam ierakstu tipam, pievieno pārbaudi: <code>if ($post_type === 'produkts') return false;</code> pirms atgriešanas.</p>
       </div>
     </section>
 
     <section class="doc-section" id="snip-gettext">
       <h2>Jebkura teksta/frāzes aizstāšana (gettext)</h2>
-      <p><code>gettext</code> filtrs ļauj pārrakstīt <strong>jebkuru</strong> tekstu, ko WordPress vai kāds spraudnis izvada caur tulkošanas funkcijām (<code>__()</code>, <code>_e()</code> u.tml.) — pat ja tev nav piekļuves attiecīgā spraudņa kodam. Noder, ja gribi mainīt kāda spraudņa tekstu, nerediģējot pašu spraudni (kas citādi pazustu nākamajā atjauninājumā).</p>
+      <p><code>gettext</code> filtrs ļauj pārrakstīt <strong>jebkuru</strong> tekstu, ko WordPress vai kāds spraudnis izvada caur tulkošanas funkcijām (<code>__()</code>, <code>_e()</code> u.tml.) - pat ja tev nav piekļuves attiecīgā spraudņa kodam. Noder, ja gribi mainīt kāda spraudņa tekstu, nerediģējot pašu spraudni (kas citādi pazustu nākamajā atjauninājumā).</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Vienkāršs, precīzs viena teksta aizstāšanas gadījums</span>
 <span class="tok-fn">add_filter</span>(<span class="tok-str">'gettext'</span>, <span class="tok-str">'wpds_aizvietot_vienu_frazi'</span>, 20, 3);
 <span class="tok-kw">function</span> <span class="tok-fn">wpds_aizvietot_vienu_frazi</span>(<span class="tok-fn">$tulkotais</span>, <span class="tok-fn">$original</span>, <span class="tok-fn">$domain</span>) {
@@ -605,13 +605,13 @@
 }, 20, 3);</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Salīdzini pret <code>$tulkotais</code> (jau iztulkoto tekstu), nevis pret <code>$original</code> (angļu oriģinālu) — tā piemērs strādās neatkarīgi no tā, vai vietnei uzstādīta angļu vai latviešu valoda. <code>$domain</code> pārbaude (piem., <code>=== 'woocommerce'</code>) svarīga, lai netīšām neaizvietotu vienādu vārdu citur, kur tas nozīmē ko citu.</p>
+        <p>Salīdzini pret <code>$tulkotais</code> (jau iztulkoto tekstu), nevis pret <code>$original</code> (angļu oriģinālu) - tā piemērs strādās neatkarīgi no tā, vai vietnei uzstādīta angļu vai latviešu valoda. <code>$domain</code> pārbaude (piem., <code>=== 'woocommerce'</code>) svarīga, lai netīšām neaizvietotu vienādu vārdu citur, kur tas nozīmē ko citu.</p>
       </div>
     </section>
 
     <section class="doc-section" id="snip-clear-transients">
       <h2>Iztīrīt transientus pēc prefiksa</h2>
-      <p>WordPress nesniedz iebūvētu veidu, kā izdzēst "visus transientus, kuru nosaukums sākas ar X" — jāizmanto <code>$wpdb</code> tieši. Noder, kad kešots dati (skat. <a href="wordpress.html#transients">Transients</a>) jāatjauno uzreiz pēc konkrētas darbības, nevis jāgaida, kamēr pats termiņš beidzas.</p>
+      <p>WordPress nesniedz iebūvētu veidu, kā izdzēst "visus transientus, kuru nosaukums sākas ar X" - jāizmanto <code>$wpdb</code> tieši. Noder, kad kešots dati (skat. <a href="wordpress.html#transients">Transients</a>) jāatjauno uzreiz pēc konkrētas darbības, nevis jāgaida, kamēr pats termiņš beidzas.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">function</span> <span class="tok-fn">wpds_iztirit_transientus</span>(<span class="tok-kw">string</span> <span class="tok-fn">$prefikss</span>): <span class="tok-kw">void</span> {
     <span class="tok-kw">global</span> <span class="tok-fn">$wpdb</span>;
 
@@ -628,13 +628,13 @@
 });</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Katram transientam datubāzē faktiski ir <strong>divi</strong> ieraksti — <code>_transient_{atslēga}</code> (pati vērtība) un <code>_transient_timeout_{atslēga}</code> (derīguma termiņš) — tāpēc dzēšanas vaicājumam jāaptver abi prefiksi, citādi paliks "bāreņu" ieraksti datubāzē. <code>$wpdb->esc_like()</code> ir obligāts, ja prefikss jebkad varētu saturēt lietotāja ievadi — tas izbēg <code>%</code>/<code>_</code> simbolus, kam SQL <code>LIKE</code> ir īpaša nozīme.</p>
+        <p>Katram transientam datubāzē faktiski ir <strong>divi</strong> ieraksti - <code>_transient_{atslēga}</code> (pati vērtība) un <code>_transient_timeout_{atslēga}</code> (derīguma termiņš) - tāpēc dzēšanas vaicājumam jāaptver abi prefiksi, citādi paliks "bāreņu" ieraksti datubāzē. <code>$wpdb->esc_like()</code> ir obligāts, ja prefikss jebkad varētu saturēt lietotāja ievadi - tas izbēg <code>%</code>/<code>_</code> simbolus, kam SQL <code>LIKE</code> ir īpaša nozīme.</p>
       </div>
     </section>
 
     <section class="doc-section" id="snip-bootstrap-walker">
       <h2>Bootstrap saderīga izvēlne (Walker)</h2>
-      <p>WordPress <code>wp_nav_menu()</code> pēc noklusējuma neizvada Bootstrap sagaidītās klases (<code>nav-item</code>, <code>dropdown-menu</code> u.tml.) — bez pielāgota <code>Walker_Nav_Menu</code> apakšklases nolaižamās apakšizvēlnes vizuāli nestrādās, pat ja Bootstrap CSS/JS ir pieslēgts. Šis Walker pārraksta izvades struktūru tā, lai sakristu ar Bootstrap 5 marķējumu.</p>
+      <p>WordPress <code>wp_nav_menu()</code> pēc noklusējuma neizvada Bootstrap sagaidītās klases (<code>nav-item</code>, <code>dropdown-menu</code> u.tml.) - bez pielāgota <code>Walker_Nav_Menu</code> apakšklases nolaižamās apakšizvēlnes vizuāli nestrādās, pat ja Bootstrap CSS/JS ir pieslēgts. Šis Walker pārraksta izvades struktūru tā, lai sakristu ar Bootstrap 5 marķējumu.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">class</span> <span class="tok-fn">Bootstrap5_Nav_Walker</span> <span class="tok-kw">extends</span> <span class="tok-fn">Walker_Nav_Menu</span> {
 
     <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-fn">start_lvl</span>(&amp;<span class="tok-fn">$output</span>, <span class="tok-fn">$depth</span> = 0, <span class="tok-fn">$args</span> = <span class="tok-kw">null</span>) {
@@ -672,7 +672,7 @@
         <span class="tok-fn">$output</span> .= <span class="tok-str">'&lt;/li&gt;'</span>;
     }
 }</code></pre>
-      <p>Lietošana veidnē (skat. arī <a href="wordpress.html#izvelnes">Izvēlnes</a> pamatiem) — vienkārši pievieno <code>'walker'</code> parametru:</p>
+      <p>Lietošana veidnē (skat. arī <a href="wordpress.html#izvelnes">Izvēlnes</a> pamatiem) - vienkārši pievieno <code>'walker'</code> parametru:</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">wp_nav_menu</span>([
     <span class="tok-str">'theme_location'</span> => <span class="tok-str">'galvena'</span>,
     <span class="tok-str">'container'</span>      => <span class="tok-str">'nav'</span>,
@@ -681,13 +681,13 @@
 ]);</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Ja izmanto citu CSS ietvaru (Tailwind, Bulma), maini tikai klašu nosaukumus (<code>nav-item</code>, <code>dropdown-menu</code> utt.) uz sava ietvara ekvivalentiem — pati Walker <strong>struktūra</strong> (kad izsaukt <code>start_lvl</code>/<code>start_el</code>) paliek nemainīga jebkuram CSS ietvaram.</p>
+        <p>Ja izmanto citu CSS ietvaru (Tailwind, Bulma), maini tikai klašu nosaukumus (<code>nav-item</code>, <code>dropdown-menu</code> utt.) uz sava ietvara ekvivalentiem - pati Walker <strong>struktūra</strong> (kad izsaukt <code>start_lvl</code>/<code>start_el</code>) paliek nemainīga jebkuram CSS ietvaram.</p>
       </div>
     </section>
 
     <section class="doc-section" id="snip-term-redirect">
       <h2>Novirzīt kategoriju uz citu URL</h2>
-      <p>Piespiedu novirzīšana no vienas kategorijas/lapas adreses uz citu — noder, kad vietnes struktūra mainījusies, bet vecā adrese jau indeksēta Google vai kopīgota citur.</p>
+      <p>Piespiedu novirzīšana no vienas kategorijas/lapas adreses uz citu - noder, kad vietnes struktūra mainījusies, bet vecā adrese jau indeksēta Google vai kopīgota citur.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'template_redirect'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-kw">if</span> (<span class="tok-fn">is_category</span>(<span class="tok-str">'jaunumi'</span>)) {
         <span class="tok-fn">wp_redirect</span>(<span class="tok-fn">home_url</span>(<span class="tok-str">'/zinas/'</span>), 301); <span class="tok-com">// 301 = pastāvīga novirzīšana (labi SEO)</span>
@@ -696,7 +696,7 @@
 });</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>is_category()</code> aizstāj ar <code>is_tag('birkas-slug')</code> birkām vai <code>is_tax('taksonomijas-slug', 'termina-slug')</code> jebkurai pielāgotai taksonomijai (skat. <a href="wordpress.html#taksonomijas">Taksonomijas</a>) — pati novirzīšanas loģika (<code>wp_redirect()</code> + <code>exit</code>) paliek identiska. Vienmēr norāda <code>301</code> statusa kodu pastāvīgai novirzīšanai, nevis noklusējuma <code>302</code> — Google citādi vecā URL "ranga vērtību" nepārnes uz jauno.</p>
+        <p><code>is_category()</code> aizstāj ar <code>is_tag('birkas-slug')</code> birkām vai <code>is_tax('taksonomijas-slug', 'termina-slug')</code> jebkurai pielāgotai taksonomijai (skat. <a href="wordpress.html#taksonomijas">Taksonomijas</a>) - pati novirzīšanas loģika (<code>wp_redirect()</code> + <code>exit</code>) paliek identiska. Vienmēr norāda <code>301</code> statusa kodu pastāvīgai novirzīšanai, nevis noklusējuma <code>302</code> - Google citādi vecā URL "ranga vērtību" nepārnes uz jauno.</p>
       </div>
     </section>
 
@@ -721,14 +721,14 @@
 });</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>textcolor_map</code> gaida "izlīdzinātu" sarakstu — hex kods, tad tā nosaukums, atkārtoti — tāpēc <code>wp_json_encode()</code> (skat. <a href="wordpress.html#json">JSON kodēšana/dekodēšana</a>) šeit izmantots masīvam, kurā katrs pāris ir divi secīgi elementi, nevis atslēga-vērtība pāris. Ja pievieno pielāgotus fontus (piem., Google Fonts), tos jāielādē arī uz redaktora <code>&lt;iframe&gt;</code> atsevišķi — pats <code>font_formats</code> tikai piepilda izvēlni, nepievieno fontu failu.</p>
+        <p><code>textcolor_map</code> gaida "izlīdzinātu" sarakstu - hex kods, tad tā nosaukums, atkārtoti - tāpēc <code>wp_json_encode()</code> (skat. <a href="wordpress.html#json">JSON kodēšana/dekodēšana</a>) šeit izmantots masīvam, kurā katrs pāris ir divi secīgi elementi, nevis atslēga-vērtība pāris. Ja pievieno pielāgotus fontus (piem., Google Fonts), tos jāielādē arī uz redaktora <code>&lt;iframe&gt;</code> atsevišķi - pats <code>font_formats</code> tikai piepilda izvēlni, nepievieno fontu failu.</p>
       </div>
     </section>
 
     <section class="doc-section" id="snip-metabox">
       <h2>Pielāgota metabox (avota lauks)</h2>
-      <p>Papildina ieraksta rediģēšanas ekrānu ar savu, redzamu ievades lauku — atšķirībā no <a href="wordpress.html#custom-fields">Pielāgotiem laukiem</a> pamatlapā (kur dati tiek pievienoti programmatiski), šis piemērs rāda pilnu ceļu: administrators <strong>redz un aizpilda</strong> lauku admin panelī.</p>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 1) Reģistrē metabox — parādās sānā, "post" ierakstu rediģēšanas ekrānā</span>
+      <p>Papildina ieraksta rediģēšanas ekrānu ar savu, redzamu ievades lauku - atšķirībā no <a href="wordpress.html#custom-fields">Pielāgotiem laukiem</a> pamatlapā (kur dati tiek pievienoti programmatiski), šis piemērs rāda pilnu ceļu: administrators <strong>redz un aizpilda</strong> lauku admin panelī.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 1) Reģistrē metabox - parādās sānā, "post" ierakstu rediģēšanas ekrānā</span>
 <span class="tok-fn">add_action</span>(<span class="tok-str">'add_meta_boxes'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-fn">add_meta_box</span>(
         <span class="tok-str">'wpds_avots'</span>,
@@ -740,7 +740,7 @@
     );
 });
 
-<span class="tok-com">// 2) Izvada lauku — nolasa esošo vērtību, ja tāda jau ir</span>
+<span class="tok-com">// 2) Izvada lauku - nolasa esošo vērtību, ja tāda jau ir</span>
 <span class="tok-kw">function</span> <span class="tok-fn">wpds_avots_render</span>(<span class="tok-fn">$post</span>) {
     <span class="tok-fn">wp_nonce_field</span>(<span class="tok-str">'wpds_avots_save'</span>, <span class="tok-str">'wpds_avots_nonce'</span>);
     <span class="tok-fn">$avots</span> = <span class="tok-fn">get_post_meta</span>(<span class="tok-fn">$post</span>->ID, <span class="tok-str">'avots'</span>, <span class="tok-kw">true</span>);
@@ -764,20 +764,20 @@
         <span class="tok-fn">delete_post_meta</span>(<span class="tok-fn">$post_id</span>, <span class="tok-str">'avots'</span>);
     }
 });</code></pre>
-      <p>Izvade veidnē — pilnīgi tāpat kā jebkurš cits <code>get_post_meta()</code> nolasījums:</p>
+      <p>Izvade veidnē - pilnīgi tāpat kā jebkurš cits <code>get_post_meta()</code> nolasījums:</p>
       <pre class="code-block"><span class="lang">php</span><code>&lt;?php <span class="tok-fn">$avots</span> = <span class="tok-fn">get_post_meta</span>(<span class="tok-fn">get_the_ID</span>(), <span class="tok-str">'avots'</span>, <span class="tok-kw">true</span>); ?&gt;
 &lt;?php <span class="tok-kw">if</span> (<span class="tok-fn">$avots</span>): ?&gt;
     &lt;p&gt;Avots: &lt;?php <span class="tok-kw">echo</span> <span class="tok-fn">esc_html</span>(<span class="tok-fn">$avots</span>); ?&gt;&lt;/p&gt;
 &lt;?php <span class="tok-kw">endif</span>; ?&gt;</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p><code>DOING_AUTOSAVE</code> pārbaude ir svarīga — WordPress ik pa brīdi automātiski saglabā melnrakstu fonā, kamēr rediģē; bez šīs pārbaudes <code>save_post</code> izpildītos arī tad, kad <code>$_POST</code> vēl nesatur tavu lauku, un varētu netīšām izdzēst jau saglabāto vērtību. Lai pievienotu vēl vienu ierakstu tipu (ne tikai <code>post</code>), atkārto <code>add_meta_box()</code> izsaukumu ar citu tipa nosaukumu.</p>
+        <p><code>DOING_AUTOSAVE</code> pārbaude ir svarīga - WordPress ik pa brīdi automātiski saglabā melnrakstu fonā, kamēr rediģē; bez šīs pārbaudes <code>save_post</code> izpildītos arī tad, kad <code>$_POST</code> vēl nesatur tavu lauku, un varētu netīšām izdzēst jau saglabāto vērtību. Lai pievienotu vēl vienu ierakstu tipu (ne tikai <code>post</code>), atkārto <code>add_meta_box()</code> izsaukumu ar citu tipa nosaukumu.</p>
       </div>
     </section>
 
     <section class="doc-section" id="snip-customizer-settings">
       <h2>Vietnes iestatījumi caur Customizer</h2>
-      <p>Alternatīva <a href="wordpress.html#options-api">Options API</a> pieejai (skat. pamatlapā) — vienkāršiem, dažiem vietnes iestatījumiem (kontaktinformācija, sociālo tīklu saites) WordPress Customizer piedāvā gatavu UI ar tiešsaistes priekšskatījumu, bez pašam jāraksta forma un saglabāšanas loģika.</p>
+      <p>Alternatīva <a href="wordpress.html#options-api">Options API</a> pieejai (skat. pamatlapā) - vienkāršiem, dažiem vietnes iestatījumiem (kontaktinformācija, sociālo tīklu saites) WordPress Customizer piedāvā gatavu UI ar tiešsaistes priekšskatījumu, bez pašam jāraksta forma un saglabāšanas loģika.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'customize_register'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$wp_customize</span>) {
 
     <span class="tok-com">// Sadaļa Customizer izvēlnē</span>
@@ -806,40 +806,40 @@
         <span class="tok-str">'type'</span>    => <span class="tok-str">'email'</span>,
     ]);
 });</code></pre>
-      <p>Izvade veidnē — <strong>ne</strong> <code>get_option()</code>, bet <code>get_theme_mod()</code>:</p>
+      <p>Izvade veidnē - <strong>ne</strong> <code>get_option()</code>, bet <code>get_theme_mod()</code>:</p>
       <pre class="code-block"><span class="lang">php</span><code>&lt;?php <span class="tok-fn">$telefons</span> = <span class="tok-fn">get_theme_mod</span>(<span class="tok-str">'kontakti_telefons'</span>); ?&gt;
 &lt;?php <span class="tok-kw">if</span> (<span class="tok-fn">$telefons</span>): ?&gt;
     &lt;a href="tel:&lt;?php <span class="tok-kw">echo</span> <span class="tok-fn">esc_attr</span>(<span class="tok-fn">$telefons</span>); ?&gt;"&gt;&lt;?php <span class="tok-kw">echo</span> <span class="tok-fn">esc_html</span>(<span class="tok-fn">$telefons</span>); ?&gt;&lt;/a&gt;
 &lt;?php <span class="tok-kw">endif</span>; ?&gt;</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Bieži sastopama kļūda: Customizer iestatījumi <strong>nesaglabājas</strong> kā parastas opcijas — tie glabājas kā "theme mods" (piesaistīti aktīvajai tēmai) un jānolasa ar <code>get_theme_mod('nosaukums', 'noklusējums')</code>, nevis <code>get_option()</code>. Ja tēmu vēlāk nomaina, šie iestatījumi <strong>nepārnesas</strong> uz jauno tēmu — tas ir ar nodomu (izskata iestatījumi ir tēmas specifiski), bet var pārsteigt, ja gaidīts pretējais.</p>
+        <p>Bieži sastopama kļūda: Customizer iestatījumi <strong>nesaglabājas</strong> kā parastas opcijas - tie glabājas kā "theme mods" (piesaistīti aktīvajai tēmai) un jānolasa ar <code>get_theme_mod('nosaukums', 'noklusējums')</code>, nevis <code>get_option()</code>. Ja tēmu vēlāk nomaina, šie iestatījumi <strong>nepārnesas</strong> uz jauno tēmu - tas ir ar nodomu (izskata iestatījumi ir tēmas specifiski), bet var pārsteigt, ja gaidīts pretējais.</p>
       </div>
     </section>
 
     <section class="doc-section" id="snip-stripe-locale">
       <h2>Stripe apmaksas formas valoda</h2>
-      <p>Ja izmanto <strong>WooCommerce Stripe Gateway</strong> spraudni, apmaksas forma (kartes numura lauks, kļūdu ziņojumi) pēc noklusējuma parādās apmeklētāja pārlūka valodā vai angliski — <code>wc_stripe_params</code> filtrs ļauj to piespiest uz konkrētu valodu.</p>
+      <p>Ja izmanto <strong>WooCommerce Stripe Gateway</strong> spraudni, apmaksas forma (kartes numura lauks, kļūdu ziņojumi) pēc noklusējuma parādās apmeklētāja pārlūka valodā vai angliski - <code>wc_stripe_params</code> filtrs ļauj to piespiest uz konkrētu valodu.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_filter</span>(<span class="tok-str">'wc_stripe_params'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$params</span>) {
     <span class="tok-fn">$params</span>[<span class="tok-str">'stripe_locale'</span>] = <span class="tok-str">'lv'</span>;
     <span class="tok-kw">return</span> <span class="tok-fn">$params</span>;
 });</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Šis filtrs attiecas tikai uz oficiālo <strong>WooCommerce Stripe Gateway</strong> spraudņa integrāciju (kas pati ģenerē apmaksas formu tieši veikala lapā ar Stripe.js). Ja projektā izmantots pašrocīgi būvēts Stripe Checkout Session process, kā aprakstīts <a href="integracijas.html#stripe-overview">Integrācijas → Stripe maksājumi</a>, šis filtrs tur neko neietekmē — tur valodu nosaka tieši parametros, ko servera puse nosūta, veidojot sesiju.</p>
+        <p>Šis filtrs attiecas tikai uz oficiālo <strong>WooCommerce Stripe Gateway</strong> spraudņa integrāciju (kas pati ģenerē apmaksas formu tieši veikala lapā ar Stripe.js). Ja projektā izmantots pašrocīgi būvēts Stripe Checkout Session process, kā aprakstīts <a href="integracijas.html#stripe-overview">Integrācijas → Stripe maksājumi</a>, šis filtrs tur neko neietekmē - tur valodu nosaka tieši parametros, ko servera puse nosūta, veidojot sesiju.</p>
       </div>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Pārbaudi, vai <code>'lv'</code> ir Stripe atbalstīto lokalizāciju sarakstā (<a href="https://docs.stripe.com/js/appendix/supported_locales" target="_blank" rel="noopener">docs.stripe.com/js/appendix/supported_locales</a>) — Stripe periodiski paplašina atbalstīto valodu klāstu. Ja konkrētā valoda vēl netiek atbalstīta, drošāka alternatīva ir <code>'auto'</code>, kas ļauj Stripe pašam noteikt valodu pēc apmeklētāja pārlūka iestatījumiem.</p>
+        <p>Pārbaudi, vai <code>'lv'</code> ir Stripe atbalstīto lokalizāciju sarakstā (<a href="https://docs.stripe.com/js/appendix/supported_locales" target="_blank" rel="noopener">docs.stripe.com/js/appendix/supported_locales</a>) - Stripe periodiski paplašina atbalstīto valodu klāstu. Ja konkrētā valoda vēl netiek atbalstīta, drošāka alternatīva ir <code>'auto'</code>, kas ļauj Stripe pašam noteikt valodu pēc apmeklētāja pārlūka iestatījumiem.</p>
       </div>
     </section>
 
     <section class="doc-section" id="snip-trp-indeksesana">
-      <h2>TranslatePress: indeksēšana citai valodai — soli pa solim</h2>
-      <p><strong>Situācija:</strong> vietne izmanto <strong>TranslatePress</strong> vairāku valodu atbalstam, latviešu versija Google indeksā jau ir, bet otra valoda (šeit — piemēram, <strong>krievu</strong>, <code>/ru/</code>) vai nu vispār netiek indeksēta, vai Search Console rāda kļūdas ("Dublikāts", "Alternatīvā lapa ar pareizu canonical taga vērtību" u.tml.). Šī nav viena kļūda, bet virkne mazu trūkumu, kas jāsalabo secīgi — katrs solis balstās uz iepriekšējo.</p>
+      <h2>TranslatePress: indeksēšana citai valodai - soli pa solim</h2>
+      <p><strong>Situācija:</strong> vietne izmanto <strong>TranslatePress</strong> vairāku valodu atbalstam, latviešu versija Google indeksā jau ir, bet otra valoda (šeit - piemēram, <strong>krievu</strong>, <code>/ru/</code>) vai nu vispār netiek indeksēta, vai Search Console rāda kļūdas ("Dublikāts", "Alternatīvā lapa ar pareizu canonical taga vērtību" u.tml.). Šī nav viena kļūda, bet virkne mazu trūkumu, kas jāsalabo secīgi - katrs solis balstās uz iepriekšējo.</p>
 
-      <h3 style="font-size:17px; margin:32px 0 10px;">1. solis — pareizs valodas atribūts un hreflang tagi</h3>
-      <p>Vispirms pamats: WordPress pēc noklusējuma turpina izvadīt <code>&lt;html lang="lv"&gt;</code> pat krievu valodas lapās, un <strong>nemaz neizvada</strong> <code>hreflang</code> tagus. Bez tiem Google nezina, ka <code>/ru/lapa/</code> ir tā paša satura krievu versija, nevis atsevišķa, dublēta lapa — tas ir pats biežākais indeksēšanas problēmu cēlonis daudzvalodu vietnēs, un pārējie soļi bez šī nestrādās pareizi.</p>
+      <h3 style="font-size:17px; margin:32px 0 10px;">1. solis - pareizs valodas atribūts un hreflang tagi</h3>
+      <p>Vispirms pamats: WordPress pēc noklusējuma turpina izvadīt <code>&lt;html lang="lv"&gt;</code> pat krievu valodas lapās, un <strong>nemaz neizvada</strong> <code>hreflang</code> tagus. Bez tiem Google nezina, ka <code>/ru/lapa/</code> ir tā paša satura krievu versija, nevis atsevišķa, dublēta lapa - tas ir pats biežākais indeksēšanas problēmu cēlonis daudzvalodu vietnēs, un pārējie soļi bez šī nestrādās pareizi.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_filter</span>(<span class="tok-str">'language_attributes'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$output</span>) {
     <span class="tok-kw">if</span> (<span class="tok-fn">function_exists</span>(<span class="tok-str">'trp_get_current_language'</span>)) {
         <span class="tok-fn">$valoda</span> = <span class="tok-fn">trp_get_current_language</span>(); <span class="tok-com">// piem. 'lv', 'ru', 'en'</span>
@@ -868,17 +868,17 @@
     <span class="tok-kw">echo</span> <span class="tok-str">'&lt;link rel="alternate" hreflang="x-default" href="'</span> . <span class="tok-fn">esc_url</span>(<span class="tok-fn">$noklusejuma_url</span>) . <span class="tok-str">'" /&gt;'</span> . <span class="tok-str">"\n"</span>;
 }, 5);</code></pre>
       <div class="doc-cards">
-        <div class="doc-mini-card"><h4><code>trp_get_current_language()</code></h4><p>TranslatePress funkcija, kas atgriež pašreizējās lapas valodas kodu (piem. <code>'ru'</code>) — pieejama tikai tad, ja spraudnis ir aktīvs, tāpēc vienmēr jāpārbauda ar <code>function_exists()</code>.</p></div>
-        <div class="doc-mini-card"><h4><code>url_converter</code> komponente</h4><p>TranslatePress iekšējais rīks, kas no jebkura URL uzbūvē tā ekvivalentu citā valodā — tieši to pašu, ko izmanto valodu pārslēdzējs izvēlnē.</p></div>
-        <div class="doc-mini-card"><h4>Prioritāte <code>5</code></h4><p>Izvada hreflang tagus agri <code>&lt;head&gt;</code> sadaļā — pirms lielākās daļas SEO spraudņu izvades, kas ir ieteicamā prakse.</p></div>
+        <div class="doc-mini-card"><h4><code>trp_get_current_language()</code></h4><p>TranslatePress funkcija, kas atgriež pašreizējās lapas valodas kodu (piem. <code>'ru'</code>) - pieejama tikai tad, ja spraudnis ir aktīvs, tāpēc vienmēr jāpārbauda ar <code>function_exists()</code>.</p></div>
+        <div class="doc-mini-card"><h4><code>url_converter</code> komponente</h4><p>TranslatePress iekšējais rīks, kas no jebkura URL uzbūvē tā ekvivalentu citā valodā - tieši to pašu, ko izmanto valodu pārslēdzējs izvēlnē.</p></div>
+        <div class="doc-mini-card"><h4>Prioritāte <code>5</code></h4><p>Izvada hreflang tagus agri <code>&lt;head&gt;</code> sadaļā - pirms lielākās daļas SEO spraudņu izvades, kas ir ieteicamā prakse.</p></div>
       </div>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Pēc ieviešanas pārbaudi rezultātu ar <strong>skatīt lapas avotu</strong> (View Source) katrā valodas versijā — vajadzētu redzēt vienu <code>&lt;link rel="alternate" hreflang="..."&gt;</code> katrai valodai, ieskaitot pašu pašreizējo. Google Search Console (Lapas → Indeksēšana) parasti parāda hreflang kļūdas 1-2 nedēļu laikā pēc ieviešanas.</p>
+        <p>Pēc ieviešanas pārbaudi rezultātu ar <strong>skatīt lapas avotu</strong> (View Source) katrā valodas versijā - vajadzētu redzēt vienu <code>&lt;link rel="alternate" hreflang="..."&gt;</code> katrai valodai, ieskaitot pašu pašreizējo. Google Search Console (Lapas → Indeksēšana) parasti parāda hreflang kļūdas 1-2 nedēļu laikā pēc ieviešanas.</p>
       </div>
 
-      <h3 style="font-size:17px; margin:32px 0 10px;">2. solis — SEO virsraksti &amp; apraksti krievu valodai</h3>
-      <p>Hreflang tagi pasaka Google, <strong>kuras</strong> lapas ir saistītas — bet TranslatePress pēc noklusējuma tulko tikai lapas <strong>redzamo</strong> saturu, ne Yoast SEO virsrakstu/aprakstu laukus (tie ir uzstādīti reizi, konkrētajai lapai, neatkarīgi no valodas). Rezultātā krievu valodas versija meklētājā joprojām parādītos ar latvisko virsrakstu — jāfiltrē <code>wpseo_title</code> un <code>wpseo_metadesc</code> pēc pašreizējās valodas ar uzmeklēšanas masīvu.</p>
+      <h3 style="font-size:17px; margin:32px 0 10px;">2. solis - SEO virsraksti &amp; apraksti krievu valodai</h3>
+      <p>Hreflang tagi pasaka Google, <strong>kuras</strong> lapas ir saistītas - bet TranslatePress pēc noklusējuma tulko tikai lapas <strong>redzamo</strong> saturu, ne Yoast SEO virsrakstu/aprakstu laukus (tie ir uzstādīti reizi, konkrētajai lapai, neatkarīgi no valodas). Rezultātā krievu valodas versija meklētājā joprojām parādītos ar latvisko virsrakstu - jāfiltrē <code>wpseo_title</code> un <code>wpseo_metadesc</code> pēc pašreizējās valodas ar uzmeklēšanas masīvu.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_filter</span>(<span class="tok-str">'wpseo_title'</span>, <span class="tok-str">'ds_valodu_seo_virsraksts'</span>);
 <span class="tok-fn">add_filter</span>(<span class="tok-str">'wpseo_metadesc'</span>, <span class="tok-str">'ds_valodu_seo_apraksts'</span>);
 <span class="tok-fn">add_filter</span>(<span class="tok-str">'wpseo_opengraph_title'</span>, <span class="tok-str">'ds_valodu_seo_virsraksts'</span>);
@@ -887,12 +887,12 @@
 <span class="tok-kw">function</span> <span class="tok-fn">ds_valodu_seo_tulkojumi</span>() {
     <span class="tok-kw">return</span> [
         <span class="tok-str">'ru'</span> => [
-            123 => [<span class="tok-str">'virsraksts'</span> => <span class="tok-str">'Пример заголовка — Компания'</span>, <span class="tok-str">'apraksts'</span> => <span class="tok-str">'Пример описания страницы.'</span>],
-            456 => [<span class="tok-str">'virsraksts'</span> => <span class="tok-str">'Контакты — Компания'</span>, <span class="tok-str">'apraksts'</span> => <span class="tok-str">'Свяжитесь с нами.'</span>],
+            123 => [<span class="tok-str">'virsraksts'</span> => <span class="tok-str">'Пример заголовка - Компания'</span>, <span class="tok-str">'apraksts'</span> => <span class="tok-str">'Пример описания страницы.'</span>],
+            456 => [<span class="tok-str">'virsraksts'</span> => <span class="tok-str">'Контакты - Компания'</span>, <span class="tok-str">'apraksts'</span> => <span class="tok-str">'Свяжитесь с нами.'</span>],
         ],
         <span class="tok-str">'en'</span> => [
-            123 => [<span class="tok-str">'virsraksts'</span> => <span class="tok-str">'Example page title — Company'</span>, <span class="tok-str">'apraksts'</span> => <span class="tok-str">'Example page description.'</span>],
-            456 => [<span class="tok-str">'virsraksts'</span> => <span class="tok-str">'Contact — Company'</span>, <span class="tok-str">'apraksts'</span> => <span class="tok-str">'Get in touch with us.'</span>],
+            123 => [<span class="tok-str">'virsraksts'</span> => <span class="tok-str">'Example page title - Company'</span>, <span class="tok-str">'apraksts'</span> => <span class="tok-str">'Example page description.'</span>],
+            456 => [<span class="tok-str">'virsraksts'</span> => <span class="tok-str">'Contact - Company'</span>, <span class="tok-str">'apraksts'</span> => <span class="tok-str">'Get in touch with us.'</span>],
         ],
     ];
 }
@@ -920,14 +920,14 @@
 
     <span class="tok-kw">return</span> <span class="tok-fn">$apraksts</span>;
 }</code></pre>
-      <p>Lapas <code>ID</code> uzzini, atverot to rediģēšanai admin panelī — tas redzams pārlūka adreses joslā (<code>post.php?post=123&amp;action=edit</code>).</p>
+      <p>Lapas <code>ID</code> uzzini, atverot to rediģēšanai admin panelī - tas redzams pārlūka adreses joslā (<code>post.php?post=123&amp;action=edit</code>).</p>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Ja lapu skaits ir liels, TranslatePress piedāvā arī maksas paplašinājumu <strong>SEO Pack</strong>, kas ļauj tulkot šos laukus tieši redaktora saskarnē (tāpat kā parasto saturu) — augstāk redzamais filtru risinājums ir bezmaksas alternatīva, kas ērta pie neliela, fiksēta lapu skaita (piem., līdz 10-15 lapām).</p>
+        <p>Ja lapu skaits ir liels, TranslatePress piedāvā arī maksas paplašinājumu <strong>SEO Pack</strong>, kas ļauj tulkot šos laukus tieši redaktora saskarnē (tāpat kā parasto saturu) - augstāk redzamais filtru risinājums ir bezmaksas alternatīva, kas ērta pie neliela, fiksēta lapu skaita (piem., līdz 10-15 lapām).</p>
       </div>
 
-      <h3 style="font-size:17px; margin:32px 0 10px;">3. solis — dublētu URL un canonical labošana</h3>
-      <p>Ar hreflang un savu SEO tekstu krievu versija jau ir pareizi marķēta un atšķirama — bet, ja saites uz to kaut kur ir "salauztas", Google to var indeksēt kā atsevišķu, bojātu lapu. Divi bieži sastopami cēloņi: (1) daži iekšējie saites ģenerē dubultu valodas prefiksu, piem. <code>/ru/ru/lapa/</code>; (2) strukturētie dati (JSON-LD, ko izvada Yoast SEO) reizēm satur nepareizu vai novecojušu <code>url</code> lauku, kas neatbilst pašreizējai lapas adresei.</p>
+      <h3 style="font-size:17px; margin:32px 0 10px;">3. solis - dublētu URL un canonical labošana</h3>
+      <p>Ar hreflang un savu SEO tekstu krievu versija jau ir pareizi marķēta un atšķirama - bet, ja saites uz to kaut kur ir "salauztas", Google to var indeksēt kā atsevišķu, bojātu lapu. Divi bieži sastopami cēloņi: (1) daži iekšējie saites ģenerē dubultu valodas prefiksu, piem. <code>/ru/ru/lapa/</code>; (2) strukturētie dati (JSON-LD, ko izvada Yoast SEO) reizēm satur nepareizu vai novecojušu <code>url</code> lauku, kas neatbilst pašreizējai lapas adresei.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 1) Novērš /ru/ru/ tipa dublētu valodas prefiksu izvadītajā HTML</span>
 <span class="tok-fn">add_action</span>(<span class="tok-str">'template_redirect'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-kw">if</span> (<span class="tok-fn">is_admin</span>()) {
@@ -960,11 +960,11 @@
 
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Vispirms <strong>diagnosticē</strong>, vai dubultā prefiksa problēma vispār pastāv (skaties lapas avotu vai Search Console → Lapas → "Dublikāts, Google izvēlējās citu kanonisko URL") — pievieno #1 tikai tad, ja tiešām redzi <code>/ru/ru/</code> tipa saites. <code>preg_replace</code> ar output buffering katrā lapas ielādē nedaudz palielina servera slodzi, tāpēc tas ir labojums simptomam, nevis pamatcēlonim (parasti tas ir cietkodēta valodas prefiksa saite kādā veidnē vai page builderī).</p>
+        <p>Vispirms <strong>diagnosticē</strong>, vai dubultā prefiksa problēma vispār pastāv (skaties lapas avotu vai Search Console → Lapas → "Dublikāts, Google izvēlējās citu kanonisko URL") - pievieno #1 tikai tad, ja tiešām redzi <code>/ru/ru/</code> tipa saites. <code>preg_replace</code> ar output buffering katrā lapas ielādē nedaudz palielina servera slodzi, tāpēc tas ir labojums simptomam, nevis pamatcēlonim (parasti tas ir cietkodēta valodas prefiksa saite kādā veidnē vai page builderī).</p>
       </div>
 
-      <h3 style="font-size:17px; margin:32px 0 10px;">4. solis — sitemap krievu valodas lapām</h3>
-      <p>Ar iepriekšējiem trim soļiem esošās krievu lapas ir pareizi marķētas un pieejamas — bet, ja Yoast/RankMath automātiski ģenerētais <code>sitemap_index.xml</code> tās <strong>neietver</strong> (bieži gadās TranslatePress apakšmapju struktūrai, īpaši statiskām/pielāgotām lapām, kas nav parasti WordPress raksti), Google par tām var vienkārši nezināt. Risinājums — atsevišķs, manuāli uzturēts sitemap fails tieši šai valodai.</p>
+      <h3 style="font-size:17px; margin:32px 0 10px;">4. solis - sitemap krievu valodas lapām</h3>
+      <p>Ar iepriekšējiem trim soļiem esošās krievu lapas ir pareizi marķētas un pieejamas - bet, ja Yoast/RankMath automātiski ģenerētais <code>sitemap_index.xml</code> tās <strong>neietver</strong> (bieži gadās TranslatePress apakšmapju struktūrai, īpaši statiskām/pielāgotām lapām, kas nav parasti WordPress raksti), Google par tām var vienkārši nezināt. Risinājums - atsevišķs, manuāli uzturēts sitemap fails tieši šai valodai.</p>
       <pre class="code-block"><span class="lang">xml</span><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"&gt;
 &lt;url&gt;&lt;loc&gt;https://tavavietne.lv/ru/&lt;/loc&gt;&lt;lastmod&gt;2026-08-14&lt;/lastmod&gt;&lt;/url&gt;
@@ -972,26 +972,26 @@
 &lt;url&gt;&lt;loc&gt;https://tavavietne.lv/ru/pakalpojums-a/&lt;/loc&gt;&lt;lastmod&gt;2026-03-18&lt;/lastmod&gt;&lt;/url&gt;
 &lt;/urlset&gt;</code></pre>
       <div class="doc-cards">
-        <div class="doc-mini-card"><h4>1. Faila nosaukums</h4><p>Piem. <code>ru-sitemap.xml</code> — jebkurš skaidrs nosaukums, nav WordPress rezervēts termins.</p></div>
-        <div class="doc-mini-card"><h4>2. Kur likt</h4><p>Tieši <code>httpdocs</code> saknes mapē (caur Plesk File Manager vai FTP) — tajā pašā vietā, kur atrodas galvenais <code>sitemap_index.xml</code>.</p></div>
-        <div class="doc-mini-card"><h4>3. Sasaiste</h4><p>Saite uz šo failu jau tiek pievienota <code>robots.txt</code> iepriekšējā koda 3. daļā — papildus iesniedz to arī atsevišķi Google Search Console → Sitemaps.</p></div>
+        <div class="doc-mini-card"><h4>1. Faila nosaukums</h4><p>Piem. <code>ru-sitemap.xml</code> - jebkurš skaidrs nosaukums, nav WordPress rezervēts termins.</p></div>
+        <div class="doc-mini-card"><h4>2. Kur likt</h4><p>Tieši <code>httpdocs</code> saknes mapē (caur Plesk File Manager vai FTP) - tajā pašā vietā, kur atrodas galvenais <code>sitemap_index.xml</code>.</p></div>
+        <div class="doc-mini-card"><h4>3. Sasaiste</h4><p>Saite uz šo failu jau tiek pievienota <code>robots.txt</code> iepriekšējā koda 3. daļā - papildus iesniedz to arī atsevišķi Google Search Console → Sitemaps.</p></div>
       </div>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Šis fails ir <strong>statisks</strong> — atšķirībā no <code>sitemap_index.xml</code>, tas neatjaunojas pats, kad pievieno vai maina lapas. <code>lastmod</code> jāatjaunina manuāli. Tāpēc šī pieeja der tikai nelielam, retāk mainīgam lapu skaitam (dažiem desmitiem) — ja valodas versijai ir simtiem lapu vai tās mainās bieži, labāk atrisināt, kāpēc SEO spraudnis tās neietver automātiski, nevis uzturēt manuālu failu ilgtermiņā.</p>
+        <p>Šis fails ir <strong>statisks</strong> - atšķirībā no <code>sitemap_index.xml</code>, tas neatjaunojas pats, kad pievieno vai maina lapas. <code>lastmod</code> jāatjaunina manuāli. Tāpēc šī pieeja der tikai nelielam, retāk mainīgam lapu skaitam (dažiem desmitiem) - ja valodas versijai ir simtiem lapu vai tās mainās bieži, labāk atrisināt, kāpēc SEO spraudnis tās neietver automātiski, nevis uzturēt manuālu failu ilgtermiņā.</p>
       </div>
 
-      <h3 style="font-size:17px; margin:32px 0 10px;">5. solis — pārbaude</h3>
+      <h3 style="font-size:17px; margin:32px 0 10px;">5. solis - pārbaude</h3>
       <div class="doc-cards">
-        <div class="doc-mini-card"><h4>View Source</h4><p>Atver <code>/ru/</code> lapu un skaties lapas avotu — jāredz <code>&lt;html lang="ru"&gt;</code> un pilns hreflang tagu komplekts <code>&lt;head&gt;</code> sadaļā.</p></div>
-        <div class="doc-mini-card"><h4>Google rezultātu priekšskatījums</h4><p>Meklē lapu ar <code>site:tavavietne.lv/ru/</code> — virsrakstam/aprakstam meklētājā jābūt krieviski, ne latviski.</p></div>
-        <div class="doc-mini-card"><h4>Search Console</h4><p>Iesniedz <code>ru-sitemap.xml</code> sadaļā Sitemaps un seko līdzi Lapas → Indeksēšana — rezultāti (indeksēto lapu skaits, kļūdas) parasti parādās 1-2 nedēļu laikā, ne uzreiz.</p></div>
+        <div class="doc-mini-card"><h4>View Source</h4><p>Atver <code>/ru/</code> lapu un skaties lapas avotu - jāredz <code>&lt;html lang="ru"&gt;</code> un pilns hreflang tagu komplekts <code>&lt;head&gt;</code> sadaļā.</p></div>
+        <div class="doc-mini-card"><h4>Google rezultātu priekšskatījums</h4><p>Meklē lapu ar <code>site:tavavietne.lv/ru/</code> - virsrakstam/aprakstam meklētājā jābūt krieviski, ne latviski.</p></div>
+        <div class="doc-mini-card"><h4>Search Console</h4><p>Iesniedz <code>ru-sitemap.xml</code> sadaļā Sitemaps un seko līdzi Lapas → Indeksēšana - rezultāti (indeksēto lapu skaits, kļūdas) parasti parādās 1-2 nedēļu laikā, ne uzreiz.</p></div>
       </div>
     </section>
 
     <section class="doc-section" id="snip-cf7-autofill">
       <h2>Automātiska aizpilde pieteikušamies lietotājiem</h2>
-      <p>Contact Form 7 formas laukos var norādīt <code>default:...</code> parametru — tas automātiski aizpilda lauku ar pieteikušā lietotāja datiem, ja apmeklētājs jau ir ielogojies. Neielogotam apmeklētājam lauks vienkārši paliek tukšs — kļūdas nav, tas ir gaidītā uzvedība.</p>
+      <p>Contact Form 7 formas laukos var norādīt <code>default:...</code> parametru - tas automātiski aizpilda lauku ar pieteikušā lietotāja datiem, ja apmeklētājs jau ir ielogojies. Neielogotam apmeklētājam lauks vienkārši paliek tukšs - kļūdas nav, tas ir gaidītā uzvedība.</p>
       <pre class="code-block"><span class="lang">html</span><code>&lt;label&gt;Vārds &lt;span style="color: red;"&gt;*&lt;/span&gt;&lt;/label&gt;
 [text* name default:user_display_name placeholder "Jūsu vārds"]
 
@@ -1008,21 +1008,21 @@
       <div class="doc-cards">
         <div class="doc-mini-card"><h4><code>default:user_display_name</code></h4><p>Aizpilda ar pieteikušā lietotāja publiski redzamo vārdu (WordPress profila "Displayed name" lauks).</p></div>
         <div class="doc-mini-card"><h4><code>default:user_email</code></h4><p>Aizpilda ar lietotāja konta e-pasta adresi.</p></div>
-        <div class="doc-mini-card"><h4><code>default:user_meta key='...'</code></h4><p>Aizpilda ar jebkuru lietotāja meta lauku — piem., <code>billing_phone</code> ir WooCommerce saglabātais rēķina tālrunis.</p></div>
+        <div class="doc-mini-card"><h4><code>default:user_meta key='...'</code></h4><p>Aizpilda ar jebkuru lietotāja meta lauku - piem., <code>billing_phone</code> ir WooCommerce saglabātais rēķina tālrunis.</p></div>
       </div>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>user_meta key='billing_phone'</code> strādā tikai tad, ja lietotājs jau iepriekš iegādājies kaut ko WooCommerce veikalā (vai administrators to ir manuāli aizpildījis) — <code>billing_phone</code> ir WooCommerce, nevis WordPress kodola meta lauks. Ja projektā WooCommerce nav uzstādīts, šis konkrētais lauks paliks tukšs arī pieteikušamies lietotājiem.</p>
+        <p><code>user_meta key='billing_phone'</code> strādā tikai tad, ja lietotājs jau iepriekš iegādājies kaut ko WooCommerce veikalā (vai administrators to ir manuāli aizpildījis) - <code>billing_phone</code> ir WooCommerce, nevis WordPress kodola meta lauks. Ja projektā WooCommerce nav uzstādīts, šis konkrētais lauks paliks tukšs arī pieteikušamies lietotājiem.</p>
       </div>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Aizpildītā vērtība ir tikai <strong>sākotnējais ieteikums</strong> — lauks joprojām ir parasts teksta lauks, ko lietotājs var brīvi rediģēt vai izdzēst pirms nosūtīšanas. Neuztver to kā drošu, neapšaubāmu datu avotu servera pusē — ja formas apstrādē kaut ko izmanto tālāk (piem., saglabā datubāzē), joprojām validē un attīri ievadi tāpat kā jebkuru citu formas lauku.</p>
+        <p>Aizpildītā vērtība ir tikai <strong>sākotnējais ieteikums</strong> - lauks joprojām ir parasts teksta lauks, ko lietotājs var brīvi rediģēt vai izdzēst pirms nosūtīšanas. Neuztver to kā drošu, neapšaubāmu datu avotu servera pusē - ja formas apstrādē kaut ko izmanto tālāk (piem., saglabā datubāzē), joprojām validē un attīri ievadi tāpat kā jebkuru citu formas lauku.</p>
       </div>
     </section>
 
     <section class="doc-section" id="snip-cf7-valoda">
       <h2>Kontaktforma divās valodās (pēc URL)</h2>
-      <p>Ja vietnei ir viens koplietots veidnes fails (piem. footeris vai kontaktu lapas veidne), ko rāda visām TranslatePress valodu versijām, bet katrai valodai vajag <strong>atšķirīgu</strong> Contact Form 7 formu (citādi lauku nosaukumi, citāda apstiprinājuma e-pasta valoda) — shortcode, kas nosaka valodu pēc URL un izvada atbilstošo formu, ir vienkāršāk nekā dublēt visu veidni.</p>
+      <p>Ja vietnei ir viens koplietots veidnes fails (piem. footeris vai kontaktu lapas veidne), ko rāda visām TranslatePress valodu versijām, bet katrai valodai vajag <strong>atšķirīgu</strong> Contact Form 7 formu (citādi lauku nosaukumi, citāda apstiprinājuma e-pasta valoda) - shortcode, kas nosaka valodu pēc URL un izvada atbilstošo formu, ir vienkāršāk nekā dublēt visu veidni.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_shortcode</span>(<span class="tok-str">'kontaktforma_valoda'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-fn">$celjs</span> = <span class="tok-fn">isset</span>(<span class="tok-fn">$_SERVER</span>[<span class="tok-str">'REQUEST_URI'</span>]) ? <span class="tok-fn">$_SERVER</span>[<span class="tok-str">'REQUEST_URI'</span>] : <span class="tok-str">''</span>;
     <span class="tok-fn">$ir_krievu</span> = (<span class="tok-fn">strpos</span>(<span class="tok-fn">$celjs</span>, <span class="tok-str">'/ru/'</span>) !== <span class="tok-kw">false</span>);
@@ -1036,17 +1036,17 @@
       <p>Izmanto veidnē vai lapas saturā <code>[kontaktforma_valoda]</code> vietā, kur citādi liktu <code>[contact-form-7 id="..."]</code> tieši.</p>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><strong>Kāpēc <code>data-no-translation</code> ir svarīgs:</strong> TranslatePress pēc noklusējuma mēģina tulkot jebkuru redzamo tekstu lapā, arī formas HTML — tas var sabojāt CF7 slēptos laukus (nonce, formas ID), kas noved pie formas, kas izskatās normāli, bet nekad neaizsūta e-pastu. Šis atribūts pasaka TranslatePress "šo bloku neaiztiec".</p>
+        <p><strong>Kāpēc <code>data-no-translation</code> ir svarīgs:</strong> TranslatePress pēc noklusējuma mēģina tulkot jebkuru redzamo tekstu lapā, arī formas HTML - tas var sabojāt CF7 slēptos laukus (nonce, formas ID), kas noved pie formas, kas izskatās normāli, bet nekad neaizsūta e-pastu. Šis atribūts pasaka TranslatePress "šo bloku neaiztiec".</p>
       </div>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>URL noteikšana pēc <code>/ru/</code> ir vienkāršs, bet trausls risinājums — tas pieņem, ka TranslatePress lieto apakšmapju struktūru (nevis apakšdomēnu vai parametru). Ja projektam ir tikai dažas lapas ar formu (nevis viena koplietota veidne visām valodām), robustāks variants ir vienkārši ievietot <code>[contact-form-7 id="123"]</code> un <code>[contact-form-7 id="456"]</code> tieši attiecīgās lapas tulkotajā versijā — bez shortcode starpniekloģikas vispār.</p>
+        <p>URL noteikšana pēc <code>/ru/</code> ir vienkāršs, bet trausls risinājums - tas pieņem, ka TranslatePress lieto apakšmapju struktūru (nevis apakšdomēnu vai parametru). Ja projektam ir tikai dažas lapas ar formu (nevis viena koplietota veidne visām valodām), robustāks variants ir vienkārši ievietot <code>[contact-form-7 id="123"]</code> un <code>[contact-form-7 id="456"]</code> tieši attiecīgās lapas tulkotajā versijā - bez shortcode starpniekloģikas vispār.</p>
       </div>
     </section>
 
     <section class="doc-section" id="snip-cf7-assets">
       <h2>Ielādēt CF7 skriptus tikai vajadzīgajā lapā</h2>
-      <p>Contact Form 7 pēc noklusējuma ielādē savu CSS un JS <strong>katrā</strong> vietnes lapā, pat ja formas tur nemaz nav — nelietderīga slodze, kas nedaudz palēnina katru lapu. Ja forma parādās tikai konkrētā(s) lapā(s), abus filtrus var ierobežot.</p>
+      <p>Contact Form 7 pēc noklusējuma ielādē savu CSS un JS <strong>katrā</strong> vietnes lapā, pat ja formas tur nemaz nav - nelietderīga slodze, kas nedaudz palēnina katru lapu. Ja forma parādās tikai konkrētā(s) lapā(s), abus filtrus var ierobežot.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_filter</span>(<span class="tok-str">'wpcf7_load_js'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$load_js</span>) {
     <span class="tok-kw">return</span> <span class="tok-fn">is_page</span>(<span class="tok-str">'kontakti'</span>);
 });
@@ -1056,7 +1056,7 @@
 });</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Ja forma parādās vairākās lapās (piem., kontaktu lapā <strong>un</strong> footerī visās lapās), <code>is_page('kontakti')</code> jāpaplašina attiecīgi — pretējā gadījumā forma pārējās lapās parādīsies bez stila vai bez validācijas JS. Ja forma ir footerī (redzama visur), šo optimizāciju vienkārši nevajag pielietot.</p>
+        <p>Ja forma parādās vairākās lapās (piem., kontaktu lapā <strong>un</strong> footerī visās lapās), <code>is_page('kontakti')</code> jāpaplašina attiecīgi - pretējā gadījumā forma pārējās lapās parādīsies bez stila vai bez validācijas JS. Ja forma ir footerī (redzama visur), šo optimizāciju vienkārši nevajag pielietot.</p>
       </div>
     </section>
 
@@ -1067,7 +1067,7 @@
   </main>
 </div>
 
-<script src="../js/theme.js?v=20"></script>
-<script src="../js/main.js?v=20"></script>
+<script src="../js/theme.js?v=21"></script>
+<script src="../js/main.js?v=21"></script>
 </body>
 </html>

@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
-<title>WordPress dokumentācija — Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=20" />
+<title>WordPress dokumentācija - Documentation Samis</title>
+<link rel="stylesheet" href="../css/style.css?v=21" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -118,7 +118,7 @@
     <section class="doc-section" id="temas">
       <h2>Tēmu izveide</h2>
       <p>Lai WordPress atpazītu mapi <code>wp-content/themes/</code> iekšpusē kā tēmu, obligāti nepieciešami tikai divi faili: <code>style.css</code> (ar galvenes komentāru) un <code>index.php</code>. Bez <code>index.php</code> tēma administrācijā parādās kā "Broken Theme" un to nevar aktivizēt.</p>
-      <p><strong>1. solis</strong> — izveido mapi <code>wp-content/themes/mana-tema/</code> un tajā šo failu:</p>
+      <p><strong>1. solis</strong> - izveido mapi <code>wp-content/themes/mana-tema/</code> un tajā šo failu:</p>
       <pre class="code-block"><span class="lang">css</span><code><span class="tok-com">/* style.css */
 /*
 Theme Name: Mana Tēma
@@ -126,7 +126,7 @@ Version: 1.0
 */</span>
 
 <span class="tok-fn">body</span> { <span class="tok-fn">font-family</span>: sans-serif; }</code></pre>
-      <p><strong>2. solis</strong> — tajā pašā mapē izveido <code>index.php</code>:</p>
+      <p><strong>2. solis</strong> - tajā pašā mapē izveido <code>index.php</code>:</p>
       <pre class="code-block"><span class="lang">php</span><code>&lt;?php <span class="tok-fn">get_header</span>(); ?&gt;
 
 &lt;main&gt;
@@ -139,7 +139,7 @@ Version: 1.0
 &lt;/main&gt;
 
 &lt;?php <span class="tok-fn">get_footer</span>(); ?&gt;</code></pre>
-      <p><strong>3. solis</strong> — WordPress admin panelī ej uz Izskats → Tēmas → aktivizē "Mana Tēma". Tas ir viss — tēma jau strādā, kaut arī izskatīsies "kaila", jo trūkst <code>header.php</code>/<code>footer.php</code>.</p>
+      <p><strong>3. solis</strong> - WordPress admin panelī ej uz Izskats → Tēmas → aktivizē "Mana Tēma". Tas ir viss - tēma jau strādā, kaut arī izskatīsies "kaila", jo trūkst <code>header.php</code>/<code>footer.php</code>.</p>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
         <p>Ja <code>index.php</code> izmanto <code>get_header()</code>/<code>get_footer()</code>, tad <code>header.php</code>/<code>footer.php</code> failiem jau <strong>jāeksistē</strong> tajā pašā mapē (kaut tukšiem: <code>&lt;html&gt;&lt;body&gt;</code> un attiecīgi <code>&lt;/body&gt;&lt;/html&gt;</code>), citādi radīsies kļūda.</p>
@@ -148,16 +148,16 @@ Version: 1.0
 
     <section class="doc-section" id="child-tema">
       <h2>Bērnu tēmas (Child Themes)</h2>
-      <p>Viens no biežākajiem un dārgākajiem iesācēju kļūdām: rediģēt lejupielādētu vai iegādātu tēmu <strong>tieši</strong> (piem., mainīt <code>style.css</code> vai <code>functions.php</code> failā, kas nāca kopā ar tēmu). Kad tēmas autors izlaidīs atjauninājumu un to uzstādīsi, <strong>visas tavas izmaiņas tiks pilnībā pārrakstītas un pazudīs</strong> — WordPress vienkārši aizvieto veco tēmas mapi ar jauno.</p>
-      <p><strong>Bērnu tēma</strong> atrisina šo problēmu: tā ir atsevišķa, maza tēma, kas "manto" visu no vecāktēmas (parent theme), bet ļauj droši pārrakstīt tikai to, ko vēlies mainīt. Vecāktēmu var brīvi atjaunināt — bērnu tēma un tavas izmaiņas paliek neskartas.</p>
-      <p><strong>1. solis</strong> — izveido jaunu mapi, piem. <code>wp-content/themes/mana-tema-child/</code>, ar šo <code>style.css</code>:</p>
+      <p>Viens no biežākajiem un dārgākajiem iesācēju kļūdām: rediģēt lejupielādētu vai iegādātu tēmu <strong>tieši</strong> (piem., mainīt <code>style.css</code> vai <code>functions.php</code> failā, kas nāca kopā ar tēmu). Kad tēmas autors izlaidīs atjauninājumu un to uzstādīsi, <strong>visas tavas izmaiņas tiks pilnībā pārrakstītas un pazudīs</strong> - WordPress vienkārši aizvieto veco tēmas mapi ar jauno.</p>
+      <p><strong>Bērnu tēma</strong> atrisina šo problēmu: tā ir atsevišķa, maza tēma, kas "manto" visu no vecāktēmas (parent theme), bet ļauj droši pārrakstīt tikai to, ko vēlies mainīt. Vecāktēmu var brīvi atjaunināt - bērnu tēma un tavas izmaiņas paliek neskartas.</p>
+      <p><strong>1. solis</strong> - izveido jaunu mapi, piem. <code>wp-content/themes/mana-tema-child/</code>, ar šo <code>style.css</code>:</p>
       <pre class="code-block"><span class="lang">css</span><code><span class="tok-com">/*
 Theme Name: Mana Tēma Child
 Template: mana-tema
 Version: 1.0
 */</span></code></pre>
-      <p><code>Template</code> rindā jānorāda tieši vecāktēmas <strong>mapes nosaukums</strong> (nevis "Theme Name") — šī ir vienīgā obligātā saite starp abām tēmām.</p>
-      <p><strong>2. solis</strong> — tajā pašā mapē izveido <code>functions.php</code>, kas ielādē gan vecāktēmas, gan bērnu tēmas stilus:</p>
+      <p><code>Template</code> rindā jānorāda tieši vecāktēmas <strong>mapes nosaukums</strong> (nevis "Theme Name") - šī ir vienīgā obligātā saite starp abām tēmām.</p>
+      <p><strong>2. solis</strong> - tajā pašā mapē izveido <code>functions.php</code>, kas ielādē gan vecāktēmas, gan bērnu tēmas stilus:</p>
       <pre class="code-block"><span class="lang">php</span><code>&lt;?php
 <span class="tok-fn">add_action</span>(<span class="tok-str">'wp_enqueue_scripts'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-com">// Vispirms ielādē vecāktēmas stilus</span>
@@ -166,7 +166,7 @@ Version: 1.0
         <span class="tok-fn">get_template_directory_uri</span>() . <span class="tok-str">'/style.css'</span>
     );
 
-    <span class="tok-com">// Tad bērnu tēmas stilus — "vecāks" no parent-style,
+    <span class="tok-com">// Tad bērnu tēmas stilus - "vecāks" no parent-style,
     // lai tas ielādētos PĒC un varētu pārrakstīt tā noteikumus</span>
     <span class="tok-fn">wp_enqueue_style</span>(
         <span class="tok-str">'child-style'</span>,
@@ -174,16 +174,16 @@ Version: 1.0
         [<span class="tok-str">'parent-style'</span>]
     );
 });</code></pre>
-      <p><strong>3. solis</strong> — Izskats → Tēmas → aktivizē "Mana Tēma Child". Vietne izskatīsies tieši tāpat kā ar vecāktēmu, bet tagad droši vari pievienot savu CSS <code>style.css</code> beigās vai pārrakstīt atsevišķus <code>.php</code> failus (piem., <code>footer.php</code>), tos nokopējot no vecāktēmas uz bērnu tēmas mapi un tur rediģējot — WordPress vienmēr vispirms meklē failu bērnu tēmā, un tikai tad vecāktēmā.</p>
+      <p><strong>3. solis</strong> - Izskats → Tēmas → aktivizē "Mana Tēma Child". Vietne izskatīsies tieši tāpat kā ar vecāktēmu, bet tagad droši vari pievienot savu CSS <code>style.css</code> beigās vai pārrakstīt atsevišķus <code>.php</code> failus (piem., <code>footer.php</code>), tos nokopējot no vecāktēmas uz bērnu tēmas mapi un tur rediģējot - WordPress vienmēr vispirms meklē failu bērnu tēmā, un tikai tad vecāktēmā.</p>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Ja plāno izmantot lejupielādētu vai iegādātu tēmu (ne pašrakstītu), vienmēr izveido tai bērnu tēmu <strong>uzreiz sākumā</strong>, pirms sāc jebko rediģēt — daudz vieglāk to izdarīt no paša sākuma, nekā mēģināt "izvilkt" izmaiņas no galvenās tēmas failiem vēlāk.</p>
+        <p>Ja plāno izmantot lejupielādētu vai iegādātu tēmu (ne pašrakstītu), vienmēr izveido tai bērnu tēmu <strong>uzreiz sākumā</strong>, pirms sāc jebko rediģēt - daudz vieglāk to izdarīt no paša sākuma, nekā mēģināt "izvilkt" izmaiņas no galvenās tēmas failiem vēlāk.</p>
       </div>
     </section>
 
     <section class="doc-section" id="wpconfig">
       <h2>wp-config.php</h2>
-      <p>Galvenais konfigurācijas fails, kas atrodas WordPress saknes mapē (blakus <code>wp-admin</code>, <code>wp-content</code>) — satur datubāzes pieejas datus un svarīgākos globālos iestatījumus. Šo failu neveido pats — to automātiski izveido WordPress instalācijas laikā, bet vēlāk to var rediģēt.</p>
+      <p>Galvenais konfigurācijas fails, kas atrodas WordPress saknes mapē (blakus <code>wp-admin</code>, <code>wp-content</code>) - satur datubāzes pieejas datus un svarīgākos globālos iestatījumus. Šo failu neveido pats - to automātiski izveido WordPress instalācijas laikā, bet vēlāk to var rediģēt.</p>
       <pre class="code-block"><span class="lang">php</span><code>&lt;?php
 <span class="tok-com">// --- Datubāze ---</span>
 <span class="tok-kw">define</span>(<span class="tok-str">'DB_NAME'</span>, <span class="tok-str">'mana_datubaze'</span>);
@@ -193,7 +193,7 @@ Version: 1.0
 <span class="tok-kw">define</span>(<span class="tok-str">'DB_CHARSET'</span>, <span class="tok-str">'utf8mb4'</span>);
 <span class="tok-kw">define</span>(<span class="tok-str">'DB_COLLATE'</span>, <span class="tok-str">''</span>);
 
-<span class="tok-com">// Tabulu prefikss — maini no noklusējuma "wp_" drošības apsvērumu dēļ</span>
+<span class="tok-com">// Tabulu prefikss - maini no noklusējuma "wp_" drošības apsvērumu dēļ</span>
 <span class="tok-fn">$table_prefix</span> = <span class="tok-str">'wp_'</span>;
 
 <span class="tok-com">// --- Autentifikācijas atslēgas un "sāls" (salts) ---
@@ -203,7 +203,7 @@ Version: 1.0
 <span class="tok-kw">define</span>(<span class="tok-str">'SECURE_AUTH_KEY'</span>,  <span class="tok-str">'ievieto-unikālu-virkni-šeit'</span>);
 <span class="tok-com">// ... un tā tālāk visām 8 atslēgām</span>
 
-<span class="tok-com">// --- Vides tips (WordPress 5.5+) — ietekmē, kā daži spraudņi/tēmas uzvedas ---</span>
+<span class="tok-com">// --- Vides tips (WordPress 5.5+) - ietekmē, kā daži spraudņi/tēmas uzvedas ---</span>
 <span class="tok-kw">define</span>(<span class="tok-str">'WP_ENVIRONMENT_TYPE'</span>, <span class="tok-str">'production'</span>); <span class="tok-com">// local | development | staging | production</span>
 
 <span class="tok-com">// --- Atkļūdošana (izstrādes vidē) ---</span>
@@ -231,19 +231,19 @@ Version: 1.0
 <span class="tok-fn">require_once</span> ABSPATH . <span class="tok-str">'wp-settings.php'</span>;</code></pre>
       <div class="doc-cards">
         <div class="doc-mini-card"><h4><code>WP_ENVIRONMENT_TYPE</code></h4><p>Kopš WP 5.5 ļauj kodam/spraudņiem uzvesties atšķirīgi lokālajā, staging un production vidē (<code>wp_get_environment_type()</code>).</p></div>
-        <div class="doc-mini-card"><h4>Autentifikācijas atslēgas</h4><p>8 nejaušas virknes, kas šifrē pieteikšanās "cookies" — ģenerē ar WordPress.org rīku, nevis izdomā pašrocīgi.</p></div>
-        <div class="doc-mini-card"><h4><code>DISALLOW_FILE_EDIT</code></h4><p>Ražošanas vietnē vienmēr izslēdz iebūvēto koda redaktoru — bieži izmantots uzbrukuma vektors, ja admin konts tiek kompromitēts.</p></div>
+        <div class="doc-mini-card"><h4>Autentifikācijas atslēgas</h4><p>8 nejaušas virknes, kas šifrē pieteikšanās "cookies" - ģenerē ar WordPress.org rīku, nevis izdomā pašrocīgi.</p></div>
+        <div class="doc-mini-card"><h4><code>DISALLOW_FILE_EDIT</code></h4><p>Ražošanas vietnē vienmēr izslēdz iebūvēto koda redaktoru - bieži izmantots uzbrukuma vektors, ja admin konts tiek kompromitēts.</p></div>
         <div class="doc-mini-card"><h4>Tabulu prefikss</h4><p>Maiņa no noklusējuma <code>wp_</code> uz kaut ko unikālu apgrūtina automatizētus SQL injection uzbrukumus, kas pieņem noklusējuma nosaukumu.</p></div>
       </div>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Pirms vietnes publicēšanas obligāti iestati <code>WP_DEBUG_DISPLAY</code> uz <code>false</code> (vai vienkārši <code>WP_DEBUG</code> uz <code>false</code>) — kļūdu izvade ražošanas vietnē var atklāt failu ceļus un citu jutīgu informāciju apmeklētājiem. Izmanto <code>WP_DEBUG_LOG</code>, lai kļūdas tik un tā redzētu failā, neparādot tās apmeklētājiem.</p>
+        <p>Pirms vietnes publicēšanas obligāti iestati <code>WP_DEBUG_DISPLAY</code> uz <code>false</code> (vai vienkārši <code>WP_DEBUG</code> uz <code>false</code>) - kļūdu izvade ražošanas vietnē var atklāt failu ceļus un citu jutīgu informāciju apmeklētājiem. Izmanto <code>WP_DEBUG_LOG</code>, lai kļūdas tik un tā redzētu failā, neparādot tās apmeklētājiem.</p>
       </div>
     </section>
 
     <section class="doc-section" id="spraudnis">
       <h2>Spraudņa pamatstruktūra</h2>
-      <p>Ja funkcionalitātei jāpaliek neatkarīgai no tēmas (nemainās, kad nomaina dizainu — piem., kontaktforma, ziņu abonēšana), to noformē kā spraudni, nevis <code>functions.php</code>. Minimāls spraudnis ir viens PHP fails ar galvenes komentāru — WordPress to atpazīst pēc šī komentāra formāta, nevis pēc faila nosaukuma.</p>
+      <p>Ja funkcionalitātei jāpaliek neatkarīgai no tēmas (nemainās, kad nomaina dizainu - piem., kontaktforma, ziņu abonēšana), to noformē kā spraudni, nevis <code>functions.php</code>. Minimāls spraudnis ir viens PHP fails ar galvenes komentāru - WordPress to atpazīst pēc šī komentāra formāta, nevis pēc faila nosaukuma.</p>
       <p>Izveido <code>wp-content/plugins/mans-spraudnis/mans-spraudnis.php</code>:</p>
       <pre class="code-block"><span class="lang">php</span><code>&lt;?php
 <span class="tok-com">/**
@@ -256,7 +256,7 @@ Version: 1.0
 <span class="tok-com">// Pasargā failu no tiešas piekļuves ārpus WordPress</span>
 <span class="tok-kw">defined</span>(<span class="tok-str">'ABSPATH'</span>) || <span class="tok-kw">exit</span>;
 
-<span class="tok-com">// No šejienes tālāk — tieši tāda pati sintakse kā functions.php</span>
+<span class="tok-com">// No šejienes tālāk - tieši tāda pati sintakse kā functions.php</span>
 <span class="tok-fn">add_action</span>(<span class="tok-str">'wp_footer'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-kw">echo</span> <span class="tok-str">'&lt;!-- Mans spraudnis strādā -->'</span>;
 });</code></pre>
@@ -265,7 +265,7 @@ Version: 1.0
 
     <section class="doc-section" id="template-hierarchy">
       <h2>Template Hierarchy</h2>
-      <p>Kad apmeklētājs atver lapu, WordPress automātiski izvēlas, kuru veidnes failu izmantot, sekojot noteiktai prioritāšu secībai — pirmo atrasto failu tēmas mapē tas arī izmanto. Ja specifiskāka veidne neeksistē, WordPress "krīt atpakaļ" uz vispārīgāku, un galu galā vienmēr uz <code>index.php</code> (vienīgo patiešām obligāto failu).</p>
+      <p>Kad apmeklētājs atver lapu, WordPress automātiski izvēlas, kuru veidnes failu izmantot, sekojot noteiktai prioritāšu secībai - pirmo atrasto failu tēmas mapē tas arī izmanto. Ja specifiskāka veidne neeksistē, WordPress "krīt atpakaļ" uz vispārīgāku, un galu galā vienmēr uz <code>index.php</code> (vienīgo patiešām obligāto failu).</p>
       <pre class="code-block"><span class="lang">text</span><code>Sākumlapa:        front-page.php → home.php → index.php
 Viens ieraksts:    single-{post-type}.php → single.php → index.php
 Statiska lapa:     page-{slug}.php → page.php → index.php
@@ -274,12 +274,12 @@ Kategorija:        category-{slug}.php → category.php → archive.php → inde
 Birka:             tag-{slug}.php → tag.php → archive.php → index.php
 Meklēšana:         search.php → index.php
 Kļūda 404:         404.php → index.php</code></pre>
-      <p>Piemērs: ja tēmā izveido <code>single-produkts.php</code>, tas automātiski parādīsies visiem "produkts" CPT ierakstiem, nevajag neko papildus reģistrēt — WordPress pats atrod šo failu pēc nosaukuma.</p>
+      <p>Piemērs: ja tēmā izveido <code>single-produkts.php</code>, tas automātiski parādīsies visiem "produkts" CPT ierakstiem, nevajag neko papildus reģistrēt - WordPress pats atrod šo failu pēc nosaukuma.</p>
     </section>
 
     <section class="doc-section" id="loop">
       <h2>The Loop</h2>
-      <p>WordPress ierakstus lapā izvada ar "The Loop" — standarta ciklu, ko izmanto gandrīz katrā veidnes failā (<code>index.php</code>, <code>archive.php</code>, <code>single.php</code>). <code>have_posts()</code> pārbauda, vai vēl ir ieraksti; <code>the_post()</code> "sagatavo" nākamo ierakstu, lai funkcijas kā <code>the_title()</code> zinātu, par kuru ierakstu runāt.</p>
+      <p>WordPress ierakstus lapā izvada ar "The Loop" - standarta ciklu, ko izmanto gandrīz katrā veidnes failā (<code>index.php</code>, <code>archive.php</code>, <code>single.php</code>). <code>have_posts()</code> pārbauda, vai vēl ir ieraksti; <code>the_post()</code> "sagatavo" nākamo ierakstu, lai funkcijas kā <code>the_title()</code> zinātu, par kuru ierakstu runāt.</p>
       <pre class="code-block"><span class="lang">php</span><code>&lt;?php <span class="tok-kw">if</span> (<span class="tok-fn">have_posts</span>()) : ?&gt;
 
   &lt;?php <span class="tok-kw">while</span> (<span class="tok-fn">have_posts</span>()) : <span class="tok-fn">the_post</span>(); ?&gt;
@@ -295,21 +295,21 @@ Kļūda 404:         404.php → index.php</code></pre>
 &lt;?php <span class="tok-kw">else</span> : ?&gt;
   &lt;p&gt;Ieraksti nav atrasti.&lt;/p&gt;
 &lt;?php <span class="tok-kw">endif</span>; ?&gt;</code></pre>
-      <p>Šo bloku ievieto jebkurā veidnes failā, kur jāparāda ierakstu saraksts vai saturs — visbiežāk <code>index.php</code>, <code>archive.php</code> vai <code>single.php</code>.</p>
+      <p>Šo bloku ievieto jebkurā veidnes failā, kur jāparāda ierakstu saraksts vai saturs - visbiežāk <code>index.php</code>, <code>archive.php</code> vai <code>single.php</code>.</p>
     </section>
 
     <section class="doc-section" id="template-tags">
       <h2>Template Tags</h2>
-      <p>Template tags ir funkcijas, ko izsauc The Loop iekšienē (starp <code>have_posts()</code> un <code>endwhile</code>), lai izvadītu konkrētā ieraksta datus — nosaukumu, saturu, datumu, izcēlattēlu.</p>
+      <p>Template tags ir funkcijas, ko izsauc The Loop iekšienē (starp <code>have_posts()</code> un <code>endwhile</code>), lai izvadītu konkrētā ieraksta datus - nosaukumu, saturu, datumu, izcēlattēlu.</p>
       <div class="doc-cards">
         <div class="doc-mini-card"><h4><code>the_title()</code></h4><p>Izvada ieraksta virsrakstu tieši (echo).</p></div>
         <div class="doc-mini-card"><h4><code>the_content()</code></h4><p>Izvada pilnu ieraksta saturu (ar formatējumu).</p></div>
-        <div class="doc-mini-card"><h4><code>the_excerpt()</code></h4><p>Izvada īsu izvilkumu — noder sarakstu skatiem.</p></div>
+        <div class="doc-mini-card"><h4><code>the_excerpt()</code></h4><p>Izvada īsu izvilkumu - noder sarakstu skatiem.</p></div>
         <div class="doc-mini-card"><h4><code>the_permalink()</code></h4><p>Izvada pilnu URL uz ierakstu.</p></div>
         <div class="doc-mini-card"><h4><code>the_date()</code></h4><p>Izvada publicēšanas datumu.</p></div>
         <div class="doc-mini-card"><h4><code>the_post_thumbnail()</code></h4><p>Izvada izcēlattēlu kā <code>&lt;img&gt;</code> tagu.</p></div>
       </div>
-      <p>Katrai <code>the_*()</code> funkcijai ir arī <code>get_the_*()</code> versija (piem. <code>get_the_title()</code>), kas <strong>atgriež</strong> vērtību, nevis izvada uzreiz — noderīga, ja vērtība jāapstrādā pirms izvades:</p>
+      <p>Katrai <code>the_*()</code> funkcijai ir arī <code>get_the_*()</code> versija (piem. <code>get_the_title()</code>), kas <strong>atgriež</strong> vērtību, nevis izvada uzreiz - noderīga, ja vērtība jāapstrādā pirms izvades:</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">$virsraksts</span> = <span class="tok-fn">get_the_title</span>();
 <span class="tok-kw">echo</span> <span class="tok-fn">strtoupper</span>(<span class="tok-fn">$virsraksts</span>); <span class="tok-com">// virsraksts LIELAJIEM BURTIEM</span>
 
@@ -319,12 +319,12 @@ Kļūda 404:         404.php → index.php</code></pre>
 
     <section class="doc-section" id="conditional-tags">
       <h2>Conditional Tags</h2>
-      <p>Funkcijas, kas atgriež <code>true</code>/<code>false</code>, lai noteiktu, kāda veida lapa pašlaik tiek rādīta — īpaši noderīgas koplietotos failos (<code>header.php</code>, <code>footer.php</code>), kur jāizvada dažāds saturs atkarībā no lapas.</p>
+      <p>Funkcijas, kas atgriež <code>true</code>/<code>false</code>, lai noteiktu, kāda veida lapa pašlaik tiek rādīta - īpaši noderīgas koplietotos failos (<code>header.php</code>, <code>footer.php</code>), kur jāizvada dažāds saturs atkarībā no lapas.</p>
       <p><strong>Lapas veids:</strong></p>
       <pre class="code-block"><span class="lang">text</span><code>is_front_page()       → vai šī ir sākumlapa
 is_home()              → vai šī ir ierakstu plūsmas lapa
 is_single()            → vai šis ir viens ieraksts (post vai CPT ar atbalstu)
-is_singular()          → tas pats, bet plašāk — ietver arī lapas un pielikumus
+is_singular()          → tas pats, bet plašāk - ietver arī lapas un pielikumus
 is_page()              → vai šī ir statiska lapa
 is_page_template()     → vai lapa izmanto konkrētu lapas veidni
 is_archive()           → vai šī ir jebkāds arhīvs
@@ -359,13 +359,13 @@ pings_open()          → vai pingback/trackback ir atvērti šim ierakstam</cod
 }</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>is_single()</code> pēc noklusējuma aptver arī pielāgotos ierakstu tipus (CPT), bet <strong>ne</strong> lapas — ja nepieciešams pārbaudīt "vai šis ir viens ieraksts, jebkāds tips, ieskaitot lapas", izmanto plašāko <code>is_singular()</code> tā vietā.</p>
+        <p><code>is_single()</code> pēc noklusējuma aptver arī pielāgotos ierakstu tipus (CPT), bet <strong>ne</strong> lapas - ja nepieciešams pārbaudīt "vai šis ir viens ieraksts, jebkāds tips, ieskaitot lapas", izmanto plašāko <code>is_singular()</code> tā vietā.</p>
       </div>
     </section>
 
     <section class="doc-section" id="wp-query">
       <h2>WP_Query (pielāgoti vaicājumi)</h2>
-      <p>Kad jāizgūst ieraksti <strong>ārpus</strong> galvenā The Loop (piem., "Populārākie raksti" bloks sānjoslā), izmanto <code>WP_Query</code> klasi. Pēc pielāgotā cikla vienmēr jāizsauc <code>wp_reset_postdata()</code>, lai atjaunotu globālo <code>$post</code> mainīgo — citādi galvenais Loop tālāk lapā var sākt rādīt nepareizus datus.</p>
+      <p>Kad jāizgūst ieraksti <strong>ārpus</strong> galvenā The Loop (piem., "Populārākie raksti" bloks sānjoslā), izmanto <code>WP_Query</code> klasi. Pēc pielāgotā cikla vienmēr jāizsauc <code>wp_reset_postdata()</code>, lai atjaunotu globālo <code>$post</code> mainīgo - citādi galvenais Loop tālāk lapā var sākt rādīt nepareizus datus.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">$vaicajums</span> = <span class="tok-kw">new</span> <span class="tok-fn">WP_Query</span>([
     <span class="tok-str">'post_type'</span>      => <span class="tok-str">'post'</span>,
     <span class="tok-str">'posts_per_page'</span> => 5,
@@ -390,7 +390,7 @@ pings_open()          → vai pingback/trackback ir atvērti šim ierakstam</cod
 
     <section class="doc-section" id="taksonomijas">
       <h2>Taksonomijas</h2>
-      <p>Taksonomija ir veids, kā grupēt saturu — WordPress jau nāk ar divām iebūvētām: <strong>kategorijas</strong> (hierarhiskas, ar apakškategorijām) un <strong>birkas</strong> (plakanas, bez hierarhijas). Savu taksonomiju izveido ar <code>register_taxonomy()</code>, un to var piesaistīt gan parastiem ierakstiem, gan CPT.</p>
+      <p>Taksonomija ir veids, kā grupēt saturu - WordPress jau nāk ar divām iebūvētām: <strong>kategorijas</strong> (hierarhiskas, ar apakškategorijām) un <strong>birkas</strong> (plakanas, bez hierarhijas). Savu taksonomiju izveido ar <code>register_taxonomy()</code>, un to var piesaistīt gan parastiem ierakstiem, gan CPT.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'init'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-fn">register_taxonomy</span>(<span class="tok-str">'zime'</span>, <span class="tok-str">'post'</span>, [
         <span class="tok-str">'label'</span>              => <span class="tok-str">'Zīmes'</span>,
@@ -399,19 +399,19 @@ pings_open()          → vai pingback/trackback ir atvērti šim ierakstam</cod
         <span class="tok-str">'show_admin_column'</span>  => <span class="tok-kw">true</span>,  <span class="tok-com">// parāda kolonnu ierakstu sarakstā</span>
     ]);
 });</code></pre>
-      <p>Rādīšana veidnē — ierakstam piesaistīto terminu saraksts:</p>
+      <p>Rādīšana veidnē - ierakstam piesaistīto terminu saraksts:</p>
       <pre class="code-block"><span class="lang">php</span><code>&lt;?php <span class="tok-kw">echo</span> <span class="tok-fn">get_the_term_list</span>(<span class="tok-fn">get_the_ID</span>(), <span class="tok-str">'zime'</span>, <span class="tok-str">''</span>, <span class="tok-str">', '</span>); ?&gt;</code></pre>
 
       <h3>Citi <code>register_taxonomy()</code> argumenti</h3>
       <div class="doc-cards">
-        <div class="doc-mini-card"><h4><code>rewrite</code></h4><p>Masīvs, piem. <code>['slug' =&gt; 'zimes']</code> — nosaka, kāds vārds parādās URL taksonomijas arhīva lapā (<code>/zimes/kaut-kas/</code>), nevis noklusējuma taksonomijas nosaukumu.</p></div>
+        <div class="doc-mini-card"><h4><code>rewrite</code></h4><p>Masīvs, piem. <code>['slug' =&gt; 'zimes']</code> - nosaka, kāds vārds parādās URL taksonomijas arhīva lapā (<code>/zimes/kaut-kas/</code>), nevis noklusējuma taksonomijas nosaukumu.</p></div>
         <div class="doc-mini-card"><h4><code>show_ui</code></h4><p>Vai admin panelī rādīt rediģēšanas saskarni (formu terminu pievienošanai). Pēc noklusējuma seko <code>public</code> vērtībai.</p></div>
         <div class="doc-mini-card"><h4><code>show_in_menu</code></h4><p>Vai taksonomija parādās kreisajā admin izvēlnē. Var būt arī cita ieraksta tipa <code>menu_slug</code> virkne, lai iegultu apakšizvēlnē tam.</p></div>
-        <div class="doc-mini-card"><h4><code>show_tagcloud</code></h4><p>Vai taksonomija pieejama "Birku mākoņa" (Tag Cloud) widžetā — parasti izslēdz hierarhiskām taksonomijām.</p></div>
+        <div class="doc-mini-card"><h4><code>show_tagcloud</code></h4><p>Vai taksonomija pieejama "Birku mākoņa" (Tag Cloud) widžetā - parasti izslēdz hierarhiskām taksonomijām.</p></div>
         <div class="doc-mini-card"><h4><code>query_var</code></h4><p><code>true</code> ļauj vaicāt <code>?zime=nosaukums</code>; var norādīt arī savu virkni cita mainīgā nosaukuma vietā.</p></div>
-        <div class="doc-mini-card"><h4><code>public</code></h4><p>Vispārējs "galvenais slēdzis" — kad <code>true</code>, automātiski iestata saprātīgas noklusējuma vērtības pārējiem redzamības argumentiem, ja tie nav norādīti atsevišķi.</p></div>
+        <div class="doc-mini-card"><h4><code>public</code></h4><p>Vispārējs "galvenais slēdzis" - kad <code>true</code>, automātiski iestata saprātīgas noklusējuma vērtības pārējiem redzamības argumentiem, ja tie nav norādīti atsevišķi.</p></div>
       </div>
-      <p>Pilnāks piemērs ar visiem biežāk lietotajiem argumentiem un pilnu <code>labels</code> masīvu (nevis īsinājumu <code>'label'</code>) — der kopēt kā sākumpunktu jebkurai jaunai taksonomijai:</p>
+      <p>Pilnāks piemērs ar visiem biežāk lietotajiem argumentiem un pilnu <code>labels</code> masīvu (nevis īsinājumu <code>'label'</code>) - der kopēt kā sākumpunktu jebkurai jaunai taksonomijai:</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'init'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-fn">register_taxonomy</span>(<span class="tok-str">'zime'</span>, [<span class="tok-str">'post'</span>, <span class="tok-str">'produkts'</span>], [
         <span class="tok-str">'labels'</span> => [
@@ -435,13 +435,13 @@ pings_open()          → vai pingback/trackback ir atvērti šim ierakstam</cod
 });</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Otrais <code>register_taxonomy()</code> parametrs var būt gan viena virkne (<code>'post'</code>), gan masīvs ar vairākiem ierakstu tipiem — šis piemērs piesaista taksonomiju gan parastiem ierakstiem, gan CPT <code>produkts</code> vienlaicīgi.</p>
+        <p>Otrais <code>register_taxonomy()</code> parametrs var būt gan viena virkne (<code>'post'</code>), gan masīvs ar vairākiem ierakstu tipiem - šis piemērs piesaista taksonomiju gan parastiem ierakstiem, gan CPT <code>produkts</code> vienlaicīgi.</p>
       </div>
     </section>
 
     <section class="doc-section" id="cpt">
       <h2>Custom Post Types (CPT)</h2>
-      <p>Papildus ierakstiem un lapām WordPress ļauj izveidot savus, strukturētus satura tipus — piemēram, "Produkti" vai "Atsauksmes", katru ar savu administrācijas sadaļu. Reģistrē tos ar <code>register_post_type()</code>, izsauktu caur <code>init</code> āķi.</p>
+      <p>Papildus ierakstiem un lapām WordPress ļauj izveidot savus, strukturētus satura tipus - piemēram, "Produkti" vai "Atsauksmes", katru ar savu administrācijas sadaļu. Reģistrē tos ar <code>register_post_type()</code>, izsauktu caur <code>init</code> āķi.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// functions.php</span>
 <span class="tok-fn">add_action</span>(<span class="tok-str">'init'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-fn">register_post_type</span>(<span class="tok-str">'produkts'</span>, [
@@ -456,24 +456,24 @@ pings_open()          → vai pingback/trackback ir atvērti šim ierakstam</cod
         <span class="tok-str">'supports'</span>     => [<span class="tok-str">'title'</span>, <span class="tok-str">'editor'</span>, <span class="tok-str">'thumbnail'</span>],
     ]);
 });</code></pre>
-      <p>Pēc šī koda pievienošanas un lapas atsvaidzināšanas admin panelī sānizvēlnē parādīsies jauna sadaļa "Produkti" ar savu grozāmo ikonu — tur var pievienot jaunus ierakstus tāpat kā parastus WordPress ierakstus.</p>
+      <p>Pēc šī koda pievienošanas un lapas atsvaidzināšanas admin panelī sānizvēlnē parādīsies jauna sadaļa "Produkti" ar savu grozāmo ikonu - tur var pievienot jaunus ierakstus tāpat kā parastus WordPress ierakstus.</p>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Pēc pievienošanas ejot uz jaunā CPT publisko lapu (piem., <code>/produkts/kaut-kas/</code>) var rādīties 404 — jāatjauno pastāvīgās saites: <strong>Iestatījumi → Pastāvīgās saites → Saglabāt</strong> (nekas nav jāmaina, pats saglabāšanas klikšķis atjauno noteikumus).</p>
+        <p>Pēc pievienošanas ejot uz jaunā CPT publisko lapu (piem., <code>/produkts/kaut-kas/</code>) var rādīties 404 - jāatjauno pastāvīgās saites: <strong>Iestatījumi → Pastāvīgās saites → Saglabāt</strong> (nekas nav jāmaina, pats saglabāšanas klikšķis atjauno noteikumus).</p>
       </div>
 
       <h3>Citi <code>register_post_type()</code> argumenti</h3>
       <div class="doc-cards">
-        <div class="doc-mini-card"><h4><code>rewrite</code></h4><p>Masīvs, piem. <code>['slug' =&gt; 'produkti']</code> — nomaina URL priekšā <code>/produkts/</code> uz ko citu, nemainot pašu ierakstu tipa nosaukumu kodā.</p></div>
+        <div class="doc-mini-card"><h4><code>rewrite</code></h4><p>Masīvs, piem. <code>['slug' =&gt; 'produkti']</code> - nomaina URL priekšā <code>/produkts/</code> uz ko citu, nemainot pašu ierakstu tipa nosaukumu kodā.</p></div>
         <div class="doc-mini-card"><h4><code>hierarchical</code></h4><p><code>true</code> = uzvedas kā lapas (var norādīt vecāku, admin sarakstā parādās ar atkāpēm); <code>false</code> = uzvedas kā ieraksti (bez hierarhijas).</p></div>
-        <div class="doc-mini-card"><h4><code>menu_position</code></h4><p>Skaitlis, kur admin izvēlnē parādās ikona — <code>5</code> zem "Ierakstiem", <code>20</code> zem "Lapām", <code>25</code> zem "Komentāriem" utt.</p></div>
-        <div class="doc-mini-card"><h4><code>show_in_menu</code></h4><p><code>true</code>/<code>false</code>, vai virkne ar cita izvēlnes vienuma <code>menu_slug</code> — iegultu CPT kā apakšizvēlni, nevis atsevišķu izvēlnes punktu.</p></div>
+        <div class="doc-mini-card"><h4><code>menu_position</code></h4><p>Skaitlis, kur admin izvēlnē parādās ikona - <code>5</code> zem "Ierakstiem", <code>20</code> zem "Lapām", <code>25</code> zem "Komentāriem" utt.</p></div>
+        <div class="doc-mini-card"><h4><code>show_in_menu</code></h4><p><code>true</code>/<code>false</code>, vai virkne ar cita izvēlnes vienuma <code>menu_slug</code> - iegultu CPT kā apakšizvēlni, nevis atsevišķu izvēlnes punktu.</p></div>
         <div class="doc-mini-card"><h4><code>capability_type</code></h4><p>Kontrolē, kādas lietotāja tiesības nepieciešamas rediģēšanai/dzēšanai. Noklusējums <code>'post'</code> ir korekts vairumam gadījumu.</p></div>
         <div class="doc-mini-card"><h4><code>exclude_from_search</code></h4><p><code>true</code> izslēdz šo ierakstu tipu no WordPress iekšējās meklēšanas rezultātiem (bet ne no publiskajām arhīva/single lapām).</p></div>
         <div class="doc-mini-card"><h4><code>publicly_queryable</code></h4><p>Vai ierakstiem var piekļūt tieši caur front-end URL vaicājumiem. Pēc noklusējuma seko <code>public</code> vērtībai.</p></div>
-        <div class="doc-mini-card"><h4><code>taxonomies</code></h4><p>Masīvs ar jau reģistrētu taksonomiju slug ("<code>['zime']</code>"), lai tās uzreiz piesaistītu — alternatīva atsevišķai piesaistei ar <code>register_taxonomy_for_object_type()</code>.</p></div>
+        <div class="doc-mini-card"><h4><code>taxonomies</code></h4><p>Masīvs ar jau reģistrētu taksonomiju slug ("<code>['zime']</code>"), lai tās uzreiz piesaistītu - alternatīva atsevišķai piesaistei ar <code>register_taxonomy_for_object_type()</code>.</p></div>
       </div>
-      <p>Pilnāks piemērs ar visiem biežāk lietotajiem argumentiem un pilnu <code>labels</code> masīvu — der kopēt kā sākumpunktu jebkuram jaunam CPT:</p>
+      <p>Pilnāks piemērs ar visiem biežāk lietotajiem argumentiem un pilnu <code>labels</code> masīvu - der kopēt kā sākumpunktu jebkuram jaunam CPT:</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'init'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-fn">register_post_type</span>(<span class="tok-str">'produkts'</span>, [
         <span class="tok-str">'labels'</span> => [
@@ -501,13 +501,13 @@ pings_open()          → vai pingback/trackback ir atvērti šim ierakstam</cod
 });</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>taxonomies</code> masīvā drīkst norādīt tikai taksonomijas, kas <strong>jau reģistrētas</strong> tajā pašā <code>init</code> izsaukumā vai agrāk — ja taksonomija reģistrēta ar zemāku prioritāti (izsaukta vēlāk), CPT saraksts vēl to neredzēs. Der pievienot abus reģistrācijas izsaukumus vienā <code>functions.php</code> vietā secīgi, tāpat kā šeit (skat. <a href="#taksonomijas">Taksonomijas</a> augstāk).</p>
+        <p><code>taxonomies</code> masīvā drīkst norādīt tikai taksonomijas, kas <strong>jau reģistrētas</strong> tajā pašā <code>init</code> izsaukumā vai agrāk - ja taksonomija reģistrēta ar zemāku prioritāti (izsaukta vēlāk), CPT saraksts vēl to neredzēs. Der pievienot abus reģistrācijas izsaukumus vienā <code>functions.php</code> vietā secīgi, tāpat kā šeit (skat. <a href="#taksonomijas">Taksonomijas</a> augstāk).</p>
       </div>
     </section>
 
     <section class="doc-section" id="custom-fields">
       <h2>Pielāgoti lauki</h2>
-      <p>Bez ACF spraudņa pielāgotus datus jebkuram ierakstam (arī parastam, ne tikai CPT) var pievienot un vēlāk nolasīt tieši ar <code>update_post_meta()</code>/<code>get_post_meta()</code> — noder, kad pietiek ar dažiem papildu laukiem un negribi papildu atkarību.</p>
+      <p>Bez ACF spraudņa pielāgotus datus jebkuram ierakstam (arī parastam, ne tikai CPT) var pievienot un vēlāk nolasīt tieši ar <code>update_post_meta()</code>/<code>get_post_meta()</code> - noder, kad pietiek ar dažiem papildu laukiem un negribi papildu atkarību.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Saglabā vērtību konkrētam ierakstam (piem., admin darbībā vai formā)</span>
 <span class="tok-fn">update_post_meta</span>(<span class="tok-fn">$post_id</span>, <span class="tok-str">'cena'</span>, 49.99);
 
@@ -524,19 +524,19 @@ pings_open()          → vai pingback/trackback ir atvērti šim ierakstam</cod
   ?&gt;
 
 &lt;?php <span class="tok-kw">endwhile</span>; ?&gt;</code></pre>
-      <p>Trešais parametrs <code>get_post_meta()</code> (<code>true</code>) nozīmē "atgriez vienu vērtību, ne masīvu" — bez tā funkcija vienmēr atgriež masīvu, pat ja lauks ir tikai viens.</p>
+      <p>Trešais parametrs <code>get_post_meta()</code> (<code>true</code>) nozīmē "atgriez vienu vērtību, ne masīvu" - bez tā funkcija vienmēr atgriež masīvu, pat ja lauks ir tikai viens.</p>
     </section>
 
     <section class="doc-section" id="izvelnes">
       <h2>Izvēlnes</h2>
       <p>Izvēlnes izveide notiek divos soļos: pirmkārt, <code>functions.php</code> failā <strong>reģistrē</strong> vietu izvēlnei (piešķir tai iekšēju nosaukumu), otrkārt, veidnē (parasti <code>header.php</code>) <strong>izvada</strong> to ar <code>wp_nav_menu()</code>. Pašu izvēlnes saturu (kādas saites tajā ir) pēc tam pārvalda administrācijā, nevis kodā.</p>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// functions.php — reģistrē izvēlnes vietu</span>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// functions.php - reģistrē izvēlnes vietu</span>
 <span class="tok-fn">add_action</span>(<span class="tok-str">'after_setup_theme'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-fn">register_nav_menus</span>([
         <span class="tok-str">'galvena'</span> => <span class="tok-str">'Galvenā izvēlne'</span>,
     ]);
 });</code></pre>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// header.php — izvada izvēlni šajā vietā</span>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// header.php - izvada izvēlni šajā vietā</span>
 &lt;?php
 <span class="tok-fn">wp_nav_menu</span>([
     <span class="tok-str">'theme_location'</span> => <span class="tok-str">'galvena'</span>,
@@ -548,7 +548,7 @@ pings_open()          → vai pingback/trackback ir atvērti šim ierakstam</cod
 
     <section class="doc-section" id="enqueue">
       <h2>Skriptu/stilu pieslēgšana</h2>
-      <p>CSS un JS failus tēmā <strong>nekad</strong> nepievieno tieši ar <code>&lt;link&gt;</code>/<code>&lt;script&gt;</code> tagiem veidnē — tā vietā izmanto <code>wp_enqueue_scripts</code> āķi. Tas ļauj WordPress pašam pārvaldīt failu ielādes secību un izvairīties no konfliktiem, ja vēlāk spraudnis mēģina pievienot to pašu bibliotēku.</p>
+      <p>CSS un JS failus tēmā <strong>nekad</strong> nepievieno tieši ar <code>&lt;link&gt;</code>/<code>&lt;script&gt;</code> tagiem veidnē - tā vietā izmanto <code>wp_enqueue_scripts</code> āķi. Tas ļauj WordPress pašam pārvaldīt failu ielādes secību un izvairīties no konfliktiem, ja vēlāk spraudnis mēģina pievienot to pašu bibliotēku.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// functions.php</span>
 <span class="tok-fn">add_action</span>(<span class="tok-str">'wp_enqueue_scripts'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-com">// Tēmas galvenais CSS fails (style.css)</span>
@@ -563,12 +563,12 @@ pings_open()          → vai pingback/trackback ir atvērti šim ierakstam</cod
         <span class="tok-kw">true</span>       <span class="tok-com">// ielādēt lapas beigās, ne &lt;head&gt;</span>
     );
 });</code></pre>
-      <p>Lai šis piemērs strādātu, jāizveido reāls fails <code>js/main.js</code> tēmas mapē — pretējā gadījumā pārlūka konsolē redzēsi 404 kļūdu tam vienam failam (pati vietne turpinās strādāt).</p>
+      <p>Lai šis piemērs strādātu, jāizveido reāls fails <code>js/main.js</code> tēmas mapē - pretējā gadījumā pārlūka konsolē redzēsi 404 kļūdu tam vienam failam (pati vietne turpinās strādāt).</p>
     </section>
 
     <section class="doc-section" id="tailwind-compile">
       <h2>Tailwind CSS kompilēšana (bez CDN)</h2>
-      <p>Tailwind CDN skripts (<code>&lt;script src="https://cdn.tailwindcss.com"&gt;</code>) ir domāts tikai izmēģināšanai — tas ģenerē CSS pārlūkā katru reizi no jauna un pats brīdina konsolē: <em>"cdn.tailwindcss.com should not be used in production"</em>. Ražošanas vietnei Tailwind jāsakompilē par vienu, mazu, jau gatavu CSS failu. Šeit — pilns ceļš uz strādājošu rezultātu bez Node.js/npm instalēšanas grūtībām (kas uz dažiem serveriem ar <code>root</code> lietotāju var neizdoties atļauju problēmu dēļ) — izmantojot Tailwind <strong>Standalone CLI</strong>, kas ir viens patstāvīgs izpildfails.</p>
+      <p>Tailwind CDN skripts (<code>&lt;script src="https://cdn.tailwindcss.com"&gt;</code>) ir domāts tikai izmēģināšanai - tas ģenerē CSS pārlūkā katru reizi no jauna un pats brīdina konsolē: <em>"cdn.tailwindcss.com should not be used in production"</em>. Ražošanas vietnei Tailwind jāsakompilē par vienu, mazu, jau gatavu CSS failu. Šeit - pilns ceļš uz strādājošu rezultātu bez Node.js/npm instalēšanas grūtībām (kas uz dažiem serveriem ar <code>root</code> lietotāju var neizdoties atļauju problēmu dēļ) - izmantojot Tailwind <strong>Standalone CLI</strong>, kas ir viens patstāvīgs izpildfails.</p>
 
       <h3 style="font-size:17px; margin:32px 0 10px;">1. Lejupielādē Standalone CLI</h3>
       <p>Pieslēdzies serverim caur SSH (skat. <a href="ssh.html">SSH kategoriju</a>), dodies uz tēmas mapi un izpildi:</p>
@@ -577,11 +577,11 @@ chmod +x tailwindcss-linux-x64
 mv tailwindcss-linux-x64 tailwindcss</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Standalone CLI ietver iekšā visu Tailwind dzinēju — nevajag ne <code>node_modules</code>, ne <code>npm install</code>, ne uztraukties par Node.js versiju vai servera lietotāja tiesībām. Šī lejupielādētā versija ir Tailwind <strong>v4</strong>, kas atšķiras no v3 — konfigurācija dzīvo CSS failā, nevis atsevišķā <code>tailwind.config.js</code> failā.</p>
+        <p>Standalone CLI ietver iekšā visu Tailwind dzinēju - nevajag ne <code>node_modules</code>, ne <code>npm install</code>, ne uztraukties par Node.js versiju vai servera lietotāja tiesībām. Šī lejupielādētā versija ir Tailwind <strong>v4</strong>, kas atšķiras no v3 - konfigurācija dzīvo CSS failā, nevis atsevišķā <code>tailwind.config.js</code> failā.</p>
       </div>
 
       <h3 style="font-size:17px; margin:32px 0 10px;">2. Izveido/pārraksti avota CSS failu</h3>
-      <p>Tēmas mapē izveido <code>src/input.css</code>. Ja iepriekš tavai CDN versijai bija pielāgota konfigurācija (krāsas, fonti, atstarpes — <code>tailwind.config = {...}</code> CDN formātā), pārceļ to uz jauno <code>@theme</code> bloku:</p>
+      <p>Tēmas mapē izveido <code>src/input.css</code>. Ja iepriekš tavai CDN versijai bija pielāgota konfigurācija (krāsas, fonti, atstarpes - <code>tailwind.config = {...}</code> CDN formātā), pārceļ to uz jauno <code>@theme</code> bloku:</p>
       <pre class="code-block"><span class="lang">css</span><code>@import "tailwindcss";
 
 /* Google Fonts, ja lieto pielāgotu fontu */
@@ -608,11 +608,11 @@ mv tailwindcss-linux-x64 tailwindcss</code></pre>
 }</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Tailwind v4 automātiski noskenē visus <code>.php</code> failus tēmas mapē, meklējot izmantotās klases — vairs nav vajadzīga <code>content</code> masīva norādīšana kā v3 versijā. Ja tev jau bija atsevišķs <code>tailwind.config.js</code> fails, to droši var izdzēst — v4 to vairs nelasa.</p>
+        <p>Tailwind v4 automātiski noskenē visus <code>.php</code> failus tēmas mapē, meklējot izmantotās klases - vairs nav vajadzīga <code>content</code> masīva norādīšana kā v3 versijā. Ja tev jau bija atsevišķs <code>tailwind.config.js</code> fails, to droši var izdzēst - v4 to vairs nelasa.</p>
       </div>
 
       <h3 style="font-size:17px; margin:32px 0 10px;">3. Pievieno kompilēšanas skriptus</h3>
-      <p><code>package.json</code> failā (ja tāda vēl nav, izveido to ar <code>npm init -y</code> — bet ievēro, ka paketes nosaukumā nedrīkst būt garumzīmes vai lielie burti):</p>
+      <p><code>package.json</code> failā (ja tāda vēl nav, izveido to ar <code>npm init -y</code> - bet ievēro, ka paketes nosaukumā nedrīkst būt garumzīmes vai lielie burti):</p>
       <pre class="code-block"><span class="lang">json</span><code>{
   <span class="tok-str">"scripts"</span>: {
     <span class="tok-str">"dev"</span>: <span class="tok-str">"./tailwindcss -i ./src/input.css -o ./style.css --watch"</span>,
@@ -622,11 +622,11 @@ mv tailwindcss-linux-x64 tailwindcss</code></pre>
 
       <h3 style="font-size:17px; margin:32px 0 10px;">4. Palaid kompilatoru</h3>
       <pre class="code-block"><span class="lang">bash</span><code>npm run dev</code></pre>
-      <p>Šī komanda paliek darboties fonā (<code>--watch</code> režīms) un automātiski pārkompilē <code>style.css</code> ikreiz, kad saglabā izmaiņas kādā <code>.php</code> failā. Termināļa logam jāpaliek atvērtam, kamēr programmē; darbu beidz ar <code>Ctrl+C</code>. Pirms lapas publicēšanas palaid <code>npm run build</code> — tas sakompilē mazāku, minificētu versiju bez novērošanas režīma.</p>
+      <p>Šī komanda paliek darboties fonā (<code>--watch</code> režīms) un automātiski pārkompilē <code>style.css</code> ikreiz, kad saglabā izmaiņas kādā <code>.php</code> failā. Termināļa logam jāpaliek atvērtam, kamēr programmē; darbu beidz ar <code>Ctrl+C</code>. Pirms lapas publicēšanas palaid <code>npm run build</code> - tas sakompilē mazāku, minificētu versiju bez novērošanas režīma.</p>
 
       <h3 style="font-size:17px; margin:32px 0 10px;">5. Aizvieto CDN kodu ar sakompilēto CSS</h3>
       <p>Atrodi un pilnībā izdzēs veco CDN pieslēgšanu no <code>functions.php</code>:</p>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// IZDZĒŠAMS — vairs nav vajadzīgs</span>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// IZDZĒŠAMS - vairs nav vajadzīgs</span>
 <span class="tok-kw">function</span> <span class="tok-fn">enqueue_tailwind_cdn_and_config</span>() {
     <span class="tok-fn">wp_enqueue_script</span>( <span class="tok-str">'tailwind-cdn'</span>, <span class="tok-str">'https://cdn.tailwindcss.com'</span>, [], <span class="tok-kw">null</span>, <span class="tok-kw">true</span> );
     <span class="tok-fn">wp_enqueue_script</span>(
@@ -636,7 +636,7 @@ mv tailwindcss-linux-x64 tailwindcss</code></pre>
     );
 }
 <span class="tok-fn">add_action</span>(<span class="tok-str">'wp_enqueue_scripts'</span>, <span class="tok-str">'enqueue_tailwind_cdn_and_config'</span>);</code></pre>
-      <p>Un aizvieto ar sakompilētā faila pieslēgšanu — ja izvadi kompilē tieši tēmas <code>style.css</code>, der jau esošais standarta <a href="#enqueue">enqueue piemērs</a> augstāk šajā lapā, kas jau ielādē <code>get_stylesheet_uri()</code>. Ja izvadi kompilē uz atsevišķu failu (piem., <code>assets/css/tailwind.css</code>), norādi to tieši:</p>
+      <p>Un aizvieto ar sakompilētā faila pieslēgšanu - ja izvadi kompilē tieši tēmas <code>style.css</code>, der jau esošais standarta <a href="#enqueue">enqueue piemērs</a> augstāk šajā lapā, kas jau ielādē <code>get_stylesheet_uri()</code>. Ja izvadi kompilē uz atsevišķu failu (piem., <code>assets/css/tailwind.css</code>), norādi to tieši:</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'wp_enqueue_scripts'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-fn">wp_enqueue_style</span>(
         <span class="tok-str">'tailwind-compiled'</span>,
@@ -647,37 +647,37 @@ mv tailwindcss-linux-x64 tailwindcss</code></pre>
 });</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Rezultāts: pārlūka konsolē vairs nav "cdn.tailwindcss.com should not be used in production" brīdinājuma, nav 404 kļūdas uz veco config failu, un lapa ielādē tikai to CSS, kas reāli izmantots — mazāks fails, ātrāka ielāde.</p>
+        <p>Rezultāts: pārlūka konsolē vairs nav "cdn.tailwindcss.com should not be used in production" brīdinājuma, nav 404 kļūdas uz veco config failu, un lapa ielādē tikai to CSS, kas reāli izmantots - mazāks fails, ātrāka ielāde.</p>
       </div>
     </section>
 
     <section class="doc-section" id="hooks">
       <h2>Hooks &amp; Filters</h2>
       <p>Hooks ir WordPress galvenais mehānisms, kā mainīt vai papildināt uzvedību, neaiztiekot kodola failus. <strong>Actions</strong> ļauj izpildīt savu kodu noteiktā brīdī (piem., lapas ielādes laikā), <strong>filters</strong> ļauj pārtvert un mainīt vērtību pirms tā tiek izmantota tālāk.</p>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Action — pievieno kaut ko pirms &lt;/body&gt; tagā (piem., analītikas skriptu)</span>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Action - pievieno kaut ko pirms &lt;/body&gt; tagā (piem., analītikas skriptu)</span>
 <span class="tok-fn">add_action</span>(<span class="tok-str">'wp_footer'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-kw">echo</span> <span class="tok-str">'&lt;!-- Šis teksts parādās katras lapas HTML kodā pirms &lt;/body&gt; -->'</span>;
 });
 
-<span class="tok-com">// Filter — maina ieraksta virsrakstu pirms tas tiek attēlots</span>
+<span class="tok-com">// Filter - maina ieraksta virsrakstu pirms tas tiek attēlots</span>
 <span class="tok-fn">add_filter</span>(<span class="tok-str">'the_title'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$title</span>) {
     <span class="tok-kw">return</span> <span class="tok-str">'★ '</span> . <span class="tok-fn">$title</span>;
 });</code></pre>
-      <p>Pēc šī koda pievienošanas <code>functions.php</code> failā un lapas atsvaidzināšanas — katra ieraksta virsraksts sāksies ar "★ ", un pārlūka izejas kodā (View Source) redzēsi jauno komentāru pirms <code>&lt;/body&gt;</code>.</p>
+      <p>Pēc šī koda pievienošanas <code>functions.php</code> failā un lapas atsvaidzināšanas - katra ieraksta virsraksts sāksies ar "★ ", un pārlūka izejas kodā (View Source) redzēsi jauno komentāru pirms <code>&lt;/body&gt;</code>.</p>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
         <p>Biežākie āķi, ar kuriem sāksi: <code>init</code> (WordPress ielādēts), <code>wp_enqueue_scripts</code> (CSS/JS), <code>wp_head</code>/<code>wp_footer</code> (lapas sākums/beigas).</p>
       </div>
-      <p><strong>Kur atrast VISUS pieejamos hooks?</strong> — šeit parādīti tikai daži piemēri no simtiem, kas eksistē WordPress kodolā. Pilns, meklējams saraksts ar katra hook aprakstu un pieejamajiem parametriem ir <a href="https://developer.wordpress.org/reference/hooks/" target="_blank" rel="noopener">developer.wordpress.org/reference/hooks/</a> — tā ir oficiālā WordPress dokumentācija, ne kāda trešās puses vietne. Tur pat var redzēt, kurā WordPress versijā konkrētais hook parādījās.</p>
+      <p><strong>Kur atrast VISUS pieejamos hooks?</strong> - šeit parādīti tikai daži piemēri no simtiem, kas eksistē WordPress kodolā. Pilns, meklējams saraksts ar katra hook aprakstu un pieejamajiem parametriem ir <a href="https://developer.wordpress.org/reference/hooks/" target="_blank" rel="noopener">developer.wordpress.org/reference/hooks/</a> - tā ir oficiālā WordPress dokumentācija, ne kāda trešās puses vietne. Tur pat var redzēt, kurā WordPress versijā konkrētais hook parādījās.</p>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Tā pati vietne (<a href="https://developer.wordpress.org/reference/" target="_blank" rel="noopener">developer.wordpress.org/reference/</a>) satur arī pilnu WordPress <strong>funkciju</strong> uzziņu (piem., ko tieši dara <code>get_post_meta()</code>, kādi tai parametri) — tas ir pareizais pirmais pieturas punkts, ja neesi drošs, ko konkrēta WordPress funkcija dara vai vai tāda vispār eksistē priekš tavas vajadzības, nevis meklēt Google pēc nejaušiem forumu ierakstiem.</p>
+        <p>Tā pati vietne (<a href="https://developer.wordpress.org/reference/" target="_blank" rel="noopener">developer.wordpress.org/reference/</a>) satur arī pilnu WordPress <strong>funkciju</strong> uzziņu (piem., ko tieši dara <code>get_post_meta()</code>, kādi tai parametri) - tas ir pareizais pirmais pieturas punkts, ja neesi drošs, ko konkrēta WordPress funkcija dara vai vai tāda vispār eksistē priekš tavas vajadzības, nevis meklēt Google pēc nejaušiem forumu ierakstiem.</p>
       </div>
     </section>
 
     <section class="doc-section" id="shortcodes">
       <h2>Shortcodes</h2>
-      <p>Shortcode ļauj ievietot dinamisku PHP saturu tieši Gutenberg/klasiskā redaktora tekstā, rakstot vienkāršu iekavu tagu, piem. <code>[gads]</code>. Reģistrē ar <code>add_shortcode()</code> — funkcijai jāatgriež (<code>return</code>) rezultāts, nekad nedrīkst to izvadīt ar <code>echo</code>.</p>
+      <p>Shortcode ļauj ievietot dinamisku PHP saturu tieši Gutenberg/klasiskā redaktora tekstā, rakstot vienkāršu iekavu tagu, piem. <code>[gads]</code>. Reģistrē ar <code>add_shortcode()</code> - funkcijai jāatgriež (<code>return</code>) rezultāts, nekad nedrīkst to izvadīt ar <code>echo</code>.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Vienkāršs shortcode bez parametriem: [gads]</span>
 <span class="tok-fn">add_shortcode</span>(<span class="tok-str">'gads'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-kw">return</span> <span class="tok-fn">date</span>(<span class="tok-str">'Y'</span>);
@@ -690,14 +690,14 @@ mv tailwindcss-linux-x64 tailwindcss</code></pre>
 });</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p><code>shortcode_atts()</code> ir svarīgs, nevis tikai ērtība — tas nodrošina noklusējuma vērtības un pasargā no PHP kļūdas, ja lietotājs shortcode uzraksta bez atribūta.</p>
+        <p><code>shortcode_atts()</code> ir svarīgs, nevis tikai ērtība - tas nodrošina noklusējuma vērtības un pasargā no PHP kļūdas, ja lietotājs shortcode uzraksta bez atribūta.</p>
       </div>
     </section>
 
     <section class="doc-section" id="widgets">
       <h2>Widgets &amp; Sidebars</h2>
-      <p>Sidebar (WordPress terminoloģijā) ir jebkura widžetiem paredzēta zona — bieži sānjosla, bet var būt arī kājene. Vispirms reģistrē zonu ar <code>register_sidebar()</code>, tad veidnē izvada to ar <code>dynamic_sidebar()</code> — pēc tam admin lietotājs pats no Izskats → Widžeti var ievilkt tur jebkādus blokus, negrozot kodu.</p>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// functions.php — reģistrē widžetu zonu</span>
+      <p>Sidebar (WordPress terminoloģijā) ir jebkura widžetiem paredzēta zona - bieži sānjosla, bet var būt arī kājene. Vispirms reģistrē zonu ar <code>register_sidebar()</code>, tad veidnē izvada to ar <code>dynamic_sidebar()</code> - pēc tam admin lietotājs pats no Izskats → Widžeti var ievilkt tur jebkādus blokus, negrozot kodu.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// functions.php - reģistrē widžetu zonu</span>
 <span class="tok-fn">add_action</span>(<span class="tok-str">'widgets_init'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-fn">register_sidebar</span>([
         <span class="tok-str">'name'</span>          => <span class="tok-str">'Galvenā sānjosla'</span>,
@@ -706,7 +706,7 @@ mv tailwindcss-linux-x64 tailwindcss</code></pre>
         <span class="tok-str">'after_widget'</span>  => <span class="tok-str">'&lt;/div&gt;'</span>,
     ]);
 });</code></pre>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// sidebar.php — izvada šīs zonas saturu</span>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// sidebar.php - izvada šīs zonas saturu</span>
 &lt;?php <span class="tok-kw">if</span> (<span class="tok-fn">is_active_sidebar</span>(<span class="tok-str">'galvena-sanjosla'</span>)) : ?&gt;
     &lt;aside&gt;&lt;?php <span class="tok-fn">dynamic_sidebar</span>(<span class="tok-str">'galvena-sanjosla'</span>); ?&gt;&lt;/aside&gt;
 &lt;?php <span class="tok-kw">endif</span>; ?&gt;</code></pre>
@@ -714,7 +714,7 @@ mv tailwindcss-linux-x64 tailwindcss</code></pre>
 
     <section class="doc-section" id="ajax">
       <h2>AJAX pamati</h2>
-      <p>AJAX ļauj lapai apmainīties ar datiem ar serveri bez pilnas pārlādēšanas (piem., "Ielādēt vairāk" poga). WordPress visiem AJAX pieprasījumiem izmanto vienu kopīgu galapunktu — <code>admin-ajax.php</code>. PHP pusē reģistrē <strong>divus</strong> āķus ar vienādu vārdu: <code>wp_ajax_{action}</code> ielogotiem lietotājiem, <code>wp_ajax_nopriv_{action}</code> — pārējiem.</p>
+      <p>AJAX ļauj lapai apmainīties ar datiem ar serveri bez pilnas pārlādēšanas (piem., "Ielādēt vairāk" poga). WordPress visiem AJAX pieprasījumiem izmanto vienu kopīgu galapunktu - <code>admin-ajax.php</code>. PHP pusē reģistrē <strong>divus</strong> āķus ar vienādu vārdu: <code>wp_ajax_{action}</code> ielogotiem lietotājiem, <code>wp_ajax_nopriv_{action}</code> - pārējiem.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 1) Nododam JS pusei ajax_url un nonce</span>
 <span class="tok-fn">add_action</span>(<span class="tok-str">'wp_enqueue_scripts'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-fn">wp_enqueue_script</span>(<span class="tok-str">'mana-tema-main'</span>, <span class="tok-fn">get_template_directory_uri</span>() . <span class="tok-str">'/js/main.js'</span>, [], <span class="tok-str">'1.0'</span>, <span class="tok-kw">true</span>);
@@ -736,7 +736,7 @@ mv tailwindcss-linux-x64 tailwindcss</code></pre>
     <span class="tok-fn">$b</span> = (<span class="tok-kw">int</span>) (<span class="tok-fn">$_POST</span>[<span class="tok-str">'b'</span>] ?? 0);
     <span class="tok-fn">wp_send_json_success</span>([<span class="tok-str">'summa'</span> => <span class="tok-fn">$a</span> + <span class="tok-fn">$b</span>]);
 }</code></pre>
-      <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// js/main.js — pieprasījums no pārlūka puses</span>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// js/main.js - pieprasījums no pārlūka puses</span>
 fetch(MyAjax.ajax_url, {
   method: <span class="tok-str">'POST'</span>,
   body: <span class="tok-kw">new</span> <span class="tok-fn">URLSearchParams</span>({ action: <span class="tok-str">'paskaitit'</span>, nonce: MyAjax.nonce, a: 2, b: 3 }),
@@ -744,16 +744,16 @@ fetch(MyAjax.ajax_url, {
   .then(res => res.json())
   .then(data => console.log(data.data.summa)); <span class="tok-com">// 5</span></code></pre>
       <div class="doc-cards">
-        <div class="doc-mini-card"><h4><code>fetch()</code></h4><p>Pārlūkā iebūvēta funkcija tīkla pieprasījumu sūtīšanai — WordPress kontekstā ar to nosūta datus uz <code>admin-ajax.php</code> bez lapas pārlādēšanas. Atgriež <em>Promise</em> (solījumu par vēlāku atbildi), tāpēc lieto ar <code>.then()</code>.</p></div>
+        <div class="doc-mini-card"><h4><code>fetch()</code></h4><p>Pārlūkā iebūvēta funkcija tīkla pieprasījumu sūtīšanai - WordPress kontekstā ar to nosūta datus uz <code>admin-ajax.php</code> bez lapas pārlādēšanas. Atgriež <em>Promise</em> (solījumu par vēlāku atbildi), tāpēc lieto ar <code>.then()</code>.</p></div>
         <div class="doc-mini-card"><h4><code>new URLSearchParams(objekts)</code></h4><p>Pārlūka iebūvēta klase, kas parastu JS objektu pārvērš formā, ko servera <code>$_POST</code> spēj nolasīt tieši (tas pats formāts, ko sūta parasta HTML forma). Bez tās <code>fetch()</code> nosūtītu JSON tekstu, ko <code>$_POST</code> nesaprastu.</p></div>
-        <div class="doc-mini-card"><h4><code>res.json()</code></h4><p><code>res</code> ir servera atbilde no <code>fetch()</code>. <code>.json()</code> pārvērš to no jēla teksta par lietojamu JS objektu — arī tas atgriež <em>Promise</em>, tāpēc seko vēl viens <code>.then()</code>, lai piekļūtu jau pārveidotajiem datiem.</p></div>
+        <div class="doc-mini-card"><h4><code>res.json()</code></h4><p><code>res</code> ir servera atbilde no <code>fetch()</code>. <code>.json()</code> pārvērš to no jēla teksta par lietojamu JS objektu - arī tas atgriež <em>Promise</em>, tāpēc seko vēl viens <code>.then()</code>, lai piekļūtu jau pārveidotajiem datiem.</p></div>
       </div>
     </section>
 
     <section class="doc-section" id="gutenberg">
       <h2>Gutenberg bloki</h2>
-      <p>Kopš WordPress 5.0 satura redaktors (Gutenberg) sastāv no <strong>blokiem</strong> — katrs rindkopas, attēla vai pielāgota elementa gabals ir savs bloks. Savu bloku veido divi faili: <code>block.json</code> (bloka metadati) un JS fails, kas nosaka, kā bloks izskatās redaktorā (<code>edit</code>) un ko tas saglabā datubāzē (<code>save</code>).</p>
-      <p><strong>1. solis</strong> — izveido <code>blocks/sveiciens/block.json</code>:</p>
+      <p>Kopš WordPress 5.0 satura redaktors (Gutenberg) sastāv no <strong>blokiem</strong> - katrs rindkopas, attēla vai pielāgota elementa gabals ir savs bloks. Savu bloku veido divi faili: <code>block.json</code> (bloka metadati) un JS fails, kas nosaka, kā bloks izskatās redaktorā (<code>edit</code>) un ko tas saglabā datubāzē (<code>save</code>).</p>
+      <p><strong>1. solis</strong> - izveido <code>blocks/sveiciens/block.json</code>:</p>
       <pre class="code-block"><span class="lang">json</span><code>{
   <span class="tok-str">"apiVersion"</span>: 3,
   <span class="tok-str">"name"</span>: <span class="tok-str">"mana-tema/sveiciens"</span>,
@@ -762,12 +762,12 @@ fetch(MyAjax.ajax_url, {
   <span class="tok-str">"icon"</span>: <span class="tok-str">"smiley"</span>,
   <span class="tok-str">"editorScript"</span>: <span class="tok-str">"file:./index.js"</span>
 }</code></pre>
-      <p><strong>2. solis</strong> — reģistrē bloku PHP pusē (nolasa <code>block.json</code> automātiski):</p>
+      <p><strong>2. solis</strong> - reģistrē bloku PHP pusē (nolasa <code>block.json</code> automātiski):</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// functions.php</span>
 <span class="tok-fn">add_action</span>(<span class="tok-str">'init'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-fn">register_block_type</span>(<span class="tok-fn">get_template_directory</span>() . <span class="tok-str">'/blocks/sveiciens'</span>);
 });</code></pre>
-      <p><strong>3. solis</strong> — <code>blocks/sveiciens/index.js</code> nosaka bloka uzvedību redaktorā:</p>
+      <p><strong>3. solis</strong> - <code>blocks/sveiciens/index.js</code> nosaka bloka uzvedību redaktorā:</p>
       <pre class="code-block"><span class="lang">js</span><code>import { registerBlockType } from '@wordpress/blocks';
 
 registerBlockType('mana-tema/sveiciens', {
@@ -776,24 +776,24 @@ registerBlockType('mana-tema/sveiciens', {
 });</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p><code>import</code> sintakse pārlūkā tieši nestrādā — reāls bloka JS jāsalaiž (build) ar <code>@wordpress/scripts</code> (komanda <code>wp-scripts build</code>), kas <code>import</code> pārvērš parastā, pārlūkam saprotamā JS failā. Tas ir vienīgais piemērs šajā lapā, kam nepieciešams papildu būvēšanas solis.</p>
+        <p><code>import</code> sintakse pārlūkā tieši nestrādā - reāls bloka JS jāsalaiž (build) ar <code>@wordpress/scripts</code> (komanda <code>wp-scripts build</code>), kas <code>import</code> pārvērš parastā, pārlūkam saprotamā JS failā. Tas ir vienīgais piemērs šajā lapā, kam nepieciešams papildu būvēšanas solis.</p>
       </div>
     </section>
 
     <section class="doc-section" id="block-temas">
       <h2>Block tēmas &amp; theme.json</h2>
-      <p>Kopš WordPress 5.9 pastāv otrs veids, kā veidot tēmu — <strong>block tēma</strong> (Full Site Editing, FSE). Atšķirībā no <a href="#temas">klasiskās tēmas</a> augstāk (PHP faili ar <code>get_header()</code>/<code>get_footer()</code>), block tēmā <strong>viss</strong> — arī header un footer — sastāv no blokiem, un lietotājs tos var rediģēt vizuāli (Izskats → Redaktors), nevis tikai pašu ierakstu saturu. Klasiskā pieeja joprojām strādā un ir plaši lietota — block tēmas ir jaunāka alternatīva, nevis obligāta prasība.</p>
-      <p>Galvenā atšķirība failu struktūrā — veidnes ir <strong>HTML faili ar bloku komentāriem</strong>, nevis PHP:</p>
+      <p>Kopš WordPress 5.9 pastāv otrs veids, kā veidot tēmu - <strong>block tēma</strong> (Full Site Editing, FSE). Atšķirībā no <a href="#temas">klasiskās tēmas</a> augstāk (PHP faili ar <code>get_header()</code>/<code>get_footer()</code>), block tēmā <strong>viss</strong> - arī header un footer - sastāv no blokiem, un lietotājs tos var rediģēt vizuāli (Izskats → Redaktors), nevis tikai pašu ierakstu saturu. Klasiskā pieeja joprojām strādā un ir plaši lietota - block tēmas ir jaunāka alternatīva, nevis obligāta prasība.</p>
+      <p>Galvenā atšķirība failu struktūrā - veidnes ir <strong>HTML faili ar bloku komentāriem</strong>, nevis PHP:</p>
       <pre class="code-block"><span class="lang">text</span><code>mana-block-tema/
-├── style.css          (tas pats, kas klasiskajā tēmā — tēmas metadati)
+├── style.css          (tas pats, kas klasiskajā tēmā - tēmas metadati)
 ├── theme.json         (globālie stili un iestatījumi)
 └── templates/
-    ├── index.html     (galvenā veidne — HTML + bloku komentāri, NEVIS PHP)
+    ├── index.html     (galvenā veidne - HTML + bloku komentāri, NEVIS PHP)
     └── single.html
 └── parts/
     ├── header.html
     └── footer.html</code></pre>
-      <p><strong>theme.json</strong> ir viena centrāla vieta, kur definē krāsas, fontus un atstarpes — tos automātiski redz gan redaktors (kā izvēles), gan tas tiek pielietots frontend pusē, bez atsevišķa CSS faila rakstīšanas katrai vērtībai:</p>
+      <p><strong>theme.json</strong> ir viena centrāla vieta, kur definē krāsas, fontus un atstarpes - tos automātiski redz gan redaktors (kā izvēles), gan tas tiek pielietots frontend pusē, bez atsevišķa CSS faila rakstīšanas katrai vērtībai:</p>
       <pre class="code-block"><span class="lang">json</span><code>{
   <span class="tok-str">"$schema"</span>: <span class="tok-str">"https://schemas.wp.org/trunk/theme.json"</span>,
   <span class="tok-str">"version"</span>: 3,
@@ -811,7 +811,7 @@ registerBlockType('mana-tema/sveiciens', {
     }
   }
 }</code></pre>
-      <p>Vienkāršas veidnes fragments — bloki HTML komentāru veidā, ko redaktors saprot un attēlo vizuāli:</p>
+      <p>Vienkāršas veidnes fragments - bloki HTML komentāru veidā, ko redaktors saprot un attēlo vizuāli:</p>
       <pre class="code-block"><span class="lang">html</span><code>&lt;!-- wp:template-part {"slug":"header","tagName":"header"} /--&gt;
 
 &lt;!-- wp:group {"tagName":"main"} --&gt;
@@ -824,43 +824,43 @@ registerBlockType('mana-tema/sveiciens', {
 &lt;!-- wp:template-part {"slug":"footer","tagName":"footer"} /--&gt;</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Nav jāizvēlas viens vai otrs uz visu tēmu — <strong>hibrīda tēma</strong> ir pilnīgi normāla: klasiski PHP faili (piem., <code>single.php</code> ar sarežģītu loģiku) blakus <code>theme.json</code> un dažām HTML veidnēm citām lapām. WordPress vispirms meklē <code>templates/*.html</code>, un, ja neatrod atbilstošu, krīt atpakaļ uz parasto <a href="#template-hierarchy">Template Hierarchy</a>.</p>
+        <p>Nav jāizvēlas viens vai otrs uz visu tēmu - <strong>hibrīda tēma</strong> ir pilnīgi normāla: klasiski PHP faili (piem., <code>single.php</code> ar sarežģītu loģiku) blakus <code>theme.json</code> un dažām HTML veidnēm citām lapām. WordPress vispirms meklē <code>templates/*.html</code>, un, ja neatrod atbilstošu, krīt atpakaļ uz parasto <a href="#template-hierarchy">Template Hierarchy</a>.</p>
       </div>
     </section>
 
     <section class="doc-section" id="i18n">
       <h2>Tulkošana (i18n)</h2>
-      <p>Ja tēma vai spraudnis paredzēts izplatīšanai (arī citiem lietotājiem, ne tikai vienai vietnei), visi lietotājam redzamie teksti jāietver tulkošanas funkcijās — tas ļauj vēlāk pievienot jebkuru valodu bez koda maiņas.</p>
-      <p><strong>1. solis</strong> — reģistrē "text domain" (unikālu identifikatoru tulkojumiem):</p>
+      <p>Ja tēma vai spraudnis paredzēts izplatīšanai (arī citiem lietotājiem, ne tikai vienai vietnei), visi lietotājam redzamie teksti jāietver tulkošanas funkcijās - tas ļauj vēlāk pievienot jebkuru valodu bez koda maiņas.</p>
+      <p><strong>1. solis</strong> - reģistrē "text domain" (unikālu identifikatoru tulkojumiem):</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'after_setup_theme'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-fn">load_theme_textdomain</span>(<span class="tok-str">'mana-tema'</span>, <span class="tok-fn">get_template_directory</span>() . <span class="tok-str">'/languages'</span>);
 });</code></pre>
-      <p><strong>2. solis</strong> — ietver katru redzamo tekstu attiecīgajā funkcijā (otrais parametrs vienmēr ir text domain no 1. soļa):</p>
+      <p><strong>2. solis</strong> - ietver katru redzamo tekstu attiecīgajā funkcijā (otrais parametrs vienmēr ir text domain no 1. soļa):</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Atgriež tulkoto tekstu (jāizmanto echo/turpmākai apstrādei)</span>
 <span class="tok-fn">$teksts</span> = <span class="tok-fn">__</span>(<span class="tok-str">'Sveiki, pasaule!'</span>, <span class="tok-str">'mana-tema'</span>);
 
 <span class="tok-com">// Uzreiz izvada tulkoto tekstu (saīsinājums echo __(...))</span>
 <span class="tok-fn">_e</span>(<span class="tok-str">'Sveiki, pasaule!'</span>, <span class="tok-str">'mana-tema'</span>);
 
-<span class="tok-com">// Apvieno tulkošanu ar drošu HTML izvadi — visbiežāk lietotā kombinācija veidnēs</span>
+<span class="tok-com">// Apvieno tulkošanu ar drošu HTML izvadi - visbiežāk lietotā kombinācija veidnēs</span>
 <span class="tok-kw">echo</span> <span class="tok-fn">esc_html__</span>(<span class="tok-str">'Sveiki, pasaule!'</span>, <span class="tok-str">'mana-tema'</span>);</code></pre>
-      <p>Pašus tulkojumus glabā <code>.po</code>/<code>.mo</code> failos <code>languages</code> mapē — tos ģenerē un rediģē ar rīkiem kā <a href="https://poedit.net/" target="_blank" rel="noopener">Poedit</a>, kas nolasa kodā izmantotos <code>__()</code>/<code>_e()</code> izsaukumus un veido no tiem tulkojamo tekstu sarakstu.</p>
+      <p>Pašus tulkojumus glabā <code>.po</code>/<code>.mo</code> failos <code>languages</code> mapē - tos ģenerē un rediģē ar rīkiem kā <a href="https://poedit.net/" target="_blank" rel="noopener">Poedit</a>, kas nolasa kodā izmantotos <code>__()</code>/<code>_e()</code> izsaukumus un veido no tiem tulkojamo tekstu sarakstu.</p>
     </section>
 
     <section class="doc-section" id="drosiba">
       <h2>Drošība: nonce &amp; escaping</h2>
-      <p>Divi drošības jēdzieni, kas jāzina no paša sākuma. <strong>Escaping</strong> — izvadot jebkādus datus HTML, izmanto <code>esc_html()</code>/<code>esc_attr()</code>, lai novērstu XSS (kāds ievieto ļaunprātīgu <code>&lt;script&gt;</code> tagu, kas izpildās citu apmeklētāju pārlūkos). <strong>Nonce</strong> — formas, kas maina datus, aizsargā ar vienreizēju "biļeti", kas apliecina, ka pieprasījums patiešām nāk no tavas lapas.</p>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Veidnē — droša izvade</span>
+      <p>Divi drošības jēdzieni, kas jāzina no paša sākuma. <strong>Escaping</strong> - izvadot jebkādus datus HTML, izmanto <code>esc_html()</code>/<code>esc_attr()</code>, lai novērstu XSS (kāds ievieto ļaunprātīgu <code>&lt;script&gt;</code> tagu, kas izpildās citu apmeklētāju pārlūkos). <strong>Nonce</strong> - formas, kas maina datus, aizsargā ar vienreizēju "biļeti", kas apliecina, ka pieprasījums patiešām nāk no tavas lapas.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Veidnē - droša izvade</span>
 <span class="tok-kw">echo</span> <span class="tok-fn">esc_html</span>(<span class="tok-fn">$lietotaja_teksts</span>);
 
-<span class="tok-com">// Formā — pievieno slēptu, unikālu lauku</span>
+<span class="tok-com">// Formā - pievieno slēptu, unikālu lauku</span>
 &lt;form method="post"&gt;
     &lt;?php <span class="tok-fn">wp_nonce_field</span>(<span class="tok-str">'mana_darbiba'</span>, <span class="tok-str">'mans_nonce'</span>); ?&gt;
     &lt;input type="text" name="komentars"&gt;
     &lt;button type="submit"&gt;Sūtīt&lt;/button&gt;
 &lt;/form&gt;
 
-<span class="tok-com">// Apstrādājot formu — vispirms pārbauda nonce</span>
+<span class="tok-com">// Apstrādājot formu - vispirms pārbauda nonce</span>
 &lt;?php
 <span class="tok-kw">if</span> (!<span class="tok-fn">wp_verify_nonce</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'mans_nonce'</span>] ?? <span class="tok-str">''</span>, <span class="tok-str">'mana_darbiba'</span>)) {
     <span class="tok-kw">die</span>(<span class="tok-str">'Drošības pārbaude neizdevās'</span>);
@@ -870,8 +870,8 @@ registerBlockType('mana-tema/sveiciens', {
 
     <section class="doc-section" id="sanitizacija">
       <h2>Sanitizācija: ievades attīrīšana</h2>
-      <p><strong>Escaping</strong> (iepriekš) padara datus drošus <em>izvadei</em>. <strong>Sanitizācija</strong> ir cits solis — padara lietotāja <em>ievadītos</em> datus drošus <em>saglabāšanai</em>, noņemot vai pārveidojot nevēlamu saturu, pirms tas nonāk datubāzē.</p>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Atļauj tikai konkrētus HTML tagus/atribūtus, pārējo izfiltrē — noder,
+      <p><strong>Escaping</strong> (iepriekš) padara datus drošus <em>izvadei</em>. <strong>Sanitizācija</strong> ir cits solis - padara lietotāja <em>ievadītos</em> datus drošus <em>saglabāšanai</em>, noņemot vai pārveidojot nevēlamu saturu, pirms tas nonāk datubāzē.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Atļauj tikai konkrētus HTML tagus/atribūtus, pārējo izfiltrē - noder,
 // kad lietotājam jāļauj neliels formatējums (piem., komentāros)</span>
 <span class="tok-fn">$atlautie_tagi</span> = [
     <span class="tok-str">'a'</span>      => [<span class="tok-str">'href'</span> => <span class="tok-kw">true</span>, <span class="tok-str">'title'</span> => <span class="tok-kw">true</span>],
@@ -887,13 +887,13 @@ registerBlockType('mana-tema/sveiciens', {
 <span class="tok-fn">sanitize_textarea_field</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'zinojums'</span>]);</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Vienkāršs likums: <strong>sanitizē pie ievades</strong> (pirms saglabā datubāzē), <strong>escapē pie izvades</strong> (tieši pirms <code>echo</code>). Dari abus — nepaļaujies, ka viens aizstāj otru.</p>
+        <p>Vienkāršs likums: <strong>sanitizē pie ievades</strong> (pirms saglabā datubāzē), <strong>escapē pie izvades</strong> (tieši pirms <code>echo</code>). Dari abus - nepaļaujies, ka viens aizstāj otru.</p>
       </div>
     </section>
 
     <section class="doc-section" id="lomas">
       <h2>Lietotāju lomas &amp; tiesības</h2>
-      <p>WordPress lietotājiem piešķir <strong>lomu</strong> (role), kas satur konkrētu <strong>tiesību</strong> (capability) kopumu — nekad nepārbaudi tiešo lomu kodā, vienmēr pārbaudi konkrētu tiesību, jo tas paliek pareizs pat tad, ja lomu struktūra vēlāk mainās.</p>
+      <p>WordPress lietotājiem piešķir <strong>lomu</strong> (role), kas satur konkrētu <strong>tiesību</strong> (capability) kopumu - nekad nepārbaudi tiešo lomu kodā, vienmēr pārbaudi konkrētu tiesību, jo tas paliek pareizs pat tad, ja lomu struktūra vēlāk mainās.</p>
       <div class="doc-cards">
         <div class="doc-mini-card"><h4>Administrator</h4><p>Visas tiesības, ieskaitot spraudņu/tēmu pārvaldību.</p></div>
         <div class="doc-mini-card"><h4>Editor</h4><p>Var rediģēt un publicēt visu lietotāju ierakstus.</p></div>
@@ -906,7 +906,7 @@ registerBlockType('mana-tema/sveiciens', {
     <span class="tok-kw">echo</span> <span class="tok-str">'Vari publicēt ierakstus.'</span>;
 }
 
-<span class="tok-com">// Spraudņa galvenajā failā (skat. "Spraudņa pamatstruktūra" augstāk) —
+<span class="tok-com">// Spraudņa galvenajā failā (skat. "Spraudņa pamatstruktūra" augstāk) -
 // izsauc TIKAI VIENU reizi, aktivizējot spraudni, nevis katrā lapas ielādē</span>
 <span class="tok-fn">register_activation_hook</span>(__FILE__, <span class="tok-kw">function</span>() {
     <span class="tok-fn">add_role</span>(<span class="tok-str">'redaktors_lite'</span>, <span class="tok-str">'Redaktors (ierobežots)'</span>, [
@@ -917,16 +917,16 @@ registerBlockType('mana-tema/sveiciens', {
 });</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>register_activation_hook(__FILE__, ...)</code> nozīmē "izpildi šo funkciju tieši tajā brīdī, kad admin panelī nospiež 'Aktivizēt' šim spraudnim" — tas garantē, ka <code>add_role()</code> izpildās tieši vienreiz, nevis katru reizi, kad kāds atver jebkuru lapu (kas radītu liekas datubāzes izmaiņas). <code>__FILE__</code> automātiski norāda uz to failu, kurā šis kods atrodas — tam jābūt spraudņa galvenajam failam ar galvenes komentāru (skat. <a href="#spraudnis">Spraudņa pamatstruktūra</a>).</p>
+        <p><code>register_activation_hook(__FILE__, ...)</code> nozīmē "izpildi šo funkciju tieši tajā brīdī, kad admin panelī nospiež 'Aktivizēt' šim spraudnim" - tas garantē, ka <code>add_role()</code> izpildās tieši vienreiz, nevis katru reizi, kad kāds atver jebkuru lapu (kas radītu liekas datubāzes izmaiņas). <code>__FILE__</code> automātiski norāda uz to failu, kurā šis kods atrodas - tam jābūt spraudņa galvenajam failam ar galvenes komentāru (skat. <a href="#spraudnis">Spraudņa pamatstruktūra</a>).</p>
       </div>
     </section>
 
     <section class="doc-section" id="wpdb">
       <h2>$wpdb vaicājumi</h2>
-      <p>Kad <code>WP_Query</code> nesniedz vajadzīgo elastību (piem., savai, pielāgotai datubāzes tabulai), globālais <code>$wpdb</code> objekts ļauj rakstīt SQL tieši. Lietotāja ievadi <strong>nekad</strong> nesalīmē tieši vaicājuma tekstā — vienmēr izmanto <code>$wpdb->prepare()</code>.</p>
+      <p>Kad <code>WP_Query</code> nesniedz vajadzīgo elastību (piem., savai, pielāgotai datubāzes tabulai), globālais <code>$wpdb</code> objekts ļauj rakstīt SQL tieši. Lietotāja ievadi <strong>nekad</strong> nesalīmē tieši vaicājuma tekstā - vienmēr izmanto <code>$wpdb->prepare()</code>.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">global</span> <span class="tok-fn">$wpdb</span>;
 
-<span class="tok-com">// Droši — vērtība tiek automātiski attīrīta</span>
+<span class="tok-com">// Droši - vērtība tiek automātiski attīrīta</span>
 <span class="tok-fn">$rezultati</span> = <span class="tok-fn">$wpdb</span>->get_results(
     <span class="tok-fn">$wpdb</span>->prepare(<span class="tok-str">"SELECT * FROM {$wpdb->prefix}atsauksmes WHERE vertejums >= %d"</span>, 4)
 );
@@ -934,20 +934,20 @@ registerBlockType('mana-tema/sveiciens', {
 <span class="tok-kw">foreach</span> (<span class="tok-fn">$rezultati</span> <span class="tok-kw">as</span> <span class="tok-fn">$rinda</span>) {
     <span class="tok-kw">echo</span> <span class="tok-fn">esc_html</span>(<span class="tok-fn">$rinda</span>->teksts);
 }</code></pre>
-      <p><code>{$wpdb->prefix}</code> automātiski ievieto pareizo tabulu prefiksu (parasti <code>wp_</code>, bet var atšķirties) — nekad nehardkodē <code>wp_</code> tieši.</p>
+      <p><code>{$wpdb->prefix}</code> automātiski ievieto pareizo tabulu prefiksu (parasti <code>wp_</code>, bet var atšķirties) - nekad nehardkodē <code>wp_</code> tieši.</p>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Šis piemērs pieņem, ka tabula <code>{$wpdb->prefix}atsauksmes</code> jau eksistē datubāzē — <code>$wpdb</code> tikai <strong>vaicā</strong> esošai tabulai, tas neko neizveido. Pašu tabulu parasti izveido vienreiz, spraudņa aktivizācijas brīdī, ar WordPress <code>dbDelta()</code> funkciju. Šo konkrēto vaicājuma-un-cikla bloku liec jebkur, kur jāizvada rezultāts, — templatē (piem., <code>page-atsauksmes.php</code>), shortcode funkcijā vai AJAX apstrādātājā.</p>
+        <p>Šis piemērs pieņem, ka tabula <code>{$wpdb->prefix}atsauksmes</code> jau eksistē datubāzē - <code>$wpdb</code> tikai <strong>vaicā</strong> esošai tabulai, tas neko neizveido. Pašu tabulu parasti izveido vienreiz, spraudņa aktivizācijas brīdī, ar WordPress <code>dbDelta()</code> funkciju. Šo konkrēto vaicājuma-un-cikla bloku liec jebkur, kur jāizvada rezultāts, - templatē (piem., <code>page-atsauksmes.php</code>), shortcode funkcijā vai AJAX apstrādātājā.</p>
       </div>
     </section>
 
     <section class="doc-section" id="options-api">
       <h2>Options API</h2>
-      <p>Vienkāršākais un biežāk lietotais veids, kā saglabāt vietnes iestatījumus — WordPress tos glabā <code>wp_options</code> tabulā kā atslēga-vērtība pārus. Ideāli piemērots tēmas/spraudņa iestatījumiem, kur nav vajadzīga sarežģīta datu struktūra.</p>
+      <p>Vienkāršākais un biežāk lietotais veids, kā saglabāt vietnes iestatījumus - WordPress tos glabā <code>wp_options</code> tabulā kā atslēga-vērtība pārus. Ideāli piemērots tēmas/spraudņa iestatījumiem, kur nav vajadzīga sarežģīta datu struktūra.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Saglabā vai pārraksta vērtību</span>
 <span class="tok-fn">update_option</span>(<span class="tok-str">'mana_tema_krasa'</span>, <span class="tok-str">'#ff0000'</span>);
 
-<span class="tok-com">// Nolasa vērtību — otrais parametrs ir noklusējums, ja opcija vēl neeksistē</span>
+<span class="tok-com">// Nolasa vērtību - otrais parametrs ir noklusējums, ja opcija vēl neeksistē</span>
 <span class="tok-fn">$krasa</span> = <span class="tok-fn">get_option</span>(<span class="tok-str">'mana_tema_krasa'</span>, <span class="tok-str">'#000000'</span>);
 
 <span class="tok-com">// Pievieno tikai tad, ja opcija vēl neeksistē (update_option pārraksta vienmēr)</span>
@@ -957,17 +957,17 @@ registerBlockType('mana-tema/sveiciens', {
 <span class="tok-fn">delete_option</span>(<span class="tok-str">'mana_tema_versija'</span>);</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>update_option()</code> un <code>add_option()</code> pieņem arī trešo parametru <code>$autoload</code> (<code>true</code>/<code>false</code>). Ar <code>true</code> (noklusējums) opcija tiek ielādēta <strong>katrā</strong> lapas pieprasījumā — der biežai lietošanai. Retāk vajadzīgām, lielām vērtībām iestati <code>false</code>, lai nepalēninātu katru lapas ielādi.</p>
+        <p><code>update_option()</code> un <code>add_option()</code> pieņem arī trešo parametru <code>$autoload</code> (<code>true</code>/<code>false</code>). Ar <code>true</code> (noklusējums) opcija tiek ielādēta <strong>katrā</strong> lapas pieprasījumā - der biežai lietošanai. Retāk vajadzīgām, lielām vērtībām iestati <code>false</code>, lai nepalēninātu katru lapas ielādi.</p>
       </div>
 
       <h3 style="font-size:17px; margin:32px 0 10px;">Pilns piemērs: no kurienes vērtība rodas un kur tā tiek izmantota</h3>
-      <p>Augstākie piemēri parāda tikai atsevišķas funkcijas — paši par sevi tie <strong>nav</strong> gatava, strādājoša loģika, jo trūkst konteksta: kas izsauc <code>update_option()</code> un kad, un kur tieši <code>get_option()</code> rezultāts nonāk. Reālā vietnē tas parasti izskatās pēc šādas ķēdes:</p>
+      <p>Augstākie piemēri parāda tikai atsevišķas funkcijas - paši par sevi tie <strong>nav</strong> gatava, strādājoša loģika, jo trūkst konteksta: kas izsauc <code>update_option()</code> un kad, un kur tieši <code>get_option()</code> rezultāts nonāk. Reālā vietnē tas parasti izskatās pēc šādas ķēdes:</p>
       <div class="doc-cards">
         <div class="doc-mini-card"><h4>1. Admins aizpilda formu</h4><p>Iestatījumu lapā WordPress admin panelī (<code>Iestatījumi → Tēmas iestatījumi</code>) ievada, piemēram, krāsu, un nospiež "Saglabāt".</p></div>
-        <div class="doc-mini-card"><h4>2. PHP saglabā to</h4><p>Tā pati funkcija, kas izvada formu, pārbauda, vai tā tikko iesniegta, un izsauc <code>update_option()</code> — dati nonāk <code>wp_options</code> tabulā.</p></div>
-        <div class="doc-mini-card"><h4>3. Tēma to nolasa un lieto</h4><p>Jebkurā citā vietā — šeit <code>header.php</code> — <code>get_option()</code> nolasa saglabāto vērtību no datubāzes un izmanto to reālajā HTML/CSS izvadē.</p></div>
+        <div class="doc-mini-card"><h4>2. PHP saglabā to</h4><p>Tā pati funkcija, kas izvada formu, pārbauda, vai tā tikko iesniegta, un izsauc <code>update_option()</code> - dati nonāk <code>wp_options</code> tabulā.</p></div>
+        <div class="doc-mini-card"><h4>3. Tēma to nolasa un lieto</h4><p>Jebkurā citā vietā - šeit <code>header.php</code> - <code>get_option()</code> nolasa saglabāto vērtību no datubāzes un izmanto to reālajā HTML/CSS izvadē.</p></div>
       </div>
-      <p><strong>1.–2. solis</strong> — jauna admin izvēlnes lapa ar formu, kas pati sevi saglabā (pievieno <code>functions.php</code>):</p>
+      <p><strong>1.-2. solis</strong> - jauna admin izvēlnes lapa ar formu, kas pati sevi saglabā (pievieno <code>functions.php</code>):</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Reģistrē jaunu lapu zem "Iestatījumi" izvēlnes</span>
 <span class="tok-fn">add_action</span>(<span class="tok-str">'admin_menu'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-fn">add_options_page</span>(
@@ -1008,7 +1008,7 @@ registerBlockType('mana-tema/sveiciens', {
     &lt;/div&gt;
     &lt;?php
 }</code></pre>
-      <p><strong>3. solis</strong> — tēmas <code>header.php</code> (vai jebkurā citā failā) nolasa TO PAŠU opciju un izmanto to reālajā izvadē:</p>
+      <p><strong>3. solis</strong> - tēmas <code>header.php</code> (vai jebkurā citā failā) nolasa TO PAŠU opciju un izmanto to reālajā izvadē:</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// === ŠEIT NOLASA === tā pati opcija, ko saglabāja admin panelī augstāk</span>
 &lt;?php <span class="tok-fn">$krasa</span> = <span class="tok-fn">get_option</span>(<span class="tok-str">'mana_tema_krasa'</span>, <span class="tok-str">'#0073aa'</span>); ?&gt;
 &lt;style&gt;
@@ -1016,27 +1016,27 @@ registerBlockType('mana-tema/sveiciens', {
 &lt;/style&gt;</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Svarīgākais: <code>'mana_tema_krasa'</code> ir vienkārši teksts (opcijas nosaukums) — WordPress to nesaista automātiski ne ar vienu konkrētu formu vai lapu. Saikne pastāv tikai tāpēc, ka <strong>tu pats</strong> lieto to pašu virkni gan tur, kur saglabā (<code>update_option</code>), gan tur, kur nolasi (<code>get_option</code>). Ja kaut kur uzraksti citu nosaukumu (piem., <code>'temas_krasa'</code> nevis <code>'mana_tema_krasa'</code>), savienojums pazūd un <code>get_option()</code> vienkārši atgriezīs noklusējuma vērtību.</p>
+        <p>Svarīgākais: <code>'mana_tema_krasa'</code> ir vienkārši teksts (opcijas nosaukums) - WordPress to nesaista automātiski ne ar vienu konkrētu formu vai lapu. Saikne pastāv tikai tāpēc, ka <strong>tu pats</strong> lieto to pašu virkni gan tur, kur saglabā (<code>update_option</code>), gan tur, kur nolasi (<code>get_option</code>). Ja kaut kur uzraksti citu nosaukumu (piem., <code>'temas_krasa'</code> nevis <code>'mana_tema_krasa'</code>), savienojums pazūd un <code>get_option()</code> vienkārši atgriezīs noklusējuma vērtību.</p>
       </div>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Šis piemērs saglabā formu ar "roku" (manuāla <code>$_POST</code> pārbaude + nonce) — der, lai skaidri redzētu, kas notiek. Sarežģītākām iestatījumu lapām (vairāki lauki, validācija) WordPress iesaka iebūvēto <strong>Settings API</strong> (<code>register_setting()</code>, <code>add_settings_field()</code>) — tā automātiski apstrādā saglabāšanu un validāciju, bet slēpj vairāk no augstāk redzamās plūsmas aiz WordPress iekšējiem izsaukumiem.</p>
+        <p>Šis piemērs saglabā formu ar "roku" (manuāla <code>$_POST</code> pārbaude + nonce) - der, lai skaidri redzētu, kas notiek. Sarežģītākām iestatījumu lapām (vairāki lauki, validācija) WordPress iesaka iebūvēto <strong>Settings API</strong> (<code>register_setting()</code>, <code>add_settings_field()</code>) - tā automātiski apstrādā saglabāšanu un validāciju, bet slēpj vairāk no augstāk redzamās plūsmas aiz WordPress iekšējiem izsaukumiem.</p>
       </div>
 
       <h3 style="font-size:17px; margin:32px 0 10px;">Tas pats piemērs ar Settings API</h3>
-      <p>Precīzi tā pati funkcionalitāte (viena krāsas opcija <code>mana_tema_krasa</code>), bet saglabāšanu, nonce pārbaudi un sanitizāciju tagad dara WordPress pati — tev jāapraksta tikai <strong>kas</strong> jāsaglabā, nevis <strong>kā</strong>:</p>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 1) Reģistrē opciju + sekciju + lauku — viss vienā "admin_init" āķī</span>
+      <p>Precīzi tā pati funkcionalitāte (viena krāsas opcija <code>mana_tema_krasa</code>), bet saglabāšanu, nonce pārbaudi un sanitizāciju tagad dara WordPress pati - tev jāapraksta tikai <strong>kas</strong> jāsaglabā, nevis <strong>kā</strong>:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 1) Reģistrē opciju + sekciju + lauku - viss vienā "admin_init" āķī</span>
 <span class="tok-fn">add_action</span>(<span class="tok-str">'admin_init'</span>, <span class="tok-kw">function</span>() {
 
-    <span class="tok-com">// Pati opcija — Settings API tagad ZINA par to un pati to saglabās,
+    <span class="tok-com">// Pati opcija - Settings API tagad ZINA par to un pati to saglabās,
     // izmantojot sanitize_callback validācijai pirms saglabāšanas</span>
     <span class="tok-fn">register_setting</span>(
-        <span class="tok-str">'mana_tema_iestatijumu_grupa'</span>, <span class="tok-com">// grupa — jāsakrīt ar settings_fields() zemāk</span>
-        <span class="tok-str">'mana_tema_krasa'</span>,             <span class="tok-com">// opcijas nosaukums — tas pats, ko lasa get_option()</span>
+        <span class="tok-str">'mana_tema_iestatijumu_grupa'</span>, <span class="tok-com">// grupa - jāsakrīt ar settings_fields() zemāk</span>
+        <span class="tok-str">'mana_tema_krasa'</span>,             <span class="tok-com">// opcijas nosaukums - tas pats, ko lasa get_option()</span>
         [<span class="tok-str">'sanitize_callback'</span> => <span class="tok-str">'sanitize_hex_color'</span>, <span class="tok-str">'default'</span> => <span class="tok-str">'#0073aa'</span>]
     );
 
-    <span class="tok-com">// Sekcija — vizuāls grupējums lapā (var būt vairākas)</span>
+    <span class="tok-com">// Sekcija - vizuāls grupējums lapā (var būt vairākas)</span>
     <span class="tok-fn">add_settings_section</span>(
         <span class="tok-str">'mana_tema_sekcija'</span>,
         <span class="tok-str">'Izskata iestatījumi'</span>,
@@ -1044,7 +1044,7 @@ registerBlockType('mana-tema/sveiciens', {
         <span class="tok-str">'mana-tema-iestatijumi'</span>       <span class="tok-com">// lapas slug, kur šī sekcija parādās</span>
     );
 
-    <span class="tok-com">// Lauks — pats input HTML, ko izvada šī funkcija</span>
+    <span class="tok-com">// Lauks - pats input HTML, ko izvada šī funkcija</span>
     <span class="tok-fn">add_settings_field</span>(
         <span class="tok-str">'mana_tema_krasa_lauks'</span>,
         <span class="tok-str">'Galvenā krāsa'</span>,
@@ -1057,7 +1057,7 @@ registerBlockType('mana-tema/sveiciens', {
     );
 });
 
-<span class="tok-com">// 2) Admin izvēlnes lapa — tas pats, kas manuālajā piemērā augstāk</span>
+<span class="tok-com">// 2) Admin izvēlnes lapa - tas pats, kas manuālajā piemērā augstāk</span>
 <span class="tok-fn">add_action</span>(<span class="tok-str">'admin_menu'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-fn">add_options_page</span>(
         <span class="tok-str">'Mana tēmas iestatījumi'</span>, <span class="tok-str">'Tēmas iestatījumi'</span>, <span class="tok-str">'manage_options'</span>,
@@ -1065,7 +1065,7 @@ registerBlockType('mana-tema/sveiciens', {
     );
 });
 
-<span class="tok-com">// 3) Lapas HTML — TIKAI izvada formu, nekādas saglabāšanas loģikas šeit vairs nav</span>
+<span class="tok-com">// 3) Lapas HTML - TIKAI izvada formu, nekādas saglabāšanas loģikas šeit vairs nav</span>
 <span class="tok-kw">function</span> <span class="tok-fn">mana_tema_iestatijumu_lapa</span>(): <span class="tok-kw">void</span> {
     <span class="tok-kw">if</span> (!<span class="tok-fn">current_user_can</span>(<span class="tok-str">'manage_options'</span>)) {
         <span class="tok-kw">return</span>;
@@ -1083,32 +1083,32 @@ registerBlockType('mana-tema/sveiciens', {
     &lt;/div&gt;
     &lt;?php
 }</code></pre>
-      <p>Front-end pusē (piem., <code>header.php</code>) nekas nemainās — <code>get_option('mana_tema_krasa', '#0073aa')</code> paliek tieši tāds pats kā manuālajā piemērā, jo abas versijas saglabā datus tajā pašā <code>wp_options</code> ierakstā.</p>
+      <p>Front-end pusē (piem., <code>header.php</code>) nekas nemainās - <code>get_option('mana_tema_krasa', '#0073aa')</code> paliek tieši tāds pats kā manuālajā piemērā, jo abas versijas saglabā datus tajā pašā <code>wp_options</code> ierakstā.</p>
       <div class="doc-cards">
-        <div class="doc-mini-card"><h4>Forma sūta uz <code>options.php</code></h4><p>Nevis pati uz sevi (kā manuālajā versijā) — <code>options.php</code> ir WordPress kodola fails, kas pārbauda nonce, izsauc <code>sanitize_callback</code> un pats izsauc <code>update_option()</code> par tevi.</p></div>
-        <div class="doc-mini-card"><h4>Automātisks paziņojums</h4><p>Pēc veiksmīgas saglabāšanas <code>options.php</code> novirza atpakaļ uz iestatījumu lapu ar <code>?settings-updated=true</code> — WordPress pati parāda standarta zaļo "Iestatījumi saglabāti." paziņojumu, nav jāraksta pašam.</p></div>
-        <div class="doc-mini-card"><h4><code>sanitize_callback</code></h4><p>Izsaukts automātiski PIRMS saglabāšanas — aizstāj manuālo <code>sanitize_hex_color()</code> izsaukumu no <code>$_POST</code> apstrādes pusē pilnībā.</p></div>
+        <div class="doc-mini-card"><h4>Forma sūta uz <code>options.php</code></h4><p>Nevis pati uz sevi (kā manuālajā versijā) - <code>options.php</code> ir WordPress kodola fails, kas pārbauda nonce, izsauc <code>sanitize_callback</code> un pats izsauc <code>update_option()</code> par tevi.</p></div>
+        <div class="doc-mini-card"><h4>Automātisks paziņojums</h4><p>Pēc veiksmīgas saglabāšanas <code>options.php</code> novirza atpakaļ uz iestatījumu lapu ar <code>?settings-updated=true</code> - WordPress pati parāda standarta zaļo "Iestatījumi saglabāti." paziņojumu, nav jāraksta pašam.</p></div>
+        <div class="doc-mini-card"><h4><code>sanitize_callback</code></h4><p>Izsaukts automātiski PIRMS saglabāšanas - aizstāj manuālo <code>sanitize_hex_color()</code> izsaukumu no <code>$_POST</code> apstrādes pusē pilnībā.</p></div>
       </div>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Viens punkts, kas bieži mulsina: <code>add_settings_field()</code> callback <strong>drukā HTML tieši ar <code>echo</code></code>, nevis to atgriež (<code>return</code>) — tas atšķiras no citām WordPress konvencijām (piem., shortcodes, kur <code>return</code> ir obligāts). Ja aizmirsti <code>echo</code> un uzraksti <code>return</code> tā vietā, lauks admin panelī vienkārši būs tukšs, bez kļūdas paziņojuma.</p>
+        <p>Viens punkts, kas bieži mulsina: <code>add_settings_field()</code> callback <strong>drukā HTML tieši ar <code>echo</code></code>, nevis to atgriež (<code>return</code>) - tas atšķiras no citām WordPress konvencijām (piem., shortcodes, kur <code>return</code> ir obligāts). Ja aizmirsti <code>echo</code> un uzraksti <code>return</code> tā vietā, lauks admin panelī vienkārši būs tukšs, bez kļūdas paziņojuma.</p>
       </div>
     </section>
 
     <section class="doc-section" id="transients">
       <h2>Transients (kešošana)</h2>
-      <p>Transients ir pagaidu vērtība ar derīguma termiņu — glabājas datubāzē (vai kešošanas sistēmā, ja tāda uzstādīta). Pamatproblēma, ko tas risina: dažas darbības ir <strong>lēnas vai dārgas</strong> (ārējs API izsaukums, sarežģīts vaicājums pa tūkstošiem ierakstu), bet WordPress veidnes kods izpildās <strong>no jauna katram apmeklētājam, katrai lapas ielādei</strong>. Bez kešošanas 1000 apmeklētāju stundā nozīmētu 1000 identiskus, lēnus izsaukumus — ar transientu tas notiek vienreiz, un pārējie 999 saņem jau gatavu, saglabātu rezultātu.</p>
+      <p>Transients ir pagaidu vērtība ar derīguma termiņu - glabājas datubāzē (vai kešošanas sistēmā, ja tāda uzstādīta). Pamatproblēma, ko tas risina: dažas darbības ir <strong>lēnas vai dārgas</strong> (ārējs API izsaukums, sarežģīts vaicājums pa tūkstošiem ierakstu), bet WordPress veidnes kods izpildās <strong>no jauna katram apmeklētājam, katrai lapas ielādei</strong>. Bez kešošanas 1000 apmeklētāju stundā nozīmētu 1000 identiskus, lēnus izsaukumus - ar transientu tas notiek vienreiz, un pārējie 999 saņem jau gatavu, saglabātu rezultātu.</p>
 
       <h3 style="font-size:17px; margin:32px 0 10px;">Kad tas reāli noder</h3>
       <div class="doc-cards">
-        <div class="doc-mini-card"><h4>🌐 Ārējs API izsaukums</h4><p>Valūtas kurss, laika ziņas, GitHub zvaigžņu skaits, Instagram plūsma — jebkas, kas nāk no cita servera un nemainās katru sekundi. Bez kešošanas katra lapas ielāde gaidītu uz svešu serveri.</p></div>
-        <div class="doc-mini-card"><h4>🐌 Smags datubāzes vaicājums</h4><p>Piem., "10 komentētākie raksti šomēnes" — vaicājums, kas skaita cauri tūkstošiem komentāru. Rezultāts sekundi vecs nekaitē, bet vaicājums katrā ielādē gan.</p></div>
-        <div class="doc-mini-card"><h4>🚦 Ierobežojums (rate limiting)</h4><p>Piem., neļauj vienam IP nosūtīt kontaktformu biežāk kā reizi minūtē — transients ar IP kā atslēgu un īsu derīgumu darbojas kā vienkāršs "vai šis jau nesen noticis?" pārbaudītājs.</p></div>
-        <div class="doc-mini-card"><h4>🔔 Vienreizējs admin paziņojums</h4><p>Piem., "Spraudnis aktivizēts!" josla, kas jārāda tikai vienu reizi pēc aktivizācijas, ne katrā admin lapā mūžīgi — transients ar īsu derīgumu kalpo kā pagaidu karodziņš.</p></div>
+        <div class="doc-mini-card"><h4>🌐 Ārējs API izsaukums</h4><p>Valūtas kurss, laika ziņas, GitHub zvaigžņu skaits, Instagram plūsma - jebkas, kas nāk no cita servera un nemainās katru sekundi. Bez kešošanas katra lapas ielāde gaidītu uz svešu serveri.</p></div>
+        <div class="doc-mini-card"><h4>🐌 Smags datubāzes vaicājums</h4><p>Piem., "10 komentētākie raksti šomēnes" - vaicājums, kas skaita cauri tūkstošiem komentāru. Rezultāts sekundi vecs nekaitē, bet vaicājums katrā ielādē gan.</p></div>
+        <div class="doc-mini-card"><h4>🚦 Ierobežojums (rate limiting)</h4><p>Piem., neļauj vienam IP nosūtīt kontaktformu biežāk kā reizi minūtē - transients ar IP kā atslēgu un īsu derīgumu darbojas kā vienkāršs "vai šis jau nesen noticis?" pārbaudītājs.</p></div>
+        <div class="doc-mini-card"><h4>🔔 Vienreizējs admin paziņojums</h4><p>Piem., "Spraudnis aktivizēts!" josla, kas jārāda tikai vienu reizi pēc aktivizācijas, ne katrā admin lapā mūžīgi - transients ar īsu derīgumu kalpo kā pagaidu karodziņš.</p></div>
       </div>
 
-      <h3 style="font-size:17px; margin:32px 0 10px;">Pilns, reāls piemērs — GitHub zvaigžņu skaits</h3>
-      <p>Šis apvieno jau iepriekš mācīto <a href="#http-api">HTTP API</a> ar transientu — bez kešošanas katra lapas ielāde sūtītu pieprasījumu uz GitHub, kas gan lēni, gan riskanti (GitHub ierobežo, cik reizes stundā drīkst vaicāt bez autorizācijas):</p>
+      <h3 style="font-size:17px; margin:32px 0 10px;">Pilns, reāls piemērs - GitHub zvaigžņu skaits</h3>
+      <p>Šis apvieno jau iepriekš mācīto <a href="#http-api">HTTP API</a> ar transientu - bez kešošanas katra lapas ielāde sūtītu pieprasījumu uz GitHub, kas gan lēni, gan riskanti (GitHub ierobežo, cik reizes stundā drīkst vaicāt bez autorizācijas):</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">function</span> <span class="tok-fn">iegut_github_zvaigznes</span>(<span class="tok-kw">string</span> <span class="tok-fn">$repo</span>): <span class="tok-kw">int</span> {
     <span class="tok-fn">$transienta_atslega</span> = <span class="tok-str">'github_zvaigznes_'</span> . <span class="tok-fn">sanitize_key</span>(<span class="tok-fn">$repo</span>);
 
@@ -1118,17 +1118,17 @@ registerBlockType('mana-tema/sveiciens', {
         <span class="tok-kw">return</span> (<span class="tok-kw">int</span>) <span class="tok-fn">$saglabats</span>;
     }
 
-    <span class="tok-com">// 2) Nav kešatmiņā (vai termiņš beidzies) — jāizsauc ārējais API</span>
+    <span class="tok-com">// 2) Nav kešatmiņā (vai termiņš beidzies) - jāizsauc ārējais API</span>
     <span class="tok-fn">$atbilde</span> = <span class="tok-fn">wp_remote_get</span>(<span class="tok-str">"https://api.github.com/repos/{$repo}"</span>);
 
     <span class="tok-kw">if</span> (<span class="tok-fn">is_wp_error</span>(<span class="tok-fn">$atbilde</span>)) {
-        <span class="tok-kw">return</span> 0; <span class="tok-com">// tīkla kļūda — der atgriezt drošu noklusējumu, ne izmest kļūdu</span>
+        <span class="tok-kw">return</span> 0; <span class="tok-com">// tīkla kļūda - der atgriezt drošu noklusējumu, ne izmest kļūdu</span>
     }
 
     <span class="tok-fn">$dati</span>       = <span class="tok-fn">json_decode</span>(<span class="tok-fn">wp_remote_retrieve_body</span>(<span class="tok-fn">$atbilde</span>), <span class="tok-kw">true</span>);
     <span class="tok-fn">$zvaigznes</span> = (<span class="tok-kw">int</span>) (<span class="tok-fn">$dati</span>[<span class="tok-str">'stargazers_count'</span>] ?? 0);
 
-    <span class="tok-com">// 3) Saglabā uz 6 stundām — nākamie apmeklētāji šai laikā API vispār neskars</span>
+    <span class="tok-com">// 3) Saglabā uz 6 stundām - nākamie apmeklētāji šai laikā API vispār neskars</span>
     <span class="tok-fn">set_transient</span>(<span class="tok-fn">$transienta_atslega</span>, <span class="tok-fn">$zvaigznes</span>, 6 * HOUR_IN_SECONDS);
 
     <span class="tok-kw">return</span> <span class="tok-fn">$zvaigznes</span>;
@@ -1137,17 +1137,17 @@ registerBlockType('mana-tema/sveiciens', {
 <span class="tok-com">// Lietošana veidnē: &lt;?php echo iegut_github_zvaigznes('wordpress/wordpress'); ?&gt;</span></code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Trīs soļi vienmēr atkārtojas: <strong>(1)</strong> mēģini paņemt no kešatmiņas ar <code>get_transient()</code>, <strong>(2)</strong> ja <code>false</code> — dari to lēno darbu, <strong>(3)</strong> saglabā rezultātu ar <code>set_transient()</code>, lai nākamreiz atkal netiktu pie 2. soļa. <code>get_transient()</code> atgriež tieši <code>false</code> (nevis <code>null</code> vai tukšu virkni), kad transienta nav vai tas beidzies — tāpēc pārbauda ar <code>!== false</code>, nevis vienkārši <code>if (!$saglabats)</code>, jo pati saglabātā vērtība varētu būt <code>0</code> vai tukša virkne, kas arī novērtētos kā "nepatiess".</p>
+        <p>Trīs soļi vienmēr atkārtojas: <strong>(1)</strong> mēģini paņemt no kešatmiņas ar <code>get_transient()</code>, <strong>(2)</strong> ja <code>false</code> - dari to lēno darbu, <strong>(3)</strong> saglabā rezultātu ar <code>set_transient()</code>, lai nākamreiz atkal netiktu pie 2. soļa. <code>get_transient()</code> atgriež tieši <code>false</code> (nevis <code>null</code> vai tukšu virkni), kad transienta nav vai tas beidzies - tāpēc pārbauda ar <code>!== false</code>, nevis vienkārši <code>if (!$saglabats)</code>, jo pati saglabātā vērtība varētu būt <code>0</code> vai tukša virkne, kas arī novērtētos kā "nepatiess".</p>
       </div>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Derīguma termiņš (<code>HOUR_IN_SECONDS</code>, <code>DAY_IN_SECONDS</code> u.c. — WordPress iebūvētas konstantes) jāizvēlas pēc tā, cik "svaigi" dati patiešām nepieciešami: valūtas kursam derētu stunda, "populārāko rakstu" sarakstam — diena, bet lietotāja sesijas datiem transients <strong>nav</strong> piemērots vispār (tam der <code>$_SESSION</code> vai cookies). Ja termiņš pārāk īss, kešošanai nav jēgas (API tik un tā izsaucas gandrīz katru reizi); ja pārāk garš, apmeklētāji redz novecojušu informāciju.</p>
+        <p>Derīguma termiņš (<code>HOUR_IN_SECONDS</code>, <code>DAY_IN_SECONDS</code> u.c. - WordPress iebūvētas konstantes) jāizvēlas pēc tā, cik "svaigi" dati patiešām nepieciešami: valūtas kursam derētu stunda, "populārāko rakstu" sarakstam - diena, bet lietotāja sesijas datiem transients <strong>nav</strong> piemērots vispār (tam der <code>$_SESSION</code> vai cookies). Ja termiņš pārāk īss, kešošanai nav jēgas (API tik un tā izsaucas gandrīz katru reizi); ja pārāk garš, apmeklētāji redz novecojušu informāciju.</p>
       </div>
     </section>
 
     <section class="doc-section" id="cron">
       <h2>Cron uzdevumi</h2>
-      <p>WordPress Cron <strong>nav</strong> īsts servera cron — tas ieplānoto uzdevumu pārbauda un izpilda tikai tad, kad kāds apmeklē vietni. Vienmēr vispirms pārbaudi ar <code>wp_next_scheduled()</code>, vai uzdevums jau nav ieplānots, citādi katrā aktivizācijā izveidosi dublikātus.</p>
+      <p>WordPress Cron <strong>nav</strong> īsts servera cron - tas ieplānoto uzdevumu pārbauda un izpilda tikai tad, kad kāds apmeklē vietni. Vienmēr vispirms pārbaudi ar <code>wp_next_scheduled()</code>, vai uzdevums jau nav ieplānots, citādi katrā aktivizācijā izveidosi dublikātus.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Ieplāno uzdevumu, ja tas vēl nav ieplānots</span>
 <span class="tok-kw">if</span> (!<span class="tok-fn">wp_next_scheduled</span>(<span class="tok-str">'mana_tema_dienas_uzdevums'</span>)) {
     <span class="tok-fn">wp_schedule_event</span>(time(), <span class="tok-str">'daily'</span>, <span class="tok-str">'mana_tema_dienas_uzdevums'</span>);
@@ -1161,7 +1161,7 @@ registerBlockType('mana-tema/sveiciens', {
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
         <p>Zemapmeklētai vietnei WP-Cron var kavēties (nav apmeklētāju = nav trigera). Ražošanas vietnēm bieži atspējo iebūvēto sistēmu (<code>define('DISABLE_WP_CRON', true)</code> failā <code>wp-config.php</code>) un aizstāj ar īstu servera cron, kas ik minūti izsauc <code>wp-cron.php</code>.</p>
       </div>
-      <p><strong>Reāls cron caur Plesk</strong> — ja hostings ir Plesk (vai līdzīgs panelis), servera cron var iestatīt bez SSH, tieši panelī:</p>
+      <p><strong>Reāls cron caur Plesk</strong> - ja hostings ir Plesk (vai līdzīgs panelis), servera cron var iestatīt bez SSH, tieši panelī:</p>
       <pre class="code-block"><span class="lang">text</span><code>1. Plesk paneli: Websites &amp; Domains → tava vietne → Scheduled Tasks
 2. "Add Task" → izvēlies tipu "Run a command"
 3. Norāda komandu (izvēlies VIENU no divām):
@@ -1174,19 +1174,19 @@ registerBlockType('mana-tema/sveiciens', {
 
 4. Biežums: izvēlies "Every 15 minutes" (parasti pietiek,
    nevis katru minūti kā komandrindas piemērā augstāk)
-5. Saglabā — Plesk pats izveido servera crontab ierakstu fonā</code></pre>
+5. Saglabā - Plesk pats izveido servera crontab ierakstu fonā</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Neaizmirsti soli 1 no augšas — <code>DISABLE_WP_CRON</code> konstante <code>wp-config.php</code> failā — pretējā gadījumā uzdevumi izpildīsies <strong>divreiz</strong>: reizi no Plesk ieplānotā uzdevuma, reizi no WordPress pašas pseido-cron sistēmas, kad kāds apmeklētājs atver lapu. Ja tavā serverī ir SSH pieeja un vēlies to pašu izdarīt caur termināli (<code>crontab -e</code>), pilns piemērs ir <a href="ssh.html#wp-cron">SSH dokumentācijā</a>.</p>
+        <p>Neaizmirsti soli 1 no augšas - <code>DISABLE_WP_CRON</code> konstante <code>wp-config.php</code> failā - pretējā gadījumā uzdevumi izpildīsies <strong>divreiz</strong>: reizi no Plesk ieplānotā uzdevuma, reizi no WordPress pašas pseido-cron sistēmas, kad kāds apmeklētājs atver lapu. Ja tavā serverī ir SSH pieeja un vēlies to pašu izdarīt caur termināli (<code>crontab -e</code>), pilns piemērs ir <a href="ssh.html#wp-cron">SSH dokumentācijā</a>.</p>
       </div>
     </section>
 
     <section class="doc-section" id="http-api">
       <h2>HTTP API (wp_remote_*)</h2>
-      <p>Kad PHP kodam jāizsauc ārējs API (maksājumu serviss, laika ziņas, cita vietne), WordPress iesaka izmantot iebūvēto HTTP API, nevis tiešu cURL — tas automātiski ievēro servera starpniekservera (proxy) iestatījumus un WordPress filtrus, un vienādi strādā visos hostingos.</p>
+      <p>Kad PHP kodam jāizsauc ārējs API (maksājumu serviss, laika ziņas, cita vietne), WordPress iesaka izmantot iebūvēto HTTP API, nevis tiešu cURL - tas automātiski ievēro servera starpniekservera (proxy) iestatījumus un WordPress filtrus, un vienādi strādā visos hostingos.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// GET pieprasījums</span>
 <span class="tok-fn">$atbilde</span> = <span class="tok-fn">wp_remote_get</span>(<span class="tok-str">'https://api.piemers.lv/dati'</span>, [
-    <span class="tok-str">'timeout'</span> => 10, <span class="tok-com">// sekundes — noklusējums (5s) bieži par īsu lēnākiem API</span>
+    <span class="tok-str">'timeout'</span> => 10, <span class="tok-com">// sekundes - noklusējums (5s) bieži par īsu lēnākiem API</span>
 ]);
 
 <span class="tok-com">// VIENMĒR vispirms pārbauda, vai pats pieprasījums neizdevās (tīkla kļūda u.c.)</span>
@@ -1204,13 +1204,13 @@ registerBlockType('mana-tema/sveiciens', {
 ]);</code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p><code>is_wp_error()</code> pārbauda tikai to, vai pieprasījums <strong>tehniski</strong> izdevās (sasniedza serveri). Pat veiksmīga savienojuma gadījumā serveris var atbildēt ar kļūdas statusa kodu (404, 500) — to pārbauda atsevišķi ar <code>wp_remote_retrieve_response_code($atbilde)</code>.</p>
+        <p><code>is_wp_error()</code> pārbauda tikai to, vai pieprasījums <strong>tehniski</strong> izdevās (sasniedza serveri). Pat veiksmīga savienojuma gadījumā serveris var atbildēt ar kļūdas statusa kodu (404, 500) - to pārbauda atsevišķi ar <code>wp_remote_retrieve_response_code($atbilde)</code>.</p>
       </div>
     </section>
 
     <section class="doc-section" id="rest-api">
       <h2>REST API pamati</h2>
-      <p>WordPress jau nāk ar iebūvētu REST API — bez papildu koda ieraksti pieejami kā JSON adresē <code>/wp-json/wp/v2/posts</code>. Savus, pielāgotus galapunktus izveido ar <code>register_rest_route()</code>.</p>
+      <p>WordPress jau nāk ar iebūvētu REST API - bez papildu koda ieraksti pieejami kā JSON adresē <code>/wp-json/wp/v2/posts</code>. Savus, pielāgotus galapunktus izveido ar <code>register_rest_route()</code>.</p>
       <pre class="code-block"><span class="lang">text</span><code>GET /wp-json/wp/v2/posts        → visi publicētie ieraksti kā JSON
 GET /wp-json/wp/v2/posts/5      → viens ieraksts (ID=5)
 GET /wp-json/wp/v2/produkts     → CPT ieraksti (ja show_in_rest: true)</code></pre>
@@ -1228,7 +1228,7 @@ GET /wp-json/wp/v2/produkts     → CPT ieraksti (ja show_in_rest: true)</code><
 
     <section class="doc-section" id="json">
       <h2>JSON kodēšana/dekodēšana</h2>
-      <p>JSON ir teksta formāts datu apmaiņai — to izmanto REST API atbildes, AJAX pieprasījumi un ārējo servisu izsaukumi (skat. augstāk). PHP pusē datu pārvēršanu uz/no JSON dara <code>json_encode()</code>/<code>json_decode()</code>, taču WordPress kodā priekšroka jādod savietojamajam <code>wp_json_encode()</code>.</p>
+      <p>JSON ir teksta formāts datu apmaiņai - to izmanto REST API atbildes, AJAX pieprasījumi un ārējo servisu izsaukumi (skat. augstāk). PHP pusē datu pārvēršanu uz/no JSON dara <code>json_encode()</code>/<code>json_decode()</code>, taču WordPress kodā priekšroka jādod savietojamajam <code>wp_json_encode()</code>.</p>
 
       <h3 style="font-size:17px; margin:32px 0 10px;"><code>wp_json_encode()</code> pret <code>json_encode()</code></h3>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">$dati</span> = [
@@ -1241,7 +1241,7 @@ GET /wp-json/wp/v2/produkts     → CPT ieraksti (ja show_in_rest: true)</code><
 <span class="tok-com">// {"nosaukums":"Kafijas tase","cena":12.5,"pieejams":true}</span></code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><code>wp_json_encode()</code> uzvedas tāpat kā <code>json_encode()</code>, bet ir <strong>filtrējams</strong> (<code>wp_json_encode_options</code> filtrs) un pareizi apstrādā datus, kas nāk no vecāku WordPress instalāciju datubāzēm ar nekonsekventu UTF-8 kodējumu — gadījumos, kad tīrs <code>json_encode()</code> klusi atgrieztu <code>false</code>. Praktiski: WordPress kodā vienmēr izmanto <code>wp_json_encode()</code>, plain <code>json_encode()</code> patur ārpus-WordPress PHP kodam.</p>
+        <p><code>wp_json_encode()</code> uzvedas tāpat kā <code>json_encode()</code>, bet ir <strong>filtrējams</strong> (<code>wp_json_encode_options</code> filtrs) un pareizi apstrādā datus, kas nāk no vecāku WordPress instalāciju datubāzēm ar nekonsekventu UTF-8 kodējumu - gadījumos, kad tīrs <code>json_encode()</code> klusi atgrieztu <code>false</code>. Praktiski: WordPress kodā vienmēr izmanto <code>wp_json_encode()</code>, plain <code>json_encode()</code> patur ārpus-WordPress PHP kodam.</p>
       </div>
 
       <h3 style="font-size:17px; margin:32px 0 10px;">Dekodēšana atpakaļ uz PHP masīvu</h3>
@@ -1252,11 +1252,11 @@ GET /wp-json/wp/v2/produkts     → CPT ieraksti (ja show_in_rest: true)</code><
 <span class="tok-kw">echo</span> <span class="tok-fn">$dati</span>[<span class="tok-str">'nosaukums'</span>]; <span class="tok-com">// Kafijas tase</span></code></pre>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Bez otrā parametra <code>true</code>, <code>json_decode()</code> atgriež <code>stdClass</code> objektu (piekļuve ar <code>-&gt;</code>, piem. <code>$dati-&gt;nosaukums</code>), nevis masīvu (<code>[]</code>) — WordPress kods gandrīz vienmēr sagaida masīvu, tāpēc <code>true</code> aizmirst ir bieža kļūdas cēlonis. Ja pats JSON teksts ir nederīgs, <code>json_decode()</code> klusi atgriež <code>null</code> — pārbaudi ar <code>json_last_error() !== JSON_ERROR_NONE</code>, ja jāatšķir "nederīgs JSON" no "derīgs JSON, kas satur <code>null</code>".</p>
+        <p>Bez otrā parametra <code>true</code>, <code>json_decode()</code> atgriež <code>stdClass</code> objektu (piekļuve ar <code>-&gt;</code>, piem. <code>$dati-&gt;nosaukums</code>), nevis masīvu (<code>[]</code>) - WordPress kods gandrīz vienmēr sagaida masīvu, tāpēc <code>true</code> aizmirst ir bieža kļūdas cēlonis. Ja pats JSON teksts ir nederīgs, <code>json_decode()</code> klusi atgriež <code>null</code> - pārbaudi ar <code>json_last_error() !== JSON_ERROR_NONE</code>, ja jāatšķir "nederīgs JSON" no "derīgs JSON, kas satur <code>null</code>".</p>
       </div>
 
       <h3 style="font-size:17px; margin:32px 0 10px;">Strukturētu datu glabāšana kā JSON teksts</h3>
-      <p>WordPress <code>update_option()</code>/<code>update_post_meta()</code> masīvus automātiski saglabā ar PHP <code>serialize()</code>, nevis JSON — tāpēc parasti <strong>nav</strong> obligāti pašam kodēt JSON, lai saglabātu masīvu. Manuāla JSON kodēšana der, kad dati jālasa arī ārpus WordPress/PHP (citam skriptam, tiešam SQL vaicājumam datubāzē) vai jāpaliek cilvēkam lasāmi datubāzē:</p>
+      <p>WordPress <code>update_option()</code>/<code>update_post_meta()</code> masīvus automātiski saglabā ar PHP <code>serialize()</code>, nevis JSON - tāpēc parasti <strong>nav</strong> obligāti pašam kodēt JSON, lai saglabātu masīvu. Manuāla JSON kodēšana der, kad dati jālasa arī ārpus WordPress/PHP (citam skriptam, tiešam SQL vaicājumam datubāzē) vai jāpaliek cilvēkam lasāmi datubāzē:</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">update_option</span>(<span class="tok-str">'uznemuma_dati'</span>, <span class="tok-fn">wp_json_encode</span>([
     <span class="tok-str">'nosaukums'</span>        => <span class="tok-str">'SIA Piemērs'</span>,
     <span class="tok-str">'registracijas_nr'</span> => <span class="tok-str">'40001234567'</span>,
@@ -1267,7 +1267,7 @@ GET /wp-json/wp/v2/produkts     → CPT ieraksti (ja show_in_rest: true)</code><
 <span class="tok-kw">echo</span> <span class="tok-fn">$uznemuma_dati</span>[<span class="tok-str">'nosaukums'</span>];</code></pre>
 
       <h3 style="font-size:17px; margin:32px 0 10px;">Ienākoša JSON pieprasījuma nolasīšana (webhook)</h3>
-      <p>Ārējie servisi (maksājumu sistēmas, automatizācijas rīki) bieži sūta webhook paziņojumus kā <strong>tīru JSON tekstu</strong> pieprasījuma "body", nevis parastu formas datu formātā — tādā gadījumā <code>$_POST</code> paliks tukšs. REST API galapunktā to nolasa ar <code>get_json_params()</code>:</p>
+      <p>Ārējie servisi (maksājumu sistēmas, automatizācijas rīki) bieži sūta webhook paziņojumus kā <strong>tīru JSON tekstu</strong> pieprasījuma "body", nevis parastu formas datu formātā - tādā gadījumā <code>$_POST</code> paliks tukšs. REST API galapunktā to nolasa ar <code>get_json_params()</code>:</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'rest_api_init'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-fn">register_rest_route</span>(<span class="tok-str">'mana-tema/v1'</span>, <span class="tok-str">'/webhook'</span>, [
         <span class="tok-str">'methods'</span>  => <span class="tok-str">'POST'</span>,
@@ -1285,7 +1285,7 @@ GET /wp-json/wp/v2/produkts     → CPT ieraksti (ja show_in_rest: true)</code><
 <span class="tok-fn">$dati</span> = <span class="tok-fn">json_decode</span>(<span class="tok-fn">$raw</span>, <span class="tok-kw">true</span>);</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Ja debugojot pamani, ka <code>$_POST</code> ir tukšs masīvs, kaut sūtītājs apgalvo, ka dati nosūtīti — pirmā aizdoma vienmēr jābūt, ka dati nāk kā JSON body (<code>Content-Type: application/json</code>), nevis <code>application/x-www-form-urlencoded</code>. AJAX/fetch pieprasījumu ar JS pusi skat. <a href="#ajax">AJAX pamati</a> augstāk, ārēju API izsaukšanu ar <code>wp_remote_*</code> — <a href="#http-api">HTTP API</a>. JS pusē <code>JSON.stringify()</code>/<code>JSON.parse()</code> skaidrots <a href="javascript.html#json">JavaScript → JSON</a>.</p>
+        <p>Ja debugojot pamani, ka <code>$_POST</code> ir tukšs masīvs, kaut sūtītājs apgalvo, ka dati nosūtīti - pirmā aizdoma vienmēr jābūt, ka dati nāk kā JSON body (<code>Content-Type: application/json</code>), nevis <code>application/x-www-form-urlencoded</code>. AJAX/fetch pieprasījumu ar JS pusi skat. <a href="#ajax">AJAX pamati</a> augstāk, ārēju API izsaukšanu ar <code>wp_remote_*</code> - <a href="#http-api">HTTP API</a>. JS pusē <code>JSON.stringify()</code>/<code>JSON.parse()</code> skaidrots <a href="javascript.html#json">JavaScript → JSON</a>.</p>
       </div>
     </section>
 
@@ -1293,32 +1293,32 @@ GET /wp-json/wp/v2/produkts     → CPT ieraksti (ja show_in_rest: true)</code><
       <h2>Ātruma mērīšana (Core Web Vitals rīki)</h2>
       <p>Ko tieši nozīmē LCP, INP un CLS, skaties <a href="seo.html#core-web-vitals">SEO → Core Web Vitals</a>. Šī sadaļa fokusējas uz <strong>kur</strong> tos pārbaudīt un <strong>kā</strong> pareizi interpretēt rezultātus WordPress vietnei.</p>
 
-      <h3 style="font-size:17px; margin:32px 0 10px;">Field Data pret Lab Data — vissvarīgākā atšķirība</h3>
+      <h3 style="font-size:17px; margin:32px 0 10px;">Field Data pret Lab Data - vissvarīgākā atšķirība</h3>
       <div class="doc-cards">
         <div class="doc-mini-card"><h4>📊 Field Data (reālie dati)</h4><p>Savākti no īstiem apmeklētājiem pēdējo 28 dienu laikā (Chrome User Experience Report). <strong>Tas ir tas, ko Google izmanto ranžēšanai.</strong> Mazām vietnēm ar maz trafika šo datu var vēl nebūt ("Not enough data").</p></div>
-        <div class="doc-mini-card"><h4>🧪 Lab Data (laboratorijas dati)</h4><p>Viena simulēta lapas ielāde uz vienas, fiksētas ierīces/interneta ātruma. Pieejama uzreiz, ideāla, lai atrastu konkrētu problēmu un pārbaudītu, vai labojums palīdzēja — bet var atšķirties no tā, ko reāli redz apmeklētāji.</p></div>
+        <div class="doc-mini-card"><h4>🧪 Lab Data (laboratorijas dati)</h4><p>Viena simulēta lapas ielāde uz vienas, fiksētas ierīces/interneta ātruma. Pieejama uzreiz, ideāla, lai atrastu konkrētu problēmu un pārbaudītu, vai labojums palīdzēja - bet var atšķirties no tā, ko reāli redz apmeklētāji.</p></div>
       </div>
 
       <h3 style="font-size:17px; margin:32px 0 10px;">Kur pārbaudīt</h3>
       <div class="doc-cards">
-        <div class="doc-mini-card"><h4>1. Google Search Console</h4><p>Sadaļa "Core Web Vitals" — rāda <strong>reālos (field)</strong> datus, sagrupētus pa līdzīgu lapu grupām. Šeit redzi tieši to, kas ietekmē ranžošanu — sāc pārbaudi vienmēr no šejienes.</p></div>
-        <div class="doc-mini-card"><h4>2. PageSpeed Insights</h4><p><a href="https://pagespeed.web.dev/" target="_blank" rel="noopener">pagespeed.web.dev</a> — ielīmē URL, uzreiz redzi gan field, gan lab datus vienā vietā, plus konkrētus, prioritizētus ieteikumus katrai problēmai.</p></div>
-        <div class="doc-mini-card"><h4>3. Chrome DevTools → Lighthouse</h4><p>F12 → cilne "Lighthouse" → "Analyze page load". Lokāls lab tests bez interneta gaidīšanas — ideāls, lai ātri pārbaudītu, vai tikko izdarītā izmaiņa tiešām palīdzēja.</p></div>
+        <div class="doc-mini-card"><h4>1. Google Search Console</h4><p>Sadaļa "Core Web Vitals" - rāda <strong>reālos (field)</strong> datus, sagrupētus pa līdzīgu lapu grupām. Šeit redzi tieši to, kas ietekmē ranžošanu - sāc pārbaudi vienmēr no šejienes.</p></div>
+        <div class="doc-mini-card"><h4>2. PageSpeed Insights</h4><p><a href="https://pagespeed.web.dev/" target="_blank" rel="noopener">pagespeed.web.dev</a> - ielīmē URL, uzreiz redzi gan field, gan lab datus vienā vietā, plus konkrētus, prioritizētus ieteikumus katrai problēmai.</p></div>
+        <div class="doc-mini-card"><h4>3. Chrome DevTools → Lighthouse</h4><p>F12 → cilne "Lighthouse" → "Analyze page load". Lokāls lab tests bez interneta gaidīšanas - ideāls, lai ātri pārbaudītu, vai tikko izdarītā izmaiņa tiešām palīdzēja.</p></div>
         <div class="doc-mini-card"><h4>4. web-vitals bibliotēka</h4><p>Pašam savākt reālo lietotāju datus tieši savā vietnē (piem., nosūtot uz analītiku). Pilns koda piemērs: <a href="seo.html#core-web-vitals">SEO → Core Web Vitals</a>.</p></div>
       </div>
 
       <h3 style="font-size:17px; margin:32px 0 10px;">WordPress: kā atrast, kas tieši bremzē</h3>
-      <p>Minēt ir bezjēdzīgi — uzstādi <strong>Query Monitor</strong> spraudni, kas katrai lapas ielādei rāda tieši, kurš spraudnis, veidne vai datubāzes vaicājums patērē visvairāk laika:</p>
+      <p>Minēt ir bezjēdzīgi - uzstādi <strong>Query Monitor</strong> spraudni, kas katrai lapas ielādei rāda tieši, kurš spraudnis, veidne vai datubāzes vaicājums patērē visvairāk laika:</p>
       <pre class="code-block"><span class="lang">bash</span><code>wp plugin install query-monitor --activate</code></pre>
       <div class="doc-cards">
         <div class="doc-mini-card"><h4>🔁 Trūkstoša kešošana</h4><p>Biežākais cēlonis. Skat. <a href="wordpress-problemas.html#lena-vietne">Problēmas → Lēna WordPress vietne</a> konkrētiem SSH labojumiem.</p></div>
-        <div class="doc-mini-card"><h4>🧱 Page builder bloāts</h4><p>Elementor, Divi u.c. bieži katrai lapai ģenerē savu, smagu CSS/JS failu — pārbaudi, vai builderim ir "optimizācijas" iestatījumi (neizmantotā CSS noņemšana).</p></div>
-        <div class="doc-mini-card"><h4>🖼️ Neoptimizēti attēli</h4><p>Skat. <a href="seo.html#images">SEO → Attēlu optimizācija</a> — <code>srcset</code>, <code>loading="lazy"</code>, pareizi izmēri.</p></div>
-        <div class="doc-mini-card"><h4>🐌 Lēns hosting (augsts TTFB)</h4><p>Ja pat tukša lapa ielādējas lēni, problēma nav WordPress kodā — pārbaudi servera atbildes laiku (Time to First Byte) atsevišķi no pārējiem rādītājiem.</p></div>
+        <div class="doc-mini-card"><h4>🧱 Page builder bloāts</h4><p>Elementor, Divi u.c. bieži katrai lapai ģenerē savu, smagu CSS/JS failu - pārbaudi, vai builderim ir "optimizācijas" iestatījumi (neizmantotā CSS noņemšana).</p></div>
+        <div class="doc-mini-card"><h4>🖼️ Neoptimizēti attēli</h4><p>Skat. <a href="seo.html#images">SEO → Attēlu optimizācija</a> - <code>srcset</code>, <code>loading="lazy"</code>, pareizi izmēri.</p></div>
+        <div class="doc-mini-card"><h4>🐌 Lēns hosting (augsts TTFB)</h4><p>Ja pat tukša lapa ielādējas lēni, problēma nav WordPress kodā - pārbaudi servera atbildes laiku (Time to First Byte) atsevišķi no pārējiem rādītājiem.</p></div>
       </div>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><strong>Ieteicamā secība:</strong> (1) PageSpeed Insights vai Lighthouse — noskaidro, kura konkrētā metrika (LCP/INP/CLS) ir sliktākā; (2) Query Monitor — atrod konkrēto vainīgo spraudni/vaicājumu; (3) labo tieši to; (4) pārbaudi vēlreiz ar to pašu rīku, lai apstiprinātu uzlabojumu. Neoptimizē "aklu" — vienmēr izmēri pirms un pēc.</p>
+        <p><strong>Ieteicamā secība:</strong> (1) PageSpeed Insights vai Lighthouse - noskaidro, kura konkrētā metrika (LCP/INP/CLS) ir sliktākā; (2) Query Monitor - atrod konkrēto vainīgo spraudni/vaicājumu; (3) labo tieši to; (4) pārbaudi vēlreiz ar to pašu rīku, lai apstiprinātu uzlabojumu. Neoptimizē "aklu" - vienmēr izmēri pirms un pēc.</p>
       </div>
     </section>
 
@@ -1329,7 +1329,7 @@ GET /wp-json/wp/v2/produkts     → CPT ieraksti (ja show_in_rest: true)</code><
   </main>
 </div>
 
-<script src="../js/theme.js?v=20"></script>
-<script src="../js/main.js?v=20"></script>
+<script src="../js/theme.js?v=21"></script>
+<script src="../js/main.js?v=21"></script>
 </body>
 </html>
