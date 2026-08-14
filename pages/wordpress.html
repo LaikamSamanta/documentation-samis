@@ -400,6 +400,42 @@ pings_open()          → vai pingback/trackback ir atvērti šim ierakstam</cod
 });</code></pre>
       <p>Rādīšana veidnē — ierakstam piesaistīto terminu saraksts:</p>
       <pre class="code-block"><span class="lang">php</span><code>&lt;?php <span class="tok-kw">echo</span> <span class="tok-fn">get_the_term_list</span>(<span class="tok-fn">get_the_ID</span>(), <span class="tok-str">'zime'</span>, <span class="tok-str">''</span>, <span class="tok-str">', '</span>); ?&gt;</code></pre>
+
+      <h3>Citi <code>register_taxonomy()</code> argumenti</h3>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4><code>rewrite</code></h4><p>Masīvs, piem. <code>['slug' =&gt; 'zimes']</code> — nosaka, kāds vārds parādās URL taksonomijas arhīva lapā (<code>/zimes/kaut-kas/</code>), nevis noklusējuma taksonomijas nosaukumu.</p></div>
+        <div class="doc-mini-card"><h4><code>show_ui</code></h4><p>Vai admin panelī rādīt rediģēšanas saskarni (formu terminu pievienošanai). Pēc noklusējuma seko <code>public</code> vērtībai.</p></div>
+        <div class="doc-mini-card"><h4><code>show_in_menu</code></h4><p>Vai taksonomija parādās kreisajā admin izvēlnē. Var būt arī cita ieraksta tipa <code>menu_slug</code> virkne, lai iegultu apakšizvēlnē tam.</p></div>
+        <div class="doc-mini-card"><h4><code>show_tagcloud</code></h4><p>Vai taksonomija pieejama "Birku mākoņa" (Tag Cloud) widžetā — parasti izslēdz hierarhiskām taksonomijām.</p></div>
+        <div class="doc-mini-card"><h4><code>query_var</code></h4><p><code>true</code> ļauj vaicāt <code>?zime=nosaukums</code>; var norādīt arī savu virkni cita mainīgā nosaukuma vietā.</p></div>
+        <div class="doc-mini-card"><h4><code>public</code></h4><p>Vispārējs "galvenais slēdzis" — kad <code>true</code>, automātiski iestata saprātīgas noklusējuma vērtības pārējiem redzamības argumentiem, ja tie nav norādīti atsevišķi.</p></div>
+      </div>
+      <p>Pilnāks piemērs ar visiem biežāk lietotajiem argumentiem un pilnu <code>labels</code> masīvu (nevis īsinājumu <code>'label'</code>) — der kopēt kā sākumpunktu jebkurai jaunai taksonomijai:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'init'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-fn">register_taxonomy</span>(<span class="tok-str">'zime'</span>, [<span class="tok-str">'post'</span>, <span class="tok-str">'produkts'</span>], [
+        <span class="tok-str">'labels'</span> => [
+            <span class="tok-str">'name'</span>          => <span class="tok-str">'Zīmes'</span>,
+            <span class="tok-str">'singular_name'</span> => <span class="tok-str">'Zīme'</span>,
+            <span class="tok-str">'search_items'</span>  => <span class="tok-str">'Meklēt zīmes'</span>,
+            <span class="tok-str">'all_items'</span>     => <span class="tok-str">'Visas zīmes'</span>,
+            <span class="tok-str">'edit_item'</span>     => <span class="tok-str">'Rediģēt zīmi'</span>,
+            <span class="tok-str">'add_new_item'</span>  => <span class="tok-str">'Pievienot jaunu zīmi'</span>,
+        ],
+        <span class="tok-str">'hierarchical'</span>      => <span class="tok-kw">true</span>,
+        <span class="tok-str">'public'</span>            => <span class="tok-kw">true</span>,
+        <span class="tok-str">'show_ui'</span>           => <span class="tok-kw">true</span>,
+        <span class="tok-str">'show_in_menu'</span>      => <span class="tok-kw">true</span>,
+        <span class="tok-str">'show_in_rest'</span>      => <span class="tok-kw">true</span>,
+        <span class="tok-str">'show_admin_column'</span> => <span class="tok-kw">true</span>,
+        <span class="tok-str">'show_tagcloud'</span>     => <span class="tok-kw">false</span>,
+        <span class="tok-str">'query_var'</span>         => <span class="tok-kw">true</span>,
+        <span class="tok-str">'rewrite'</span>           => [<span class="tok-str">'slug'</span> => <span class="tok-str">'zimes'</span>],
+    ]);
+});</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Otrais <code>register_taxonomy()</code> parametrs var būt gan viena virkne (<code>'post'</code>), gan masīvs ar vairākiem ierakstu tipiem — šis piemērs piesaista taksonomiju gan parastiem ierakstiem, gan CPT <code>produkts</code> vienlaicīgi.</p>
+      </div>
     </section>
 
     <section class="doc-section" id="cpt">
@@ -423,6 +459,48 @@ pings_open()          → vai pingback/trackback ir atvērti šim ierakstam</cod
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
         <p>Pēc pievienošanas ejot uz jaunā CPT publisko lapu (piem., <code>/produkts/kaut-kas/</code>) var rādīties 404 — jāatjauno pastāvīgās saites: <strong>Iestatījumi → Pastāvīgās saites → Saglabāt</strong> (nekas nav jāmaina, pats saglabāšanas klikšķis atjauno noteikumus).</p>
+      </div>
+
+      <h3>Citi <code>register_post_type()</code> argumenti</h3>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4><code>rewrite</code></h4><p>Masīvs, piem. <code>['slug' =&gt; 'produkti']</code> — nomaina URL priekšā <code>/produkts/</code> uz ko citu, nemainot pašu ierakstu tipa nosaukumu kodā.</p></div>
+        <div class="doc-mini-card"><h4><code>hierarchical</code></h4><p><code>true</code> = uzvedas kā lapas (var norādīt vecāku, admin sarakstā parādās ar atkāpēm); <code>false</code> = uzvedas kā ieraksti (bez hierarhijas).</p></div>
+        <div class="doc-mini-card"><h4><code>menu_position</code></h4><p>Skaitlis, kur admin izvēlnē parādās ikona — <code>5</code> zem "Ierakstiem", <code>20</code> zem "Lapām", <code>25</code> zem "Komentāriem" utt.</p></div>
+        <div class="doc-mini-card"><h4><code>show_in_menu</code></h4><p><code>true</code>/<code>false</code>, vai virkne ar cita izvēlnes vienuma <code>menu_slug</code> — iegultu CPT kā apakšizvēlni, nevis atsevišķu izvēlnes punktu.</p></div>
+        <div class="doc-mini-card"><h4><code>capability_type</code></h4><p>Kontrolē, kādas lietotāja tiesības nepieciešamas rediģēšanai/dzēšanai. Noklusējums <code>'post'</code> ir korekts vairumam gadījumu.</p></div>
+        <div class="doc-mini-card"><h4><code>exclude_from_search</code></h4><p><code>true</code> izslēdz šo ierakstu tipu no WordPress iekšējās meklēšanas rezultātiem (bet ne no publiskajām arhīva/single lapām).</p></div>
+        <div class="doc-mini-card"><h4><code>publicly_queryable</code></h4><p>Vai ierakstiem var piekļūt tieši caur front-end URL vaicājumiem. Pēc noklusējuma seko <code>public</code> vērtībai.</p></div>
+        <div class="doc-mini-card"><h4><code>taxonomies</code></h4><p>Masīvs ar jau reģistrētu taksonomiju slug ("<code>['zime']</code>"), lai tās uzreiz piesaistītu — alternatīva atsevišķai piesaistei ar <code>register_taxonomy_for_object_type()</code>.</p></div>
+      </div>
+      <p>Pilnāks piemērs ar visiem biežāk lietotajiem argumentiem un pilnu <code>labels</code> masīvu — der kopēt kā sākumpunktu jebkuram jaunam CPT:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'init'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-fn">register_post_type</span>(<span class="tok-str">'produkts'</span>, [
+        <span class="tok-str">'labels'</span> => [
+            <span class="tok-str">'name'</span>          => <span class="tok-str">'Produkti'</span>,
+            <span class="tok-str">'singular_name'</span> => <span class="tok-str">'Produkts'</span>,
+            <span class="tok-str">'add_new_item'</span>  => <span class="tok-str">'Pievienot jaunu produktu'</span>,
+            <span class="tok-str">'edit_item'</span>     => <span class="tok-str">'Rediģēt produktu'</span>,
+            <span class="tok-str">'search_items'</span>  => <span class="tok-str">'Meklēt produktus'</span>,
+        ],
+        <span class="tok-str">'public'</span>              => <span class="tok-kw">true</span>,
+        <span class="tok-str">'has_archive'</span>         => <span class="tok-kw">true</span>,
+        <span class="tok-str">'publicly_queryable'</span>  => <span class="tok-kw">true</span>,
+        <span class="tok-str">'show_in_rest'</span>        => <span class="tok-kw">true</span>, <span class="tok-com">// vajadzīgs Gutenberg redaktoram</span>
+        <span class="tok-str">'show_in_menu'</span>        => <span class="tok-kw">true</span>,
+        <span class="tok-str">'menu_position'</span>       => 5,
+        <span class="tok-str">'menu_icon'</span>           => <span class="tok-str">'dashicons-cart'</span>,
+        <span class="tok-str">'hierarchical'</span>        => <span class="tok-kw">false</span>,
+        <span class="tok-str">'capability_type'</span>     => <span class="tok-str">'post'</span>,
+        <span class="tok-str">'exclude_from_search'</span> => <span class="tok-kw">false</span>,
+        <span class="tok-str">'query_var'</span>           => <span class="tok-kw">true</span>,
+        <span class="tok-str">'rewrite'</span>             => [<span class="tok-str">'slug'</span> => <span class="tok-str">'produkti'</span>],
+        <span class="tok-str">'supports'</span>            => [<span class="tok-str">'title'</span>, <span class="tok-str">'editor'</span>, <span class="tok-str">'thumbnail'</span>, <span class="tok-str">'excerpt'</span>],
+        <span class="tok-str">'taxonomies'</span>          => [<span class="tok-str">'zime'</span>],
+    ]);
+});</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>taxonomies</code> masīvā drīkst norādīt tikai taksonomijas, kas <strong>jau reģistrētas</strong> tajā pašā <code>init</code> izsaukumā vai agrāk — ja taksonomija reģistrēta ar zemāku prioritāti (izsaukta vēlāk), CPT saraksts vēl to neredzēs. Der pievienot abus reģistrācijas izsaukumus vienā <code>functions.php</code> vietā secīgi, tāpat kā šeit (skat. <a href="#taksonomijas">Taksonomijas</a> augstāk).</p>
       </div>
     </section>
 
