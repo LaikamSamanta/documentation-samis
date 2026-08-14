@@ -12,14 +12,19 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // live filter for category cards
+  // live filter for category cards — matches per WORD (order-independent),
+  // not just one literal phrase, so "wordpress cache" also finds a card
+  // whose text has those words in the opposite order or split apart
   var search = document.getElementById("category-search");
   if (search) {
     search.addEventListener("input", function () {
-      var q = search.value.trim().toLowerCase();
+      var words = search.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
       document.querySelectorAll(".card").forEach(function (card) {
         var text = card.innerText.toLowerCase();
-        card.style.display = text.indexOf(q) !== -1 ? "" : "none";
+        var matches = words.every(function (w) {
+          return text.indexOf(w) !== -1;
+        });
+        card.style.display = matches ? "" : "none";
       });
     });
   }
