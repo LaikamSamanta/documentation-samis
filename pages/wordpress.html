@@ -94,6 +94,7 @@
       <a href="#cron"><span class="bullet"></span>Cron uzdevumi</a>
       <a href="#http-api"><span class="bullet"></span>HTTP API (wp_remote_*)</a>
       <a href="#rest-api"><span class="bullet"></span>REST API pamati</a>
+      <a href="#json"><span class="bullet"></span>JSON kodēšana/dekodēšana</a>
     </div>
     <div class="doc-sidebar-group">
       <h4>Veiktspēja</h4>
@@ -1044,6 +1045,69 @@ GET /wp-json/wp/v2/produkts     → CPT ieraksti (ja show_in_rest: true)</code><
     ]);
 });
 <span class="tok-com">// Pieejams: /wp-json/mana-tema/v1/sveiciens</span></code></pre>
+    </section>
+
+    <section class="doc-section" id="json">
+      <h2>JSON kodēšana/dekodēšana</h2>
+      <p>JSON ir teksta formāts datu apmaiņai — to izmanto REST API atbildes, AJAX pieprasījumi un ārējo servisu izsaukumi (skat. augstāk). PHP pusē datu pārvēršanu uz/no JSON dara <code>json_encode()</code>/<code>json_decode()</code>, taču WordPress kodā priekšroka jādod savietojamajam <code>wp_json_encode()</code>.</p>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;"><code>wp_json_encode()</code> pret <code>json_encode()</code></h3>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">$dati</span> = [
+    <span class="tok-str">'nosaukums'</span> => <span class="tok-str">'Kafijas tase'</span>,
+    <span class="tok-str">'cena'</span>      => 12.50,
+    <span class="tok-str">'pieejams'</span>  => <span class="tok-kw">true</span>,
+];
+
+<span class="tok-fn">$json</span> = <span class="tok-fn">wp_json_encode</span>(<span class="tok-fn">$dati</span>);
+<span class="tok-com">// {"nosaukums":"Kafijas tase","cena":12.5,"pieejams":true}</span></code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>wp_json_encode()</code> uzvedas tāpat kā <code>json_encode()</code>, bet ir <strong>filtrējams</strong> (<code>wp_json_encode_options</code> filtrs) un pareizi apstrādā datus, kas nāk no vecāku WordPress instalāciju datubāzēm ar nekonsekventu UTF-8 kodējumu — gadījumos, kad tīrs <code>json_encode()</code> klusi atgrieztu <code>false</code>. Praktiski: WordPress kodā vienmēr izmanto <code>wp_json_encode()</code>, plain <code>json_encode()</code> patur ārpus-WordPress PHP kodam.</p>
+      </div>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Dekodēšana atpakaļ uz PHP masīvu</h3>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">$json</span> = <span class="tok-str">'{"nosaukums":"Kafijas tase","cena":12.5}'</span>;
+
+<span class="tok-fn">$dati</span> = <span class="tok-fn">json_decode</span>(<span class="tok-fn">$json</span>, <span class="tok-kw">true</span>); <span class="tok-com">// true = asociatīvs masīvs, nevis stdClass objekts</span>
+
+<span class="tok-kw">echo</span> <span class="tok-fn">$dati</span>[<span class="tok-str">'nosaukums'</span>]; <span class="tok-com">// Kafijas tase</span></code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Bez otrā parametra <code>true</code>, <code>json_decode()</code> atgriež <code>stdClass</code> objektu (piekļuve ar <code>-&gt;</code>, piem. <code>$dati-&gt;nosaukums</code>), nevis masīvu (<code>[]</code>) — WordPress kods gandrīz vienmēr sagaida masīvu, tāpēc <code>true</code> aizmirst ir bieža kļūdas cēlonis. Ja pats JSON teksts ir nederīgs, <code>json_decode()</code> klusi atgriež <code>null</code> — pārbaudi ar <code>json_last_error() !== JSON_ERROR_NONE</code>, ja jāatšķir "nederīgs JSON" no "derīgs JSON, kas satur <code>null</code>".</p>
+      </div>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Strukturētu datu glabāšana kā JSON teksts</h3>
+      <p>WordPress <code>update_option()</code>/<code>update_post_meta()</code> masīvus automātiski saglabā ar PHP <code>serialize()</code>, nevis JSON — tāpēc parasti <strong>nav</strong> obligāti pašam kodēt JSON, lai saglabātu masīvu. Manuāla JSON kodēšana der, kad dati jālasa arī ārpus WordPress/PHP (citam skriptam, tiešam SQL vaicājumam datubāzē) vai jāpaliek cilvēkam lasāmi datubāzē:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">update_option</span>(<span class="tok-str">'uznemuma_dati'</span>, <span class="tok-fn">wp_json_encode</span>([
+    <span class="tok-str">'nosaukums'</span>        => <span class="tok-str">'SIA Piemērs'</span>,
+    <span class="tok-str">'registracijas_nr'</span> => <span class="tok-str">'40001234567'</span>,
+]));
+
+<span class="tok-com">// Nolasot atpakaļ vēlāk</span>
+<span class="tok-fn">$uznemuma_dati</span> = <span class="tok-fn">json_decode</span>(<span class="tok-fn">get_option</span>(<span class="tok-str">'uznemuma_dati'</span>), <span class="tok-kw">true</span>);
+<span class="tok-kw">echo</span> <span class="tok-fn">$uznemuma_dati</span>[<span class="tok-str">'nosaukums'</span>];</code></pre>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Ienākoša JSON pieprasījuma nolasīšana (webhook)</h3>
+      <p>Ārējie servisi (maksājumu sistēmas, automatizācijas rīki) bieži sūta webhook paziņojumus kā <strong>tīru JSON tekstu</strong> pieprasījuma "body", nevis parastu formas datu formātā — tādā gadījumā <code>$_POST</code> paliks tukšs. REST API galapunktā to nolasa ar <code>get_json_params()</code>:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'rest_api_init'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-fn">register_rest_route</span>(<span class="tok-str">'mana-tema/v1'</span>, <span class="tok-str">'/webhook'</span>, [
+        <span class="tok-str">'methods'</span>  => <span class="tok-str">'POST'</span>,
+        <span class="tok-str">'callback'</span> => <span class="tok-kw">function</span>( <span class="tok-fn">WP_REST_Request</span> <span class="tok-fn">$request</span> ) {
+            <span class="tok-fn">$dati</span> = <span class="tok-fn">$request</span>->get_json_params(); <span class="tok-com">// jau automātiski dekodēts asociatīvs masīvs</span>
+
+            <span class="tok-kw">error_log</span>(<span class="tok-fn">print_r</span>(<span class="tok-fn">$dati</span>, <span class="tok-kw">true</span>));
+            <span class="tok-kw">return</span> [<span class="tok-str">'status'</span> => <span class="tok-str">'ok'</span>];
+        },
+        <span class="tok-str">'permission_callback'</span> => <span class="tok-str">'__return_true'</span>,
+    ]);
+});</code></pre>
+      <p>Ārpus REST API (piem., vecākā stila <code>admin-ajax.php</code> galapunktā) to pašu izdara manuāli:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">$raw</span>  = <span class="tok-fn">file_get_contents</span>(<span class="tok-str">'php://input'</span>);
+<span class="tok-fn">$dati</span> = <span class="tok-fn">json_decode</span>(<span class="tok-fn">$raw</span>, <span class="tok-kw">true</span>);</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Ja debugojot pamani, ka <code>$_POST</code> ir tukšs masīvs, kaut sūtītājs apgalvo, ka dati nosūtīti — pirmā aizdoma vienmēr jābūt, ka dati nāk kā JSON body (<code>Content-Type: application/json</code>), nevis <code>application/x-www-form-urlencoded</code>. AJAX/fetch pieprasījumu ar JS pusi skat. <a href="#ajax">AJAX pamati</a> augstāk, ārēju API izsaukšanu ar <code>wp_remote_*</code> — <a href="#http-api">HTTP API</a>. JS pusē <code>JSON.stringify()</code>/<code>JSON.parse()</code> skaidrots <a href="javascript.html#json">JavaScript → JSON</a>.</p>
+      </div>
     </section>
 
     <section class="doc-section" id="veiktspejas-merisana">
