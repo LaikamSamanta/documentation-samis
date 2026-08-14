@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
 <title>Python rīki - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=24" />
+<link rel="stylesheet" href="../css/style.css?v=25" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -243,6 +243,7 @@ MAPES_PA_TIPIEM = {
       <pre class="code-block"><span class="lang">python</span><code><span class="tok-kw">import</span> requests
 <span class="tok-kw">import</span> urllib3
 <span class="tok-kw">import</span> time
+<span class="tok-kw">import</span> winsound
 <span class="tok-kw">from</span> winotify <span class="tok-kw">import</span> Notification, audio
 
 <span class="tok-com"># klusina brīdinājumu, kas parādās, kad SSL fallback pārbaude izmanto verify=False</span>
@@ -265,6 +266,10 @@ iepriksejie_statusi = {}
     )
     toast.set_audio(audio.Default, loop=<span class="tok-kw">False</span>)
     toast.show()
+
+    <span class="tok-com"># winsound ir Python iebūvēts modulis (nekas jāuzinstalē) - atskaņo sistēmas skaņu</span>
+    <span class="tok-com"># TIEŠI, neatkarīgi no tā, vai toast.set_audio() strādā konkrētajā sistēmā</span>
+    winsound.MessageBeep(winsound.MB_ICONEXCLAMATION)
 
 <span class="tok-kw">def</span> <span class="tok-fn">parbaudit_vienu_vietni</span>(url):
     <span class="tok-com"># ja VIETNES sarakstā ierakstīts tikai domēns bez "http(s)://" (piem. "piemers.lv"),</span>
@@ -311,6 +316,7 @@ iepriksejie_statusi = {}
         <div class="doc-mini-card"><h4>Domēns bez <code>https://</code></h4><p>Ja <code>VIETNES</code> sarakstā ieraksta tikai domēnu (piem. <code>"piemers.lv"</code>, nevis <code>"https://piemers.lv"</code>), <code>requests</code> to uztver kā nederīgu adresi un ziņotu "nestrādā" pat tad, ja vietne strādā - skripts tagad pats pievieno <code>https://</code>, ja tā trūkst.</p></div>
         <div class="doc-mini-card"><h4>SSL fallback (<code>verify=False</code>)</h4><p>Ja vietne bez HTTPS pati automātiski pāradresē uz https versiju, kurai nav derīga sertifikāta, <code>requests</code> to uztvertu kā "nestrādā" - fallback pārbauda vēlreiz, ignorējot sertifikāta kļūdu, lai pārliecinātos, vai serveris pats par sevi atbild.</p></div>
         <div class="doc-mini-card"><h4>Kāpēc "paliek, kamēr neaizver"</h4><p>Windows toast paziņojumi pēc <code>duration="long"</code> (~25s) automātiski nepazūd pavisam - tie pāriet uz paziņojumu centru (zvana ikona apakšā labajā stūrī) un paliek tur, kamēr tos manuāli neaizver vai neizdzēš.</p></div>
+        <div class="doc-mini-card"><h4><code>winsound.MessageBeep()</code></h4><p>Python iebūvēts modulis (nekas jāuzinstalē) - atskaņo Windows sistēmas skaņu tieši, apejot toast paziņojuma pašu audio funkciju. Uzticamāks risinājums, ja <code>toast.set_audio()</code> vien nedod skaņu (bieži atkarīgs no konkrētās sistēmas skaņu/paziņojumu iestatījumiem).</p></div>
       </div>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
@@ -333,7 +339,7 @@ iepriksejie_statusi = {}
   </main>
 </div>
 
-<script src="../js/theme.js?v=24"></script>
-<script src="../js/main.js?v=24"></script>
+<script src="../js/theme.js?v=25"></script>
+<script src="../js/main.js?v=25"></script>
 </body>
 </html>
