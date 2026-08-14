@@ -64,6 +64,8 @@
       <a href="#snip-admin-locale"><span class="bullet"></span>Piespiedu admin valoda</a>
       <a href="#snip-admin-colors"><span class="bullet"></span>Admin &amp; pieteikšanās krāsas</a>
       <a href="#snip-editor-customizer"><span class="bullet"></span>Redaktoram — Customizer piekļuve</a>
+      <a href="#snip-cache-button"><span class="bullet"></span>Kešatmiņas tīrīšanas poga admin joslā</a>
+      <a href="#snip-hide-notices"><span class="bullet"></span>Paslēpt admin paziņojumus konkrētā ekrānā</a>
     </div>
     <div class="doc-sidebar-group">
       <h4>Saturs &amp; veiktspēja</h4>
@@ -72,6 +74,21 @@
       <a href="#snip-emoji"><span class="bullet"></span>Izslēgt emoji skriptus</a>
       <a href="#snip-classic-editor"><span class="bullet"></span>Piespiedu klasiskais redaktors</a>
       <a href="#snip-gettext"><span class="bullet"></span>Jebkura teksta aizstāšana</a>
+      <a href="#snip-clear-transients"><span class="bullet"></span>Iztīrīt transientus pēc prefiksa</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Navigācija</h4>
+      <a href="#snip-bootstrap-walker"><span class="bullet"></span>Bootstrap saderīga izvēlne (Walker)</a>
+      <a href="#snip-term-redirect"><span class="bullet"></span>Novirzīt kategoriju uz citu URL</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Redaktors (TinyMCE)</h4>
+      <a href="#snip-tinymce-custom"><span class="bullet"></span>Pielāgoti fonti &amp; krāsu palete</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Pielāgoti lauki &amp; iestatījumi</h4>
+      <a href="#snip-metabox"><span class="bullet"></span>Pielāgota metabox (avota lauks)</a>
+      <a href="#snip-customizer-settings"><span class="bullet"></span>Vietnes iestatījumi caur Customizer</a>
     </div>
     <div class="doc-sidebar-group">
       <h4>WooCommerce</h4>
@@ -446,6 +463,65 @@
       </div>
     </section>
 
+    <section class="doc-section" id="snip-cache-button">
+      <h2>Kešatmiņas tīrīšanas poga admin joslā</h2>
+      <p>Pievieno pogu WordPress augšējā admin joslā (redzama gan admin panelī, gan front-end pusē, ja lietotājs ielogojies), kas piespiedu kārtā pārlādē lapu, apejot pārlūka kešatmiņu — noder klientiem, kas bieži jautā "kāpēc neredzu savas izmaiņas".</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'admin_bar_menu'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$wp_admin_bar</span>) {
+    <span class="tok-fn">$wp_admin_bar</span>->add_node([
+        <span class="tok-str">'id'</span>    => <span class="tok-str">'wpds_clear_cache'</span>,
+        <span class="tok-str">'title'</span> => <span class="tok-str">'⟳ Atjaunināt skatu'</span>,
+        <span class="tok-str">'href'</span>  => <span class="tok-str">'#'</span>,
+        <span class="tok-str">'meta'</span>  => [
+            <span class="tok-str">'onclick'</span> => <span class="tok-str">'wpdsClearCacheAndReload(); return false;'</span>,
+            <span class="tok-str">'title'</span>   => <span class="tok-str">'Nospied, ja lapā neredzi jaunākās izmaiņas'</span>,
+        ],
+    ]);
+}, 999);
+
+<span class="tok-fn">add_action</span>(<span class="tok-str">'admin_footer'</span>, <span class="tok-str">'wpds_cache_button_script'</span>); <span class="tok-com">// admin panelim</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'wp_footer'</span>, <span class="tok-str">'wpds_cache_button_script'</span>);    <span class="tok-com">// front-end pusei (ja josla redzama)</span>
+
+<span class="tok-kw">function</span> <span class="tok-fn">wpds_cache_button_script</span>(): <span class="tok-kw">void</span> {
+    ?&gt;
+    &lt;script&gt;
+    function wpdsClearCacheAndReload() {
+        if (confirm('Vai pārlādēt lapu, apejot pārlūka kešatmiņu?')) {
+            var url = window.location.href.split('?')[0];
+            window.location.replace(url + '?nocache=' + Date.now());
+        }
+    }
+    &lt;/script&gt;
+    &lt;?php
+}</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Šī poga apiet tikai <strong>pārlūka</strong> kešatmiņu, pievienojot mainīgu parametru URL. Ja vietnē uzstādīts servera puses kešošanas spraudnis (WP Rocket, W3 Total Cache u.tml.) vai CDN (Cloudflare), tam var būt sava, atsevišķa kešatmiņa, kas jāiztīra atsevišķi — šī poga to neskar. Vajadzības gadījumā <code>wpdsClearCacheAndReload()</code> vietā var izsaukt attiecīgā spraudņa savu "purge cache" AJAX galapunktu.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="snip-hide-notices">
+      <h2>Paslēpt admin paziņojumus konkrētā ekrānā</h2>
+      <p>Admin panelī bieži uzkrājas atjaunināšanas, reklāmas un spraudņu paziņojumu josliņas, kas traucē klientiem koncentrēties uz reālo darbu. Šis piemērs paslēpj tās (izņemot veiksmes/kļūdas paziņojumus) tikai konkrētā admin ekrānā, nevis visur.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'admin_head'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-kw">if</span> (!<span class="tok-fn">function_exists</span>(<span class="tok-str">'get_current_screen'</span>)) <span class="tok-kw">return</span>;
+
+    <span class="tok-fn">$screen</span> = <span class="tok-fn">get_current_screen</span>();
+    <span class="tok-kw">if</span> (!<span class="tok-fn">$screen</span> || <span class="tok-fn">$screen</span>->post_type !== <span class="tok-str">'post'</span>) <span class="tok-kw">return</span>; <span class="tok-com">// maini uz vajadzīgo ekrānu</span>
+
+    <span class="tok-kw">echo</span> <span class="tok-str">'&lt;style&gt;
+        .notice:not(.notice-success):not(.notice-error),
+        .update-nag,
+        #wp-admin-bar-updates {
+            display: none !important;
+        }
+    &lt;/style&gt;'</span>;
+});</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Šis tikai <strong>vizuāli paslēpj</strong> (CSS <code>display: none</code>) — pati funkcionalitāte (piem., atjauninājumu pieejamība) nekur nepazūd, un administratora lietotājs, kas atver citu ekrānu, joprojām redzēs paziņojumus normāli. <code>$screen->post_type</code> pārbaudi vari aizstāt ar <code>$screen->id</code> (piem., <code>'dashboard'</code>), lai mērķētu uz citiem admin ekrāniem, ne tikai ierakstu tipiem.</p>
+      </div>
+    </section>
+
     <section class="doc-section" id="snip-excerpt">
       <h2>Izraksta (excerpt) garums</h2>
       <p>Noklusējuma izraksta garums ir 55 vārdi — šis filtrs to pielāgo pēc vajadzības.</p>
@@ -524,6 +600,214 @@
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
         <p>Salīdzini pret <code>$tulkotais</code> (jau iztulkoto tekstu), nevis pret <code>$original</code> (angļu oriģinālu) — tā piemērs strādās neatkarīgi no tā, vai vietnei uzstādīta angļu vai latviešu valoda. <code>$domain</code> pārbaude (piem., <code>=== 'woocommerce'</code>) svarīga, lai netīšām neaizvietotu vienādu vārdu citur, kur tas nozīmē ko citu.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="snip-clear-transients">
+      <h2>Iztīrīt transientus pēc prefiksa</h2>
+      <p>WordPress nesniedz iebūvētu veidu, kā izdzēst "visus transientus, kuru nosaukums sākas ar X" — jāizmanto <code>$wpdb</code> tieši. Noder, kad kešots dati (skat. <a href="wordpress.html#transients">Transients</a>) jāatjauno uzreiz pēc konkrētas darbības, nevis jāgaida, kamēr pats termiņš beidzas.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">function</span> <span class="tok-fn">wpds_iztirit_transientus</span>(<span class="tok-kw">string</span> <span class="tok-fn">$prefikss</span>): <span class="tok-kw">void</span> {
+    <span class="tok-kw">global</span> <span class="tok-fn">$wpdb</span>;
+
+    <span class="tok-fn">$wpdb</span>->query(<span class="tok-fn">$wpdb</span>->prepare(
+        <span class="tok-str">"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s"</span>,
+        <span class="tok-fn">$wpdb</span>->esc_like(<span class="tok-str">'_transient_'</span> . <span class="tok-fn">$prefikss</span>) . <span class="tok-str">'%'</span>,
+        <span class="tok-fn">$wpdb</span>->esc_like(<span class="tok-str">'_transient_timeout_'</span> . <span class="tok-fn">$prefikss</span>) . <span class="tok-str">'%'</span>
+    ));
+}
+
+<span class="tok-com">// Piemērs: dzēš visus 'produktu_saraksts_*' transientus, tiklīdz ieraksts tiek saglabāts</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'save_post'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-fn">wpds_iztirit_transientus</span>(<span class="tok-str">'produktu_saraksts_'</span>);
+});</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Katram transientam datubāzē faktiski ir <strong>divi</strong> ieraksti — <code>_transient_{atslēga}</code> (pati vērtība) un <code>_transient_timeout_{atslēga}</code> (derīguma termiņš) — tāpēc dzēšanas vaicājumam jāaptver abi prefiksi, citādi paliks "bāreņu" ieraksti datubāzē. <code>$wpdb->esc_like()</code> ir obligāts, ja prefikss jebkad varētu saturēt lietotāja ievadi — tas izbēg <code>%</code>/<code>_</code> simbolus, kam SQL <code>LIKE</code> ir īpaša nozīme.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="snip-bootstrap-walker">
+      <h2>Bootstrap saderīga izvēlne (Walker)</h2>
+      <p>WordPress <code>wp_nav_menu()</code> pēc noklusējuma neizvada Bootstrap sagaidītās klases (<code>nav-item</code>, <code>dropdown-menu</code> u.tml.) — bez pielāgota <code>Walker_Nav_Menu</code> apakšklases nolaižamās apakšizvēlnes vizuāli nestrādās, pat ja Bootstrap CSS/JS ir pieslēgts. Šis Walker pārraksta izvades struktūru tā, lai sakristu ar Bootstrap 5 marķējumu.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">class</span> <span class="tok-fn">Bootstrap5_Nav_Walker</span> <span class="tok-kw">extends</span> <span class="tok-fn">Walker_Nav_Menu</span> {
+
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-fn">start_lvl</span>(&amp;<span class="tok-fn">$output</span>, <span class="tok-fn">$depth</span> = 0, <span class="tok-fn">$args</span> = <span class="tok-kw">null</span>) {
+        <span class="tok-fn">$output</span> .= <span class="tok-str">'&lt;ul class="dropdown-menu"&gt;'</span>;
+    }
+
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-fn">end_lvl</span>(&amp;<span class="tok-fn">$output</span>, <span class="tok-fn">$depth</span> = 0, <span class="tok-fn">$args</span> = <span class="tok-kw">null</span>) {
+        <span class="tok-fn">$output</span> .= <span class="tok-str">'&lt;/ul&gt;'</span>;
+    }
+
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-fn">start_el</span>(&amp;<span class="tok-fn">$output</span>, <span class="tok-fn">$item</span>, <span class="tok-fn">$depth</span> = 0, <span class="tok-fn">$args</span> = <span class="tok-kw">null</span>, <span class="tok-fn">$id</span> = 0) {
+        <span class="tok-fn">$has_children</span> = <span class="tok-kw">in_array</span>(<span class="tok-str">'menu-item-has-children'</span>, <span class="tok-fn">$item</span>->classes);
+        <span class="tok-fn">$is_active</span>    = <span class="tok-kw">in_array</span>(<span class="tok-str">'current-menu-item'</span>, <span class="tok-fn">$item</span>->classes)
+                      || <span class="tok-kw">in_array</span>(<span class="tok-str">'current-menu-ancestor'</span>, <span class="tok-fn">$item</span>->classes);
+
+        <span class="tok-kw">if</span> (<span class="tok-fn">$depth</span> === 0) {
+            <span class="tok-fn">$li_class</span>   = <span class="tok-str">'nav-item'</span> . (<span class="tok-fn">$has_children</span> ? <span class="tok-str">' dropdown'</span> : <span class="tok-str">''</span>);
+            <span class="tok-fn">$link_class</span> = <span class="tok-str">'nav-link'</span> . (<span class="tok-fn">$has_children</span> ? <span class="tok-str">' dropdown-toggle'</span> : <span class="tok-str">''</span>) . (<span class="tok-fn">$is_active</span> ? <span class="tok-str">' active'</span> : <span class="tok-str">''</span>);
+            <span class="tok-fn">$toggle</span>     = <span class="tok-fn">$has_children</span> ? <span class="tok-str">' data-bs-toggle="dropdown" aria-expanded="false" role="button"'</span> : <span class="tok-str">''</span>;
+        } <span class="tok-kw">else</span> {
+            <span class="tok-fn">$li_class</span>   = <span class="tok-str">'dropdown-item-wrap'</span> . (<span class="tok-fn">$has_children</span> ? <span class="tok-str">' dropend'</span> : <span class="tok-str">''</span>);
+            <span class="tok-fn">$link_class</span> = <span class="tok-str">'dropdown-item'</span> . (<span class="tok-fn">$is_active</span> ? <span class="tok-str">' active'</span> : <span class="tok-str">''</span>);
+            <span class="tok-fn">$toggle</span>     = <span class="tok-fn">$has_children</span> ? <span class="tok-str">' data-bs-toggle="dropdown" aria-expanded="false"'</span> : <span class="tok-str">''</span>;
+        }
+
+        <span class="tok-fn">$active_attr</span> = <span class="tok-fn">$is_active</span> ? <span class="tok-str">' aria-current="page"'</span> : <span class="tok-str">''</span>;
+
+        <span class="tok-fn">$output</span> .= <span class="tok-str">'&lt;li class="'</span> . <span class="tok-fn">$li_class</span> . <span class="tok-str">'"&gt;'</span>;
+        <span class="tok-fn">$output</span> .= <span class="tok-str">'&lt;a class="'</span> . <span class="tok-fn">$link_class</span> . <span class="tok-str">'" href="'</span> . <span class="tok-fn">esc_url</span>(<span class="tok-fn">$item</span>->url) . <span class="tok-str">'"'</span> . <span class="tok-fn">$toggle</span> . <span class="tok-fn">$active_attr</span> . <span class="tok-str">'&gt;'</span>;
+        <span class="tok-fn">$output</span> .= <span class="tok-fn">esc_html</span>(<span class="tok-fn">$item</span>->title);
+        <span class="tok-fn">$output</span> .= <span class="tok-str">'&lt;/a&gt;'</span>;
+    }
+
+    <span class="tok-kw">public</span> <span class="tok-kw">function</span> <span class="tok-fn">end_el</span>(&amp;<span class="tok-fn">$output</span>, <span class="tok-fn">$item</span>, <span class="tok-fn">$depth</span> = 0, <span class="tok-fn">$args</span> = <span class="tok-kw">null</span>) {
+        <span class="tok-fn">$output</span> .= <span class="tok-str">'&lt;/li&gt;'</span>;
+    }
+}</code></pre>
+      <p>Lietošana veidnē (skat. arī <a href="wordpress.html#izvelnes">Izvēlnes</a> pamatiem) — vienkārši pievieno <code>'walker'</code> parametru:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">wp_nav_menu</span>([
+    <span class="tok-str">'theme_location'</span> => <span class="tok-str">'galvena'</span>,
+    <span class="tok-str">'container'</span>      => <span class="tok-str">'nav'</span>,
+    <span class="tok-str">'menu_class'</span>     => <span class="tok-str">'navbar-nav'</span>,
+    <span class="tok-str">'walker'</span>         => <span class="tok-kw">new</span> <span class="tok-fn">Bootstrap5_Nav_Walker</span>(),
+]);</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Ja izmanto citu CSS ietvaru (Tailwind, Bulma), maini tikai klašu nosaukumus (<code>nav-item</code>, <code>dropdown-menu</code> utt.) uz sava ietvara ekvivalentiem — pati Walker <strong>struktūra</strong> (kad izsaukt <code>start_lvl</code>/<code>start_el</code>) paliek nemainīga jebkuram CSS ietvaram.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="snip-term-redirect">
+      <h2>Novirzīt kategoriju uz citu URL</h2>
+      <p>Piespiedu novirzīšana no vienas kategorijas/lapas adreses uz citu — noder, kad vietnes struktūra mainījusies, bet vecā adrese jau indeksēta Google vai kopīgota citur.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'template_redirect'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-kw">if</span> (<span class="tok-fn">is_category</span>(<span class="tok-str">'jaunumi'</span>)) {
+        <span class="tok-fn">wp_redirect</span>(<span class="tok-fn">home_url</span>(<span class="tok-str">'/zinas/'</span>), 301); <span class="tok-com">// 301 = pastāvīga novirzīšana (labi SEO)</span>
+        <span class="tok-kw">exit</span>;
+    }
+});</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>is_category()</code> aizstāj ar <code>is_tag('birkas-slug')</code> birkām vai <code>is_tax('taksonomijas-slug', 'termina-slug')</code> jebkurai pielāgotai taksonomijai (skat. <a href="wordpress.html#taksonomijas">Taksonomijas</a>) — pati novirzīšanas loģika (<code>wp_redirect()</code> + <code>exit</code>) paliek identiska. Vienmēr norāda <code>301</code> statusa kodu pastāvīgai novirzīšanai, nevis noklusējuma <code>302</code> — Google citādi vecā URL "ranga vērtību" nepārnes uz jauno.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="snip-tinymce-custom">
+      <h2>Pielāgoti fonti &amp; krāsu palete redaktorā</h2>
+      <p>Klasiskajam TinyMCE redaktoram (skat. <a href="#snip-classic-editor">Piespiedu klasiskais redaktors</a> augstāk) var pievienot pielāgotus fontu un krāsu izvēles variantus, lai satura veidotāji viegli turētos pie zīmola stila, nevis izvēlētos jebkuru pārlūka noklusējuma fontu.</p>
+      <p><strong>Fontu saraksts:</strong></p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_filter</span>(<span class="tok-str">'tiny_mce_before_init'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$init</span>) {
+    <span class="tok-fn">$init</span>[<span class="tok-str">'font_formats'</span>] =
+        <span class="tok-str">'Arial=arial,helvetica,sans-serif;'</span> .
+        <span class="tok-str">'Georgia=georgia,palatino,serif;'</span> .
+        <span class="tok-str">'Lora=Lora,serif;'</span>;
+    <span class="tok-kw">return</span> <span class="tok-fn">$init</span>;
+});</code></pre>
+      <p><strong>Krāsu palete:</strong></p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_filter</span>(<span class="tok-str">'tiny_mce_before_init'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$init</span>) {
+    <span class="tok-fn">$init</span>[<span class="tok-str">'textcolor_map'</span>] = <span class="tok-fn">wp_json_encode</span>([
+        <span class="tok-str">'000000'</span>, <span class="tok-str">'Melns'</span>,
+        <span class="tok-str">'C9A96E'</span>, <span class="tok-str">'Zelta (zīmola krāsa)'</span>,
+    ]);
+    <span class="tok-kw">return</span> <span class="tok-fn">$init</span>;
+});</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>textcolor_map</code> gaida "izlīdzinātu" sarakstu — hex kods, tad tā nosaukums, atkārtoti — tāpēc <code>wp_json_encode()</code> (skat. <a href="wordpress.html#json">JSON kodēšana/dekodēšana</a>) šeit izmantots masīvam, kurā katrs pāris ir divi secīgi elementi, nevis atslēga-vērtība pāris. Ja pievieno pielāgotus fontus (piem., Google Fonts), tos jāielādē arī uz redaktora <code>&lt;iframe&gt;</code> atsevišķi — pats <code>font_formats</code> tikai piepilda izvēlni, nepievieno fontu failu.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="snip-metabox">
+      <h2>Pielāgota metabox (avota lauks)</h2>
+      <p>Papildina ieraksta rediģēšanas ekrānu ar savu, redzamu ievades lauku — atšķirībā no <a href="wordpress.html#custom-fields">Pielāgotiem laukiem</a> pamatlapā (kur dati tiek pievienoti programmatiski), šis piemērs rāda pilnu ceļu: administrators <strong>redz un aizpilda</strong> lauku admin panelī.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 1) Reģistrē metabox — parādās sānā, "post" ierakstu rediģēšanas ekrānā</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'add_meta_boxes'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-fn">add_meta_box</span>(
+        <span class="tok-str">'wpds_avots'</span>,
+        <span class="tok-str">'Avots'</span>,
+        <span class="tok-str">'wpds_avots_render'</span>,
+        <span class="tok-str">'post'</span>,
+        <span class="tok-str">'side'</span>,
+        <span class="tok-str">'default'</span>
+    );
+});
+
+<span class="tok-com">// 2) Izvada lauku — nolasa esošo vērtību, ja tāda jau ir</span>
+<span class="tok-kw">function</span> <span class="tok-fn">wpds_avots_render</span>(<span class="tok-fn">$post</span>) {
+    <span class="tok-fn">wp_nonce_field</span>(<span class="tok-str">'wpds_avots_save'</span>, <span class="tok-str">'wpds_avots_nonce'</span>);
+    <span class="tok-fn">$avots</span> = <span class="tok-fn">get_post_meta</span>(<span class="tok-fn">$post</span>->ID, <span class="tok-str">'avots'</span>, <span class="tok-kw">true</span>);
+    ?&gt;
+    &lt;input type="text" name="avots"
+           value="&lt;?php <span class="tok-kw">echo</span> <span class="tok-fn">esc_attr</span>(<span class="tok-fn">$avots</span>); ?&gt;"
+           placeholder="piem. Delfi, https://avots.lv" style="width:100%;"&gt;
+    &lt;?php
+}
+
+<span class="tok-com">// 3) Saglabā, kad ieraksts tiek publicēts/atjaunināts</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'save_post'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$post_id</span>) {
+    <span class="tok-kw">if</span> (!<span class="tok-fn">isset</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'wpds_avots_nonce'</span>])) <span class="tok-kw">return</span>;
+    <span class="tok-kw">if</span> (!<span class="tok-fn">wp_verify_nonce</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'wpds_avots_nonce'</span>], <span class="tok-str">'wpds_avots_save'</span>)) <span class="tok-kw">return</span>;
+    <span class="tok-kw">if</span> (<span class="tok-fn">defined</span>(<span class="tok-str">'DOING_AUTOSAVE'</span>) &amp;&amp; DOING_AUTOSAVE) <span class="tok-kw">return</span>;
+    <span class="tok-kw">if</span> (!<span class="tok-fn">current_user_can</span>(<span class="tok-str">'edit_post'</span>, <span class="tok-fn">$post_id</span>)) <span class="tok-kw">return</span>;
+
+    <span class="tok-kw">if</span> (!<span class="tok-fn">empty</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'avots'</span>])) {
+        <span class="tok-fn">update_post_meta</span>(<span class="tok-fn">$post_id</span>, <span class="tok-str">'avots'</span>, <span class="tok-fn">sanitize_text_field</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'avots'</span>]));
+    } <span class="tok-kw">else</span> {
+        <span class="tok-fn">delete_post_meta</span>(<span class="tok-fn">$post_id</span>, <span class="tok-str">'avots'</span>);
+    }
+});</code></pre>
+      <p>Izvade veidnē — pilnīgi tāpat kā jebkurš cits <code>get_post_meta()</code> nolasījums:</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php <span class="tok-fn">$avots</span> = <span class="tok-fn">get_post_meta</span>(<span class="tok-fn">get_the_ID</span>(), <span class="tok-str">'avots'</span>, <span class="tok-kw">true</span>); ?&gt;
+&lt;?php <span class="tok-kw">if</span> (<span class="tok-fn">$avots</span>): ?&gt;
+    &lt;p&gt;Avots: &lt;?php <span class="tok-kw">echo</span> <span class="tok-fn">esc_html</span>(<span class="tok-fn">$avots</span>); ?&gt;&lt;/p&gt;
+&lt;?php <span class="tok-kw">endif</span>; ?&gt;</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>DOING_AUTOSAVE</code> pārbaude ir svarīga — WordPress ik pa brīdi automātiski saglabā melnrakstu fonā, kamēr rediģē; bez šīs pārbaudes <code>save_post</code> izpildītos arī tad, kad <code>$_POST</code> vēl nesatur tavu lauku, un varētu netīšām izdzēst jau saglabāto vērtību. Lai pievienotu vēl vienu ierakstu tipu (ne tikai <code>post</code>), atkārto <code>add_meta_box()</code> izsaukumu ar citu tipa nosaukumu.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="snip-customizer-settings">
+      <h2>Vietnes iestatījumi caur Customizer</h2>
+      <p>Alternatīva <a href="wordpress.html#options-api">Options API</a> pieejai (skat. pamatlapā) — vienkāršiem, dažiem vietnes iestatījumiem (kontaktinformācija, sociālo tīklu saites) WordPress Customizer piedāvā gatavu UI ar tiešsaistes priekšskatījumu, bez pašam jāraksta forma un saglabāšanas loģika.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'customize_register'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$wp_customize</span>) {
+
+    <span class="tok-com">// Sadaļa Customizer izvēlnē</span>
+    <span class="tok-fn">$wp_customize</span>->add_section(<span class="tok-str">'kontakti'</span>, [
+        <span class="tok-str">'title'</span>    => <span class="tok-str">'Kontakti'</span>,
+        <span class="tok-str">'priority'</span> => 50,
+    ]);
+
+    <span class="tok-com">// Tālrunis</span>
+    <span class="tok-fn">$wp_customize</span>->add_setting(<span class="tok-str">'kontakti_telefons'</span>, [
+        <span class="tok-str">'sanitize_callback'</span> => <span class="tok-str">'sanitize_text_field'</span>,
+    ]);
+    <span class="tok-fn">$wp_customize</span>->add_control(<span class="tok-str">'kontakti_telefons'</span>, [
+        <span class="tok-str">'label'</span>   => <span class="tok-str">'Tālruņa numurs'</span>,
+        <span class="tok-str">'section'</span> => <span class="tok-str">'kontakti'</span>,
+        <span class="tok-str">'type'</span>    => <span class="tok-str">'text'</span>,
+    ]);
+
+    <span class="tok-com">// E-pasts</span>
+    <span class="tok-fn">$wp_customize</span>->add_setting(<span class="tok-str">'kontakti_epasts'</span>, [
+        <span class="tok-str">'sanitize_callback'</span> => <span class="tok-str">'sanitize_email'</span>,
+    ]);
+    <span class="tok-fn">$wp_customize</span>->add_control(<span class="tok-str">'kontakti_epasts'</span>, [
+        <span class="tok-str">'label'</span>   => <span class="tok-str">'E-pasta adrese'</span>,
+        <span class="tok-str">'section'</span> => <span class="tok-str">'kontakti'</span>,
+        <span class="tok-str">'type'</span>    => <span class="tok-str">'email'</span>,
+    ]);
+});</code></pre>
+      <p>Izvade veidnē — <strong>ne</strong> <code>get_option()</code>, bet <code>get_theme_mod()</code>:</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php <span class="tok-fn">$telefons</span> = <span class="tok-fn">get_theme_mod</span>(<span class="tok-str">'kontakti_telefons'</span>); ?&gt;
+&lt;?php <span class="tok-kw">if</span> (<span class="tok-fn">$telefons</span>): ?&gt;
+    &lt;a href="tel:&lt;?php <span class="tok-kw">echo</span> <span class="tok-fn">esc_attr</span>(<span class="tok-fn">$telefons</span>); ?&gt;"&gt;&lt;?php <span class="tok-kw">echo</span> <span class="tok-fn">esc_html</span>(<span class="tok-fn">$telefons</span>); ?&gt;&lt;/a&gt;
+&lt;?php <span class="tok-kw">endif</span>; ?&gt;</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Bieži sastopama kļūda: Customizer iestatījumi <strong>nesaglabājas</strong> kā parastas opcijas — tie glabājas kā "theme mods" (piesaistīti aktīvajai tēmai) un jānolasa ar <code>get_theme_mod('nosaukums', 'noklusējums')</code>, nevis <code>get_option()</code>. Ja tēmu vēlāk nomaina, šie iestatījumi <strong>nepārnesas</strong> uz jauno tēmu — tas ir ar nodomu (izskata iestatījumi ir tēmas specifiski), bet var pārsteigt, ja gaidīts pretējais.</p>
       </div>
     </section>
 
