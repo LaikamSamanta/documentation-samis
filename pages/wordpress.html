@@ -901,16 +901,24 @@ registerBlockType('mana-tema/sveiciens', {
         <div class="doc-mini-card"><h4>Contributor</h4><p>Var rakstīt ierakstus, bet nevar tos pats publicēt.</p></div>
         <div class="doc-mini-card"><h4>Subscriber</h4><p>Var tikai rediģēt savu profilu.</p></div>
       </div>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">if</span> (<span class="tok-fn">current_user_can</span>(<span class="tok-str">'publish_posts'</span>)) {
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Veidnē vai jebkur, kur jāpārbauda konkrētā lietotāja tiesības</span>
+<span class="tok-kw">if</span> (<span class="tok-fn">current_user_can</span>(<span class="tok-str">'publish_posts'</span>)) {
     <span class="tok-kw">echo</span> <span class="tok-str">'Vari publicēt ierakstus.'</span>;
 }
 
-<span class="tok-com">// Pielāgotas lomas izveide (parasti izsauc vienreiz, aktivizējot spraudni)</span>
-<span class="tok-fn">add_role</span>(<span class="tok-str">'redaktors_lite'</span>, <span class="tok-str">'Redaktors (ierobežots)'</span>, [
-    <span class="tok-str">'read'</span>         => <span class="tok-kw">true</span>,
-    <span class="tok-str">'edit_posts'</span>   => <span class="tok-kw">true</span>,
-    <span class="tok-str">'publish_posts'</span> => <span class="tok-kw">false</span>,
-]);</code></pre>
+<span class="tok-com">// Spraudņa galvenajā failā (skat. "Spraudņa pamatstruktūra" augstāk) —
+// izsauc TIKAI VIENU reizi, aktivizējot spraudni, nevis katrā lapas ielādē</span>
+<span class="tok-fn">register_activation_hook</span>(__FILE__, <span class="tok-kw">function</span>() {
+    <span class="tok-fn">add_role</span>(<span class="tok-str">'redaktors_lite'</span>, <span class="tok-str">'Redaktors (ierobežots)'</span>, [
+        <span class="tok-str">'read'</span>         => <span class="tok-kw">true</span>,
+        <span class="tok-str">'edit_posts'</span>   => <span class="tok-kw">true</span>,
+        <span class="tok-str">'publish_posts'</span> => <span class="tok-kw">false</span>,
+    ]);
+});</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>register_activation_hook(__FILE__, ...)</code> nozīmē "izpildi šo funkciju tieši tajā brīdī, kad admin panelī nospiež 'Aktivizēt' šim spraudnim" — tas garantē, ka <code>add_role()</code> izpildās tieši vienreiz, nevis katru reizi, kad kāds atver jebkuru lapu (kas radītu liekas datubāzes izmaiņas). <code>__FILE__</code> automātiski norāda uz to failu, kurā šis kods atrodas — tam jābūt spraudņa galvenajam failam ar galvenes komentāru (skat. <a href="#spraudnis">Spraudņa pamatstruktūra</a>).</p>
+      </div>
     </section>
 
     <section class="doc-section" id="wpdb">
@@ -927,6 +935,10 @@ registerBlockType('mana-tema/sveiciens', {
     <span class="tok-kw">echo</span> <span class="tok-fn">esc_html</span>(<span class="tok-fn">$rinda</span>->teksts);
 }</code></pre>
       <p><code>{$wpdb->prefix}</code> automātiski ievieto pareizo tabulu prefiksu (parasti <code>wp_</code>, bet var atšķirties) — nekad nehardkodē <code>wp_</code> tieši.</p>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Šis piemērs pieņem, ka tabula <code>{$wpdb->prefix}atsauksmes</code> jau eksistē datubāzē — <code>$wpdb</code> tikai <strong>vaicā</strong> esošai tabulai, tas neko neizveido. Pašu tabulu parasti izveido vienreiz, spraudņa aktivizācijas brīdī, ar WordPress <code>dbDelta()</code> funkciju. Šo konkrēto vaicājuma-un-cikla bloku liec jebkur, kur jāizvada rezultāts, — templatē (piem., <code>page-atsauksmes.php</code>), shortcode funkcijā vai AJAX apstrādātājā.</p>
+      </div>
     </section>
 
     <section class="doc-section" id="options-api">
