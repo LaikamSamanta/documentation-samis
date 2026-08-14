@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
 <title>Python rīki - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=25" />
+<link rel="stylesheet" href="../css/style.css?v=26" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -288,9 +288,13 @@ iepriksejie_statusi = {}
         <span class="tok-kw">try</span>:
             atbilde = requests.get(url, timeout=10, verify=<span class="tok-kw">False</span>)
             <span class="tok-kw">return</span> <span class="tok-str">"strada"</span> <span class="tok-kw">if</span> atbilde.status_code < 400 <span class="tok-kw">else</span> <span class="tok-str">"kluda"</span>
-        <span class="tok-kw">except</span> requests.exceptions.RequestException:
+        <span class="tok-kw">except</span> requests.exceptions.RequestException <span class="tok-kw">as</span> e2:
+            <span class="tok-fn">print</span>(<span class="tok-str">f"  [{url}] SSL fallback arī neizdevās: {e2}"</span>)
             <span class="tok-kw">return</span> <span class="tok-str">"nestrada"</span>
-    <span class="tok-kw">except</span> requests.exceptions.RequestException:
+    <span class="tok-kw">except</span> requests.exceptions.RequestException <span class="tok-kw">as</span> e:
+        <span class="tok-com"># PARĀDA īsto kļūdu - bez šī nav iespējams zināt, vai vietne tiešām lejā,</span>
+        <span class="tok-com"># vai to bloķē antivīruss/ugunsmūris/proxy uz ŠĪ datora</span>
+        <span class="tok-fn">print</span>(<span class="tok-str">f"  [{url}] kļūdas iemesls: {e}"</span>)
         <span class="tok-kw">return</span> <span class="tok-str">"nestrada"</span>
 
 <span class="tok-kw">def</span> <span class="tok-fn">parbaudit_vietnes</span>():
@@ -330,6 +334,61 @@ iepriksejie_statusi = {}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
         <p>Paziņojums parādās <strong>tikai uz šī paša datora</strong>, kamēr skripts tur palaists - ja dators izslēgts vai skripts aizvērts, paziņojumu nebūs. Ja vajag paziņojumus arī tad, kad dators nav ieslēgts (piem., uz telefonu), risinājums ir citāds: skripts jāpalaiž serverī, kas strādā pastāvīgi, un vietā/papildus <code>winotify</code> jāsūta ziņa uz Slack/Telegram webhook vai e-pastu - tas darbojas neatkarīgi no tavas paša ierīces stāvokļa.</p>
       </div>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Ja gribi PILNĪGU kontroli pār izskatu (nevis Windows šablonu)</h3>
+      <p>Godīga atbilde par stiliem: <code>winotify</code> (un jebkura cita bibliotēka, kas izmanto Windows Action Center) rāda paziņojumu <strong>pēc Windows sava, fiksēta šablona</strong> - krāsas, fontu, izkārtojumu tur pārrakstīt nevar, jo tas nav HTML/CSS, bet operētājsistēmas iebūvēta UI komponente. JavaScript šeit neko negrozīs, jo problēma nav valodā, bet tajā, KURŠ zīmē logu.</p>
+      <p>Ja tiešām vajag pilnībā pašrocīgi noformētu logu (jebkuras krāsas, fonti, animācija - tāpat kā Slack savā app logā), risinājums ir uztaisīt <strong>savu</strong> nelielu logu, nevis izmantot Windows paziņojumu API. <code>tkinter</code> ir Python iebūvēts (nekas jāuzinstalē) un ļauj to izdarīt:</p>
+      <pre class="code-block"><span class="lang">python</span><code><span class="tok-kw">import</span> tkinter <span class="tok-kw">as</span> tk
+<span class="tok-kw">import</span> threading
+<span class="tok-kw">import</span> winsound
+
+<span class="tok-kw">def</span> <span class="tok-fn">rada_pasizveidotu_pazinojumu</span>(virsraksts, zina, ir_labi=<span class="tok-kw">True</span>):
+    <span class="tok-kw">def</span> <span class="tok-fn">izveidot_logu</span>():
+        logs = tk.Tk()
+        logs.overrideredirect(<span class="tok-kw">True</span>)  <span class="tok-com"># noņem loga rāmi un nosaukuma joslu</span>
+        logs.attributes(<span class="tok-str">"-topmost"</span>, <span class="tok-kw">True</span>)  <span class="tok-com"># vienmēr virs citiem logiem</span>
+
+        krasa_fons = <span class="tok-str">"#15151f"</span>
+        krasa_akcents = <span class="tok-str">"#22c55e"</span> <span class="tok-kw">if</span> ir_labi <span class="tok-kw">else</span> <span class="tok-str">"#ef4444"</span>
+        platums, augstums = 340, 90
+
+        x = logs.winfo_screenwidth() - platums - 20
+        y = logs.winfo_screenheight() - augstums - 60
+        logs.geometry(<span class="tok-str">f"{platums}x{augstums}+{x}+{y}"</span>)
+        logs.configure(bg=krasa_fons)
+
+        josla = tk.Frame(logs, bg=krasa_akcents, width=6)
+        josla.pack(side=<span class="tok-str">"left"</span>, fill=<span class="tok-str">"y"</span>)
+
+        saturs = tk.Frame(logs, bg=krasa_fons)
+        saturs.pack(side=<span class="tok-str">"left"</span>, fill=<span class="tok-str">"both"</span>, expand=<span class="tok-kw">True</span>, padx=14, pady=10)
+
+        tk.Label(saturs, text=virsraksts, bg=krasa_fons, fg=<span class="tok-str">"white"</span>,
+                 font=(<span class="tok-str">"Segoe UI"</span>, 11, <span class="tok-str">"bold"</span>), anchor=<span class="tok-str">"w"</span>, justify=<span class="tok-str">"left"</span>).pack(fill=<span class="tok-str">"x"</span>)
+        tk.Label(saturs, text=zina, bg=krasa_fons, fg=<span class="tok-str">"#a6a3c4"</span>,
+                 font=(<span class="tok-str">"Segoe UI"</span>, 9), anchor=<span class="tok-str">"w"</span>, justify=<span class="tok-str">"left"</span>, wraplength=250).pack(fill=<span class="tok-str">"x"</span>, pady=(4, 0))
+
+        aizvert = tk.Label(logs, text=<span class="tok-str">"✕"</span>, bg=krasa_fons, fg=<span class="tok-str">"#a6a3c4"</span>, font=(<span class="tok-str">"Segoe UI"</span>, 10), cursor=<span class="tok-str">"hand2"</span>)
+        aizvert.place(x=platums - 26, y=8)
+        aizvert.bind(<span class="tok-str">"&lt;Button-1&gt;"</span>, <span class="tok-kw">lambda</span> e: logs.destroy())
+
+        winsound.MessageBeep(winsound.MB_ICONASTERISK <span class="tok-kw">if</span> ir_labi <span class="tok-kw">else</span> winsound.MB_ICONEXCLAMATION)
+
+        logs.after(15000, logs.destroy)  <span class="tok-com"># aizveras pats pēc 15s, ja pats neaizver ātrāk</span>
+        logs.mainloop()
+
+    <span class="tok-com"># atsevišķā pavedienā, lai popups NEAPTUR galveno pārbaudes ciklu</span>
+    threading.Thread(target=izveidot_logu, daemon=<span class="tok-kw">True</span>).start()</code></pre>
+      <p>Lai to izmantotu, aizstāj <code>nosutit_pazinojumu(...)</code> izsaukumus ar <code>rada_pasizveidotu_pazinojumu(virsraksts, zina, ir_labi=(jaunais == "strada"))</code> augstākajā skriptā.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4><code>overrideredirect(True)</code></h4><p>Noņem standarta Windows loga rāmi/nosaukuma joslu, lai logs izskatītos pēc paziņojuma, ne pēc parastas programmas.</p></div>
+        <div class="doc-mini-card"><h4>Krāsas, fonti, izmērs</h4><p>Pilnībā tavā ziņā - <code>krasa_fons</code>, <code>krasa_akcents</code>, <code>font=(...)</code>, <code>platums</code>/<code>augstums</code> maini brīvi, bez jebkādiem OS ierobežojumiem.</p></div>
+        <div class="doc-mini-card"><h4><code>threading.Thread</code></h4><p>Katrs paziņojums iegūst savu neatkarīgu logu savā pavedienā - bez tā <code>mainloop()</code> apturētu visu skriptu, kamēr logs nav aizvērts.</p></div>
+      </div>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Kompromiss: šis logs <strong>neparādās</strong> Windows paziņojumu centrā (zvana ikonā) un pēc aizvēršanas nekur nepaliek - tas ir vienkāršs, vienreizējs uznirstošais logs, nevis īsts OS paziņojums. <code>tkinter</code> oficiāli nav domāts vairāku logu izveidei no dažādiem pavedieniem vienlaicīgi - praksē tas šādam vienkāršam gadījumam strādā uzticami, bet nav ieteicams sarežģītākām, interaktīvām saskarnēm.</p>
+      </div>
     </section>
 
     <div class="doc-pager">
@@ -339,7 +398,7 @@ iepriksejie_statusi = {}
   </main>
 </div>
 
-<script src="../js/theme.js?v=25"></script>
-<script src="../js/main.js?v=25"></script>
+<script src="../js/theme.js?v=26"></script>
+<script src="../js/main.js?v=26"></script>
 </body>
 </html>
