@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
 <title>Rīki - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=33" />
+<link rel="stylesheet" href="../css/style.css?v=34" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -35,7 +35,8 @@
   <aside class="doc-sidebar">
     <div class="doc-sidebar-group">
       <h4>Attēli</h4>
-      <a href="#attelu-izmers" class="active"><span class="bullet"></span>Izmēra maiņa &amp; saspiešana</a>
+      <a href="#attelu-izmers" class="active"><span class="bullet"></span>Izmērs, formāts &amp; saspiešana</a>
+      <a href="#fona-nonemsana"><span class="bullet"></span>Vienkrāsaina fona noņemšana</a>
     </div>
   </aside>
 
@@ -55,44 +56,89 @@
     <p class="doc-lead">Reāli, strādājoši rīki tieši pārlūkā - bez instalēšanas, bez servera, dati nekur netiek augšupielādēti. Kur vien tas tehniski iespējams (attēlu apstrāde, teksta pārveide u.tml.), tas šeit ir izdarīts kā vizuāls rīks, nevis tikai koda piemērs. Uzdevumiem, kas prasa piekļuvi failu sistēmai vai fona darbību (masveida lejupielāde, mapju sakārtošana, uzraudzība) - skaties <a href="python-riki.html">Python rīki</a>, jo tos pārlūks tehniski nevar izdarīt.</p>
 
     <section class="doc-section" id="attelu-izmers">
-      <h2>Attēlu izmēra maiņa &amp; saspiešana</h2>
-      <p>Nomet attēlu zemāk - izmērs un kvalitāte mainās uzreiz, priekšskatījumā redzi rezultātu, un lejupielādē tikai tad, kad esi apmierināts. Viss notiek Tavā pārlūkā (Canvas API) - attēls nekur netiek nosūtīts.</p>
+      <h2>Attēlu izmērs, formāts &amp; saspiešana</h2>
+      <p>Nomet vienu vai vairākus attēlus zemāk - katram uzreiz redzi rezultāta izmēru, un vari lejupielādēt pa vienam vai visus reizē. Formāta izvēlē pieejams arī <strong>WebP</strong> (mazāks fails nekā JPEG pie tādas pašas kvalitātes). Viss notiek Tavā pārlūkā (Canvas API) - nekas nekur netiek augšupielādēts.</p>
 
       <div class="riki-tool">
         <div class="riki-dropzone" id="riki-dropzone">
-          <input type="file" id="riki-file-input" accept="image/*" hidden />
+          <input type="file" id="riki-file-input" accept="image/*" multiple hidden />
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+          <p>Nomet vienu vai vairākus attēlus šeit vai <span class="riki-browse">izvēlies failus</span></p>
+        </div>
+
+        <div class="riki-multi-controls" id="riki-controls" style="display:none;">
+          <div class="riki-settings-bar">
+            <div class="riki-settings-col">
+              <label>Formāts</label>
+              <select id="riki-format" class="riki-select">
+                <option value="image/jpeg">JPEG</option>
+                <option value="image/webp">WebP</option>
+                <option value="image/png">PNG (bez zuduma)</option>
+              </select>
+            </div>
+            <div class="riki-settings-col">
+              <label>Maks. platums: <span id="riki-width-value">1600</span>px</label>
+              <input type="range" id="riki-width" min="200" max="4000" step="50" value="1600" />
+            </div>
+            <div class="riki-settings-col" id="riki-quality-wrap">
+              <label>Kvalitāte: <span id="riki-quality-value">85</span>%</label>
+              <input type="range" id="riki-quality" min="10" max="100" step="5" value="85" />
+            </div>
+          </div>
+
+          <div class="riki-file-list" id="riki-file-list"></div>
+
+          <div class="riki-btn-row">
+            <button class="riki-btn" id="riki-download-all">Lejupielādēt visus</button>
+            <button class="riki-btn riki-btn-secondary" id="riki-reset">Sākt no jauna</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>Vairāki faili</h4><p>Katrs pievienotais attēls tiek apstrādāts neatkarīgi, ar tiem pašiem platuma/kvalitātes/formāta iestatījumiem - maini iestatījumus vienreiz, tie pielietojas visiem uzreiz.</p></div>
+        <div class="doc-mini-card"><h4>WebP formāts</h4><p><code>canvas.toBlob(callback, "image/webp", kvalitāte)</code> - atbalstīts visos modernajos pārlūkos. Parasti dod mazāku faila izmēru par JPEG pie vizuāli identiskas kvalitātes.</p></div>
+        <div class="doc-mini-card"><h4>Kāpēc PNG bez kvalitātes slīdņa</h4><p>PNG ir bezzudumu formāts - kvalitātes parametru tas neatbalsta, tāpēc slīdnis pazūd, izvēloties PNG. Der attēliem ar caurspīdīgumu vai tekstu/ikonām, kur JPEG/WebP saspiešanas artefakti būtu redzami.</p></div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="fona-nonemsana">
+      <h2>Vienkrāsaina fona noņemšana</h2>
+      <p>Noklikšķini uz fona krāsas attēlā - visi līdzīgas krāsas pikseļi kļūst caurspīdīgi. <strong>Godīgi par ierobežojumu:</strong> šis nav AI (kā remove.bg) - tas ir krāsu salīdzinājums, tāpēc der produktu foto/logotipiem ar vienmērīgu (piem. baltu vai vienkrāsainu) fonu, bet nestrādā sarežģītiem foniem ar daudz krāsu variāciju.</p>
+
+      <div class="riki-tool">
+        <div class="riki-dropzone" id="bg-dropzone">
+          <input type="file" id="bg-file-input" accept="image/*" hidden />
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
           <p>Nomet attēlu šeit vai <span class="riki-browse">izvēlies failu</span></p>
         </div>
 
-        <div class="riki-controls" id="riki-controls" style="display:none;">
+        <div class="riki-controls" id="bg-controls" style="display:none;">
           <div class="riki-preview-wrap">
-            <img id="riki-preview" alt="Priekšskatījums" />
+            <canvas id="bg-canvas"></canvas>
           </div>
           <div class="riki-settings">
-            <label>Maksimālais platums: <span id="riki-width-value">1600</span>px</label>
-            <input type="range" id="riki-width" min="200" max="4000" step="50" value="1600" />
+            <p class="riki-hint">Noklikšķini uz attēla, lai izvēlētos fona krāsu.</p>
 
-            <label>Kvalitāte (JPEG): <span id="riki-quality-value">85</span>%</label>
-            <input type="range" id="riki-quality" min="10" max="100" step="5" value="85" />
+            <label>Tolerance: <span id="bg-tolerance-value">30</span></label>
+            <input type="range" id="bg-tolerance" min="0" max="150" step="5" value="30" />
 
             <div class="riki-stats">
-              <span>Oriģināls: <b id="riki-original-size">-</b></span>
-              <span>Rezultāts: <b id="riki-result-size">-</b></span>
+              <span>Izvēlētā krāsa: <span id="bg-picked-color" class="riki-color-dot"></span></span>
             </div>
 
             <div class="riki-btn-row">
-              <button class="riki-btn" id="riki-download">Lejupielādēt</button>
-              <button class="riki-btn riki-btn-secondary" id="riki-reset">Cits attēls</button>
+              <button class="riki-btn" id="bg-download">Lejupielādēt PNG</button>
+              <button class="riki-btn riki-btn-secondary" id="bg-reset">Cits attēls</button>
             </div>
           </div>
         </div>
       </div>
 
       <div class="doc-cards">
-        <div class="doc-mini-card"><h4>Canvas API</h4><p>Attēlu zīmē uz neredzama <code>&lt;canvas&gt;</code> elementa vēlamajā izmērā, tad <code>canvas.toBlob()</code> to eksportē kā jaunu, saspiestu JPEG failu - visu izdara pats pārlūks.</p></div>
-        <div class="doc-mini-card"><h4>Nekas netiek augšupielādēts</h4><p>Atšķirībā no daudziem online attēlu saspiešanas rīkiem, šis nesūta failu uz nevienu serveri - viss notiek lokāli Tavā pārlūkā, arī bez interneta pieslēguma pēc lapas ielādes.</p></div>
-        <div class="doc-mini-card"><h4>Kāpēc tikai JPEG izvadē</h4><p>JPEG atbalsta regulējamu kvalitāti (mazāks fails, redzams kvalitātes zudums), tāpēc der fotogrāfijām. Ja oriģināls ir PNG ar caurspīdīgumu, izvade JPEG to aizpildīs ar baltu fonu.</p></div>
+        <div class="doc-mini-card"><h4>Kā strādā</h4><p>Klikšķa vietā nolasa pikseļa RGB krāsu, tad katram attēla pikselim rēķina krāsu attālumu līdz tai (<code>Math.sqrt</code> no R/G/B starpību kvadrātiem) - ja attālums mazāks par toleranci, pikseļa alfa kanālu iestata uz 0 (caurspīdīgs).</p></div>
+        <div class="doc-mini-card"><h4>Tolerance slīdnis</h4><p>Zema tolerance - noņem tikai gandrīz identisku krāsu (precīzi, bet var atstāt maliņas). Augsta tolerance - noņem plašāku krāsu diapazonu (var sākt "ēst" arī paša objekta malas, ja tās tuvu fona krāsai).</p></div>
+        <div class="doc-mini-card"><h4>Kāpēc lejupielāde tikai PNG</h4><p>Caurspīdīgumam (alfa kanālam) nepieciešams formāts, kas to atbalsta - PNG ir drošākā, universālākā izvēle (JPEG caurspīdīgumu neatbalsta vispār).</p></div>
       </div>
     </section>
 
@@ -103,26 +149,25 @@
   </main>
 </div>
 
-<script src="../js/theme.js?v=33"></script>
-<script src="../js/main.js?v=33"></script>
+<script src="../js/theme.js?v=34"></script>
+<script src="../js/main.js?v=34"></script>
 <script>
 (function () {
   var dropzone = document.getElementById("riki-dropzone");
   var fileInput = document.getElementById("riki-file-input");
   var controls = document.getElementById("riki-controls");
-  var previewImg = document.getElementById("riki-preview");
+  var fileList = document.getElementById("riki-file-list");
   var widthSlider = document.getElementById("riki-width");
   var qualitySlider = document.getElementById("riki-quality");
+  var qualityWrap = document.getElementById("riki-quality-wrap");
   var widthValue = document.getElementById("riki-width-value");
   var qualityValue = document.getElementById("riki-quality-value");
-  var originalSizeEl = document.getElementById("riki-original-size");
-  var resultSizeEl = document.getElementById("riki-result-size");
-  var downloadBtn = document.getElementById("riki-download");
+  var formatSelect = document.getElementById("riki-format");
+  var downloadAllBtn = document.getElementById("riki-download-all");
   var resetBtn = document.getElementById("riki-reset");
 
-  var originalImage = null;
-  var originalFileName = "attels";
-  var resultBlob = null;
+  var faili = [];
+  var nakosaisId = 0;
 
   function formatBytes(bytes) {
     if (bytes < 1024) return bytes + " B";
@@ -130,39 +175,54 @@
     return (bytes / 1024 / 1024).toFixed(2) + " MB";
   }
 
-  function apstradatFailu(file) {
-    if (!file || file.type.indexOf("image/") !== 0) return;
-    originalFileName = file.name.replace(/\.[^.]+$/, "") || "attels";
-    originalSizeEl.textContent = formatBytes(file.size);
-
-    var reader = new FileReader();
-    reader.onload = function (e) {
-      var img = new Image();
-      img.onload = function () {
-        originalImage = img;
-        previewImg.src = e.target.result;
-        controls.style.display = "grid";
-        dropzone.style.display = "none";
-
-        var sakumaPlatums = Math.min(img.width, 4000);
-        widthSlider.max = Math.max(img.width, 200);
-        widthSlider.value = sakumaPlatums;
-        widthValue.textContent = sakumaPlatums;
-
-        atjaunotRezultatu();
-      };
-      img.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
+  function ekstensija() {
+    var tips = formatSelect.value;
+    if (tips === "image/png") return "png";
+    if (tips === "image/webp") return "webp";
+    return "jpg";
   }
 
-  function atjaunotRezultatu() {
-    if (!originalImage) return;
+  function veidotFailaRindu(ieraksts) {
+    var rinda = document.createElement("div");
+    rinda.className = "riki-file-item";
+
+    var thumb = document.createElement("img");
+    thumb.className = "riki-file-thumb";
+    rinda.appendChild(thumb);
+
+    var info = document.createElement("div");
+    info.className = "riki-file-info";
+    var nosaukums = document.createElement("div");
+    nosaukums.className = "riki-file-name";
+    nosaukums.textContent = ieraksts.originalName;
+    var statistika = document.createElement("div");
+    statistika.className = "riki-file-stats";
+    statistika.textContent = "Apstrādā...";
+    info.appendChild(nosaukums);
+    info.appendChild(statistika);
+    rinda.appendChild(info);
+
+    var lejupBtn = document.createElement("button");
+    lejupBtn.className = "riki-file-download";
+    lejupBtn.title = "Lejupielādēt";
+    lejupBtn.textContent = "↓";
+    lejupBtn.addEventListener("click", function () {
+      lejupieladetVienu(ieraksts);
+    });
+    rinda.appendChild(lejupBtn);
+
+    fileList.appendChild(rinda);
+    return { rinda: rinda, thumb: thumb, statistika: statistika };
+  }
+
+  function apstradatVienuFailu(ieraksts) {
+    if (!ieraksts.originalImage) return;
     var maxPlatums = parseInt(widthSlider.value, 10);
+    var formats = formatSelect.value;
     var kvalitate = parseInt(qualitySlider.value, 10) / 100;
 
-    var platums = originalImage.width;
-    var augstums = originalImage.height;
+    var platums = ieraksts.originalImage.width;
+    var augstums = ieraksts.originalImage.height;
     if (platums > maxPlatums) {
       augstums = Math.round(augstums * (maxPlatums / platums));
       platums = maxPlatums;
@@ -172,29 +232,214 @@
     canvas.width = platums;
     canvas.height = augstums;
     var ctx = canvas.getContext("2d");
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, platums, augstums);
-    ctx.drawImage(originalImage, 0, 0, platums, augstums);
+    if (formats !== "image/png") {
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, platums, augstums);
+    }
+    ctx.drawImage(ieraksts.originalImage, 0, 0, platums, augstums);
 
     canvas.toBlob(
       function (blob) {
-        resultBlob = blob;
-        resultSizeEl.textContent = formatBytes(blob.size);
+        ieraksts.resultBlob = blob;
+        ieraksts.elements.statistika.textContent =
+          formatBytes(ieraksts.originalSize) + " → " + formatBytes(blob.size);
       },
-      "image/jpeg",
+      formats,
       kvalitate
     );
   }
 
+  function apstradatVisus() {
+    faili.forEach(apstradatVienuFailu);
+  }
+
+  function pievienotFailus(failuSaraksts) {
+    var attelu_faili = [];
+    for (var i = 0; i < failuSaraksts.length; i++) {
+      if (failuSaraksts[i].type.indexOf("image/") === 0) attelu_faili.push(failuSaraksts[i]);
+    }
+    if (attelu_faili.length === 0) return;
+
+    attelu_faili.forEach(function (file) {
+      var ieraksts = {
+        id: nakosaisId++,
+        originalImage: null,
+        originalName: file.name.replace(/\.[^.]+$/, "") || "attels",
+        originalSize: file.size,
+        resultBlob: null,
+      };
+      faili.push(ieraksts);
+      ieraksts.elements = veidotFailaRindu(ieraksts);
+
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        var img = new Image();
+        img.onload = function () {
+          ieraksts.originalImage = img;
+          ieraksts.elements.thumb.src = e.target.result;
+          if (faili.length === 1) {
+            widthSlider.max = Math.max(img.width, 200);
+            widthSlider.value = Math.min(img.width, 1600);
+            widthValue.textContent = widthSlider.value;
+          }
+          apstradatVienuFailu(ieraksts);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    controls.style.display = "block";
+    dropzone.style.display = "none";
+  }
+
+  function lejupieladetVienu(ieraksts) {
+    if (!ieraksts.resultBlob) return;
+    var url = URL.createObjectURL(ieraksts.resultBlob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = ieraksts.originalName + "-apstradats." + ekstensija();
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
   function atiestatit() {
-    originalImage = null;
-    resultBlob = null;
+    faili = [];
+    fileList.innerHTML = "";
     fileInput.value = "";
     controls.style.display = "none";
     dropzone.style.display = "block";
-    originalSizeEl.textContent = "-";
-    resultSizeEl.textContent = "-";
   }
+
+  dropzone.addEventListener("click", function () {
+    fileInput.click();
+  });
+  dropzone.addEventListener("dragover", function (e) {
+    e.preventDefault();
+    dropzone.classList.add("drag");
+  });
+  dropzone.addEventListener("dragleave", function () {
+    dropzone.classList.remove("drag");
+  });
+  dropzone.addEventListener("drop", function (e) {
+    e.preventDefault();
+    dropzone.classList.remove("drag");
+    if (e.dataTransfer.files) pievienotFailus(e.dataTransfer.files);
+  });
+  fileInput.addEventListener("change", function () {
+    pievienotFailus(fileInput.files);
+  });
+
+  widthSlider.addEventListener("input", function () {
+    widthValue.textContent = widthSlider.value;
+    apstradatVisus();
+  });
+  qualitySlider.addEventListener("input", function () {
+    qualityValue.textContent = qualitySlider.value;
+    apstradatVisus();
+  });
+  formatSelect.addEventListener("change", function () {
+    qualityWrap.style.display = formatSelect.value === "image/png" ? "none" : "block";
+    apstradatVisus();
+  });
+
+  downloadAllBtn.addEventListener("click", function () {
+    faili.forEach(function (ieraksts, indekss) {
+      setTimeout(function () {
+        lejupieladetVienu(ieraksts);
+      }, indekss * 400);
+    });
+  });
+
+  resetBtn.addEventListener("click", atiestatit);
+})();
+
+(function () {
+  var dropzone = document.getElementById("bg-dropzone");
+  var fileInput = document.getElementById("bg-file-input");
+  var controls = document.getElementById("bg-controls");
+  var canvas = document.getElementById("bg-canvas");
+  var ctx = canvas.getContext("2d");
+  var toleranceSlider = document.getElementById("bg-tolerance");
+  var toleranceValue = document.getElementById("bg-tolerance-value");
+  var pickedColorEl = document.getElementById("bg-picked-color");
+  var downloadBtn = document.getElementById("bg-download");
+  var resetBtn = document.getElementById("bg-reset");
+
+  var originalImageData = null;
+  var pickedColor = null;
+  var originalFileName = "attels";
+
+  function apstradatFailu(file) {
+    if (!file || file.type.indexOf("image/") !== 0) return;
+    originalFileName = file.name.replace(/\.[^.]+$/, "") || "attels";
+
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      var img = new Image();
+      img.onload = function () {
+        var maxPlatums = 700;
+        var platums = img.width;
+        var augstums = img.height;
+        if (platums > maxPlatums) {
+          augstums = Math.round(augstums * (maxPlatums / platums));
+          platums = maxPlatums;
+        }
+        canvas.width = platums;
+        canvas.height = augstums;
+        ctx.drawImage(img, 0, 0, platums, augstums);
+        originalImageData = ctx.getImageData(0, 0, platums, augstums);
+        pickedColor = null;
+        pickedColorEl.style.background = "transparent";
+
+        controls.style.display = "grid";
+        dropzone.style.display = "none";
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function pielietotNonemsanu() {
+    if (!originalImageData || !pickedColor) return;
+    var tolerance = parseInt(toleranceSlider.value, 10);
+    var avots = originalImageData.data;
+    var rezultats = ctx.createImageData(originalImageData.width, originalImageData.height);
+    var izvade = rezultats.data;
+
+    for (var i = 0; i < avots.length; i += 4) {
+      var r = avots[i], g = avots[i + 1], b = avots[i + 2], a = avots[i + 3];
+      var dr = r - pickedColor.r, dg = g - pickedColor.g, db = b - pickedColor.b;
+      var attalums = Math.sqrt(dr * dr + dg * dg + db * db);
+      izvade[i] = r;
+      izvade[i + 1] = g;
+      izvade[i + 2] = b;
+      izvade[i + 3] = attalums < tolerance ? 0 : a;
+    }
+
+    ctx.putImageData(rezultats, 0, 0);
+  }
+
+  canvas.addEventListener("click", function (e) {
+    if (!originalImageData) return;
+    var rect = canvas.getBoundingClientRect();
+    var x = Math.round((e.clientX - rect.left) * (canvas.width / rect.width));
+    var y = Math.round((e.clientY - rect.top) * (canvas.height / rect.height));
+    x = Math.max(0, Math.min(x, originalImageData.width - 1));
+    y = Math.max(0, Math.min(y, originalImageData.height - 1));
+    var dati = originalImageData.data;
+    var indekss = (y * originalImageData.width + x) * 4;
+    pickedColor = { r: dati[indekss], g: dati[indekss + 1], b: dati[indekss + 2] };
+    pickedColorEl.style.background = "rgb(" + pickedColor.r + "," + pickedColor.g + "," + pickedColor.b + ")";
+    pielietotNonemsanu();
+  });
+
+  toleranceSlider.addEventListener("input", function () {
+    toleranceValue.textContent = toleranceSlider.value;
+    pielietotNonemsanu();
+  });
 
   dropzone.addEventListener("click", function () {
     fileInput.click();
@@ -217,28 +462,26 @@
     apstradatFailu(fileInput.files[0]);
   });
 
-  widthSlider.addEventListener("input", function () {
-    widthValue.textContent = widthSlider.value;
-    atjaunotRezultatu();
-  });
-  qualitySlider.addEventListener("input", function () {
-    qualityValue.textContent = qualitySlider.value;
-    atjaunotRezultatu();
-  });
-
   downloadBtn.addEventListener("click", function () {
-    if (!resultBlob) return;
-    var url = URL.createObjectURL(resultBlob);
-    var a = document.createElement("a");
-    a.href = url;
-    a.download = originalFileName + "-samazinats.jpg";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    canvas.toBlob(function (blob) {
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url;
+      a.download = originalFileName + "-bez-fona.png";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, "image/png");
   });
 
-  resetBtn.addEventListener("click", atiestatit);
+  resetBtn.addEventListener("click", function () {
+    originalImageData = null;
+    pickedColor = null;
+    fileInput.value = "";
+    controls.style.display = "none";
+    dropzone.style.display = "block";
+  });
 })();
 </script>
 </body>
