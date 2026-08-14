@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
 <title>Python rīki - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=31" />
+<link rel="stylesheet" href="../css/style.css?v=32" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -280,6 +280,14 @@ HEADERS = {
                   <span class="tok-str">"(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"</span>
 }
 
+<span class="tok-com"># ja kāda vietne ir aizsargāta ar paroli servera līmenī (piem. Plesk "Password</span>
+<span class="tok-com"># protection" konkrētai mapei/domēnam - HTTP Basic Auth), pievieno tās</span>
+<span class="tok-com"># lietotājvārdu/paroli šeit. Vietnēm, kas šajā vārdnīcā NAV, PAROLES.get(url)</span>
+<span class="tok-com"># atgriež None, un requests to interpretē tieši tāpat kā auth vispār nesūtot</span>
+PAROLES = {
+    <span class="tok-str">"https://klusums.lv"</span>: (<span class="tok-str">"lietotajvards"</span>, <span class="tok-str">"parole"</span>),
+}
+
 <span class="tok-com"># atceras katras vietnes pēdējo zināmo statusu, lai paziņotu tikai tad, kad tas MAINĀS</span>
 iepriksejie_statusi = {}
 
@@ -352,13 +360,11 @@ _bildes_cache = []  <span class="tok-com"># jāpatur reference uz katru PhotoIma
     <span class="tok-fn">_apalu_taisnstura</span>(canvas, 1, 1, platums-1, augstums-1, 22,
                      fill=stikla_krasa, outline=apmales_krasa, width=1)
 
-    <span class="tok-com"># ikona apļa nozīmītē, ne tikai teksts - premium notikumu paziņojumu paraugs</span>
+    <span class="tok-com"># vienkāršs krāsains aplis kā statusa nozīmīte - bez burtiem/simboliem iekšā</span>
     ikonas_izmers = 32
     ikonas_cx, ikonas_cy = 40, augstums // 2
     ikonas_bilde = <span class="tok-fn">_gluds_aplis</span>(krasa_akcents, ikonas_izmers)
     canvas.create_image(ikonas_cx, ikonas_cy, image=ikonas_bilde)
-    canvas.create_text(ikonas_cx, ikonas_cy, text=(<span class="tok-str">"✓"</span> <span class="tok-kw">if</span> ir_labi <span class="tok-kw">else</span> <span class="tok-str">"✕"</span>), fill=<span class="tok-str">"white"</span>,
-                        font=(<span class="tok-str">"Segoe UI"</span>, 13, <span class="tok-str">"bold"</span>))
 
     canvas.create_text(70, 32, text=virsraksts, fill=<span class="tok-str">"white"</span>, anchor=<span class="tok-str">"w"</span>, font=(<span class="tok-str">"Segoe UI"</span>, 11, <span class="tok-str">"bold"</span>))
     canvas.create_text(70, 56, text=zina, fill=<span class="tok-str">"#a6a3c4"</span>, anchor=<span class="tok-str">"w"</span>, font=(<span class="tok-str">"Segoe UI"</span>, 9), width=250)
@@ -414,7 +420,7 @@ threading.Thread(target=_palaist_pazinojumu_fonu, daemon=<span class="tok-kw">Tr
         url = <span class="tok-str">"https://"</span> + url
 
     <span class="tok-kw">try</span>:
-        atbilde = requests.get(url, timeout=10, headers=HEADERS)
+        atbilde = requests.get(url, timeout=10, headers=HEADERS, auth=PAROLES.get(url))
         <span class="tok-kw">if</span> atbilde.status_code &lt; 400:
             <span class="tok-kw">return</span> <span class="tok-str">"strada"</span>
         <span class="tok-fn">print</span>(<span class="tok-str">f"  [{url}] atbildēja ar statusu {atbilde.status_code}"</span>)
@@ -424,7 +430,7 @@ threading.Thread(target=_palaist_pazinojumu_fonu, daemon=<span class="tok-kw">Tr
         <span class="tok-com"># sertifikāta - tas NENOZĪMĒ, ka vietne ir lejā, tāpēc pārbauda vēlreiz bez</span>
         <span class="tok-com"># sertifikāta validācijas, lai redzētu, vai serveris tiešām atbild</span>
         <span class="tok-kw">try</span>:
-            atbilde = requests.get(url, timeout=10, headers=HEADERS, verify=<span class="tok-kw">False</span>)
+            atbilde = requests.get(url, timeout=10, headers=HEADERS, auth=PAROLES.get(url), verify=<span class="tok-kw">False</span>)
             <span class="tok-kw">if</span> atbilde.status_code &lt; 400:
                 <span class="tok-kw">return</span> <span class="tok-str">"strada"</span>
             <span class="tok-fn">print</span>(<span class="tok-str">f"  [{url}] atbildēja ar statusu {atbilde.status_code}"</span>)
@@ -438,6 +444,15 @@ threading.Thread(target=_palaist_pazinojumu_fonu, daemon=<span class="tok-kw">Tr
         <span class="tok-fn">print</span>(<span class="tok-str">f"  [{url}] kļūdas iemesls: {e}"</span>)
         <span class="tok-kw">return</span> <span class="tok-str">"nestrada"</span>
 
+<span class="tok-com"># "strada"/"kluda"/"nestrada" iekšēji ir īsi, bez garumzīmēm, ērtākai</span>
+<span class="tok-com"># salīdzināšanai kodā - šis vārdnīca dod tiem pareizu latviešu tekstu, ko</span>
+<span class="tok-com"># tiešām rāda lietotājam (konsolē un paziņojumos)</span>
+STATUSA_TEKSTI = {
+    <span class="tok-str">"strada"</span>: <span class="tok-str">"strādā"</span>,
+    <span class="tok-str">"kluda"</span>: <span class="tok-str">"kļūda"</span>,
+    <span class="tok-str">"nestrada"</span>: <span class="tok-str">"nestrādā"</span>,
+}
+
 <span class="tok-kw">def</span> <span class="tok-fn">parbaudit_vietnes</span>():
     <span class="tok-kw">for</span> url <span class="tok-kw">in</span> VIETNES:
         iepriksejais = iepriksejie_statusi.get(url)
@@ -445,10 +460,10 @@ threading.Thread(target=_palaist_pazinojumu_fonu, daemon=<span class="tok-kw">Tr
 
         <span class="tok-kw">if</span> jaunais != iepriksejais:
             <span class="tok-kw">if</span> jaunais == <span class="tok-str">"strada"</span> <span class="tok-kw">and</span> iepriksejais <span class="tok-kw">is not</span> <span class="tok-kw">None</span>:
-                <span class="tok-fn">rada_pazinojumu</span>(<span class="tok-str">"✓ Vietne atkal strādā"</span>, url, ir_labi=<span class="tok-kw">True</span>)
+                <span class="tok-fn">rada_pazinojumu</span>(<span class="tok-str">"Vietne atkal strādā"</span>, url, ir_labi=<span class="tok-kw">True</span>)
             <span class="tok-kw">elif</span> jaunais != <span class="tok-str">"strada"</span>:
-                <span class="tok-fn">rada_pazinojumu</span>(<span class="tok-str">"✗ Vietne nestrādā"</span>, url, ir_labi=<span class="tok-kw">False</span>)
-            <span class="tok-fn">print</span>(<span class="tok-str">f"{url} -> {jaunais}"</span>)
+                <span class="tok-fn">rada_pazinojumu</span>(<span class="tok-str">"Vietne nestrādā"</span>, url, ir_labi=<span class="tok-kw">False</span>)
+            <span class="tok-fn">print</span>(<span class="tok-str">f"{url} -> {STATUSA_TEKSTI[jaunais]}"</span>)
 
         iepriksejie_statusi[url] = jaunais
 
@@ -458,6 +473,7 @@ threading.Thread(target=_palaist_pazinojumu_fonu, daemon=<span class="tok-kw">Tr
         time.sleep(300)  <span class="tok-com"># pārbauda ik pēc 5 minūtēm</span></code></pre>
       <div class="doc-cards">
         <div class="doc-mini-card"><h4><code>HEADERS</code> (User-Agent)</h4><p>Bez šī daudzas vietnes ar Cloudflare vai līdzīgu aizsardzību atgriež <strong>403</strong> pieprasījumam, kas nāk no <code>python-requests</code> - skripts to pareizi ziņotu kā "kluda", lai gan vietne apmeklētājam pārlūkā strādā normāli. Ar pārlūka izskata galveni serveris pieprasījumu neatšķir no īsta apmeklētāja.</p></div>
+        <div class="doc-mini-card"><h4><code>PAROLES</code> (Basic Auth)</h4><p>Ja vietne servera līmenī aizsargāta ar paroli (piem. Plesk "Password protection" konkrētai mapei/domēnam), bez pieteikšanās dati serveris atgriež <strong>401</strong>. Pievieno vietnes URL, lietotājvārdu un paroli <code>PAROLES</code> vārdnīcā - vietnēm bez ieraksta tur nekas nemainās, jo <code>PAROLES.get(url)</code> tām atgriež <code>None</code>.</p></div>
         <div class="doc-mini-card"><h4>Kopīgs Tk process + rinda</h4><p>Iepriekšējā versijā katrs paziņojums izveidoja savu <code>tk.Tk()</code> savā pavedienā - divi gandrīz vienlaicīgi paziņojumi dažkārt "sacentās" un redzams bija tikai viens. Tagad ir <strong>viens</strong> fona pavediens ar vienu logu, kas ik pēc 150ms pārbauda rindu un droši izveido jaunu paziņojumu katram ierakstam.</p></div>
         <div class="doc-mini-card"><h4>Iebalsināšanās animācija</h4><p><code>attributes("-alpha", ...)</code> pakāpeniski ceļ logu no caurspīdīga uz gandrīz pilnībā redzamu 150ms laikā - vienkāršs veids, kā panākt mīkstāku, modernāku parādīšanos bez ārējām bibliotēkām.</p></div>
         <div class="doc-mini-card"><h4>Sakrāvums (stacking)</h4><p>Ja vairāki paziņojumi parādās gandrīz vienlaicīgi, katrs nākamais tiek novietots virs iepriekšējā (nevis pāri tam) - <code>len(_aktivie_logi)</code> nosaka nobīdi uz augšu.</p></div>
@@ -468,11 +484,15 @@ threading.Thread(target=_palaist_pazinojumu_fonu, daemon=<span class="tok-kw">Tr
       </div>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><strong>Kāpēc pirmajā palaišanas reizē varētu nebūt NEVIENA paziņojuma:</strong> tas ir ar nodomu, ne kļūda. Paziņojums nāk tikai divos gadījumos - vietne <strong>pārstāj</strong> strādāt, vai vietne <strong>atkal sāk</strong> strādāt pēc tam, kad bija zināms, ka tā nestrādāja. Ja pirmajā pārbaudē visas vietnes jau strādā, nav "no kā atgūties" - tāpēc paziņojuma nav, tikai teksts terminālī (<code>url -> strada</code>). Paziņojumu redzēsi tad, kad kāda vietne tiešām pārstās/atsāks strādāt starp pārbaudēm.</p>
+        <p><strong>Kāpēc pirmajā palaišanas reizē varētu nebūt NEVIENA paziņojuma:</strong> tas ir ar nodomu, ne kļūda. Paziņojums nāk tikai divos gadījumos - vietne <strong>pārstāj</strong> strādāt, vai vietne <strong>atkal sāk</strong> strādāt pēc tam, kad bija zināms, ka tā nestrādāja. Ja pirmajā pārbaudē visas vietnes jau strādā, nav "no kā atgūties" - tāpēc paziņojuma nav, tikai teksts terminālī (<code>url -&gt; strādā</code>). Paziņojumu redzēsi tad, kad kāda vietne tiešām pārstās/atsāks strādāt starp pārbaudēm.</p>
       </div>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
         <p>Kompromiss salīdzinājumā ar Windows iebūvēto paziņojumu sistēmu (Action Center): šie logi <strong>neparādās</strong> paziņojumu vēsturē un pēc aizvēršanas nekur nepaliek. Un, tāpat kā iepriekš: paziņojums parādās tikai uz šī paša datora, kamēr skripts tur palaists.</p>
+      </div>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>PAROLES</code> vārdnīcā parole ir tekstā, tieši skripta failā - tas ir pietiekami drošs risinājums, kamēr skripts paliek TIKAI Tavā datorā un netiek dalīts/commitots publiskā vietā (piem., GitHub). Ja skripts jebkad nonāk versiju kontrolē vai tiek dalīts, pārliecinies, ka parole tur nenonāk - vai nu izslēdz to failu no Git (<code>.gitignore</code>), vai nolasi paroli no vides mainīgā (<code>os.environ</code>) tā vietā, lai to rakstītu tieši kodā.</p>
       </div>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
@@ -487,7 +507,7 @@ threading.Thread(target=_palaist_pazinojumu_fonu, daemon=<span class="tok-kw">Tr
   </main>
 </div>
 
-<script src="../js/theme.js?v=31"></script>
-<script src="../js/main.js?v=31"></script>
+<script src="../js/theme.js?v=32"></script>
+<script src="../js/main.js?v=32"></script>
 </body>
 </html>
