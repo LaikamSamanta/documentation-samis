@@ -1097,19 +1097,52 @@ registerBlockType('mana-tema/sveiciens', {
 
     <section class="doc-section" id="transients">
       <h2>Transients (kešošana)</h2>
-      <p>Transients ir pagaidu vērtība ar derīguma termiņu — glabājas datubāzē (vai kešošanas sistēmā, ja tāda uzstādīta). Noder, lai izvairītos no smaga darba (ārējs API pieprasījums, sarežģīts vaicājums) atkārtošanas katrā lapas ielādē.</p>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">function</span> <span class="tok-fn">iegut_valutas_kursu</span>(): <span class="tok-kw">float</span> {
-    <span class="tok-fn">$saglabats</span> = <span class="tok-fn">get_transient</span>(<span class="tok-str">'valutas_kurss'</span>);
+      <p>Transients ir pagaidu vērtība ar derīguma termiņu — glabājas datubāzē (vai kešošanas sistēmā, ja tāda uzstādīta). Pamatproblēma, ko tas risina: dažas darbības ir <strong>lēnas vai dārgas</strong> (ārējs API izsaukums, sarežģīts vaicājums pa tūkstošiem ierakstu), bet WordPress veidnes kods izpildās <strong>no jauna katram apmeklētājam, katrai lapas ielādei</strong>. Bez kešošanas 1000 apmeklētāju stundā nozīmētu 1000 identiskus, lēnus izsaukumus — ar transientu tas notiek vienreiz, un pārējie 999 saņem jau gatavu, saglabātu rezultātu.</p>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Kad tas reāli noder</h3>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>🌐 Ārējs API izsaukums</h4><p>Valūtas kurss, laika ziņas, GitHub zvaigžņu skaits, Instagram plūsma — jebkas, kas nāk no cita servera un nemainās katru sekundi. Bez kešošanas katra lapas ielāde gaidītu uz svešu serveri.</p></div>
+        <div class="doc-mini-card"><h4>🐌 Smags datubāzes vaicājums</h4><p>Piem., "10 komentētākie raksti šomēnes" — vaicājums, kas skaita cauri tūkstošiem komentāru. Rezultāts sekundi vecs nekaitē, bet vaicājums katrā ielādē gan.</p></div>
+        <div class="doc-mini-card"><h4>🚦 Ierobežojums (rate limiting)</h4><p>Piem., neļauj vienam IP nosūtīt kontaktformu biežāk kā reizi minūtē — transients ar IP kā atslēgu un īsu derīgumu darbojas kā vienkāršs "vai šis jau nesen noticis?" pārbaudītājs.</p></div>
+        <div class="doc-mini-card"><h4>🔔 Vienreizējs admin paziņojums</h4><p>Piem., "Spraudnis aktivizēts!" josla, kas jārāda tikai vienu reizi pēc aktivizācijas, ne katrā admin lapā mūžīgi — transients ar īsu derīgumu kalpo kā pagaidu karodziņš.</p></div>
+      </div>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Pilns, reāls piemērs — GitHub zvaigžņu skaits</h3>
+      <p>Šis apvieno jau iepriekš mācīto <a href="#http-api">HTTP API</a> ar transientu — bez kešošanas katra lapas ielāde sūtītu pieprasījumu uz GitHub, kas gan lēni, gan riskanti (GitHub ierobežo, cik reizes stundā drīkst vaicāt bez autorizācijas):</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">function</span> <span class="tok-fn">iegut_github_zvaigznes</span>(<span class="tok-kw">string</span> <span class="tok-fn">$repo</span>): <span class="tok-kw">int</span> {
+    <span class="tok-fn">$transienta_atslega</span> = <span class="tok-str">'github_zvaigznes_'</span> . <span class="tok-fn">sanitize_key</span>(<span class="tok-fn">$repo</span>);
+
+    <span class="tok-com">// 1) Vispirms mēģina paņemt no kešatmiņas</span>
+    <span class="tok-fn">$saglabats</span> = <span class="tok-fn">get_transient</span>(<span class="tok-fn">$transienta_atslega</span>);
     <span class="tok-kw">if</span> (<span class="tok-fn">$saglabats</span> !== <span class="tok-kw">false</span>) {
-        <span class="tok-kw">return</span> (<span class="tok-kw">float</span>) <span class="tok-fn">$saglabats</span>;
+        <span class="tok-kw">return</span> (<span class="tok-kw">int</span>) <span class="tok-fn">$saglabats</span>;
     }
 
-    <span class="tok-com">// Šis "smagais" darbs izpildīsies tikai reizi stundā</span>
-    <span class="tok-fn">$kurss</span> = 1.08; <span class="tok-com">// šeit reāli būtu ārējs API izsaukums</span>
-    <span class="tok-fn">set_transient</span>(<span class="tok-str">'valutas_kurss'</span>, <span class="tok-fn">$kurss</span>, HOUR_IN_SECONDS);
+    <span class="tok-com">// 2) Nav kešatmiņā (vai termiņš beidzies) — jāizsauc ārējais API</span>
+    <span class="tok-fn">$atbilde</span> = <span class="tok-fn">wp_remote_get</span>(<span class="tok-str">"https://api.github.com/repos/{$repo}"</span>);
 
-    <span class="tok-kw">return</span> <span class="tok-fn">$kurss</span>;
-}</code></pre>
+    <span class="tok-kw">if</span> (<span class="tok-fn">is_wp_error</span>(<span class="tok-fn">$atbilde</span>)) {
+        <span class="tok-kw">return</span> 0; <span class="tok-com">// tīkla kļūda — der atgriezt drošu noklusējumu, ne izmest kļūdu</span>
+    }
+
+    <span class="tok-fn">$dati</span>       = <span class="tok-fn">json_decode</span>(<span class="tok-fn">wp_remote_retrieve_body</span>(<span class="tok-fn">$atbilde</span>), <span class="tok-kw">true</span>);
+    <span class="tok-fn">$zvaigznes</span> = (<span class="tok-kw">int</span>) (<span class="tok-fn">$dati</span>[<span class="tok-str">'stargazers_count'</span>] ?? 0);
+
+    <span class="tok-com">// 3) Saglabā uz 6 stundām — nākamie apmeklētāji šai laikā API vispār neskars</span>
+    <span class="tok-fn">set_transient</span>(<span class="tok-fn">$transienta_atslega</span>, <span class="tok-fn">$zvaigznes</span>, 6 * HOUR_IN_SECONDS);
+
+    <span class="tok-kw">return</span> <span class="tok-fn">$zvaigznes</span>;
+}
+
+<span class="tok-com">// Lietošana veidnē: &lt;?php echo iegut_github_zvaigznes('wordpress/wordpress'); ?&gt;</span></code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Trīs soļi vienmēr atkārtojas: <strong>(1)</strong> mēģini paņemt no kešatmiņas ar <code>get_transient()</code>, <strong>(2)</strong> ja <code>false</code> — dari to lēno darbu, <strong>(3)</strong> saglabā rezultātu ar <code>set_transient()</code>, lai nākamreiz atkal netiktu pie 2. soļa. <code>get_transient()</code> atgriež tieši <code>false</code> (nevis <code>null</code> vai tukšu virkni), kad transienta nav vai tas beidzies — tāpēc pārbauda ar <code>!== false</code>, nevis vienkārši <code>if (!$saglabats)</code>, jo pati saglabātā vērtība varētu būt <code>0</code> vai tukša virkne, kas arī novērtētos kā "nepatiess".</p>
+      </div>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Derīguma termiņš (<code>HOUR_IN_SECONDS</code>, <code>DAY_IN_SECONDS</code> u.c. — WordPress iebūvētas konstantes) jāizvēlas pēc tā, cik "svaigi" dati patiešām nepieciešami: valūtas kursam derētu stunda, "populārāko rakstu" sarakstam — diena, bet lietotāja sesijas datiem transients <strong>nav</strong> piemērots vispār (tam der <code>$_SESSION</code> vai cookies). Ja termiņš pārāk īss, kešošanai nav jēgas (API tik un tā izsaucas gandrīz katru reizi); ja pārāk garš, apmeklētāji redz novecojušu informāciju.</p>
+      </div>
     </section>
 
     <section class="doc-section" id="cron">
