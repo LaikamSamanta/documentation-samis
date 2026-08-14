@@ -79,6 +79,10 @@
       <h4>Attēli</h4>
       <a href="#attelu-salidzinatajs"><span class="bullet"></span>Attēlu salīdzinātājs (Before/After)</a>
     </div>
+    <div class="doc-sidebar-group">
+      <h4>Pogas</h4>
+      <a href="#pogu-galerija"><span class="bullet"></span>Pogu galerija (ar koda skatītāju)</a>
+    </div>
   </aside>
 
   <main class="doc-main">
@@ -1704,6 +1708,205 @@ document.addEventListener('keydown', (e) => {
       </div>
     </section>
 
+    <section class="doc-section" id="pogu-galerija">
+      <h2>Pogu galerija (ar koda skatītāju)</h2>
+      <p>10 dažādi pogu stili — dažādas krāsas un animācijas (pacēlums, ripple, trīce, stikls, spīdums, 3D nospiešana, ielādes stāvoklis, gradienta robeža) vienā skatā. Uzklikšķini jebkurai pogai, lai atvērtu logu ar <strong>tieši tās</strong> pogas HTML/CSS kodu.</p>
+
+      <div class="preview-box">
+        <div class="preview-label">
+          <span class="preview-dots"><span></span><span></span><span></span></span>
+          Priekšskatījums
+        </div>
+        <iframe class="preview-frame" id="preview-btngallery" style="height:240px" title="Pogu galerijas priekšskatījums"></iframe>
+      </div>
+
+      <p class="code-group-label">HTML</p>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;div class="dsbtngallery"&gt;
+    &lt;button type="button" class="dsbtn-demo dsbtn-primary" data-btn="primary"&gt;Primārā&lt;/button&gt;
+    &lt;button type="button" class="dsbtn-demo dsbtn-outline" data-btn="outline"&gt;Kontūras&lt;/button&gt;
+    &lt;button type="button" class="dsbtn-demo dsbtn-ghost" data-btn="ghost"&gt;Ghost&lt;/button&gt;
+    &lt;button type="button" class="dsbtn-demo dsbtn-success" data-btn="success"&gt;Veiksmes&lt;/button&gt;
+    &lt;button type="button" class="dsbtn-demo dsbtn-danger" data-btn="danger"&gt;Bīstama&lt;/button&gt;
+    &lt;button type="button" class="dsbtn-demo dsbtn-glass" data-btn="glass"&gt;Stikla&lt;/button&gt;
+    &lt;button type="button" class="dsbtn-demo dsbtn-shine" data-btn="shine"&gt;Shine&lt;/button&gt;
+    &lt;button type="button" class="dsbtn-demo dsbtn-3d" data-btn="press"&gt;3D&lt;/button&gt;
+    &lt;button type="button" class="dsbtn-demo dsbtn-loading" data-btn="loading"&gt;
+        &lt;span class="dsbtn-label"&gt;Ielāde&lt;/span&gt;
+        &lt;span class="dsbtn-loading-spinner"&gt;&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="dsbtn-demo dsbtn-gborder" data-btn="gborder"&gt;Gradients&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;div class="dsbtn-modal" id="dsbtnModal"&gt;
+    &lt;div class="dsbtn-modal-box"&gt;
+        &lt;button type="button" class="dsbtn-modal-close" id="dsbtnModalClose" aria-label="Aizvērt"&gt;✕&lt;/button&gt;
+        &lt;h3 id="dsbtnModalTitle"&gt;Pogas kods&lt;/h3&gt;
+        &lt;pre class="dsbtn-modal-code"&gt;&lt;code id="dsbtnModalCode"&gt;&lt;/code&gt;&lt;/pre&gt;
+        &lt;button type="button" class="dsbtn-modal-copy" id="dsbtnModalCopy"&gt;Kopēt kodu&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+      <p class="code-group-label">CSS</p>
+      <pre class="code-block"><span class="lang">css</span><code>.dsbtngallery { display: flex; flex-wrap: wrap; gap: 14px; padding: 28px; border-radius: 20px; background: linear-gradient(135deg,#eef2ff,#f5f3ff); }
+.dsbtn-demo { padding: 12px 22px; border-radius: 10px; font-weight: 600; font-size: .85rem; cursor: pointer; border: none; font-family: inherit; }
+
+.dsbtn-primary { background: linear-gradient(135deg,#4f46e5,#3b82f6); color: #fff; box-shadow: 0 10px 24px -10px rgba(79,70,229,.6); transition: transform .2s ease, box-shadow .2s ease; }
+.dsbtn-primary:hover { transform: translateY(-3px); box-shadow: 0 14px 30px -10px rgba(79,70,229,.7); }
+
+.dsbtn-outline { background: transparent; color: #4f46e5; border: 2px solid #4f46e5; padding: 10px 20px; transition: background .25s ease, color .25s ease; }
+.dsbtn-outline:hover { background: #4f46e5; color: #fff; }
+
+.dsbtn-ghost { background: none; color: #1e293b; position: relative; }
+.dsbtn-ghost::after { content: ""; position: absolute; left: 22px; right: 22px; bottom: 8px; height: 2px; background: linear-gradient(90deg,#4f46e5,#3b82f6); transform: scaleX(0); transform-origin: left; transition: transform .3s ease; }
+.dsbtn-ghost:hover::after { transform: scaleX(1); }
+
+.dsbtn-success { background: #059669; color: #fff; position: relative; overflow: hidden; }
+.dsbtn-ripple { position: absolute; border-radius: 50%; width: 10px; height: 10px; margin: -5px 0 0 -5px; background: rgba(255,255,255,.6); transform: scale(0); animation: dsbtnRipple .6s ease-out; pointer-events: none; }
+@keyframes dsbtnRipple { to { transform: scale(12); opacity: 0; } }
+
+.dsbtn-danger { background: #dc2626; color: #fff; }
+.dsbtn-danger:hover { animation: dsbtnShake .5s ease; }
+@keyframes dsbtnShake {
+    10%, 90% { transform: translateX(-1px); }
+    20%, 80% { transform: translateX(2px); }
+    30%, 50%, 70% { transform: translateX(-4px); }
+    40%, 60% { transform: translateX(4px); }
+}
+
+.dsbtn-glass { background: rgba(255,255,255,.5); backdrop-filter: blur(12px) saturate(180%); border: 1px solid rgba(255,255,255,.7); color: #1e293b; box-shadow: 0 8px 24px -12px rgba(49,46,129,.25); transition: background .2s ease; }
+.dsbtn-glass:hover { background: rgba(255,255,255,.75); }
+
+.dsbtn-shine { background: #111827; color: #fff; position: relative; overflow: hidden; }
+.dsbtn-shine::before { content: ""; position: absolute; top: 0; left: -75%; width: 50%; height: 100%; background: linear-gradient(120deg, transparent, rgba(255,255,255,.4), transparent); transform: skewX(-20deg); transition: left .6s ease; }
+.dsbtn-shine:hover::before { left: 125%; }
+
+.dsbtn-3d { background: #4f46e5; color: #fff; box-shadow: 0 6px 0 #3730a3; transition: transform .1s ease, box-shadow .1s ease; }
+.dsbtn-3d:active { transform: translateY(6px); box-shadow: 0 0 0 #3730a3; }
+
+.dsbtn-loading { background: #4f46e5; color: #fff; position: relative; min-width: 110px; transition: background .2s ease; }
+.dsbtn-loading .dsbtn-label { transition: opacity .2s ease; }
+.dsbtn-loading.is-loading .dsbtn-label { opacity: 0; }
+.dsbtn-loading-spinner { position: absolute; top: 50%; left: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; opacity: 0; animation: dsbtnSpin .6s linear infinite; }
+.dsbtn-loading.is-loading .dsbtn-loading-spinner { opacity: 1; }
+@keyframes dsbtnSpin { to { transform: rotate(360deg); } }
+.dsbtn-loading.is-done { background: #059669; }
+
+.dsbtn-gborder { background: linear-gradient(#fff,#fff) padding-box, linear-gradient(135deg,#4f46e5,#3b82f6) border-box; border: 2px solid transparent; color: #4f46e5; transition: color .25s ease, background .25s ease; }
+.dsbtn-gborder:hover { background: linear-gradient(135deg,#4f46e5,#3b82f6) padding-box, linear-gradient(135deg,#4f46e5,#3b82f6) border-box; color: #fff; }
+
+.dsbtn-modal { display: none; position: fixed; inset: 0; background: rgba(17,24,39,.5); backdrop-filter: blur(16px) saturate(160%); align-items: center; justify-content: center; z-index: 999; padding: 20px; box-sizing: border-box; }
+.dsbtn-modal.open { display: flex; }
+.dsbtn-modal-box { background: rgba(255,255,255,.85); backdrop-filter: blur(24px) saturate(180%); border: 1px solid rgba(255,255,255,.6); border-radius: 20px; padding: 26px; max-width: 480px; width: 100%; position: relative; box-shadow: 0 30px 70px -25px rgba(49,46,129,.45); animation: dsbtnModalPop .3s cubic-bezier(.34,1.56,.64,1); box-sizing: border-box; }
+@keyframes dsbtnModalPop { from { opacity: 0; transform: scale(.92) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+.dsbtn-modal-close { position: absolute; top: 16px; right: 16px; background: #f3f4f6; border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; color: #6b7280; }
+.dsbtn-modal-close:hover { background: #e5e7eb; }
+.dsbtn-modal-box h3 { margin: 0 0 14px; font-size: 1.05rem; color: #1e293b; padding-right: 30px; }
+.dsbtn-modal-code { background: #111827; color: #e5e7eb; border-radius: 12px; padding: 16px; font-size: .75rem; line-height: 1.6; overflow: auto; max-height: 260px; margin: 0 0 14px; white-space: pre; font-family: 'Courier New', monospace; }
+.dsbtn-modal-copy { background: linear-gradient(135deg,#4f46e5,#3b82f6); color: #fff; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; font-size: .82rem; cursor: pointer; transition: background .2s ease; }
+.dsbtn-modal-copy.copied { background: #059669; }</code></pre>
+
+      <p class="code-group-label">JavaScript</p>
+      <pre class="code-block"><span class="lang">js</span><code>(function () {
+    const buttons = document.querySelectorAll('.dsbtn-demo');
+    const modal = document.getElementById('dsbtnModal');
+    const modalTitle = document.getElementById('dsbtnModalTitle');
+    const modalCode = document.getElementById('dsbtnModalCode');
+    const modalClose = document.getElementById('dsbtnModalClose');
+    const modalCopy = document.getElementById('dsbtnModalCopy');
+
+    // katrai pogai — nosaukums un tās PAŠAS koda teksts, kas jāparāda logā
+    const snippets = {
+        primary: { title: 'Primārā poga (gradients + pacēlums)', code: '<button class="dsbtn-primary">Primārā</button>\n\n.dsbtn-primary {\n  background: linear-gradient(135deg,#4f46e5,#3b82f6);\n  color: #fff;\n  box-shadow: 0 10px 24px -10px rgba(79,70,229,.6);\n  transition: transform .2s ease, box-shadow .2s ease;\n}\n.dsbtn-primary:hover {\n  transform: translateY(-3px);\n  box-shadow: 0 14px 30px -10px rgba(79,70,229,.7);\n}' },
+        outline: { title: 'Kontūras poga', code: '<button class="dsbtn-outline">Kontūras</button>\n\n.dsbtn-outline {\n  background: transparent;\n  color: #4f46e5;\n  border: 2px solid #4f46e5;\n  transition: background .25s ease, color .25s ease;\n}\n.dsbtn-outline:hover {\n  background: #4f46e5;\n  color: #fff;\n}' },
+        ghost: { title: 'Ghost poga (izslīdošs pasvītrojums)', code: '<button class="dsbtn-ghost">Ghost</button>\n\n.dsbtn-ghost {\n  background: none;\n  color: #1e293b;\n  position: relative;\n}\n.dsbtn-ghost::after {\n  content: "";\n  position: absolute;\n  left: 22px; right: 22px; bottom: 8px;\n  height: 2px;\n  background: linear-gradient(90deg,#4f46e5,#3b82f6);\n  transform: scaleX(0);\n  transform-origin: left;\n  transition: transform .3s ease;\n}\n.dsbtn-ghost:hover::after {\n  transform: scaleX(1);\n}' },
+        success: { title: 'Veiksmes poga (ripple no klikšķa punkta)', code: '<button class="dsbtn-success">Veiksmes</button>\n\n.dsbtn-success {\n  background: #059669;\n  color: #fff;\n  position: relative;\n  overflow: hidden;\n}\n.dsbtn-ripple {\n  position: absolute;\n  border-radius: 50%;\n  width: 10px; height: 10px;\n  margin: -5px 0 0 -5px;\n  background: rgba(255,255,255,.6);\n  animation: dsbtnRipple .6s ease-out;\n  pointer-events: none;\n}\n@keyframes dsbtnRipple {\n  to { transform: scale(12); opacity: 0; }\n}\n\n// JS\nbtn.addEventListener("click", (e) => {\n  const rect = btn.getBoundingClientRect();\n  const ripple = document.createElement("span");\n  ripple.className = "dsbtn-ripple";\n  ripple.style.left = (e.clientX - rect.left) + "px";\n  ripple.style.top = (e.clientY - rect.top) + "px";\n  btn.appendChild(ripple);\n  ripple.addEventListener("animationend", () => ripple.remove());\n});' },
+        danger: { title: 'Bīstama poga (trīce uz hover)', code: '<button class="dsbtn-danger">Bīstama</button>\n\n.dsbtn-danger {\n  background: #dc2626;\n  color: #fff;\n}\n.dsbtn-danger:hover {\n  animation: dsbtnShake .5s ease;\n}\n@keyframes dsbtnShake {\n  10%, 90% { transform: translateX(-1px); }\n  20%, 80% { transform: translateX(2px); }\n  30%, 50%, 70% { transform: translateX(-4px); }\n  40%, 60% { transform: translateX(4px); }\n}' },
+        glass: { title: 'Stikla poga (glassmorphism)', code: '<button class="dsbtn-glass">Stikla</button>\n\n.dsbtn-glass {\n  background: rgba(255,255,255,.5);\n  backdrop-filter: blur(12px) saturate(180%);\n  border: 1px solid rgba(255,255,255,.7);\n  color: #1e293b;\n}' },
+        shine: { title: 'Shine poga (spīduma josla)', code: '<button class="dsbtn-shine">Shine</button>\n\n.dsbtn-shine {\n  background: #111827;\n  color: #fff;\n  position: relative;\n  overflow: hidden;\n}\n.dsbtn-shine::before {\n  content: "";\n  position: absolute;\n  top: 0; left: -75%;\n  width: 50%; height: 100%;\n  background: linear-gradient(120deg, transparent, rgba(255,255,255,.4), transparent);\n  transform: skewX(-20deg);\n  transition: left .6s ease;\n}\n.dsbtn-shine:hover::before {\n  left: 125%;\n}' },
+        press: { title: '3D poga (nospiešanas efekts)', code: '<button class="dsbtn-3d">3D</button>\n\n.dsbtn-3d {\n  background: #4f46e5;\n  color: #fff;\n  box-shadow: 0 6px 0 #3730a3;\n  transition: transform .1s ease, box-shadow .1s ease;\n}\n.dsbtn-3d:active {\n  transform: translateY(6px);\n  box-shadow: 0 0 0 #3730a3;\n}' },
+        loading: { title: 'Ielādes poga (async stāvoklis)', code: '<button class="dsbtn-loading">\n  <span class="dsbtn-label">Ielāde</span>\n  <span class="dsbtn-loading-spinner"></span>\n</button>\n\n// JS\nbtn.addEventListener("click", () => {\n  btn.classList.add("is-loading");\n  btn.disabled = true;\n  setTimeout(() => {\n    btn.classList.remove("is-loading");\n    btn.classList.add("is-done");\n    setTimeout(() => btn.classList.remove("is-done"), 1200);\n    btn.disabled = false;\n  }, 1500);\n});' },
+        gborder: { title: 'Gradienta robeža', code: '<button class="dsbtn-gborder">Gradients</button>\n\n.dsbtn-gborder {\n  background: linear-gradient(#fff,#fff) padding-box,\n              linear-gradient(135deg,#4f46e5,#3b82f6) border-box;\n  border: 2px solid transparent;\n  color: #4f46e5;\n}\n.dsbtn-gborder:hover {\n  background: linear-gradient(135deg,#4f46e5,#3b82f6) padding-box,\n              linear-gradient(135deg,#4f46e5,#3b82f6) border-box;\n  color: #fff;\n}' }
+    };
+
+    function copyText(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            return navigator.clipboard.writeText(text).catch(fallbackCopy);
+        }
+        return fallbackCopy();
+
+        function fallbackCopy() {
+            // rezerves variants pārlūkiem/iframe kontekstiem, kur Clipboard API nav pieejams
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand('copy'); } catch (err) {}
+            document.body.removeChild(ta);
+        }
+    }
+
+    buttons.forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            const snip = snippets[btn.dataset.btn];
+            if (snip) {
+                modalTitle.textContent = snip.title;
+                modalCode.textContent = snip.code;
+                modal.classList.add('open');
+            }
+
+            if (btn.classList.contains('dsbtn-success')) {
+                const rect = btn.getBoundingClientRect();
+                const ripple = document.createElement('span');
+                ripple.className = 'dsbtn-ripple';
+                ripple.style.left = (e.clientX - rect.left) + 'px';
+                ripple.style.top = (e.clientY - rect.top) + 'px';
+                btn.appendChild(ripple);
+                ripple.addEventListener('animationend', () => ripple.remove());
+            }
+
+            if (btn.classList.contains('dsbtn-loading') && !btn.classList.contains('is-loading')) {
+                btn.classList.add('is-loading');
+                btn.disabled = true;
+                setTimeout(() => {
+                    btn.classList.remove('is-loading');
+                    btn.classList.add('is-done');
+                    setTimeout(() => btn.classList.remove('is-done'), 1200);
+                    btn.disabled = false;
+                }, 1500);
+            }
+        });
+    });
+
+    modalClose.addEventListener('click', () => modal.classList.remove('open'));
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.classList.remove('open'); // klikšķis TIEŠI uz fona
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') modal.classList.remove('open');
+    });
+
+    modalCopy.addEventListener('click', () => {
+        copyText(modalCode.textContent);
+        modalCopy.textContent = 'Nokopēts!';
+        modalCopy.classList.add('copied');
+        setTimeout(() => {
+            modalCopy.textContent = 'Kopēt kodu';
+            modalCopy.classList.remove('copied');
+        }, 1500);
+    });
+})();</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Katras pogas kods tiek glabāts JS objektā <code>snippets</code>, atslēgots pēc <code>data-btn</code> atribūta — nekas netiek "izlasīts" no faktiskā CSS faila, teksts vienkārši ir pārrakstīts tajā pašā vietā. Ja maini kādas pogas stilu, atceries atjaunot arī atbilstošo ierakstu <code>snippets</code> objektā, citādi logā redzamais kods nesakritīs ar reālo.</p>
+      </div>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>navigator.clipboard.writeText()</code> dažos ierobežotos kontekstos (piem., <code>&lt;iframe&gt;</code> bez <code>allow="clipboard-write"</code>) var neizdoties klusi. <code>copyText()</code> funkcija tāpēc pāriet uz veco <code>document.execCommand('copy')</code> paņēmienu, ja modernā API nav pieejams vai noraida pieprasījumu.</p>
+      </div>
+    </section>
+
     <div class="doc-pager">
       <a href="seo.html"><span class="lbl">← Iepriekšējais</span>SEO</a>
       <a class="to-next" href="drosiba.html"><span class="lbl">Tālāk →</span>Drošība</a>
@@ -1825,6 +2028,11 @@ document.addEventListener('keydown', (e) => {
       css: '.dsimgcompare { position: relative; width: 100%; aspect-ratio: 16/9; border-radius: 18px; overflow: hidden; box-shadow: 0 25px 60px -25px rgba(49,46,129,.35), 0 10px 20px -10px rgba(0,0,0,.15); cursor: ew-resize; touch-action: none; } .dsimgcompare-layer { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; user-select: none; } .dsimgcompare-before { clip-path: inset(0 50% 0 0); } .dsimgcompare-divider { position: absolute; top: 0; bottom: 0; left: 50%; width: 3px; background: #fff; transform: translateX(-50%); box-shadow: 0 0 0 1px rgba(0,0,0,.1); pointer-events: none; } .dsimgcompare-handle { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 38px; height: 38px; border-radius: 50%; background: #fff; box-shadow: 0 8px 20px -8px rgba(0,0,0,.4); display: flex; align-items: center; justify-content: center; font-size: 1rem; color: #4f46e5; animation: dsimgcompareHandlePulse 2s ease-in-out infinite; } @keyframes dsimgcompareHandlePulse { 0%, 100% { box-shadow: 0 8px 20px -8px rgba(0,0,0,.4), 0 0 0 0 rgba(79,70,229,.35); } 50% { box-shadow: 0 8px 20px -8px rgba(0,0,0,.4), 0 0 0 8px rgba(79,70,229,0); } } .dsimgcompare-label { position: absolute; top: 14px; padding: 4px 12px; border-radius: 100px; background: rgba(15,10,30,.55); backdrop-filter: blur(6px); color: #fff; font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; pointer-events: none; } .dsimgcompare-label--before { left: 14px; } .dsimgcompare-label--after { right: 14px; }',
       html: '<div class="dsimgcompare" id="dsimgcompare1"><img class="dsimgcompare-layer dsimgcompare-after" src="' + img6 + '" alt="Attēls pēc"><img class="dsimgcompare-layer dsimgcompare-before" src="' + img2 + '" alt="Attēls pirms" id="dsimgcompareBefore"><div class="dsimgcompare-divider" id="dsimgcompareDivider"><span class="dsimgcompare-handle">↔</span></div><span class="dsimgcompare-label dsimgcompare-label--before">Pirms</span><span class="dsimgcompare-label dsimgcompare-label--after">Pēc</span></div>',
       js: "(function(){var container=document.getElementById('dsimgcompare1');var before=document.getElementById('dsimgcompareBefore');var divider=document.getElementById('dsimgcompareDivider');var dragging=false;function setPosition(clientX){var rect=container.getBoundingClientRect();var percent=((clientX-rect.left)/rect.width)*100;percent=Math.max(0,Math.min(100,percent));before.style.clipPath='inset(0 '+(100-percent)+'% 0 0)';divider.style.left=percent+'%';}container.addEventListener('pointerdown',function(e){dragging=true;setPosition(e.clientX);});window.addEventListener('pointermove',function(e){if(dragging)setPosition(e.clientX);});window.addEventListener('pointerup',function(){dragging=false;});})();"
+    },
+    'preview-btngallery': {
+      css: '.dsbtngallery { display: flex; flex-wrap: wrap; gap: 10px; padding: 22px; border-radius: 18px; background: linear-gradient(135deg,#eef2ff,#f5f3ff); } .dsbtn-demo { padding: 10px 18px; border-radius: 9px; font-weight: 600; font-size: .78rem; cursor: pointer; border: none; font-family: inherit; } .dsbtn-primary { background: linear-gradient(135deg,#4f46e5,#3b82f6); color: #fff; box-shadow: 0 10px 24px -10px rgba(79,70,229,.6); transition: transform .2s ease, box-shadow .2s ease; } .dsbtn-primary:hover { transform: translateY(-3px); box-shadow: 0 14px 30px -10px rgba(79,70,229,.7); } .dsbtn-outline { background: transparent; color: #4f46e5; border: 2px solid #4f46e5; padding: 8px 16px; transition: background .25s ease, color .25s ease; } .dsbtn-outline:hover { background: #4f46e5; color: #fff; } .dsbtn-ghost { background: none; color: #1e293b; position: relative; } .dsbtn-ghost::after { content: ""; position: absolute; left: 18px; right: 18px; bottom: 6px; height: 2px; background: linear-gradient(90deg,#4f46e5,#3b82f6); transform: scaleX(0); transform-origin: left; transition: transform .3s ease; } .dsbtn-ghost:hover::after { transform: scaleX(1); } .dsbtn-success { background: #059669; color: #fff; position: relative; overflow: hidden; } .dsbtn-ripple { position: absolute; border-radius: 50%; width: 10px; height: 10px; margin: -5px 0 0 -5px; background: rgba(255,255,255,.6); animation: dsbtnRipple .6s ease-out; pointer-events: none; } @keyframes dsbtnRipple { to { transform: scale(12); opacity: 0; } } .dsbtn-danger { background: #dc2626; color: #fff; } .dsbtn-danger:hover { animation: dsbtnShake .5s ease; } @keyframes dsbtnShake { 10%, 90% { transform: translateX(-1px); } 20%, 80% { transform: translateX(2px); } 30%, 50%, 70% { transform: translateX(-4px); } 40%, 60% { transform: translateX(4px); } } .dsbtn-glass { background: rgba(255,255,255,.5); backdrop-filter: blur(12px) saturate(180%); border: 1px solid rgba(255,255,255,.7); color: #1e293b; box-shadow: 0 8px 24px -12px rgba(49,46,129,.25); transition: background .2s ease; } .dsbtn-glass:hover { background: rgba(255,255,255,.75); } .dsbtn-shine { background: #111827; color: #fff; position: relative; overflow: hidden; } .dsbtn-shine::before { content: ""; position: absolute; top: 0; left: -75%; width: 50%; height: 100%; background: linear-gradient(120deg, transparent, rgba(255,255,255,.4), transparent); transform: skewX(-20deg); transition: left .6s ease; } .dsbtn-shine:hover::before { left: 125%; } .dsbtn-3d { background: #4f46e5; color: #fff; box-shadow: 0 6px 0 #3730a3; transition: transform .1s ease, box-shadow .1s ease; } .dsbtn-3d:active { transform: translateY(6px); box-shadow: 0 0 0 #3730a3; } .dsbtn-loading { background: #4f46e5; color: #fff; position: relative; min-width: 100px; transition: background .2s ease; } .dsbtn-loading .dsbtn-label { transition: opacity .2s ease; } .dsbtn-loading.is-loading .dsbtn-label { opacity: 0; } .dsbtn-loading-spinner { position: absolute; top: 50%; left: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; opacity: 0; animation: dsbtnSpin .6s linear infinite; } .dsbtn-loading.is-loading .dsbtn-loading-spinner { opacity: 1; } @keyframes dsbtnSpin { to { transform: rotate(360deg); } } .dsbtn-loading.is-done { background: #059669; } .dsbtn-gborder { background: linear-gradient(#fff,#fff) padding-box, linear-gradient(135deg,#4f46e5,#3b82f6) border-box; border: 2px solid transparent; color: #4f46e5; transition: color .25s ease, background .25s ease; } .dsbtn-gborder:hover { background: linear-gradient(135deg,#4f46e5,#3b82f6) padding-box, linear-gradient(135deg,#4f46e5,#3b82f6) border-box; color: #fff; } .dsbtn-modal { display: none; position: fixed; inset: 0; background: rgba(17,24,39,.5); backdrop-filter: blur(16px) saturate(160%); align-items: center; justify-content: center; z-index: 999; padding: 20px; box-sizing: border-box; } .dsbtn-modal.open { display: flex; } .dsbtn-modal-box { background: rgba(255,255,255,.85); backdrop-filter: blur(24px) saturate(180%); border: 1px solid rgba(255,255,255,.6); border-radius: 20px; padding: 22px; max-width: 420px; width: 100%; position: relative; box-shadow: 0 30px 70px -25px rgba(49,46,129,.45); animation: dsbtnModalPop .3s cubic-bezier(.34,1.56,.64,1); box-sizing: border-box; } @keyframes dsbtnModalPop { from { opacity: 0; transform: scale(.92) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } } .dsbtn-modal-close { position: absolute; top: 14px; right: 14px; background: #f3f4f6; border: none; width: 26px; height: 26px; border-radius: 50%; cursor: pointer; color: #6b7280; } .dsbtn-modal-close:hover { background: #e5e7eb; } .dsbtn-modal-box h3 { margin: 0 0 12px; font-size: .95rem; color: #1e293b; padding-right: 28px; } .dsbtn-modal-code { background: #111827; color: #e5e7eb; border-radius: 10px; padding: 14px; font-size: .7rem; line-height: 1.55; overflow: auto; max-height: 220px; margin: 0 0 12px; white-space: pre; font-family: "Courier New", monospace; } .dsbtn-modal-copy { background: linear-gradient(135deg,#4f46e5,#3b82f6); color: #fff; border: none; padding: 8px 16px; border-radius: 9px; font-weight: 600; font-size: .78rem; cursor: pointer; transition: background .2s ease; } .dsbtn-modal-copy.copied { background: #059669; }',
+      html: '<div class="dsbtngallery"><button type="button" class="dsbtn-demo dsbtn-primary" data-btn="primary">Primārā</button><button type="button" class="dsbtn-demo dsbtn-outline" data-btn="outline">Kontūras</button><button type="button" class="dsbtn-demo dsbtn-ghost" data-btn="ghost">Ghost</button><button type="button" class="dsbtn-demo dsbtn-success" data-btn="success">Veiksmes</button><button type="button" class="dsbtn-demo dsbtn-danger" data-btn="danger">Bīstama</button><button type="button" class="dsbtn-demo dsbtn-glass" data-btn="glass">Stikla</button><button type="button" class="dsbtn-demo dsbtn-shine" data-btn="shine">Shine</button><button type="button" class="dsbtn-demo dsbtn-3d" data-btn="press">3D</button><button type="button" class="dsbtn-demo dsbtn-loading" data-btn="loading"><span class="dsbtn-label">Ielāde</span><span class="dsbtn-loading-spinner"></span></button><button type="button" class="dsbtn-demo dsbtn-gborder" data-btn="gborder">Gradients</button></div><div class="dsbtn-modal" id="dsbtnModal"><div class="dsbtn-modal-box"><button type="button" class="dsbtn-modal-close" id="dsbtnModalClose" aria-label="Aizvērt">✕</button><h3 id="dsbtnModalTitle">Pogas kods</h3><pre class="dsbtn-modal-code"><code id="dsbtnModalCode"></code></pre><button type="button" class="dsbtn-modal-copy" id="dsbtnModalCopy">Kopēt kodu</button></div></div>',
+      js: "(function(){\nvar buttons = document.querySelectorAll('.dsbtn-demo');\nvar modal = document.getElementById('dsbtnModal');\nvar modalTitle = document.getElementById('dsbtnModalTitle');\nvar modalCode = document.getElementById('dsbtnModalCode');\nvar modalClose = document.getElementById('dsbtnModalClose');\nvar modalCopy = document.getElementById('dsbtnModalCopy');\n\nvar snippets = {\n  primary: { title: \"Primārā poga (gradients + pacēlums)\", code: \"<button class=\\\"dsbtn-primary\\\">Primārā</button>\\n\\n.dsbtn-primary {\\n  background: linear-gradient(135deg,#4f46e5,#3b82f6);\\n  color: #fff;\\n  box-shadow: 0 10px 24px -10px rgba(79,70,229,.6);\\n  transition: transform .2s ease, box-shadow .2s ease;\\n}\\n.dsbtn-primary:hover {\\n  transform: translateY(-3px);\\n  box-shadow: 0 14px 30px -10px rgba(79,70,229,.7);\\n}\" },\n  outline: { title: \"Kontūras poga\", code: \"<button class=\\\"dsbtn-outline\\\">Kontūras</button>\\n\\n.dsbtn-outline {\\n  background: transparent;\\n  color: #4f46e5;\\n  border: 2px solid #4f46e5;\\n  transition: background .25s ease, color .25s ease;\\n}\\n.dsbtn-outline:hover {\\n  background: #4f46e5;\\n  color: #fff;\\n}\" },\n  ghost: { title: \"Ghost poga (izslīdošs pasvītrojums)\", code: \"<button class=\\\"dsbtn-ghost\\\">Ghost</button>\\n\\n.dsbtn-ghost {\\n  background: none;\\n  color: #1e293b;\\n  position: relative;\\n}\\n.dsbtn-ghost::after {\\n  content: \\\"\\\";\\n  position: absolute;\\n  left: 22px; right: 22px; bottom: 8px;\\n  height: 2px;\\n  background: linear-gradient(90deg,#4f46e5,#3b82f6);\\n  transform: scaleX(0);\\n  transform-origin: left;\\n  transition: transform .3s ease;\\n}\\n.dsbtn-ghost:hover::after {\\n  transform: scaleX(1);\\n}\" },\n  success: { title: \"Veiksmes poga (ripple no klikšķa punkta)\", code: \"<button class=\\\"dsbtn-success\\\">Veiksmes</button>\\n\\n.dsbtn-success {\\n  background: #059669;\\n  color: #fff;\\n  position: relative;\\n  overflow: hidden;\\n}\\n.dsbtn-ripple {\\n  position: absolute;\\n  border-radius: 50%;\\n  width: 10px; height: 10px;\\n  margin: -5px 0 0 -5px;\\n  background: rgba(255,255,255,.6);\\n  animation: dsbtnRipple .6s ease-out;\\n  pointer-events: none;\\n}\\n@keyframes dsbtnRipple {\\n  to { transform: scale(12); opacity: 0; }\\n}\\n\\n// JS\\nbtn.addEventListener(\\\"click\\\", (e) => {\\n  const rect = btn.getBoundingClientRect();\\n  const ripple = document.createElement(\\\"span\\\");\\n  ripple.className = \\\"dsbtn-ripple\\\";\\n  ripple.style.left = (e.clientX - rect.left) + \\\"px\\\";\\n  ripple.style.top = (e.clientY - rect.top) + \\\"px\\\";\\n  btn.appendChild(ripple);\\n  ripple.addEventListener(\\\"animationend\\\", () => ripple.remove());\\n});\" },\n  danger: { title: \"Bīstama poga (trīce uz hover)\", code: \"<button class=\\\"dsbtn-danger\\\">Bīstama</button>\\n\\n.dsbtn-danger {\\n  background: #dc2626;\\n  color: #fff;\\n}\\n.dsbtn-danger:hover {\\n  animation: dsbtnShake .5s ease;\\n}\\n@keyframes dsbtnShake {\\n  10%, 90% { transform: translateX(-1px); }\\n  20%, 80% { transform: translateX(2px); }\\n  30%, 50%, 70% { transform: translateX(-4px); }\\n  40%, 60% { transform: translateX(4px); }\\n}\" },\n  glass: { title: \"Stikla poga (glassmorphism)\", code: \"<button class=\\\"dsbtn-glass\\\">Stikla</button>\\n\\n.dsbtn-glass {\\n  background: rgba(255,255,255,.5);\\n  backdrop-filter: blur(12px) saturate(180%);\\n  border: 1px solid rgba(255,255,255,.7);\\n  color: #1e293b;\\n}\" },\n  shine: { title: \"Shine poga (spīduma josla)\", code: \"<button class=\\\"dsbtn-shine\\\">Shine</button>\\n\\n.dsbtn-shine {\\n  background: #111827;\\n  color: #fff;\\n  position: relative;\\n  overflow: hidden;\\n}\\n.dsbtn-shine::before {\\n  content: \\\"\\\";\\n  position: absolute;\\n  top: 0; left: -75%;\\n  width: 50%; height: 100%;\\n  background: linear-gradient(120deg, transparent, rgba(255,255,255,.4), transparent);\\n  transform: skewX(-20deg);\\n  transition: left .6s ease;\\n}\\n.dsbtn-shine:hover::before {\\n  left: 125%;\\n}\" },\n  press: { title: \"3D poga (nospiešanas efekts)\", code: \"<button class=\\\"dsbtn-3d\\\">3D</button>\\n\\n.dsbtn-3d {\\n  background: #4f46e5;\\n  color: #fff;\\n  box-shadow: 0 6px 0 #3730a3;\\n  transition: transform .1s ease, box-shadow .1s ease;\\n}\\n.dsbtn-3d:active {\\n  transform: translateY(6px);\\n  box-shadow: 0 0 0 #3730a3;\\n}\" },\n  loading: { title: \"Ielādes poga (async stāvoklis)\", code: \"<button class=\\\"dsbtn-loading\\\">\\n  <span class=\\\"dsbtn-label\\\">Ielāde</span>\\n  <span class=\\\"dsbtn-loading-spinner\\\"></span>\\n</button>\\n\\n// JS\\nbtn.addEventListener(\\\"click\\\", () => {\\n  btn.classList.add(\\\"is-loading\\\");\\n  btn.disabled = true;\\n  setTimeout(() => {\\n    btn.classList.remove(\\\"is-loading\\\");\\n    btn.classList.add(\\\"is-done\\\");\\n    setTimeout(() => btn.classList.remove(\\\"is-done\\\"), 1200);\\n    btn.disabled = false;\\n  }, 1500);\\n});\" },\n  gborder: { title: \"Gradienta robeža\", code: \"<button class=\\\"dsbtn-gborder\\\">Gradients</button>\\n\\n.dsbtn-gborder {\\n  background: linear-gradient(#fff,#fff) padding-box,\\n              linear-gradient(135deg,#4f46e5,#3b82f6) border-box;\\n  border: 2px solid transparent;\\n  color: #4f46e5;\\n}\\n.dsbtn-gborder:hover {\\n  background: linear-gradient(135deg,#4f46e5,#3b82f6) padding-box,\\n              linear-gradient(135deg,#4f46e5,#3b82f6) border-box;\\n  color: #fff;\\n}\" },\n};\n\nfunction copyText(text) {\n  if (navigator.clipboard && navigator.clipboard.writeText) {\n    return navigator.clipboard.writeText(text).catch(fallbackCopy);\n  }\n  return fallbackCopy();\n  function fallbackCopy() {\n    var ta = document.createElement('textarea');\n    ta.value = text;\n    ta.style.position = 'fixed';\n    ta.style.opacity = '0';\n    document.body.appendChild(ta);\n    ta.select();\n    try { document.execCommand('copy'); } catch (err) {}\n    document.body.removeChild(ta);\n  }\n}\n\nArray.prototype.forEach.call(buttons, function (btn) {\n  btn.addEventListener('click', function (e) {\n    var snip = snippets[btn.dataset.btn];\n    if (snip) {\n      modalTitle.textContent = snip.title;\n      modalCode.textContent = snip.code;\n      modal.classList.add('open');\n    }\n\n    if (btn.classList.contains('dsbtn-success')) {\n      var rect = btn.getBoundingClientRect();\n      var ripple = document.createElement('span');\n      ripple.className = 'dsbtn-ripple';\n      ripple.style.left = (e.clientX - rect.left) + 'px';\n      ripple.style.top = (e.clientY - rect.top) + 'px';\n      btn.appendChild(ripple);\n      ripple.addEventListener('animationend', function () { ripple.remove(); });\n    }\n\n    if (btn.classList.contains('dsbtn-loading') && !btn.classList.contains('is-loading')) {\n      btn.classList.add('is-loading');\n      btn.disabled = true;\n      setTimeout(function () {\n        btn.classList.remove('is-loading');\n        btn.classList.add('is-done');\n        setTimeout(function () { btn.classList.remove('is-done'); }, 1200);\n        btn.disabled = false;\n      }, 1500);\n    }\n  });\n});\n\nmodalClose.addEventListener('click', function () { modal.classList.remove('open'); });\nmodal.addEventListener('click', function (e) {\n  if (e.target === modal) modal.classList.remove('open');\n});\ndocument.addEventListener('keydown', function (e) {\n  if (e.key === 'Escape') modal.classList.remove('open');\n});\n\nmodalCopy.addEventListener('click', function () {\n  copyText(modalCode.textContent);\n  modalCopy.textContent = 'Nokopēts!';\n  modalCopy.classList.add('copied');\n  setTimeout(function () {\n    modalCopy.textContent = 'Kopēt kodu';\n    modalCopy.classList.remove('copied');\n  }, 1500);\n});\n})();"
     }
   };
 
