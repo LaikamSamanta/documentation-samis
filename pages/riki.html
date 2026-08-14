@@ -10,7 +10,7 @@
 <link rel="manifest" href="../manifest.json" />
 <meta name="theme-color" content="#9d5cff" />
 <title>Rīki - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=35" />
+<link rel="stylesheet" href="../css/style.css?v=36" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -72,36 +72,65 @@
         </div>
 
         <div class="riki-multi-controls" id="riki-controls" style="display:none;">
-          <div class="riki-settings-bar">
-            <div class="riki-settings-col">
-              <label>Formāts</label>
-              <select id="riki-format" class="riki-select">
-                <option value="image/jpeg">JPEG</option>
-                <option value="image/webp">WebP</option>
-                <option value="image/png">PNG (bez zuduma)</option>
-              </select>
+          <div id="riki-normal-view">
+            <div class="riki-settings-bar">
+              <div class="riki-settings-col">
+                <label>Formāts</label>
+                <select id="riki-format" class="riki-select">
+                  <option value="image/jpeg">JPEG</option>
+                  <option value="image/webp">WebP</option>
+                  <option value="image/png">PNG (bez zuduma)</option>
+                </select>
+              </div>
+              <div class="riki-settings-col">
+                <label>Maks. platums: <span id="riki-width-value">1600</span>px</label>
+                <input type="range" id="riki-width" min="200" max="4000" step="50" value="1600" />
+              </div>
+              <div class="riki-settings-col" id="riki-quality-wrap">
+                <label>Kvalitāte: <span id="riki-quality-value">85</span>%</label>
+                <input type="range" id="riki-quality" min="10" max="100" step="5" value="85" />
+              </div>
             </div>
-            <div class="riki-settings-col">
-              <label>Maks. platums: <span id="riki-width-value">1600</span>px</label>
-              <input type="range" id="riki-width" min="200" max="4000" step="50" value="1600" />
-            </div>
-            <div class="riki-settings-col" id="riki-quality-wrap">
-              <label>Kvalitāte: <span id="riki-quality-value">85</span>%</label>
-              <input type="range" id="riki-quality" min="10" max="100" step="5" value="85" />
+
+            <div class="riki-file-list" id="riki-file-list"></div>
+
+            <div class="riki-btn-row">
+              <button class="riki-btn" id="riki-download-all">Lejupielādēt visus</button>
+              <button class="riki-btn riki-btn-secondary" id="riki-reset">Sākt no jauna</button>
             </div>
           </div>
 
-          <div class="riki-file-list" id="riki-file-list"></div>
-
-          <div class="riki-btn-row">
-            <button class="riki-btn" id="riki-download-all">Lejupielādēt visus</button>
-            <button class="riki-btn riki-btn-secondary" id="riki-reset">Sākt no jauna</button>
+          <div id="riki-crop-editor" style="display:none;">
+            <div class="riki-crop-stage-wrap">
+              <div class="riki-crop-stage" id="riki-crop-stage">
+                <img id="riki-crop-image" alt="" />
+                <div class="riki-crop-rect" id="riki-crop-rect">
+                  <div class="riki-crop-handle" data-handle="nw"></div>
+                  <div class="riki-crop-handle" data-handle="ne"></div>
+                  <div class="riki-crop-handle" data-handle="sw"></div>
+                  <div class="riki-crop-handle" data-handle="se"></div>
+                </div>
+              </div>
+            </div>
+            <p class="riki-hint">Velc rāmja stūrus, lai mainītu izmēru, vai velc pašu rāmi, lai to pārvietotu.</p>
+            <div class="riki-crop-ratios" id="riki-crop-ratios">
+              <button type="button" class="riki-ratio-btn active" data-ratio="">Brīvi</button>
+              <button type="button" class="riki-ratio-btn" data-ratio="1:1">1:1</button>
+              <button type="button" class="riki-ratio-btn" data-ratio="4:3">4:3</button>
+              <button type="button" class="riki-ratio-btn" data-ratio="16:9">16:9</button>
+              <button type="button" class="riki-ratio-btn" data-ratio="9:16">9:16</button>
+            </div>
+            <div class="riki-btn-row">
+              <button class="riki-btn" id="riki-crop-apply">Pielietot apgriešanu</button>
+              <button class="riki-btn riki-btn-secondary" id="riki-crop-cancel">Atcelt</button>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="doc-cards">
         <div class="doc-mini-card"><h4>Vairāki faili</h4><p>Katrs pievienotais attēls tiek apstrādāts neatkarīgi, ar tiem pašiem platuma/kvalitātes/formāta iestatījumiem - maini iestatījumus vienreiz, tie pielietojas visiem uzreiz.</p></div>
+        <div class="doc-mini-card"><h4>Apgriešana ar fiksētu proporciju</h4><p>Katram failam ir poga "Apgriezt" - atver rāmi, ko var vilkt un mainīt izmēru. Izvēlies 1:1 / 4:3 / 16:9 / 9:16, lai rāmja proporcija paliktu fiksēta, vai "Brīvi" jebkurai formai. Apgrieztais attēls aizstāj oriģinālu un tālāk iet cauri parastajai izmēra/formāta apstrādei.</p></div>
         <div class="doc-mini-card"><h4>WebP formāts</h4><p><code>canvas.toBlob(callback, "image/webp", kvalitāte)</code> - atbalstīts visos modernajos pārlūkos. Parasti dod mazāku faila izmēru par JPEG pie vizuāli identiskas kvalitātes.</p></div>
         <div class="doc-mini-card"><h4>Kāpēc PNG bez kvalitātes slīdņa</h4><p>PNG ir bezzudumu formāts - kvalitātes parametru tas neatbalsta, tāpēc slīdnis pazūd, izvēloties PNG. Der attēliem ar caurspīdīgumu vai tekstu/ikonām, kur JPEG/WebP saspiešanas artefakti būtu redzami.</p></div>
       </div>
@@ -154,8 +183,8 @@
   </main>
 </div>
 
-<script src="../js/theme.js?v=35"></script>
-<script src="../js/main.js?v=35"></script>
+<script src="../js/theme.js?v=36"></script>
+<script src="../js/main.js?v=36"></script>
 <script>
 (function () {
   var dropzone = document.getElementById("riki-dropzone");
@@ -206,6 +235,15 @@
     info.appendChild(nosaukums);
     info.appendChild(statistika);
     rinda.appendChild(info);
+
+    var apgrieztBtn = document.createElement("button");
+    apgrieztBtn.className = "riki-file-crop";
+    apgrieztBtn.title = "Apgriezt";
+    apgrieztBtn.textContent = "Apgriezt";
+    apgrieztBtn.addEventListener("click", function () {
+      atvertApgriesanasEditoru(ieraksts);
+    });
+    rinda.appendChild(apgrieztBtn);
 
     var lejupBtn = document.createElement("button");
     lejupBtn.className = "riki-file-download";
@@ -359,6 +397,209 @@
   });
 
   resetBtn.addEventListener("click", atiestatit);
+
+  // --- Apgriešanas (crop) redaktors ---
+  var normalView = document.getElementById("riki-normal-view");
+  var cropEditor = document.getElementById("riki-crop-editor");
+  var cropStage = document.getElementById("riki-crop-stage");
+  var cropImage = document.getElementById("riki-crop-image");
+  var cropRect = document.getElementById("riki-crop-rect");
+  var cropApplyBtn = document.getElementById("riki-crop-apply");
+  var cropCancelBtn = document.getElementById("riki-crop-cancel");
+
+  var cropTarget = null;
+  var cropState = { x: 0, y: 0, w: 0, h: 0 };
+  var cropRatio = null;
+  var cropDrag = null;
+
+  function clamp(v, min, max) {
+    return Math.max(min, Math.min(max, v));
+  }
+
+  function renderCropRect() {
+    cropRect.style.left = cropState.x + "px";
+    cropRect.style.top = cropState.y + "px";
+    cropRect.style.width = cropState.w + "px";
+    cropRect.style.height = cropState.h + "px";
+  }
+
+  function atvertApgriesanasEditoru(ieraksts) {
+    if (!ieraksts.originalImage) return;
+    cropTarget = ieraksts;
+    cropRatio = null;
+    document.querySelectorAll(".riki-ratio-btn").forEach(function (b) {
+      b.classList.toggle("active", b.getAttribute("data-ratio") === "");
+    });
+
+    function initBox() {
+      var stageW = cropImage.clientWidth;
+      var stageH = cropImage.clientHeight;
+      var w = stageW * 0.8;
+      var h = stageH * 0.8;
+      cropState = { x: (stageW - w) / 2, y: (stageH - h) / 2, w: w, h: h };
+      renderCropRect();
+    }
+
+    normalView.style.display = "none";
+    cropEditor.style.display = "block";
+
+    cropImage.onload = initBox;
+    cropImage.src = ieraksts.originalImage.src;
+    if (cropImage.complete && cropImage.naturalWidth > 0) {
+      initBox();
+    }
+  }
+
+  function aizvertApgriesanasEditoru() {
+    cropTarget = null;
+    cropEditor.style.display = "none";
+    normalView.style.display = "block";
+  }
+
+  cropRect.addEventListener("mousedown", function (e) {
+    if (e.target.classList.contains("riki-crop-handle")) return;
+    e.preventDefault();
+    cropDrag = { mode: "move", startX: e.clientX, startY: e.clientY, startBox: { x: cropState.x, y: cropState.y, w: cropState.w, h: cropState.h } };
+  });
+
+  document.querySelectorAll(".riki-crop-handle").forEach(function (handle) {
+    handle.addEventListener("mousedown", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      cropDrag = {
+        mode: handle.getAttribute("data-handle"),
+        startX: e.clientX,
+        startY: e.clientY,
+        startBox: { x: cropState.x, y: cropState.y, w: cropState.w, h: cropState.h },
+      };
+    });
+  });
+
+  document.addEventListener("mousemove", function (e) {
+    if (!cropDrag) return;
+    var dx = e.clientX - cropDrag.startX;
+    var dy = e.clientY - cropDrag.startY;
+    var stageW = cropImage.clientWidth;
+    var stageH = cropImage.clientHeight;
+    var box = cropDrag.startBox;
+
+    if (cropDrag.mode === "move") {
+      cropState.x = clamp(box.x + dx, 0, stageW - box.w);
+      cropState.y = clamp(box.y + dy, 0, stageH - box.h);
+      cropState.w = box.w;
+      cropState.h = box.h;
+    } else {
+      var nx = box.x, ny = box.y, nw = box.w, nh = box.h;
+      if (cropDrag.mode === "se") {
+        nw = box.w + dx;
+        nh = box.h + dy;
+      } else if (cropDrag.mode === "sw") {
+        nx = box.x + dx;
+        nw = box.w - dx;
+        nh = box.h + dy;
+      } else if (cropDrag.mode === "ne") {
+        ny = box.y + dy;
+        nw = box.w + dx;
+        nh = box.h - dy;
+      } else if (cropDrag.mode === "nw") {
+        nx = box.x + dx;
+        ny = box.y + dy;
+        nw = box.w - dx;
+        nh = box.h - dy;
+      }
+
+      nw = Math.max(20, nw);
+      nh = Math.max(20, nh);
+
+      if (cropRatio) {
+        nh = nw * (cropRatio.h / cropRatio.w);
+        if (cropDrag.mode === "nw" || cropDrag.mode === "ne") {
+          ny = box.y + box.h - nh;
+        }
+      }
+
+      if (nx < 0) { nw += nx; nx = 0; }
+      if (ny < 0) { nh += ny; ny = 0; }
+      if (nx + nw > stageW) nw = stageW - nx;
+      if (ny + nh > stageH) nh = stageH - ny;
+
+      cropState.x = nx;
+      cropState.y = ny;
+      cropState.w = Math.max(20, nw);
+      cropState.h = Math.max(20, nh);
+    }
+
+    renderCropRect();
+  });
+
+  document.addEventListener("mouseup", function () {
+    cropDrag = null;
+  });
+
+  document.querySelectorAll(".riki-ratio-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      document.querySelectorAll(".riki-ratio-btn").forEach(function (b) {
+        b.classList.remove("active");
+      });
+      btn.classList.add("active");
+      var val = btn.getAttribute("data-ratio");
+      if (!val) {
+        cropRatio = null;
+        return;
+      }
+      var parts = val.split(":").map(Number);
+      cropRatio = { w: parts[0], h: parts[1] };
+
+      var stageW = cropImage.clientWidth;
+      var stageH = cropImage.clientHeight;
+      var cx = cropState.x + cropState.w / 2;
+      var cy = cropState.y + cropState.h / 2;
+      var newW = cropState.w;
+      var newH = newW * (cropRatio.h / cropRatio.w);
+      if (newH > stageH) {
+        newH = stageH;
+        newW = newH * (cropRatio.w / cropRatio.h);
+      }
+      var newX = clamp(cx - newW / 2, 0, Math.max(0, stageW - newW));
+      var newY = clamp(cy - newH / 2, 0, Math.max(0, stageH - newH));
+      cropState = { x: newX, y: newY, w: newW, h: newH };
+      renderCropRect();
+    });
+  });
+
+  cropApplyBtn.addEventListener("click", function () {
+    if (!cropTarget) return;
+    var scaleX = cropTarget.originalImage.naturalWidth / cropImage.clientWidth;
+    var scaleY = cropTarget.originalImage.naturalHeight / cropImage.clientHeight;
+
+    var sx = cropState.x * scaleX;
+    var sy = cropState.y * scaleY;
+    var sw = cropState.w * scaleX;
+    var sh = cropState.h * scaleY;
+
+    var canvas = document.createElement("canvas");
+    canvas.width = Math.max(1, Math.round(sw));
+    canvas.height = Math.max(1, Math.round(sh));
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(cropTarget.originalImage, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+
+    var dataUrl = canvas.toDataURL("image/png");
+    var newImg = new Image();
+    newImg.onload = function () {
+      cropTarget.originalImage = newImg;
+      cropTarget.elements.thumb.src = dataUrl;
+      widthSlider.max = Math.max(newImg.width, 200);
+      if (parseInt(widthSlider.value, 10) > newImg.width) {
+        widthSlider.value = newImg.width;
+        widthValue.textContent = newImg.width;
+      }
+      apstradatVienuFailu(cropTarget);
+      aizvertApgriesanasEditoru();
+    };
+    newImg.src = dataUrl;
+  });
+
+  cropCancelBtn.addEventListener("click", aizvertApgriesanasEditoru);
 })();
 
 (function () {
