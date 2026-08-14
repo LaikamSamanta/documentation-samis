@@ -16,6 +16,110 @@ document.addEventListener("DOMContentLoaded", function () {
   // not just one literal phrase, so "wordpress cache" also finds a card
   // whose text has those words in the opposite order or split apart
   var search = document.getElementById("category-search");
+  var resultsBox = document.getElementById("search-results");
+
+  // site-wide section index — built lazily by fetching + parsing each page's
+  // own HTML, so results always match real content without a separate index
+  // file to keep in sync manually. Cached in sessionStorage per cache-bust version.
+  var SEARCH_PAGES = [
+    "pages/api.html", "pages/css-advanced.html", "pages/datubazes.html",
+    "pages/drosiba.html", "pages/gdpr.html", "pages/git.html",
+    "pages/integracijas.html", "pages/javascript.html", "pages/php.html",
+    "pages/sagataves.html", "pages/seo.html", "pages/ssh.html",
+    "pages/web-izveide.html", "pages/web-problemas.html",
+    "pages/wordpress-problemas.html", "pages/wordpress-snippets.html",
+    "pages/wordpress.html"
+  ];
+  var SEARCH_INDEX_VERSION = "19"; // bump together with the ?v= cache-bust number
+  var searchIndex = null;
+  var searchIndexPromise = null;
+
+  function escapeHtml(str) {
+    var div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function buildSearchIndex() {
+    if (searchIndexPromise) return searchIndexPromise;
+    var cacheKey = "docsamis-search-index-v" + SEARCH_INDEX_VERSION;
+    try {
+      var cached = sessionStorage.getItem(cacheKey);
+      if (cached) {
+        searchIndex = JSON.parse(cached);
+        searchIndexPromise = Promise.resolve(searchIndex);
+        return searchIndexPromise;
+      }
+    } catch (e) {}
+
+    searchIndexPromise = Promise.all(
+      SEARCH_PAGES.map(function (path) {
+        return fetch(path)
+          .then(function (res) { return res.text(); })
+          .then(function (html) {
+            var doc = new DOMParser().parseFromString(html, "text/html");
+            var pageTitleEl = doc.querySelector(".doc-header h1");
+            var pageTitle = pageTitleEl ? pageTitleEl.textContent.trim() : path;
+            var entries = [];
+            doc.querySelectorAll(".doc-section[id]").forEach(function (sec) {
+              var h2 = sec.querySelector("h2");
+              if (!h2) return;
+              var p = sec.querySelector("p");
+              entries.push({
+                page: path,
+                pageTitle: pageTitle,
+                id: sec.id,
+                title: h2.textContent.trim(),
+                snippet: p ? p.textContent.trim().slice(0, 140) : ""
+              });
+            });
+            return entries;
+          })
+          .catch(function () { return []; });
+      })
+    ).then(function (results) {
+      searchIndex = [].concat.apply([], results);
+      try { sessionStorage.setItem(cacheKey, JSON.stringify(searchIndex)); } catch (e) {}
+      return searchIndex;
+    });
+
+    return searchIndexPromise;
+  }
+
+  function renderSearchResults(query) {
+    if (!resultsBox) return;
+    var words = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    if (words.length === 0) {
+      resultsBox.innerHTML = "";
+      resultsBox.classList.remove("open");
+      return;
+    }
+    if (!searchIndex) {
+      resultsBox.innerHTML = '<div class="search-loading">Meklē…</div>';
+      resultsBox.classList.add("open");
+      return;
+    }
+    var matches = searchIndex.filter(function (entry) {
+      var text = (entry.title + " " + entry.snippet + " " + entry.pageTitle).toLowerCase();
+      return words.every(function (w) { return text.indexOf(w) !== -1; });
+    }).slice(0, 8);
+
+    if (matches.length === 0) {
+      resultsBox.innerHTML = '<div class="search-no-results">Sadaļās nekas netika atrasts — mēģini citu vārdu.</div>';
+      resultsBox.classList.add("open");
+      return;
+    }
+
+    resultsBox.innerHTML = matches.map(function (m) {
+      return '<a href="' + m.page + '#' + m.id + '">' +
+        '<div class="result-page">' + escapeHtml(m.pageTitle) + '</div>' +
+        '<div class="result-title">' + escapeHtml(m.title) + '</div>' +
+        (m.snippet ? '<div class="result-snippet">' + escapeHtml(m.snippet) + '…</div>' : '') +
+        '</a>';
+    }).join("");
+    resultsBox.classList.add("open");
+  }
+
   if (search) {
     search.addEventListener("input", function () {
       var words = search.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
@@ -26,6 +130,26 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         card.style.display = matches ? "" : "none";
       });
+
+      renderSearchResults(search.value);
+      if (words.length > 0) {
+        buildSearchIndex().then(function () { renderSearchResults(search.value); });
+      }
+    });
+
+    search.addEventListener("focus", function () {
+      buildSearchIndex(); // warm the index early so results are instant once typed
+      if (search.value.trim()) renderSearchResults(search.value);
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && resultsBox) resultsBox.classList.remove("open");
+    });
+
+    document.addEventListener("click", function (e) {
+      if (resultsBox && !search.contains(e.target) && !resultsBox.contains(e.target)) {
+        resultsBox.classList.remove("open");
+      }
     });
   }
 
