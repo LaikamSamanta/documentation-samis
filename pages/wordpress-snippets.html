@@ -96,9 +96,7 @@
     </div>
     <div class="doc-sidebar-group">
       <h4>Daudzvalodu (TranslatePress)</h4>
-      <a href="#snip-trp-hreflang"><span class="bullet"></span>Pareizi hreflang tagi &amp; valodas atribūts</a>
-      <a href="#snip-trp-seo-per-valoda"><span class="bullet"></span>SEO virsraksti &amp; apraksti pa valodām</a>
-      <a href="#snip-trp-canonical"><span class="bullet"></span>Dublētu URL un canonical labošana</a>
+      <a href="#snip-trp-indeksesana"><span class="bullet"></span>Indeksēšana citai valodai — soli pa solim</a>
     </div>
     <div class="doc-sidebar-group">
       <h4>Contact Form 7</h4>
@@ -836,9 +834,12 @@
       </div>
     </section>
 
-    <section class="doc-section" id="snip-trp-hreflang">
-      <h2>Pareizi hreflang tagi &amp; valodas atribūts (TranslatePress)</h2>
-      <p>Ja vietne izmanto <strong>TranslatePress</strong> vairāku valodu atbalstam, WordPress pēc noklusējuma turpina izvadīt <code>&lt;html lang="lv"&gt;</code> pat tulkotajās lapās, un <strong>nemaz neizvada</strong> <code>hreflang</code> tagus. Bez tiem Google nezina, ka <code>/ru/lapa/</code> ir tā paša satura krievu versija, nevis atsevišķa, dublēta lapa — tas ir viens no biežākajiem cēloņiem indeksēšanas problēmām daudzvalodu vietnēs.</p>
+    <section class="doc-section" id="snip-trp-indeksesana">
+      <h2>TranslatePress: indeksēšana citai valodai — soli pa solim</h2>
+      <p><strong>Situācija:</strong> vietne izmanto <strong>TranslatePress</strong> vairāku valodu atbalstam, latviešu versija Google indeksā jau ir, bet otra valoda (šeit — piemēram, <strong>krievu</strong>, <code>/ru/</code>) vai nu vispār netiek indeksēta, vai Search Console rāda kļūdas ("Dublikāts", "Alternatīvā lapa ar pareizu canonical taga vērtību" u.tml.). Šī nav viena kļūda, bet virkne mazu trūkumu, kas jāsalabo secīgi — katrs solis balstās uz iepriekšējo.</p>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">1. solis — pareizs valodas atribūts un hreflang tagi</h3>
+      <p>Vispirms pamats: WordPress pēc noklusējuma turpina izvadīt <code>&lt;html lang="lv"&gt;</code> pat krievu valodas lapās, un <strong>nemaz neizvada</strong> <code>hreflang</code> tagus. Bez tiem Google nezina, ka <code>/ru/lapa/</code> ir tā paša satura krievu versija, nevis atsevišķa, dublēta lapa — tas ir pats biežākais indeksēšanas problēmu cēlonis daudzvalodu vietnēs, un pārējie soļi bez šī nestrādās pareizi.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_filter</span>(<span class="tok-str">'language_attributes'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$output</span>) {
     <span class="tok-kw">if</span> (<span class="tok-fn">function_exists</span>(<span class="tok-str">'trp_get_current_language'</span>)) {
         <span class="tok-fn">$valoda</span> = <span class="tok-fn">trp_get_current_language</span>(); <span class="tok-com">// piem. 'lv', 'ru', 'en'</span>
@@ -875,11 +876,9 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
         <p>Pēc ieviešanas pārbaudi rezultātu ar <strong>skatīt lapas avotu</strong> (View Source) katrā valodas versijā — vajadzētu redzēt vienu <code>&lt;link rel="alternate" hreflang="..."&gt;</code> katrai valodai, ieskaitot pašu pašreizējo. Google Search Console (Lapas → Indeksēšana) parasti parāda hreflang kļūdas 1-2 nedēļu laikā pēc ieviešanas.</p>
       </div>
-    </section>
 
-    <section class="doc-section" id="snip-trp-seo-per-valoda">
-      <h2>SEO virsraksti &amp; apraksti pa valodām</h2>
-      <p>TranslatePress pēc noklusējuma tulko lapas <strong>redzamo</strong> saturu, bet <strong>ne</strong> Yoast SEO virsrakstu/aprakstu laukus (tie tiek uzstādīti reizi, konkrētajai lapai, neatkarīgi no valodas). Rezultātā visas valodu versijas meklētājā parādās ar to pašu, piemēram, latvisko, virsrakstu. Risinājums — filtrēt <code>wpseo_title</code> un <code>wpseo_metadesc</code> pēc pašreizējās valodas ar uzmeklēšanas masīvu.</p>
+      <h3 style="font-size:17px; margin:32px 0 10px;">2. solis — SEO virsraksti &amp; apraksti krievu valodai</h3>
+      <p>Hreflang tagi pasaka Google, <strong>kuras</strong> lapas ir saistītas — bet TranslatePress pēc noklusējuma tulko tikai lapas <strong>redzamo</strong> saturu, ne Yoast SEO virsrakstu/aprakstu laukus (tie ir uzstādīti reizi, konkrētajai lapai, neatkarīgi no valodas). Rezultātā krievu valodas versija meklētājā joprojām parādītos ar latvisko virsrakstu — jāfiltrē <code>wpseo_title</code> un <code>wpseo_metadesc</code> pēc pašreizējās valodas ar uzmeklēšanas masīvu.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_filter</span>(<span class="tok-str">'wpseo_title'</span>, <span class="tok-str">'ds_valodu_seo_virsraksts'</span>);
 <span class="tok-fn">add_filter</span>(<span class="tok-str">'wpseo_metadesc'</span>, <span class="tok-str">'ds_valodu_seo_apraksts'</span>);
 <span class="tok-fn">add_filter</span>(<span class="tok-str">'wpseo_opengraph_title'</span>, <span class="tok-str">'ds_valodu_seo_virsraksts'</span>);
@@ -926,11 +925,9 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
         <p>Ja lapu skaits ir liels, TranslatePress piedāvā arī maksas paplašinājumu <strong>SEO Pack</strong>, kas ļauj tulkot šos laukus tieši redaktora saskarnē (tāpat kā parasto saturu) — augstāk redzamais filtru risinājums ir bezmaksas alternatīva, kas ērta pie neliela, fiksēta lapu skaita (piem., līdz 10-15 lapām).</p>
       </div>
-    </section>
 
-    <section class="doc-section" id="snip-trp-canonical">
-      <h2>Dublētu URL un canonical labošana</h2>
-      <p>Divi bieži sastopami daudzvalodu vietņu "indeksēšanas problēmu" cēloņi: (1) daži iekšējie saites ģenerē dubultu valodas prefiksu, piem. <code>/ru/ru/lapa/</code>, ko Google indeksē kā atsevišķu, salauztu lapu; (2) strukturētie dati (JSON-LD, ko izvada Yoast SEO) reizēm satur nepareizu vai novecojušu <code>url</code> lauku, kas neatbilst pašreizējai lapas adresei.</p>
+      <h3 style="font-size:17px; margin:32px 0 10px;">3. solis — dublētu URL un canonical labošana</h3>
+      <p>Ar hreflang un savu SEO tekstu krievu versija jau ir pareizi marķēta un atšķirama — bet, ja saites uz to kaut kur ir "salauztas", Google to var indeksēt kā atsevišķu, bojātu lapu. Divi bieži sastopami cēloņi: (1) daži iekšējie saites ģenerē dubultu valodas prefiksu, piem. <code>/ru/ru/lapa/</code>; (2) strukturētie dati (JSON-LD, ko izvada Yoast SEO) reizēm satur nepareizu vai novecojušu <code>url</code> lauku, kas neatbilst pašreizējai lapas adresei.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 1) Novērš /ru/ru/ tipa dublētu valodas prefiksu izvadītajā HTML</span>
 <span class="tok-fn">add_action</span>(<span class="tok-str">'template_redirect'</span>, <span class="tok-kw">function</span>() {
     <span class="tok-kw">if</span> (<span class="tok-fn">is_admin</span>()) {
@@ -961,8 +958,13 @@
     <span class="tok-kw">return</span> <span class="tok-fn">$output</span>;
 }, 20);</code></pre>
 
-      <h3 style="font-size:17px; margin:32px 0 10px;">Manuāls sitemap fails valodai, ko SEO spraudnis neuztver</h3>
-      <p>Reizēm Yoast/RankMath automātiski ģenerētais <code>sitemap_index.xml</code> vienkārši <strong>neietver</strong> TranslatePress apakšmapes valodas lapas — īpaši, ja tās ir statiskas/pielāgotas lapas, nevis parasti WordPress raksti. Ja tā gadās, ātrākais labojums nav meklēt, kāpēc spraudnis tās neredz, bet uztaisīt atsevišķu, manuāli uzturētu sitemap failu tieši tai valodai.</p>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Vispirms <strong>diagnosticē</strong>, vai dubultā prefiksa problēma vispār pastāv (skaties lapas avotu vai Search Console → Lapas → "Dublikāts, Google izvēlējās citu kanonisko URL") — pievieno #1 tikai tad, ja tiešām redzi <code>/ru/ru/</code> tipa saites. <code>preg_replace</code> ar output buffering katrā lapas ielādē nedaudz palielina servera slodzi, tāpēc tas ir labojums simptomam, nevis pamatcēlonim (parasti tas ir cietkodēta valodas prefiksa saite kādā veidnē vai page builderī).</p>
+      </div>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">4. solis — sitemap krievu valodas lapām</h3>
+      <p>Ar iepriekšējiem trim soļiem esošās krievu lapas ir pareizi marķētas un pieejamas — bet, ja Yoast/RankMath automātiski ģenerētais <code>sitemap_index.xml</code> tās <strong>neietver</strong> (bieži gadās TranslatePress apakšmapju struktūrai, īpaši statiskām/pielāgotām lapām, kas nav parasti WordPress raksti), Google par tām var vienkārši nezināt. Risinājums — atsevišķs, manuāli uzturēts sitemap fails tieši šai valodai.</p>
       <pre class="code-block"><span class="lang">xml</span><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"&gt;
 &lt;url&gt;&lt;loc&gt;https://tavavietne.lv/ru/&lt;/loc&gt;&lt;lastmod&gt;2026-08-14&lt;/lastmod&gt;&lt;/url&gt;
@@ -970,17 +972,20 @@
 &lt;url&gt;&lt;loc&gt;https://tavavietne.lv/ru/pakalpojums-a/&lt;/loc&gt;&lt;lastmod&gt;2026-03-18&lt;/lastmod&gt;&lt;/url&gt;
 &lt;/urlset&gt;</code></pre>
       <div class="doc-cards">
-        <div class="doc-mini-card"><h4>1. Faila nosaukums</h4><p>Piem. <code>ru-sitemap.xml</code>, <code>en-sitemap.xml</code> — jebkurš skaidrs nosaukums, nav WordPress rezervēts termins.</p></div>
+        <div class="doc-mini-card"><h4>1. Faila nosaukums</h4><p>Piem. <code>ru-sitemap.xml</code> — jebkurš skaidrs nosaukums, nav WordPress rezervēts termins.</p></div>
         <div class="doc-mini-card"><h4>2. Kur likt</h4><p>Tieši <code>httpdocs</code> saknes mapē (caur Plesk File Manager vai FTP) — tajā pašā vietā, kur atrodas galvenais <code>sitemap_index.xml</code>.</p></div>
-        <div class="doc-mini-card"><h4>3. Sasaiste</h4><p>Pievieno saiti uz šo failu <code>robots.txt</code> (skat. #3 kodu augstāk) un iesniedz to arī atsevišķi Google Search Console → Sitemaps.</p></div>
+        <div class="doc-mini-card"><h4>3. Sasaiste</h4><p>Saite uz šo failu jau tiek pievienota <code>robots.txt</code> iepriekšējā koda 3. daļā — papildus iesniedz to arī atsevišķi Google Search Console → Sitemaps.</p></div>
       </div>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
         <p>Šis fails ir <strong>statisks</strong> — atšķirībā no <code>sitemap_index.xml</code>, tas neatjaunojas pats, kad pievieno vai maina lapas. <code>lastmod</code> jāatjaunina manuāli. Tāpēc šī pieeja der tikai nelielam, retāk mainīgam lapu skaitam (dažiem desmitiem) — ja valodas versijai ir simtiem lapu vai tās mainās bieži, labāk atrisināt, kāpēc SEO spraudnis tās neietver automātiski, nevis uzturēt manuālu failu ilgtermiņā.</p>
       </div>
-      <div class="callout warn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Vispirms <strong>diagnosticē</strong>, vai dubultā prefiksa problēma vispār pastāv (skaties lapas avotu vai Search Console → Lapas → "Dublikāts, Google izvēlējās citu kanonisko URL") — pievieno #1 tikai tad, ja tiešām redzi <code>/ru/ru/</code> tipa saites. <code>preg_replace</code> ar output buffering katrā lapas ielādē nedaudz palielina servera slodzi, tāpēc tas ir labojums simptomam, nevis pamatcēlonim (parasti tas ir cietkodēta valodas prefiksa saite kādā veidnē vai page builderī).</p>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">5. solis — pārbaude</h3>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>View Source</h4><p>Atver <code>/ru/</code> lapu un skaties lapas avotu — jāredz <code>&lt;html lang="ru"&gt;</code> un pilns hreflang tagu komplekts <code>&lt;head&gt;</code> sadaļā.</p></div>
+        <div class="doc-mini-card"><h4>Google rezultātu priekšskatījums</h4><p>Meklē lapu ar <code>site:tavavietne.lv/ru/</code> — virsrakstam/aprakstam meklētājā jābūt krieviski, ne latviski.</p></div>
+        <div class="doc-mini-card"><h4>Search Console</h4><p>Iesniedz <code>ru-sitemap.xml</code> sadaļā Sitemaps un seko līdzi Lapas → Indeksēšana — rezultāti (indeksēto lapu skaits, kļūdas) parasti parādās 1-2 nedēļu laikā, ne uzreiz.</p></div>
       </div>
     </section>
 
