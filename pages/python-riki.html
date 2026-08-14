@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
 <title>Python rīki - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=30" />
+<link rel="stylesheet" href="../css/style.css?v=31" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -251,7 +251,7 @@ MAPES_PA_TIPIEM = {
     <section class="doc-section" id="uptime-checker">
       <h2>Vietnes darbības pārbaude ar pašizveidotu darbvirsmas paziņojumu (uptime)</h2>
       <p>Viens skripts, viss kopā: ik pēc noteikta laika pārbauda, vai norādītās vietnes atbild, un, ja kāda pārstāj strādāt (vai atkal atsāk), parāda uznirstošu logu ar skaņu apakšējā labajā stūrī - <strong>pilnībā pašrocīgi</strong> noformētu (nevis Windows fiksēto paziņojumu šablonu), tāpēc izskats un uzvedība ir tavā ziņā.</p>
-      <p><strong>Uzinstalē:</strong> <code>pip install requests</code> (<code>tkinter</code> un <code>winsound</code> nāk kopā ar Python - nekas cits jāuzinstalē nav)</p>
+      <p><strong>Uzinstalē:</strong> <code>pip install requests Pillow</code> (<code>tkinter</code> un <code>winsound</code> nāk kopā ar Python; <code>Pillow</code> vajadzīgs tikai, lai ikonas aplis būtu gluds, nevis robains)</p>
       <pre class="code-block"><span class="lang">python</span><code><span class="tok-kw">import</span> sys
 sys.stdout.reconfigure(encoding=<span class="tok-str">"utf-8"</span>)  <span class="tok-com"># bez šī print() ar ā/ē/ī/š var avarēt Windows terminālī</span>
 
@@ -262,6 +262,7 @@ sys.stdout.reconfigure(encoding=<span class="tok-str">"utf-8"</span>)  <span cla
 <span class="tok-kw">import</span> queue
 <span class="tok-kw">import</span> tkinter <span class="tok-kw">as</span> tk
 <span class="tok-kw">import</span> winsound
+<span class="tok-kw">from</span> PIL <span class="tok-kw">import</span> Image, ImageDraw, ImageTk
 
 <span class="tok-com"># klusina brīdinājumu, kas parādās, kad SSL fallback pārbaude izmanto verify=False</span>
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -287,6 +288,8 @@ iepriksejie_statusi = {}
 <span class="tok-com"># ka pie diviem gandrīz vienlaicīgiem paziņojumiem redzams tikai viens no tiem)</span>
 _pazinojumu_rinda = queue.Queue()
 _aktivie_logi = []
+_bildes_cache = []  <span class="tok-com"># jāpatur reference uz katru PhotoImage - citādi Python to izmet</span>
+                    <span class="tok-com"># (garbage collection) un ikona pazūd, kaut Canvas to joprojām rāda</span>
 
 <span class="tok-kw">def</span> <span class="tok-fn">_apalu_taisnstura</span>(c, x1, y1, x2, y2, r, **kwargs):
     <span class="tok-com"># tkinter Canvas nemāk zīmēt noapaļotus taisnstūrus pats - tā to uzbūvē</span>
@@ -297,6 +300,18 @@ _aktivie_logi = []
         x1, y2, x1, y2-r, x1, y1+r, x1, y1,
     ]
     <span class="tok-kw">return</span> c.create_polygon(punkti, smooth=<span class="tok-kw">True</span>, **kwargs)
+
+<span class="tok-kw">def</span> <span class="tok-fn">_gluds_aplis</span>(krasa, izmers=32):
+    <span class="tok-com"># canvas.create_oval() ZĪMĒ ROBAINU apli - Canvas nepretalaiso savas formas.</span>
+    <span class="tok-com"># Risinājums: uzzīmē apli PIL 4x lielāku, tad samazina ar LANCZOS - samazinot</span>
+    <span class="tok-com"># augstas izšķirtspējas attēlu, malas dabiski izlīdzinās (supersampling)</span>
+    merogs = 4
+    img = Image.new(<span class="tok-str">"RGBA"</span>, (izmers*merogs, izmers*merogs), (0, 0, 0, 0))
+    ImageDraw.Draw(img).ellipse((0, 0, izmers*merogs-1, izmers*merogs-1), fill=krasa)
+    img = img.resize((izmers, izmers), Image.LANCZOS)
+    foto = ImageTk.PhotoImage(img)
+    _bildes_cache.append(foto)
+    <span class="tok-kw">return</span> foto
 
 <span class="tok-kw">def</span> <span class="tok-fn">_atskanot_skanu</span>(ir_labi):
     <span class="tok-com"># divtoņu signāls, nevis viens plakans pīkstiens - winsound.Beep ir</span>
@@ -338,12 +353,12 @@ _aktivie_logi = []
                      fill=stikla_krasa, outline=apmales_krasa, width=1)
 
     <span class="tok-com"># ikona apļa nozīmītē, ne tikai teksts - premium notikumu paziņojumu paraugs</span>
-    ikonas_r = 16
+    ikonas_izmers = 32
     ikonas_cx, ikonas_cy = 40, augstums // 2
-    canvas.create_oval(ikonas_cx-ikonas_r, ikonas_cy-ikonas_r, ikonas_cx+ikonas_r, ikonas_cy+ikonas_r,
-                        fill=krasa_akcents, outline=<span class="tok-str">""</span>)
-    canvas.create_text(ikonas_cx, ikonas_cy, text=(<span class="tok-str">"✓"</span> <span class="tok-kw">if</span> ir_labi <span class="tok-kw">else</span> <span class="tok-str">"✕"</span>), fill=stikla_krasa,
-                        font=(<span class="tok-str">"Segoe UI"</span>, 14, <span class="tok-str">"bold"</span>))
+    ikonas_bilde = <span class="tok-fn">_gluds_aplis</span>(krasa_akcents, ikonas_izmers)
+    canvas.create_image(ikonas_cx, ikonas_cy, image=ikonas_bilde)
+    canvas.create_text(ikonas_cx, ikonas_cy, text=(<span class="tok-str">"✓"</span> <span class="tok-kw">if</span> ir_labi <span class="tok-kw">else</span> <span class="tok-str">"✕"</span>), fill=<span class="tok-str">"white"</span>,
+                        font=(<span class="tok-str">"Segoe UI"</span>, 13, <span class="tok-str">"bold"</span>))
 
     canvas.create_text(70, 32, text=virsraksts, fill=<span class="tok-str">"white"</span>, anchor=<span class="tok-str">"w"</span>, font=(<span class="tok-str">"Segoe UI"</span>, 11, <span class="tok-str">"bold"</span>))
     canvas.create_text(70, 56, text=zina, fill=<span class="tok-str">"#a6a3c4"</span>, anchor=<span class="tok-str">"w"</span>, font=(<span class="tok-str">"Segoe UI"</span>, 9), width=250)
@@ -368,7 +383,7 @@ _aktivie_logi = []
 
     iebalsinat()
     <span class="tok-fn">_atskanot_skanu</span>(ir_labi)
-    logs.after(15000, aizvert)  <span class="tok-com"># aizveras pats pēc 15s, ja pats neaizver ātrāk</span>
+    <span class="tok-com"># NAV automātiskas aizvēršanās ar taimeri - logs paliek, kamēr pats nenospiež ✕</span>
 
 <span class="tok-kw">def</span> <span class="tok-fn">_apstradat_pazinojumu_rindu</span>(root):
     <span class="tok-kw">try</span>:
@@ -448,6 +463,8 @@ threading.Thread(target=_palaist_pazinojumu_fonu, daemon=<span class="tok-kw">Tr
         <div class="doc-mini-card"><h4>Sakrāvums (stacking)</h4><p>Ja vairāki paziņojumi parādās gandrīz vienlaicīgi, katrs nākamais tiek novietots virs iepriekšējā (nevis pāri tam) - <code>len(_aktivie_logi)</code> nosaka nobīdi uz augšu.</p></div>
         <div class="doc-mini-card"><h4>Noapaļoti stūri (<code>-transparentcolor</code>)</h4><p><code>tkinter</code> nemāk noapaļot loga stūrus tieši, tāpēc logam iestata "burvju" krāsu, kas kļūst pilnībā caurspīdīga - un uz tā zīmē noapaļotu formu (<code>Canvas.create_polygon(..., smooth=True)</code>). Rezultātā redzams tikai pats noapaļotais panelis, ne taisnstūra logs ap to. <strong>Pārbaudīts ar ekrānuzņēmumu</strong> - stūri tiešām caurspīdīgi, ne tikai teorētiski.</p></div>
         <div class="doc-mini-card"><h4>Divtoņu skaņa (<code>winsound.Beep</code>)</h4><p>Nevis viens plakans sistēmas pīkstiens, bet divi īsi toņi pēc kārtas - augšupejoši (880→1175 Hz) veiksmei, lejupejoši (392→330 Hz) kļūdai. Skaņu ģenerē pats Python, nevis atskaņo failu - nekas jāuzinstalē nav.</p></div>
+        <div class="doc-mini-card"><h4>Gluds ikonas aplis (Pillow)</h4><p><code>canvas.create_oval()</code> zīmē robainu, nepretalaisinātu apli - īpaši pamanāms mazā izmērā. Risinājums: uzzīmē apli ar Pillow 4x lielākā izšķirtspējā, tad samazina ar <code>Image.LANCZOS</code> - samazinot augstas izšķirtspējas attēlu, malas dabiski izlīdzinās (supersampling). <strong>Pārbaudīts ar ekrānuzņēmumu</strong> - salīdzinājumā ar iepriekšējo versiju aplis tagad ir gluds.</p></div>
+        <div class="doc-mini-card"><h4>Paliek, kamēr pats neaizver</h4><p>Nav automātiska taimera - logs paliek ekrānā neierobežoti ilgi, kamēr nenospiež ✕. <code>_bildes_cache</code> saraksts ir nepieciešams, jo <code>PhotoImage</code> objekti pazūd (tos izmet garbage collector), ja uz tiem nepaliek neviena Python mainīgā - pat ja Canvas tos joprojām mēģina rādīt.</p></div>
       </div>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
@@ -470,7 +487,7 @@ threading.Thread(target=_palaist_pazinojumu_fonu, daemon=<span class="tok-kw">Tr
   </main>
 </div>
 
-<script src="../js/theme.js?v=30"></script>
-<script src="../js/main.js?v=30"></script>
+<script src="../js/theme.js?v=31"></script>
+<script src="../js/main.js?v=31"></script>
 </body>
 </html>
