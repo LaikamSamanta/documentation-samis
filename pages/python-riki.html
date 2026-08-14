@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
 <title>Python rīki - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=28" />
+<link rel="stylesheet" href="../css/style.css?v=29" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -259,6 +259,7 @@ sys.stdout.reconfigure(encoding=<span class="tok-str">"utf-8"</span>)  <span cla
 <span class="tok-kw">import</span> urllib3
 <span class="tok-kw">import</span> time
 <span class="tok-kw">import</span> threading
+<span class="tok-kw">import</span> queue
 <span class="tok-kw">import</span> tkinter <span class="tok-kw">as</span> tk
 <span class="tok-kw">import</span> winsound
 
@@ -266,50 +267,101 @@ sys.stdout.reconfigure(encoding=<span class="tok-str">"utf-8"</span>)  <span cla
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 VIETNES = [
-    <span class="tok-str">"https://piemers.lv"</span>,
-    <span class="tok-str">"http://veca-vietne-bez-https.lv"</span>,
+    <span class="tok-str">"https://agristravel.com"</span>,
+    <span class="tok-str">"https://klusums.lv"</span>,
 ]
+
+<span class="tok-com"># daudzas vietnes (Cloudflare u.tml. aizsardzība) atgriež 403 pieprasījumiem</span>
+<span class="tok-com"># bez "pārlūka izskata" - bez šī requests sevi piesakās kā "python-requests/x.x"</span>
+<span class="tok-com"># un tiek nobloķēts, pat ja vietne pati par sevi strādā pilnīgi normāli</span>
+HEADERS = {
+    <span class="tok-str">"User-Agent"</span>: <span class="tok-str">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "</span>
+                  <span class="tok-str">"(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"</span>
+}
 
 <span class="tok-com"># atceras katras vietnes pēdējo zināmo statusu, lai paziņotu tikai tad, kad tas MAINĀS</span>
 iepriksejie_statusi = {}
 
+<span class="tok-com"># --- Paziņojumu logi: VIENS kopīgs Tk process visiem, ar rindu citiem pavedieniem ---</span>
+<span class="tok-com"># (nevis atsevišķs tk.Tk() katram paziņojumam savā pavedienā - tas var izraisīt,</span>
+<span class="tok-com"># ka pie diviem gandrīz vienlaicīgiem paziņojumiem redzams tikai viens no tiem)</span>
+_pazinojumu_rinda = queue.Queue()
+_aktivie_logi = []
+
+<span class="tok-kw">def</span> <span class="tok-fn">_izveidot_pazinojuma_logu</span>(root, virsraksts, zina, ir_labi):
+    logs = tk.Toplevel(root)
+    logs.overrideredirect(<span class="tok-kw">True</span>)
+    logs.attributes(<span class="tok-str">"-topmost"</span>, <span class="tok-kw">True</span>)
+    logs.attributes(<span class="tok-str">"-alpha"</span>, 0.0)  <span class="tok-com"># sākas neredzams, tad iebalsinās</span>
+
+    krasa_fons = <span class="tok-str">"#15151f"</span>
+    krasa_akcents = <span class="tok-str">"#22c55e"</span> <span class="tok-kw">if</span> ir_labi <span class="tok-kw">else</span> <span class="tok-str">"#ef4444"</span>
+    platums, augstums, atstarpe = 340, 92, 12
+
+    x = logs.winfo_screenwidth() - platums - 20
+    y = logs.winfo_screenheight() - augstums - 60 - <span class="tok-fn">len</span>(_aktivie_logi) * (augstums + atstarpe)
+    logs.geometry(<span class="tok-str">f"{platums}x{augstums}+{x}+{y}"</span>)
+    logs.configure(bg=krasa_fons)
+
+    josla = tk.Frame(logs, bg=krasa_akcents, width=6)
+    josla.pack(side=<span class="tok-str">"left"</span>, fill=<span class="tok-str">"y"</span>)
+
+    ikonas_apvalks = tk.Frame(logs, bg=krasa_fons, width=40)
+    ikonas_apvalks.pack(side=<span class="tok-str">"left"</span>, fill=<span class="tok-str">"y"</span>)
+    ikonas_apvalks.pack_propagate(<span class="tok-kw">False</span>)
+    tk.Label(ikonas_apvalks, text=(<span class="tok-str">"✓"</span> <span class="tok-kw">if</span> ir_labi <span class="tok-kw">else</span> <span class="tok-str">"✕"</span>), bg=krasa_fons, fg=krasa_akcents,
+             font=(<span class="tok-str">"Segoe UI"</span>, 18, <span class="tok-str">"bold"</span>)).place(relx=0.5, rely=0.5, anchor=<span class="tok-str">"center"</span>)
+
+    saturs = tk.Frame(logs, bg=krasa_fons)
+    saturs.pack(side=<span class="tok-str">"left"</span>, fill=<span class="tok-str">"both"</span>, expand=<span class="tok-kw">True</span>, padx=(4, 14), pady=10)
+
+    tk.Label(saturs, text=virsraksts, bg=krasa_fons, fg=<span class="tok-str">"white"</span>,
+             font=(<span class="tok-str">"Segoe UI"</span>, 11, <span class="tok-str">"bold"</span>), anchor=<span class="tok-str">"w"</span>, justify=<span class="tok-str">"left"</span>).pack(fill=<span class="tok-str">"x"</span>)
+    tk.Label(saturs, text=zina, bg=krasa_fons, fg=<span class="tok-str">"#a6a3c4"</span>,
+             font=(<span class="tok-str">"Segoe UI"</span>, 9), anchor=<span class="tok-str">"w"</span>, justify=<span class="tok-str">"left"</span>, wraplength=220).pack(fill=<span class="tok-str">"x"</span>, pady=(4, 0))
+
+    aizvert_btn = tk.Label(logs, text=<span class="tok-str">"✕"</span>, bg=krasa_fons, fg=<span class="tok-str">"#a6a3c4"</span>, font=(<span class="tok-str">"Segoe UI"</span>, 9), cursor=<span class="tok-str">"hand2"</span>)
+    aizvert_btn.place(x=platums - 24, y=6)
+
+    <span class="tok-kw">def</span> <span class="tok-fn">aizvert</span>(event=<span class="tok-kw">None</span>):
+        <span class="tok-kw">if</span> logs <span class="tok-kw">in</span> _aktivie_logi:
+            _aktivie_logi.remove(logs)
+        logs.destroy()
+
+    aizvert_btn.bind(<span class="tok-str">"&lt;Button-1&gt;"</span>, aizvert)
+    _aktivie_logi.append(logs)
+
+    <span class="tok-kw">def</span> <span class="tok-fn">iebalsinat</span>(soli=0):
+        <span class="tok-kw">if</span> <span class="tok-kw">not</span> logs.winfo_exists():
+            <span class="tok-kw">return</span>
+        logs.attributes(<span class="tok-str">"-alpha"</span>, <span class="tok-fn">min</span>(soli / 10, 1.0))
+        <span class="tok-kw">if</span> soli &lt; 10:
+            logs.after(15, <span class="tok-kw">lambda</span>: iebalsinat(soli + 1))
+
+    iebalsinat()
+    winsound.MessageBeep(winsound.MB_ICONASTERISK <span class="tok-kw">if</span> ir_labi <span class="tok-kw">else</span> winsound.MB_ICONEXCLAMATION)
+    logs.after(15000, aizvert)  <span class="tok-com"># aizveras pats pēc 15s, ja pats neaizver ātrāk</span>
+
+<span class="tok-kw">def</span> <span class="tok-fn">_apstradat_pazinojumu_rindu</span>(root):
+    <span class="tok-kw">try</span>:
+        <span class="tok-kw">while</span> <span class="tok-kw">True</span>:
+            virsraksts, zina, ir_labi = _pazinojumu_rinda.get_nowait()
+            <span class="tok-fn">_izveidot_pazinojuma_logu</span>(root, virsraksts, zina, ir_labi)
+    <span class="tok-kw">except</span> queue.Empty:
+        <span class="tok-kw">pass</span>
+    root.after(150, <span class="tok-kw">lambda</span>: _apstradat_pazinojumu_rindu(root))
+
+<span class="tok-kw">def</span> <span class="tok-fn">_palaist_pazinojumu_fonu</span>():
+    root = tk.Tk()
+    root.withdraw()  <span class="tok-com"># paslēpj tukšo galveno logu - redzami tikai paši paziņojumi</span>
+    <span class="tok-fn">_apstradat_pazinojumu_rindu</span>(root)
+    root.mainloop()
+
+<span class="tok-com"># VIENS fona pavediens ar VIENU Tk logu, kas apstrādā visus paziņojumus</span>
+threading.Thread(target=_palaist_pazinojumu_fonu, daemon=<span class="tok-kw">True</span>).start()
+
 <span class="tok-kw">def</span> <span class="tok-fn">rada_pazinojumu</span>(virsraksts, zina, ir_labi):
-    <span class="tok-kw">def</span> <span class="tok-fn">izveidot_logu</span>():
-        logs = tk.Tk()
-        logs.overrideredirect(<span class="tok-kw">True</span>)  <span class="tok-com"># noņem loga rāmi un nosaukuma joslu</span>
-        logs.attributes(<span class="tok-str">"-topmost"</span>, <span class="tok-kw">True</span>)  <span class="tok-com"># vienmēr virs citiem logiem</span>
-
-        krasa_fons = <span class="tok-str">"#15151f"</span>
-        krasa_akcents = <span class="tok-str">"#22c55e"</span> <span class="tok-kw">if</span> ir_labi <span class="tok-kw">else</span> <span class="tok-str">"#ef4444"</span>
-        platums, augstums = 340, 90
-
-        x = logs.winfo_screenwidth() - platums - 20
-        y = logs.winfo_screenheight() - augstums - 60
-        logs.geometry(<span class="tok-str">f"{platums}x{augstums}+{x}+{y}"</span>)
-        logs.configure(bg=krasa_fons)
-
-        josla = tk.Frame(logs, bg=krasa_akcents, width=6)
-        josla.pack(side=<span class="tok-str">"left"</span>, fill=<span class="tok-str">"y"</span>)
-
-        saturs = tk.Frame(logs, bg=krasa_fons)
-        saturs.pack(side=<span class="tok-str">"left"</span>, fill=<span class="tok-str">"both"</span>, expand=<span class="tok-kw">True</span>, padx=14, pady=10)
-
-        tk.Label(saturs, text=virsraksts, bg=krasa_fons, fg=<span class="tok-str">"white"</span>,
-                 font=(<span class="tok-str">"Segoe UI"</span>, 11, <span class="tok-str">"bold"</span>), anchor=<span class="tok-str">"w"</span>, justify=<span class="tok-str">"left"</span>).pack(fill=<span class="tok-str">"x"</span>)
-        tk.Label(saturs, text=zina, bg=krasa_fons, fg=<span class="tok-str">"#a6a3c4"</span>,
-                 font=(<span class="tok-str">"Segoe UI"</span>, 9), anchor=<span class="tok-str">"w"</span>, justify=<span class="tok-str">"left"</span>, wraplength=250).pack(fill=<span class="tok-str">"x"</span>, pady=(4, 0))
-
-        aizvert = tk.Label(logs, text=<span class="tok-str">"✕"</span>, bg=krasa_fons, fg=<span class="tok-str">"#a6a3c4"</span>, font=(<span class="tok-str">"Segoe UI"</span>, 10), cursor=<span class="tok-str">"hand2"</span>)
-        aizvert.place(x=platums - 26, y=8)
-        aizvert.bind(<span class="tok-str">"&lt;Button-1&gt;"</span>, <span class="tok-kw">lambda</span> e: logs.destroy())
-
-        winsound.MessageBeep(winsound.MB_ICONASTERISK <span class="tok-kw">if</span> ir_labi <span class="tok-kw">else</span> winsound.MB_ICONEXCLAMATION)
-
-        logs.after(15000, logs.destroy)  <span class="tok-com"># aizveras pats pēc 15s, ja pats neaizver ātrāk</span>
-        logs.mainloop()
-
-    <span class="tok-com"># atsevišķā pavedienā, lai popups NEAPTUR galveno pārbaudes ciklu</span>
-    threading.Thread(target=izveidot_logu, daemon=<span class="tok-kw">True</span>).start()
+    _pazinojumu_rinda.put((virsraksts, zina, ir_labi))
 
 <span class="tok-kw">def</span> <span class="tok-fn">parbaudit_vienu_vietni</span>(url):
     <span class="tok-com"># ja VIETNES sarakstā ierakstīts tikai domēns bez "http(s)://" (piem. "piemers.lv"),</span>
@@ -319,15 +371,21 @@ iepriksejie_statusi = {}
         url = <span class="tok-str">"https://"</span> + url
 
     <span class="tok-kw">try</span>:
-        atbilde = requests.get(url, timeout=10)
-        <span class="tok-kw">return</span> <span class="tok-str">"strada"</span> <span class="tok-kw">if</span> atbilde.status_code < 400 <span class="tok-kw">else</span> <span class="tok-str">"kluda"</span>
+        atbilde = requests.get(url, timeout=10, headers=HEADERS)
+        <span class="tok-kw">if</span> atbilde.status_code &lt; 400:
+            <span class="tok-kw">return</span> <span class="tok-str">"strada"</span>
+        <span class="tok-fn">print</span>(<span class="tok-str">f"  [{url}] atbildēja ar statusu {atbilde.status_code}"</span>)
+        <span class="tok-kw">return</span> <span class="tok-str">"kluda"</span>
     <span class="tok-kw">except</span> requests.exceptions.SSLError:
         <span class="tok-com"># serveris pats automātiski pāradresē http -> https, bet https pusē nav derīga</span>
         <span class="tok-com"># sertifikāta - tas NENOZĪMĒ, ka vietne ir lejā, tāpēc pārbauda vēlreiz bez</span>
         <span class="tok-com"># sertifikāta validācijas, lai redzētu, vai serveris tiešām atbild</span>
         <span class="tok-kw">try</span>:
-            atbilde = requests.get(url, timeout=10, verify=<span class="tok-kw">False</span>)
-            <span class="tok-kw">return</span> <span class="tok-str">"strada"</span> <span class="tok-kw">if</span> atbilde.status_code < 400 <span class="tok-kw">else</span> <span class="tok-str">"kluda"</span>
+            atbilde = requests.get(url, timeout=10, headers=HEADERS, verify=<span class="tok-kw">False</span>)
+            <span class="tok-kw">if</span> atbilde.status_code &lt; 400:
+                <span class="tok-kw">return</span> <span class="tok-str">"strada"</span>
+            <span class="tok-fn">print</span>(<span class="tok-str">f"  [{url}] atbildēja ar statusu {atbilde.status_code}"</span>)
+            <span class="tok-kw">return</span> <span class="tok-str">"kluda"</span>
         <span class="tok-kw">except</span> requests.exceptions.RequestException <span class="tok-kw">as</span> e2:
             <span class="tok-fn">print</span>(<span class="tok-str">f"  [{url}] SSL fallback arī neizdevās: {e2}"</span>)
             <span class="tok-kw">return</span> <span class="tok-str">"nestrada"</span>
@@ -356,20 +414,18 @@ iepriksejie_statusi = {}
         parbaudit_vietnes()
         time.sleep(300)  <span class="tok-com"># pārbauda ik pēc 5 minūtēm</span></code></pre>
       <div class="doc-cards">
-        <div class="doc-mini-card"><h4><code>sys.stdout.reconfigure(encoding="utf-8")</code></h4><p>Bez šī rindiņas skripts var avarēt ar <code>UnicodeEncodeError</code>, tiklīdz mēģina izdrukāt latviešu burtus (ā, ē, ī, ļ, š) terminālī, kas neizmanto UTF-8 - bieži sastopams Windows <code>cmd.exe</code> gadījums. Der pievienot pirmajā rindā <strong>jebkuram</strong> Python skriptam, kas drukā latviešu tekstu.</p></div>
-        <div class="doc-mini-card"><h4>Domēns bez <code>https://</code></h4><p>Ja <code>VIETNES</code> sarakstā ieraksta tikai domēnu (piem. <code>"piemers.lv"</code>), <code>requests</code> to uztver kā nederīgu adresi - skripts tagad pats pievieno <code>https://</code>, ja tā trūkst.</p></div>
-        <div class="doc-mini-card"><h4>SSL fallback (<code>verify=False</code>)</h4><p>Ja vietne bez HTTPS pati automātiski pāradresē uz https versiju ar nederīgu sertifikātu, fallback pārbauda vēlreiz, ignorējot sertifikāta kļūdu, lai pārliecinātos, vai serveris pats par sevi atbild.</p></div>
-        <div class="doc-mini-card"><h4>Krāsas, fonti, izmērs</h4><p>Pilnībā tavā ziņā - <code>krasa_fons</code>, <code>krasa_akcents</code>, <code>font=(...)</code>, <code>platums</code>/<code>augstums</code> maini brīvi, bez jebkādiem OS ierobežojumiem.</p></div>
-        <div class="doc-mini-card"><h4><code>threading.Thread</code></h4><p>Katrs paziņojums iegūst savu neatkarīgu logu savā pavedienā - bez tā <code>mainloop()</code> apturētu visu skriptu, kamēr logs nav aizvērts.</p></div>
-        <div class="doc-mini-card"><h4><code>winsound.MessageBeep()</code></h4><p>Python iebūvēts modulis - atskaņo Windows sistēmas skaņu tieši, neatkarīgi no citām paziņojumu bibliotēkām vai to iestatījumiem.</p></div>
+        <div class="doc-mini-card"><h4><code>HEADERS</code> (User-Agent)</h4><p>Bez šī daudzas vietnes ar Cloudflare vai līdzīgu aizsardzību atgriež <strong>403</strong> pieprasījumam, kas nāk no <code>python-requests</code> - skripts to pareizi ziņotu kā "kluda", lai gan vietne apmeklētājam pārlūkā strādā normāli. Ar pārlūka izskata galveni serveris pieprasījumu neatšķir no īsta apmeklētāja.</p></div>
+        <div class="doc-mini-card"><h4>Kopīgs Tk process + rinda</h4><p>Iepriekšējā versijā katrs paziņojums izveidoja savu <code>tk.Tk()</code> savā pavedienā - divi gandrīz vienlaicīgi paziņojumi dažkārt "sacentās" un redzams bija tikai viens. Tagad ir <strong>viens</strong> fona pavediens ar vienu logu, kas ik pēc 150ms pārbauda rindu un droši izveido jaunu paziņojumu katram ierakstam.</p></div>
+        <div class="doc-mini-card"><h4>Iebalsināšanās animācija</h4><p><code>attributes("-alpha", ...)</code> pakāpeniski ceļ logu no caurspīdīga uz pilnībā redzamu 150ms laikā - vienkāršs veids, kā panākt mīkstāku, modernāku parādīšanos bez ārējām bibliotēkām.</p></div>
+        <div class="doc-mini-card"><h4>Sakrāvums (stacking)</h4><p>Ja vairāki paziņojumi parādās gandrīz vienlaicīgi, katrs nākamais tiek novietots virs iepriekšējā (nevis pāri tam) - <code>len(_aktivie_logi)</code> nosaka nobīdi uz augšu.</p></div>
       </div>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Šis piemērs pārbaudīts palaižot to reāli (ne tikai sintakses pārbaude) - popups parādās, izzūd pēc 15s vai pēc klikšķa uz ✕, un skaņa atskan neatkarīgi no Windows paziņojumu iestatījumiem. Ja tavā datorā VIENALGA rāda "nestrādā" īstām, strādājošām vietnēm, skripts tagad izdrukā arī <strong>kļūdas iemeslu</strong> - visbiežāk tas nozīmē, ka antivīruss/ugunsmūris/VPN uz šī konkrētā datora bloķē Python piekļuvi internetam, nevis to, ka vietne tiešām nestrādā.</p>
+        <p><strong>Kāpēc pirmajā palaišanas reizē varētu nebūt NEVIENA paziņojuma:</strong> tas ir ar nodomu, ne kļūda. Paziņojums nāk tikai divos gadījumos - vietne <strong>pārstāj</strong> strādāt, vai vietne <strong>atkal sāk</strong> strādāt pēc tam, kad bija zināms, ka tā nestrādāja. Ja pirmajā pārbaudē visas vietnes jau strādā, nav "no kā atgūties" - tāpēc paziņojuma nav, tikai teksts terminālī (<code>url -> strada</code>). Paziņojumu redzēsi tad, kad kāda vietne tiešām pārstās/atsāks strādāt starp pārbaudēm.</p>
       </div>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Kompromiss salīdzinājumā ar Windows iebūvēto paziņojumu sistēmu (Action Center): šis logs <strong>neparādās</strong> paziņojumu vēsturē un pēc aizvēršanas nekur nepaliek - tas ir vienkāršs, vienreizējs uznirstošais logs. <code>tkinter</code> oficiāli nav domāts vairāku logu izveidei no dažādiem pavedieniem vienlaicīgi - praksē tas šādam vienkāršam gadījumam strādā uzticami, bet nav ieteicams sarežģītākām, interaktīvām saskarnēm. Un, tāpat kā iepriekš: paziņojums parādās tikai uz šī paša datora, kamēr skripts tur palaists.</p>
+        <p>Kompromiss salīdzinājumā ar Windows iebūvēto paziņojumu sistēmu (Action Center): šie logi <strong>neparādās</strong> paziņojumu vēsturē un pēc aizvēršanas nekur nepaliek. Un, tāpat kā iepriekš: paziņojums parādās tikai uz šī paša datora, kamēr skripts tur palaists.</p>
       </div>
     </section>
 
@@ -380,7 +436,7 @@ iepriksejie_statusi = {}
   </main>
 </div>
 
-<script src="../js/theme.js?v=28"></script>
-<script src="../js/main.js?v=28"></script>
+<script src="../js/theme.js?v=29"></script>
+<script src="../js/main.js?v=29"></script>
 </body>
 </html>
