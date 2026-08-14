@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
 <title>Python rīki - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=22" />
+<link rel="stylesheet" href="../css/style.css?v=23" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -238,37 +238,54 @@ MAPES_PA_TIPIEM = {
 
     <section class="doc-section" id="uptime-checker">
       <h2>Vietnes darbības pārbaude ar darbvirsmas paziņojumiem (uptime)</h2>
-      <p>Ik pēc noteikta laika pārbauda, vai norādītās vietnes atbild - un, ja kāda pārstāj strādāt (vai atkal atsāk), uzreiz parāda īstu Windows darbvirsmas paziņojumu (tāpat kā Slack vai citas app to dara), nevis tikai izdrukā terminālī, kur to var arī nepamanīt.</p>
-      <p><strong>Uzinstalē:</strong> <code>pip install requests plyer</code></p>
+      <p>Ik pēc noteikta laika pārbauda, vai norādītās vietnes atbild - un, ja kāda pārstāj strādāt (vai atkal atsāk), parāda modernu Windows 10/11 paziņojumu ar skaņu, kas paliek redzams paziņojumu centrā, kamēr pats to neaizver.</p>
+      <p><strong>Uzinstalē:</strong> <code>pip install requests winotify</code></p>
       <pre class="code-block"><span class="lang">python</span><code><span class="tok-kw">import</span> requests
+<span class="tok-kw">import</span> urllib3
 <span class="tok-kw">import</span> time
-<span class="tok-kw">from</span> plyer <span class="tok-kw">import</span> notification
+<span class="tok-kw">from</span> winotify <span class="tok-kw">import</span> Notification, audio
+
+<span class="tok-com"># klusina brīdinājumu, kas parādās, kad SSL fallback pārbaude izmanto verify=False</span>
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 VIETNES = [
     <span class="tok-str">"https://piemers.lv"</span>,
-    <span class="tok-str">"https://otra-vietne.lv"</span>,
+    <span class="tok-str">"http://veca-vietne-bez-https.lv"</span>,
 ]
 
 <span class="tok-com"># atceras katras vietnes pēdējo zināmo statusu, lai paziņotu tikai tad, kad tas MAINĀS</span>
 iepriksejie_statusi = {}
 
 <span class="tok-kw">def</span> <span class="tok-fn">nosutit_pazinojumu</span>(virsraksts, zina):
-    notification.notify(
+    toast = Notification(
+        app_id=<span class="tok-str">"Vietnes uzraudzība"</span>,
         title=virsraksts,
-        message=zina,
-        app_name=<span class="tok-str">"Vietnes uzraudzība"</span>,
-        timeout=10,  <span class="tok-com"># cik ilgi paziņojums paliek redzams (sekundēs)</span>
+        msg=zina,
+        duration=<span class="tok-str">"long"</span>,  <span class="tok-com"># ilgākais iebūvētais rādīšanas laiks (~25s), tad paliek paziņojumu centrā</span>
     )
+    toast.set_audio(audio.Default, loop=<span class="tok-kw">False</span>)
+    toast.show()
+
+<span class="tok-kw">def</span> <span class="tok-fn">parbaudit_vienu_vietni</span>(url):
+    <span class="tok-kw">try</span>:
+        atbilde = requests.get(url, timeout=10)
+        <span class="tok-kw">return</span> <span class="tok-str">"strada"</span> <span class="tok-kw">if</span> atbilde.status_code < 400 <span class="tok-kw">else</span> <span class="tok-str">"kluda"</span>
+    <span class="tok-kw">except</span> requests.exceptions.SSLError:
+        <span class="tok-com"># serveris pats automātiski pāradresē http -> https, bet https pusē nav derīga</span>
+        <span class="tok-com"># sertifikāta - tas NENOZĪMĒ, ka vietne ir lejā, tāpēc pārbauda vēlreiz bez</span>
+        <span class="tok-com"># sertifikāta validācijas, lai redzētu, vai serveris tiešām atbild</span>
+        <span class="tok-kw">try</span>:
+            atbilde = requests.get(url, timeout=10, verify=<span class="tok-kw">False</span>)
+            <span class="tok-kw">return</span> <span class="tok-str">"strada"</span> <span class="tok-kw">if</span> atbilde.status_code < 400 <span class="tok-kw">else</span> <span class="tok-str">"kluda"</span>
+        <span class="tok-kw">except</span> requests.exceptions.RequestException:
+            <span class="tok-kw">return</span> <span class="tok-str">"nestrada"</span>
+    <span class="tok-kw">except</span> requests.exceptions.RequestException:
+        <span class="tok-kw">return</span> <span class="tok-str">"nestrada"</span>
 
 <span class="tok-kw">def</span> <span class="tok-fn">parbaudit_vietnes</span>():
     <span class="tok-kw">for</span> url <span class="tok-kw">in</span> VIETNES:
         iepriksejais = iepriksejie_statusi.get(url)
-
-        <span class="tok-kw">try</span>:
-            atbilde = requests.get(url, timeout=10)
-            jaunais = <span class="tok-str">"strada"</span> <span class="tok-kw">if</span> atbilde.status_code == 200 <span class="tok-kw">else</span> <span class="tok-str">"kluda"</span>
-        <span class="tok-kw">except</span> requests.exceptions.RequestException:
-            jaunais = <span class="tok-str">"nestrada"</span>
+        jaunais = <span class="tok-fn">parbaudit_vienu_vietni</span>(url)
 
         <span class="tok-kw">if</span> jaunais != iepriksejais:
             <span class="tok-kw">if</span> jaunais == <span class="tok-str">"strada"</span> <span class="tok-kw">and</span> iepriksejais <span class="tok-kw">is not</span> <span class="tok-kw">None</span>:
@@ -284,13 +301,17 @@ iepriksejie_statusi = {}
         parbaudit_vietnes()
         time.sleep(300)  <span class="tok-com"># pārbauda ik pēc 5 minūtēm</span></code></pre>
       <div class="doc-cards">
-        <div class="doc-mini-card"><h4><code>plyer</code></h4><p>Vienkārša bibliotēka, kas uz Windows/Mac/Linux katrā parāda sistēmas natīvo paziņojumu (tieši tāpat kā jebkura cita darbvirsmas app) - nav jāraksta atsevišķs kods katrai OS.</p></div>
-        <div class="doc-mini-card"><h4><code>iepriksejie_statusi</code></h4><p>Vārdnīca, kas atceras katras vietnes pēdējo statusu starp pārbaudēm - bez tā paziņojums nāktu <strong>katru</strong> reizi (ik pēc 5 min), nevis tikai tad, kad kaut kas tiešām mainījies.</p></div>
-        <div class="doc-mini-card"><h4>Kāpēc <code>while True</code></h4><p>Skripts jāatstāj palaists fonā (piem., atsevišķā termināļa logā vai kā Windows uzdevumu plānotāja uzdevumu) - tiklīdz to aizver, uzraudzība apstājas.</p></div>
+        <div class="doc-mini-card"><h4><code>winotify</code></h4><p>Izmanto Windows 10/11 pašu iebūvēto paziņojumu sistēmu (Action Center) - tāpēc izskats vienmēr sakrīt ar pašreizējo Windows dizainu, atšķirībā no vecāka stila bibliotēkām. Darbojas <strong>tikai</strong> uz Windows.</p></div>
+        <div class="doc-mini-card"><h4>SSL fallback (<code>verify=False</code>)</h4><p>Salabo tieši aprakstīto problēmu: ja vietne bez HTTPS pati automātiski pāradresē uz https versiju, kurai nav derīga sertifikāta, <code>requests</code> to uztvertu kā "nestrādā" - fallback pārbauda vēlreiz, ignorējot sertifikāta kļūdu, lai pārliecinātos, vai serveris pats par sevi atbild.</p></div>
+        <div class="doc-mini-card"><h4>Kāpēc "paliek, kamēr neaizver"</h4><p>Windows toast paziņojumi pēc <code>duration="long"</code> (~25s) automātiski nepazūd pavisam - tie pāriet uz paziņojumu centru (zvana ikona apakšā labajā stūrī) un paliek tur, kamēr tos manuāli neaizver vai neizdzēš.</p></div>
       </div>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Paziņojums parādās <strong>tikai uz šī paša datora</strong>, kamēr skripts tur palaists - ja dators izslēgts vai skripts aizvērts, paziņojumu nebūs. Ja vajag paziņojumus arī tad, kad dators nav ieslēgts (piem., uz telefonu), risinājums ir citāds: skripts jāpalaiž serverī, kas strādā pastāvīgi, un vietā/papildus <code>plyer</code> jāsūta ziņa uz Slack/Telegram webhook vai e-pastu - tas darbojas neatkarīgi no tavas paša ierīces stāvokļa.</p>
+        <p><code>verify=False</code> pieņem <strong>jebkuru</strong> sertifikātu (arī nederīgu vai viltotu) bez pārbaudes - drošs risinājums šeit, jo tas ietekmē tikai to, kā TAVA lokālā uzraudzība interpretē rezultātu, nevis kā apmeklētāji piekļūst vietnei. Neizmanto <code>verify=False</code> kodā, kas apstrādā reālus lietotāju datus vai maksājumus.</p>
+      </div>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Paziņojums parādās <strong>tikai uz šī paša datora</strong>, kamēr skripts tur palaists - ja dators izslēgts vai skripts aizvērts, paziņojumu nebūs. Ja vajag paziņojumus arī tad, kad dators nav ieslēgts (piem., uz telefonu), risinājums ir citāds: skripts jāpalaiž serverī, kas strādā pastāvīgi, un vietā/papildus <code>winotify</code> jāsūta ziņa uz Slack/Telegram webhook vai e-pastu - tas darbojas neatkarīgi no tavas paša ierīces stāvokļa.</p>
       </div>
     </section>
 
@@ -301,7 +322,7 @@ iepriksejie_statusi = {}
   </main>
 </div>
 
-<script src="../js/theme.js?v=22"></script>
-<script src="../js/main.js?v=22"></script>
+<script src="../js/theme.js?v=23"></script>
+<script src="../js/main.js?v=23"></script>
 </body>
 </html>
