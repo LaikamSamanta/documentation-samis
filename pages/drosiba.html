@@ -34,8 +34,15 @@
 <div class="doc-shell">
   <aside class="doc-sidebar">
     <div class="doc-sidebar-group">
+      <h4>Pamatjēdzieni</h4>
+      <a href="#hash-vs-encrypt" class="active"><span class="bullet"></span>Hashošana vs šifrēšana</a>
+      <a href="#symmetric-asymmetric"><span class="bullet"></span>Simetriskā vs asimetriskā šifrēšana</a>
+      <a href="#authn-vs-authz"><span class="bullet"></span>Autentifikācija vs autorizācija</a>
+      <a href="#jwt-vs-sessions"><span class="bullet"></span>JWT (tokeni) vs sesijas</a>
+    </div>
+    <div class="doc-sidebar-group">
       <h4>Injekcijas &amp; ievade</h4>
-      <a href="#xss" class="active"><span class="bullet"></span>XSS (Cross-Site Scripting)</a>
+      <a href="#xss"><span class="bullet"></span>XSS (Cross-Site Scripting)</a>
       <a href="#sql-injection"><span class="bullet"></span>SQL Injection</a>
       <a href="#input-validation"><span class="bullet"></span>Ievades validācija &amp; sanitizācija</a>
       <a href="#csrf"><span class="bullet"></span>CSRF</a>
@@ -75,6 +82,95 @@
       <h1 style="margin-bottom:0;">Drošība</h1>
     </div>
     <p class="doc-lead">Web drošības pamatprincipi, ko jāzina katram programmētājam — ne tikai WordPress kontekstā. Katrai tēmai — kāpēc uzbrukums strādā, un konkrēts, pareizs koda piemērs, kā to novērst.</p>
+
+    <section class="doc-section" id="hash-vs-encrypt">
+      <h2>Hashošana vs šifrēšana (encryption)</h2>
+      <p>Abas pārvērš datus par nesalasāmu virkni, tāpēc tās bieži sajauc — bet tām ir pretēja pamatīpašība: <strong>hash ir vienvirziena</strong> (nekad neatšifrē atpakaļ), <strong>šifrēšana ir divvirzienu</strong> (ar pareizu atslēgu var iegūt oriģinālu atpakaļ). Izvēle starp tām ir izvēle starp "vai man dati kādreiz jāatgūst atpakaļ, vai tikai jāpārbauda, ka tie sakrīt".</p>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th></th><th>Hashošana</th><th>Šifrēšana</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Virziens</strong></td><td>Vienvirziena — nav "atšifrē"</td><td>Divvirzienu — <code>encrypt()</code> un <code>decrypt()</code></td></tr>
+            <tr><td><strong>Rezultāts</strong></td><td>Vienmēr fiksēta garuma virkne</td><td>Garums atkarīgs no oriģināla</td></tr>
+            <tr><td><strong>Atslēga</strong></td><td>Nav (bet var būt sāls)</td><td>Obligāta — bez tās nav iespējams atgūt datus</td></tr>
+            <tr><td><strong>Kad izmantot</strong></td><td>Paroles, failu integritātes pārbaude, čeksummas</td><td>Kredītkaršu dati, personas dati, ziņas, kas jāizlasa vēlāk</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// HASHOŠANA — paroles gadījumā oriģinālu vairs NEVAJAG, tikai salīdzināšanu</span>
+<span class="tok-fn">$hash</span> = <span class="tok-fn">password_hash</span>(<span class="tok-str">'ManaParole123'</span>, PASSWORD_DEFAULT);
+<span class="tok-com">// $hash: $2y$10$abc...  — no šī NAV iespējams iegūt atpakaļ 'ManaParole123'</span>
+<span class="tok-fn">password_verify</span>(<span class="tok-str">'ManaParole123'</span>, <span class="tok-fn">$hash</span>); <span class="tok-com">// true — salīdzina, neatšifrē</span>
+
+<span class="tok-com">// ŠIFRĒŠANA — piem., jāsaglabā lietotāja tālrunis, ko vēlāk jāparāda atpakaļ</span>
+<span class="tok-fn">$atslega</span> = <span class="tok-fn">random_bytes</span>(32); <span class="tok-com">// glabā drošā vietā, NEVIS datubāzē blakus datiem</span>
+<span class="tok-fn">$iv</span> = <span class="tok-fn">random_bytes</span>(16);
+<span class="tok-fn">$sifrets</span> = <span class="tok-fn">openssl_encrypt</span>(<span class="tok-str">'+371 20000000'</span>, <span class="tok-str">'aes-256-cbc'</span>, <span class="tok-fn">$atslega</span>, 0, <span class="tok-fn">$iv</span>);
+<span class="tok-com">// vēlāk, kad tālrunis atkal jāparāda lietotājam:</span>
+<span class="tok-fn">$originals</span> = <span class="tok-fn">openssl_decrypt</span>(<span class="tok-fn">$sifrets</span>, <span class="tok-str">'aes-256-cbc'</span>, <span class="tok-fn">$atslega</span>, 0, <span class="tok-fn">$iv</span>);
+<span class="tok-com">// $originals === '+371 20000000'</span></code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Pati biežākā kļūda: paroles <strong>šifrēt</strong> nevis <strong>hashot</strong>. Ja paroles ir šifrētas, tad, ja uzbrucējs kaut kā iegūst atslēgu (piem., no koda repozitorija vai konfigurācijas faila), viņš iegūst <strong>visas</strong> paroles vienlaikus tekstā. Ja paroles ir hashotas, tur nav nekādas atslēgas, ko nozagt — hash pats par sevi ir bezvērtīgs uzbrucējam bez milzīga brute-force darba. Skat. arī <a href="#password-hashing">Paroļu hashošana</a> zemāk.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="symmetric-asymmetric">
+      <h2>Simetriskā vs asimetriskā šifrēšana</h2>
+      <p>Iepriekšējā piemērā (<code>openssl_encrypt</code>) izmantota <strong>simetriskā</strong> šifrēšana — viena un tā pati atslēga gan šifrē, gan atšifrē. Tas ir ātri, bet rada praktisku problēmu: kā droši nodot šo atslēgu otrai pusei, ja sazināšanās kanāls pats vēl nav drošs? Šo problēmu risina <strong>asimetriskā</strong> šifrēšana.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>Simetriskā <span class="tag easy">ātra</span></h4><p>Viena atslēga abām darbībām (piem., AES). Ātra, der lielam datu apjomam. Problēma: atslēga jāpārsūta droši abām pusēm iepriekš.</p></div>
+        <div class="doc-mini-card"><h4>Asimetriskā <span class="tag hard">lēnāka</span></h4><p>Divas matemātiski saistītas atslēgas — <strong>publiskā</strong> (var brīvi izplatīt) un <strong>privātā</strong> (glabā slepenībā). Ar publisko šifrē, ar privāto atšifrē (piem., RSA, ECC). Lēnāka, tāpēc reti izmanto lieliem datu apjomiem tieši.</p></div>
+      </div>
+      <p>Praksē abas kombinē — tā strādā arī HTTPS/TLS (skat. <a href="#https-tls">HTTPS/TLS pamati</a> zemāk): asimetrisko šifrēšanu izmanto tikai īsam "roku spiedienam" sākumā, lai droši vienotos par vienreizēju simetrisko atslēgu, un pēc tam visu faktisko datu plūsmu šifrē ar to — ātrāk, bet tikpat droši.</p>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Asimetriskā šifrēšana ir arī pamats <strong>digitālajam parakstam</strong> (JWT <code>RS256</code> algoritms, SSL sertifikāti, Git commit parakstīšana) — tikai apgrieztā virzienā: paraksta ar privāto atslēgu, pārbauda ar publisko. Tā jebkurš var pārliecināties, ka ziņu tiešām nosūtīja atslēgas īpašnieks, bet tikai īpašnieks var jaunas parakstīt.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="authn-vs-authz">
+      <h2>Autentifikācija vs autorizācija</h2>
+      <p>Divi termini, ko pastāvīgi sajauc, jo angliski tie skan un raksta gandrīz vienādi (authentication / authorization) — bet tie atbild uz pilnīgi dažādiem jautājumiem.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>Autentifikācija <span class="tag easy">"Kas tu esi?"</span></h4><p>Pārbauda <strong>identitāti</strong> — pieteikšanās ar lietotājvārdu/paroli, 2FA kodu, piekļuves tokenu. Rezultāts: sistēma zina, KURŠ lietotājs tas ir.</p></div>
+        <div class="doc-mini-card"><h4>Autorizācija <span class="tag medium">"Ko tu drīksti?"</span></h4><p>Pārbauda <strong>tiesības</strong> — vai šim jau zināmajam lietotājam ir atļauts veikt konkrēto darbību (rediģēt šo rakstu, redzēt šo lapu). Notiek PĒC autentifikācijas.</p></div>
+      </div>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// AUTENTIFIKĀCIJA — WordPress: "vai lietotājs vispār ir pieteicies?"</span>
+<span class="tok-kw">if</span> (!<span class="tok-fn">is_user_logged_in</span>()) {
+    <span class="tok-fn">wp_die</span>(<span class="tok-str">'Lūdzu, piesakies.'</span>);
+}
+
+<span class="tok-com">// AUTORIZĀCIJA — WordPress: "vai ŠIM KONKRĒTAJAM lietotājam ir tiesības to darīt?"</span>
+<span class="tok-kw">if</span> (!<span class="tok-fn">current_user_can</span>(<span class="tok-str">'edit_posts'</span>)) {
+    <span class="tok-fn">wp_die</span>(<span class="tok-str">'Nav tiesību rediģēt rakstus.'</span>);
+}</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><strong>Klasiska HTTP statusu kļūda:</strong> statuss <code>401 Unauthorized</code> vēsturiski nosaukts maldinoši — tas patiesībā nozīmē "nav autentificējies" (nav pieteicies vispār), nevis "nav autorizēts". Pareizais statuss trūkstošai <strong>autorizācijai</strong> (pieteicies, bet nav tiesību) ir <code>403 Forbidden</code>. Daudzi API to sajauc — pievēršot tam uzmanību, savā kodā to var izdarīt pareizi.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="jwt-vs-sessions">
+      <h2>JWT (tokeni) vs sesijas</h2>
+      <p>Divi izplatīti veidi, kā lietotni "atceras", ka lietotājs ir pieteicies starp pieprasījumiem — fundamentāli atšķirīga arhitektūra ar dažādiem kompromisiem.</p>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th></th><th>Sesijas</th><th>JWT</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Kur glabājas dati</strong></td><td>Serverī (datubāze/Redis), klientam tikai ID</td><td>Pašā tokenā, klienta pusē</td></tr>
+            <tr><td><strong>Servera atmiņa</strong></td><td>Jāglabā katra aktīvā sesija</td><td>Nav jāglabā nekas ("bezstāvokļa")</td></tr>
+            <tr><td><strong>Atsaukšana pirms termiņa</strong></td><td>Vienkārši — izdzēš ierakstu serverī</td><td>Sarežģīti — tokens derīgs līdz termiņam, ja vien neuztur "melno sarakstu"</td></tr>
+            <tr><td><strong>Der labi</strong></td><td>Klasiskai vietnei ar vienu backend serveri</td><td>API starp vairākiem servisiem/mikroservisiem, mobilajām app</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>WordPress pēc noklusējuma izmanto sesiju/cookie modeli (skat. <a href="#session-security">Sesiju drošība</a> augstāk) — JWT tur parasti parādās tikai tad, ja vietnei ir atsevišķs REST API, ko lieto mobilā app vai cita ārēja sistēma, nevis pats WordPress admin panelis.</p>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>JWT galvenā priekšrocība (nav jāglabā stāvoklis serverī) ir vienlaikus arī tā galvenais trūkums: ja lietotāju vajag nekavējoties izslēgt (piem., viņu atlaida no darba), parasts JWT paliks derīgs līdz izbeigšanās laikam — parasti risina ar <strong>īsu</strong> derīguma termiņu (5-15 min) plus atsevišķu "refresh token", ko VAR atsaukt serverī.</p>
+      </div>
+    </section>
 
     <section class="doc-section" id="xss">
       <h2>XSS (Cross-Site Scripting)</h2>
