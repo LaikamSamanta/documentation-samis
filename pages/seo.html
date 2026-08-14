@@ -275,6 +275,44 @@ Sitemap: https://piemers.lv/sitemap.xml</code></pre>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
         <p>Nepareizi izmantots 302 tur, kur vajadzēja 301, ir bieža kļūda — Google 302 uzskata par pagaidu, tāpēc nepilnībā (vai vispār ne) pārnes veco lapu "autoritāti" uz jauno adresi. Ja lapa pārceļas <strong>pastāvīgi</strong>, vienmēr izmanto 301.</p>
       </div>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">301 redirect Plesk panelī, soli pa solim</h3>
+      <p>Ja hostings ir <strong>Plesk</strong>, redirectu nemaz nevajag rakstīt kā PHP kodu — to var uzstādīt tieši serverī, un tas nostrādā <strong>pirms</strong> WordPress vai jebkurš cits CMS vispār tiek ielādēts (ātrāk, un strādā pat, ja lapa, uz kuru rādīja vecais URL, ir pilnībā izdzēsta). Divi veidi, atkarībā no tā, cik pastāvīgu risinājumu vajag.</p>
+
+      <p><strong>A) Ātrais veids — caur .htaccess (Apache hostingiem)</strong></p>
+      <pre class="code-block"><span class="lang">text</span><code>1. Plesk panelī: Websites &amp; Domains → tava vietne → File Manager
+2. Atver httpdocs mapi (vietnes saknes mape)
+3. Atrodi failu .htaccess (ja tāda nav — izveido jaunu failu ar šo nosaukumu)
+4. Rediģē failu, pašā AUGŠĀ (pirms # BEGIN WordPress rindas, ja tāda ir) pievieno:
+
+   Redirect 301 /vecs-url/ https://tavavietne.lv/jauns-url/
+
+5. Saglabā
+6. Pārbaudi no termināļa vai lokāli:
+
+   curl -I https://tavavietne.lv/vecs-url/
+
+   Atbildē jāredz "HTTP/2 301" un "location: https://tavavietne.lv/jauns-url/"</code></pre>
+      <p><strong>B) Noturīgākais veids — caur Apache &amp; nginx Settings</strong></p>
+      <pre class="code-block"><span class="lang">text</span><code>1. Plesk panelī: Websites &amp; Domains → tava vietne → Apache &amp; nginx Settings
+2. Ritini līdz laukam "Additional directives for HTTP"
+   (ja vietne ir uz HTTPS — to pašu ievieto arī "Additional directives for HTTPS")
+3. Ievieto:
+
+   RewriteEngine On
+   RewriteRule ^vecs-url/?$ https://tavavietne.lv/jauns-url/ [R=301,L]
+
+4. Nospied "Apply" / "OK" apakšā — Plesk pats atjauno konfigurāciju un
+   pārstartē nepieciešamo servisu, bez SSH vai servera restarta
+5. Pārbaudi tāpat ar curl -I, kā A variantā</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><strong>Kāpēc B variants ir "noturīgāks":</strong> daudzi CMS un spraudņi (WordPress permalinku pārsaukšana, kešošanas spraudņi) periodiski <strong>pārraksta</strong> <code>.htaccess</code> failu no jauna — jebkurš manuāli pievienotais redirect A variantā šādā gadījumā pazūd bez brīdinājuma. Apache &amp; nginx Settings lauks ir ārpus <code>.htaccess</code>, tāpēc CMS to neaiztiek — der ilgtermiņa redirectiem (piem., veco lapu dzēšanai pēc vietnes pārstrukturēšanas).</p>
+      </div>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Ja vietne darbojas uz <strong>nginx</strong> (nevis Apache) — Plesk to bieži rāda kā "nginx serving static files, Apache serving dynamic content" vai tikai tīru nginx. Tad "Apache &amp; nginx Settings" sadaļā jāizmanto lauks "Additional nginx directives" ar sintaksi <code>rewrite ^/vecs-url/?$ https://tavavietne.lv/jauns-url/ permanent;</code> — Apache <code>Redirect</code>/<code>RewriteRule</code> sintakse tur nestrādās. Pēc jebkuras izmaiņas vienmēr pārbaudi ar <code>curl -I</code>, nevis tikai vizuāli pārlūkā — pārlūks bieži pats kešo redirectu un var rādīt novecojušu rezultātu.</p>
+      </div>
     </section>
 
     <section class="doc-section" id="core-web-vitals">

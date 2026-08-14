@@ -95,8 +95,16 @@
       <a href="#snip-stripe-locale"><span class="bullet"></span>Stripe apmaksas formas valoda</a>
     </div>
     <div class="doc-sidebar-group">
+      <h4>Daudzvalodu (TranslatePress)</h4>
+      <a href="#snip-trp-hreflang"><span class="bullet"></span>Pareizi hreflang tagi &amp; valodas atribūts</a>
+      <a href="#snip-trp-seo-per-valoda"><span class="bullet"></span>SEO virsraksti &amp; apraksti pa valodām</a>
+      <a href="#snip-trp-canonical"><span class="bullet"></span>Dublētu URL un canonical labošana</a>
+    </div>
+    <div class="doc-sidebar-group">
       <h4>Contact Form 7</h4>
       <a href="#snip-cf7-autofill"><span class="bullet"></span>Automātiska aizpilde pieteikušamies</a>
+      <a href="#snip-cf7-valoda"><span class="bullet"></span>Forma divās valodās (pēc URL)</a>
+      <a href="#snip-cf7-assets"><span class="bullet"></span>Ielādēt CF7 skriptus tikai vajadzīgajā lapā</a>
     </div>
   </aside>
 
@@ -828,6 +836,136 @@
       </div>
     </section>
 
+    <section class="doc-section" id="snip-trp-hreflang">
+      <h2>Pareizi hreflang tagi &amp; valodas atribūts (TranslatePress)</h2>
+      <p>Ja vietne izmanto <strong>TranslatePress</strong> vairāku valodu atbalstam, WordPress pēc noklusējuma turpina izvadīt <code>&lt;html lang="lv"&gt;</code> pat tulkotajās lapās, un <strong>nemaz neizvada</strong> <code>hreflang</code> tagus. Bez tiem Google nezina, ka <code>/ru/lapa/</code> ir tā paša satura krievu versija, nevis atsevišķa, dublēta lapa — tas ir viens no biežākajiem cēloņiem indeksēšanas problēmām daudzvalodu vietnēs.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_filter</span>(<span class="tok-str">'language_attributes'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$output</span>) {
+    <span class="tok-kw">if</span> (<span class="tok-fn">function_exists</span>(<span class="tok-str">'trp_get_current_language'</span>)) {
+        <span class="tok-fn">$valoda</span> = <span class="tok-fn">trp_get_current_language</span>(); <span class="tok-com">// piem. 'lv', 'ru', 'en'</span>
+        <span class="tok-fn">$output</span> = <span class="tok-str">'lang="'</span> . <span class="tok-fn">esc_attr</span>(<span class="tok-fn">$valoda</span>) . <span class="tok-str">'"'</span>;
+    }
+    <span class="tok-kw">return</span> <span class="tok-fn">$output</span>;
+});
+
+<span class="tok-fn">add_action</span>(<span class="tok-str">'wp_head'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-kw">if</span> (!<span class="tok-fn">class_exists</span>(<span class="tok-str">'TRP_Translate_Press'</span>)) {
+        <span class="tok-kw">return</span>;
+    }
+
+    <span class="tok-fn">$trp</span> = <span class="tok-fn">TRP_Translate_Press</span>::<span class="tok-fn">get_trp_instance</span>();
+    <span class="tok-fn">$url_converter</span> = <span class="tok-fn">$trp</span>-&gt;<span class="tok-fn">get_component</span>(<span class="tok-str">'url_converter'</span>);
+    <span class="tok-fn">$settings</span> = <span class="tok-fn">$trp</span>-&gt;<span class="tok-fn">get_component</span>(<span class="tok-str">'settings'</span>)-&gt;<span class="tok-fn">get_settings</span>();
+    <span class="tok-fn">$pasreizeja_url</span> = (<span class="tok-fn">is_ssl</span>() ? <span class="tok-str">'https://'</span> : <span class="tok-str">'http://'</span>) . <span class="tok-fn">$_SERVER</span>[<span class="tok-str">'HTTP_HOST'</span>] . <span class="tok-fn">$_SERVER</span>[<span class="tok-str">'REQUEST_URI'</span>];
+
+    <span class="tok-kw">foreach</span> (<span class="tok-fn">$settings</span>[<span class="tok-str">'translation-languages'</span>] <span class="tok-kw">as</span> <span class="tok-fn">$valodas_kods</span>) {
+        <span class="tok-fn">$tulkotais_url</span> = <span class="tok-fn">$url_converter</span>-&gt;<span class="tok-fn">get_url_for_language</span>(<span class="tok-fn">$valodas_kods</span>, <span class="tok-fn">$pasreizeja_url</span>, <span class="tok-str">''</span>);
+        <span class="tok-kw">echo</span> <span class="tok-str">'&lt;link rel="alternate" hreflang="'</span> . <span class="tok-fn">esc_attr</span>(<span class="tok-fn">$valodas_kods</span>) . <span class="tok-str">'" href="'</span> . <span class="tok-fn">esc_url</span>(<span class="tok-fn">$tulkotais_url</span>) . <span class="tok-str">'" /&gt;'</span> . <span class="tok-str">"\n"</span>;
+    }
+
+    <span class="tok-com">// x-default norāda meklētājam, kura versija jārāda, ja neviena valoda tieši neatbilst</span>
+    <span class="tok-fn">$noklusejuma_url</span> = <span class="tok-fn">$url_converter</span>-&gt;<span class="tok-fn">get_url_for_language</span>(<span class="tok-fn">$settings</span>[<span class="tok-str">'default-language'</span>], <span class="tok-fn">$pasreizeja_url</span>, <span class="tok-str">''</span>);
+    <span class="tok-kw">echo</span> <span class="tok-str">'&lt;link rel="alternate" hreflang="x-default" href="'</span> . <span class="tok-fn">esc_url</span>(<span class="tok-fn">$noklusejuma_url</span>) . <span class="tok-str">'" /&gt;'</span> . <span class="tok-str">"\n"</span>;
+}, 5);</code></pre>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4><code>trp_get_current_language()</code></h4><p>TranslatePress funkcija, kas atgriež pašreizējās lapas valodas kodu (piem. <code>'ru'</code>) — pieejama tikai tad, ja spraudnis ir aktīvs, tāpēc vienmēr jāpārbauda ar <code>function_exists()</code>.</p></div>
+        <div class="doc-mini-card"><h4><code>url_converter</code> komponente</h4><p>TranslatePress iekšējais rīks, kas no jebkura URL uzbūvē tā ekvivalentu citā valodā — tieši to pašu, ko izmanto valodu pārslēdzējs izvēlnē.</p></div>
+        <div class="doc-mini-card"><h4>Prioritāte <code>5</code></h4><p>Izvada hreflang tagus agri <code>&lt;head&gt;</code> sadaļā — pirms lielākās daļas SEO spraudņu izvades, kas ir ieteicamā prakse.</p></div>
+      </div>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Pēc ieviešanas pārbaudi rezultātu ar <strong>skatīt lapas avotu</strong> (View Source) katrā valodas versijā — vajadzētu redzēt vienu <code>&lt;link rel="alternate" hreflang="..."&gt;</code> katrai valodai, ieskaitot pašu pašreizējo. Google Search Console (Lapas → Indeksēšana) parasti parāda hreflang kļūdas 1-2 nedēļu laikā pēc ieviešanas.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="snip-trp-seo-per-valoda">
+      <h2>SEO virsraksti &amp; apraksti pa valodām</h2>
+      <p>TranslatePress pēc noklusējuma tulko lapas <strong>redzamo</strong> saturu, bet <strong>ne</strong> Yoast SEO virsrakstu/aprakstu laukus (tie tiek uzstādīti reizi, konkrētajai lapai, neatkarīgi no valodas). Rezultātā visas valodu versijas meklētājā parādās ar to pašu, piemēram, latvisko, virsrakstu. Risinājums — filtrēt <code>wpseo_title</code> un <code>wpseo_metadesc</code> pēc pašreizējās valodas ar uzmeklēšanas masīvu.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_filter</span>(<span class="tok-str">'wpseo_title'</span>, <span class="tok-str">'ds_valodu_seo_virsraksts'</span>);
+<span class="tok-fn">add_filter</span>(<span class="tok-str">'wpseo_metadesc'</span>, <span class="tok-str">'ds_valodu_seo_apraksts'</span>);
+<span class="tok-fn">add_filter</span>(<span class="tok-str">'wpseo_opengraph_title'</span>, <span class="tok-str">'ds_valodu_seo_virsraksts'</span>);
+<span class="tok-fn">add_filter</span>(<span class="tok-str">'wpseo_twitter_title'</span>, <span class="tok-str">'ds_valodu_seo_virsraksts'</span>);
+
+<span class="tok-kw">function</span> <span class="tok-fn">ds_valodu_seo_tulkojumi</span>() {
+    <span class="tok-kw">return</span> [
+        <span class="tok-str">'ru'</span> => [
+            123 => [<span class="tok-str">'virsraksts'</span> => <span class="tok-str">'Пример заголовка — Компания'</span>, <span class="tok-str">'apraksts'</span> => <span class="tok-str">'Пример описания страницы.'</span>],
+            456 => [<span class="tok-str">'virsraksts'</span> => <span class="tok-str">'Контакты — Компания'</span>, <span class="tok-str">'apraksts'</span> => <span class="tok-str">'Свяжитесь с нами.'</span>],
+        ],
+        <span class="tok-str">'en'</span> => [
+            123 => [<span class="tok-str">'virsraksts'</span> => <span class="tok-str">'Example page title — Company'</span>, <span class="tok-str">'apraksts'</span> => <span class="tok-str">'Example page description.'</span>],
+            456 => [<span class="tok-str">'virsraksts'</span> => <span class="tok-str">'Contact — Company'</span>, <span class="tok-str">'apraksts'</span> => <span class="tok-str">'Get in touch with us.'</span>],
+        ],
+    ];
+}
+
+<span class="tok-kw">function</span> <span class="tok-fn">ds_valodu_seo_virsraksts</span>(<span class="tok-fn">$virsraksts</span>) {
+    <span class="tok-fn">$valoda</span> = <span class="tok-fn">function_exists</span>(<span class="tok-str">'trp_get_current_language'</span>) ? <span class="tok-fn">trp_get_current_language</span>() : <span class="tok-str">'lv'</span>;
+    <span class="tok-fn">$post_id</span> = <span class="tok-fn">get_queried_object_id</span>();
+    <span class="tok-fn">$tulkojumi</span> = <span class="tok-fn">ds_valodu_seo_tulkojumi</span>();
+
+    <span class="tok-kw">if</span> (<span class="tok-fn">isset</span>(<span class="tok-fn">$tulkojumi</span>[<span class="tok-fn">$valoda</span>][<span class="tok-fn">$post_id</span>])) {
+        <span class="tok-kw">return</span> <span class="tok-fn">$tulkojumi</span>[<span class="tok-fn">$valoda</span>][<span class="tok-fn">$post_id</span>][<span class="tok-str">'virsraksts'</span>];
+    }
+
+    <span class="tok-kw">return</span> <span class="tok-fn">$virsraksts</span>;
+}
+
+<span class="tok-kw">function</span> <span class="tok-fn">ds_valodu_seo_apraksts</span>(<span class="tok-fn">$apraksts</span>) {
+    <span class="tok-fn">$valoda</span> = <span class="tok-fn">function_exists</span>(<span class="tok-str">'trp_get_current_language'</span>) ? <span class="tok-fn">trp_get_current_language</span>() : <span class="tok-str">'lv'</span>;
+    <span class="tok-fn">$post_id</span> = <span class="tok-fn">get_queried_object_id</span>();
+    <span class="tok-fn">$tulkojumi</span> = <span class="tok-fn">ds_valodu_seo_tulkojumi</span>();
+
+    <span class="tok-kw">if</span> (<span class="tok-fn">isset</span>(<span class="tok-fn">$tulkojumi</span>[<span class="tok-fn">$valoda</span>][<span class="tok-fn">$post_id</span>])) {
+        <span class="tok-kw">return</span> <span class="tok-fn">$tulkojumi</span>[<span class="tok-fn">$valoda</span>][<span class="tok-fn">$post_id</span>][<span class="tok-str">'apraksts'</span>];
+    }
+
+    <span class="tok-kw">return</span> <span class="tok-fn">$apraksts</span>;
+}</code></pre>
+      <p>Lapas <code>ID</code> uzzini, atverot to rediģēšanai admin panelī — tas redzams pārlūka adreses joslā (<code>post.php?post=123&amp;action=edit</code>).</p>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Ja lapu skaits ir liels, TranslatePress piedāvā arī maksas paplašinājumu <strong>SEO Pack</strong>, kas ļauj tulkot šos laukus tieši redaktora saskarnē (tāpat kā parasto saturu) — augstāk redzamais filtru risinājums ir bezmaksas alternatīva, kas ērta pie neliela, fiksēta lapu skaita (piem., līdz 10-15 lapām).</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="snip-trp-canonical">
+      <h2>Dublētu URL un canonical labošana</h2>
+      <p>Divi bieži sastopami daudzvalodu vietņu "indeksēšanas problēmu" cēloņi: (1) daži iekšējie saites ģenerē dubultu valodas prefiksu, piem. <code>/ru/ru/lapa/</code>, ko Google indeksē kā atsevišķu, salauztu lapu; (2) strukturētie dati (JSON-LD, ko izvada Yoast SEO) reizēm satur nepareizu vai novecojušu <code>url</code> lauku, kas neatbilst pašreizējai lapas adresei.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 1) Novērš /ru/ru/ tipa dublētu valodas prefiksu izvadītajā HTML</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'template_redirect'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-kw">if</span> (<span class="tok-fn">is_admin</span>()) {
+        <span class="tok-kw">return</span>;
+    }
+
+    <span class="tok-fn">ob_start</span>(<span class="tok-kw">function</span>(<span class="tok-fn">$html</span>) {
+        <span class="tok-kw">return</span> <span class="tok-fn">preg_replace</span>(<span class="tok-str">'#/(en|ru)/\1/#'</span>, <span class="tok-str">'/$1/'</span>, <span class="tok-fn">$html</span>);
+    });
+});
+
+<span class="tok-com">// 2) Labo canonical URL Yoast strukturētajos datos (JSON-LD)</span>
+<span class="tok-fn">add_filter</span>(<span class="tok-str">'wpseo_schema_graph'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$data</span>) {
+    <span class="tok-fn">$pareiza_url</span> = (<span class="tok-fn">is_ssl</span>() ? <span class="tok-str">'https://'</span> : <span class="tok-str">'http://'</span>) . <span class="tok-fn">$_SERVER</span>[<span class="tok-str">'HTTP_HOST'</span>] . <span class="tok-fn">$_SERVER</span>[<span class="tok-str">'REQUEST_URI'</span>];
+
+    <span class="tok-kw">foreach</span> (<span class="tok-fn">$data</span> <span class="tok-kw">as</span> &amp;<span class="tok-fn">$vieniba</span>) {
+        <span class="tok-kw">if</span> (<span class="tok-fn">isset</span>(<span class="tok-fn">$vieniba</span>[<span class="tok-str">'url'</span>])) {
+            <span class="tok-fn">$vieniba</span>[<span class="tok-str">'url'</span>] = <span class="tok-fn">$pareiza_url</span>;
+        }
+    }
+
+    <span class="tok-kw">return</span> <span class="tok-fn">$data</span>;
+}, 20);
+
+<span class="tok-com">// 3) Papildina robots.txt ar sitemap saiti (dažreiz nepieciešams manuāli daudzvalodu sitemapiem)</span>
+<span class="tok-fn">add_filter</span>(<span class="tok-str">'robots_txt'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$output</span>) {
+    <span class="tok-fn">$output</span> .= <span class="tok-str">"Sitemap: "</span> . <span class="tok-fn">home_url</span>(<span class="tok-str">'/sitemap_index.xml'</span>) . <span class="tok-str">"\n"</span>;
+    <span class="tok-kw">return</span> <span class="tok-fn">$output</span>;
+}, 20);</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Vispirms <strong>diagnosticē</strong>, vai dubultā prefiksa problēma vispār pastāv (skaties lapas avotu vai Search Console → Lapas → "Dublikāts, Google izvēlējās citu kanonisko URL") — pievieno #1 tikai tad, ja tiešām redzi <code>/ru/ru/</code> tipa saites. <code>preg_replace</code> ar output buffering katrā lapas ielādē nedaudz palielina servera slodzi, tāpēc tas ir labojums simptomam, nevis pamatcēlonim (parasti tas ir cietkodēta valodas prefiksa saite kādā veidnē vai page builderī).</p>
+      </div>
+    </section>
+
     <section class="doc-section" id="snip-cf7-autofill">
       <h2>Automātiska aizpilde pieteikušamies lietotājiem</h2>
       <p>Contact Form 7 formas laukos var norādīt <code>default:...</code> parametru — tas automātiski aizpilda lauku ar pieteikušā lietotāja datiem, ja apmeklētājs jau ir ielogojies. Neielogotam apmeklētājam lauks vienkārši paliek tukšs — kļūdas nav, tas ir gaidītā uzvedība.</p>
@@ -856,6 +994,46 @@
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
         <p>Aizpildītā vērtība ir tikai <strong>sākotnējais ieteikums</strong> — lauks joprojām ir parasts teksta lauks, ko lietotājs var brīvi rediģēt vai izdzēst pirms nosūtīšanas. Neuztver to kā drošu, neapšaubāmu datu avotu servera pusē — ja formas apstrādē kaut ko izmanto tālāk (piem., saglabā datubāzē), joprojām validē un attīri ievadi tāpat kā jebkuru citu formas lauku.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="snip-cf7-valoda">
+      <h2>Kontaktforma divās valodās (pēc URL)</h2>
+      <p>Ja vietnei ir viens koplietots veidnes fails (piem. footeris vai kontaktu lapas veidne), ko rāda visām TranslatePress valodu versijām, bet katrai valodai vajag <strong>atšķirīgu</strong> Contact Form 7 formu (citādi lauku nosaukumi, citāda apstiprinājuma e-pasta valoda) — shortcode, kas nosaka valodu pēc URL un izvada atbilstošo formu, ir vienkāršāk nekā dublēt visu veidni.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_shortcode</span>(<span class="tok-str">'kontaktforma_valoda'</span>, <span class="tok-kw">function</span>() {
+    <span class="tok-fn">$celjs</span> = <span class="tok-fn">isset</span>(<span class="tok-fn">$_SERVER</span>[<span class="tok-str">'REQUEST_URI'</span>]) ? <span class="tok-fn">$_SERVER</span>[<span class="tok-str">'REQUEST_URI'</span>] : <span class="tok-str">''</span>;
+    <span class="tok-fn">$ir_krievu</span> = (<span class="tok-fn">strpos</span>(<span class="tok-fn">$celjs</span>, <span class="tok-str">'/ru/'</span>) !== <span class="tok-kw">false</span>);
+
+    <span class="tok-fn">$forma_id</span> = <span class="tok-fn">$ir_krievu</span> ? 456 : 123; <span class="tok-com">// nomaini uz reālajiem CF7 formu ID</span>
+    <span class="tok-fn">$izvade</span> = <span class="tok-fn">do_shortcode</span>(<span class="tok-str">'[contact-form-7 id="'</span> . (<span class="tok-kw">int</span>) <span class="tok-fn">$forma_id</span> . <span class="tok-str">'"]'</span>);
+
+    <span class="tok-com">// data-no-translation liedz TranslatePress mēģināt "tulkot" formas HTML katrā ielādē</span>
+    <span class="tok-kw">return</span> <span class="tok-str">'&lt;div data-no-translation="1"&gt;'</span> . <span class="tok-fn">$izvade</span> . <span class="tok-str">'&lt;/div&gt;'</span>;
+});</code></pre>
+      <p>Izmanto veidnē vai lapas saturā <code>[kontaktforma_valoda]</code> vietā, kur citādi liktu <code>[contact-form-7 id="..."]</code> tieši.</p>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><strong>Kāpēc <code>data-no-translation</code> ir svarīgs:</strong> TranslatePress pēc noklusējuma mēģina tulkot jebkuru redzamo tekstu lapā, arī formas HTML — tas var sabojāt CF7 slēptos laukus (nonce, formas ID), kas noved pie formas, kas izskatās normāli, bet nekad neaizsūta e-pastu. Šis atribūts pasaka TranslatePress "šo bloku neaiztiec".</p>
+      </div>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>URL noteikšana pēc <code>/ru/</code> ir vienkāršs, bet trausls risinājums — tas pieņem, ka TranslatePress lieto apakšmapju struktūru (nevis apakšdomēnu vai parametru). Ja projektam ir tikai dažas lapas ar formu (nevis viena koplietota veidne visām valodām), robustāks variants ir vienkārši ievietot <code>[contact-form-7 id="123"]</code> un <code>[contact-form-7 id="456"]</code> tieši attiecīgās lapas tulkotajā versijā — bez shortcode starpniekloģikas vispār.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="snip-cf7-assets">
+      <h2>Ielādēt CF7 skriptus tikai vajadzīgajā lapā</h2>
+      <p>Contact Form 7 pēc noklusējuma ielādē savu CSS un JS <strong>katrā</strong> vietnes lapā, pat ja formas tur nemaz nav — nelietderīga slodze, kas nedaudz palēnina katru lapu. Ja forma parādās tikai konkrētā(s) lapā(s), abus filtrus var ierobežot.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_filter</span>(<span class="tok-str">'wpcf7_load_js'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$load_js</span>) {
+    <span class="tok-kw">return</span> <span class="tok-fn">is_page</span>(<span class="tok-str">'kontakti'</span>);
+});
+
+<span class="tok-fn">add_filter</span>(<span class="tok-str">'wpcf7_load_css'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$load_css</span>) {
+    <span class="tok-kw">return</span> <span class="tok-fn">is_page</span>(<span class="tok-str">'kontakti'</span>);
+});</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Ja forma parādās vairākās lapās (piem., kontaktu lapā <strong>un</strong> footerī visās lapās), <code>is_page('kontakti')</code> jāpaplašina attiecīgi — pretējā gadījumā forma pārējās lapās parādīsies bez stila vai bez validācijas JS. Ja forma ir footerī (redzama visur), šo optimizāciju vienkārši nevajag pielietot.</p>
       </div>
     </section>
 
