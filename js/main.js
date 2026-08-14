@@ -28,9 +28,9 @@ document.addEventListener("DOMContentLoaded", function () {
     "pages/sagataves.html", "pages/seo.html", "pages/ssh.html",
     "pages/web-izveide.html", "pages/web-problemas.html",
     "pages/wordpress-problemas.html", "pages/wordpress-snippets.html",
-    "pages/wordpress.html", "pages/python-riki.html"
+    "pages/wordpress.html", "pages/python-riki.html", "pages/riki.html"
   ];
-  var SEARCH_INDEX_VERSION = "27"; // bump together with the ?v= cache-bust number
+  var SEARCH_INDEX_VERSION = "28"; // bump together with the ?v= cache-bust number
   var searchIndex = null;
   var searchIndexPromise = null;
 

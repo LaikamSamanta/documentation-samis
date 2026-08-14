@@ -43,6 +43,8 @@
   --c-gdpr-soft: rgba(71, 85, 105, 0.15);
   --c-python: #306998;
   --c-python-soft: rgba(48, 105, 152, 0.15);
+  --c-riki: #22d3ee;
+  --c-riki-soft: rgba(34, 211, 238, 0.15);
 
   /* page-scoped accent - falls back to the brand purple; category pages
      override these (see .cat-* below) so navigation/headings pick up the
@@ -88,6 +90,7 @@
   --c-css-adv-2: color-mix(in srgb, var(--c-css-adv), white 15%);
   --c-gdpr-2: color-mix(in srgb, var(--c-gdpr), white 25%);
   --c-python-2: color-mix(in srgb, var(--c-python), white 25%);
+  --c-riki-2: color-mix(in srgb, var(--c-riki), white 10%);
 
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 20px 40px -20px rgba(0, 0, 0, 0.6);
   --shadow-pop: 0 30px 60px -25px rgba(120, 60, 255, 0.35);
@@ -129,6 +132,7 @@
   --c-css-adv-2: color-mix(in srgb, var(--c-css-adv), black 15%);
   --c-gdpr-2: color-mix(in srgb, var(--c-gdpr), black 5%);
   --c-python-2: color-mix(in srgb, var(--c-python), black 5%);
+  --c-riki-2: color-mix(in srgb, var(--c-riki), black 35%);
 
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 20px 40px -24px rgba(80, 60, 140, 0.25);
   --shadow-pop: 0 30px 60px -25px rgba(124, 58, 237, 0.25);
@@ -151,6 +155,7 @@ body.cat-sql           { --page-accent: var(--c-sql);          --page-accent-2: 
 body.cat-css-adv       { --page-accent: var(--c-css-adv);      --page-accent-2: var(--c-css-adv-2);      --page-accent-soft: var(--c-css-adv-soft); }
 body.cat-gdpr          { --page-accent: var(--c-gdpr);         --page-accent-2: var(--c-gdpr-2);         --page-accent-soft: var(--c-gdpr-soft); }
 body.cat-python        { --page-accent: var(--c-python);       --page-accent-2: var(--c-python-2);       --page-accent-soft: var(--c-python-soft); }
+body.cat-riki          { --page-accent: var(--c-riki);         --page-accent-2: var(--c-riki-2);         --page-accent-soft: var(--c-riki-soft); }
 
 * {
   box-sizing: border-box;
@@ -682,6 +687,7 @@ code {
 .card.css-adv   { --card-color: var(--c-css-adv);   --card-soft: var(--c-css-adv-soft); }
 .card.gdpr      { --card-color: var(--c-gdpr);      --card-soft: var(--c-gdpr-soft); }
 .card.python    { --card-color: var(--c-python);    --card-soft: var(--c-python-soft); }
+.card.riki      { --card-color: var(--c-riki);      --card-soft: var(--c-riki-soft); }
 
 /* ---------- Stats strip ---------- */
 .stats {
@@ -1324,5 +1330,121 @@ pre.code-block code {
   text-transform: uppercase;
   color: var(--text-muted);
   margin: 18px 0 8px;
+}
+
+/* ---------- Interactive browser tools (pages/riki.html) ---------- */
+.riki-tool {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-card);
+  padding: 24px;
+  margin: 20px 0 28px;
+}
+.riki-dropzone {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-md);
+  padding: 48px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s var(--ease), background 0.2s var(--ease);
+}
+.riki-dropzone:hover,
+.riki-dropzone.drag {
+  border-color: var(--page-accent);
+  background: var(--page-accent-soft);
+}
+.riki-dropzone svg {
+  width: 40px;
+  height: 40px;
+  color: var(--page-accent);
+  margin-bottom: 12px;
+}
+.riki-dropzone p {
+  color: var(--text-secondary);
+  font-size: 14.5px;
+  margin: 0;
+}
+.riki-browse {
+  color: var(--page-accent-2);
+  font-weight: 700;
+  text-decoration: underline;
+}
+.riki-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 640px) {
+  .riki-controls { grid-template-columns: 1fr; }
+}
+.riki-preview-wrap {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: repeating-conic-gradient(var(--bg-elevated) 0% 25%, var(--bg-card) 0% 50%) 50% / 20px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+.riki-preview-wrap img {
+  max-width: 100%;
+  max-height: 320px;
+  display: block;
+}
+.riki-settings label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 14px 0 6px;
+}
+.riki-settings label:first-child { margin-top: 0; }
+.riki-settings input[type="range"] {
+  width: 100%;
+  accent-color: var(--page-accent);
+}
+.riki-stats {
+  display: flex;
+  gap: 18px;
+  margin: 18px 0;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.riki-stats b { color: var(--text); }
+.riki-btn-row {
+  display: flex;
+  gap: 10px;
+}
+.riki-btn {
+  flex: 1;
+  padding: 12px 18px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: linear-gradient(135deg, var(--page-accent), var(--page-accent-2));
+  color: #05131a;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.15s var(--ease), box-shadow 0.15s var(--ease);
+}
+.riki-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px -8px var(--page-accent);
+}
+.riki-btn-secondary {
+  background: var(--bg-elevated);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.riki-btn-secondary:hover {
+  box-shadow: none;
+  border-color: var(--page-accent);
+  transform: none;
 }
 .code-group-label:first-child { margin-top: 0; }
