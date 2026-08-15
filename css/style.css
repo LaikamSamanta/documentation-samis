@@ -1478,6 +1478,16 @@ pre.code-block code {
   width: 100%;
   accent-color: var(--page-accent);
 }
+.riki-settings-col.inactive {
+  opacity: 0.45;
+}
+.riki-settings-col.inactive label {
+  text-decoration: line-through;
+  text-decoration-color: var(--text-muted);
+}
+.riki-settings-col input[type="range"]:disabled {
+  cursor: not-allowed;
+}
 .riki-select {
   width: 100%;
   padding: 9px 12px;

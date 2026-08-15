@@ -10,7 +10,7 @@
 <link rel="manifest" href="../manifest.json" />
 <meta name="theme-color" content="#9d5cff" />
 <title>Rīki - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=38" />
+<link rel="stylesheet" href="../css/style.css?v=39" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -82,7 +82,7 @@
                   <option value="image/png">PNG (bez zuduma)</option>
                 </select>
               </div>
-              <div class="riki-settings-col">
+              <div class="riki-settings-col" id="riki-width-col">
                 <label>Maks. platums: <span id="riki-width-value">1600</span>px</label>
                 <input type="range" id="riki-width" min="200" max="4000" step="50" value="1600" />
               </div>
@@ -197,8 +197,8 @@
   </main>
 </div>
 
-<script src="../js/theme.js?v=38"></script>
-<script src="../js/main.js?v=38"></script>
+<script src="../js/theme.js?v=39"></script>
+<script src="../js/main.js?v=39"></script>
 <script>
 (function () {
   var dropzone = document.getElementById("riki-dropzone");
@@ -214,7 +214,14 @@
   var exactWidthInput = document.getElementById("riki-exact-width");
   var exactHeightInput = document.getElementById("riki-exact-height");
   var exactLockBtn = document.getElementById("riki-exact-lock");
+  var widthCol = document.getElementById("riki-width-col");
   var exactLocked = true;
+
+  function atjaunotPlatumaSlidniAktivitati() {
+    var izmantoPrecizu = !!(exactWidthInput.value || exactHeightInput.value);
+    widthSlider.disabled = izmantoPrecizu;
+    widthCol.classList.toggle("inactive", izmantoPrecizu);
+  }
 
   function references_attels() {
     for (var i = 0; i < faili.length; i++) {
@@ -421,6 +428,7 @@
     exactHeightInput.value = "";
     exactLocked = true;
     exactLockBtn.classList.add("locked");
+    atjaunotPlatumaSlidniAktivitati();
     controls.style.display = "none";
     dropzone.style.display = "block";
   }
@@ -470,6 +478,7 @@
         exactHeightInput.value = "";
       }
     }
+    atjaunotPlatumaSlidniAktivitati();
     apstradatVisus();
   });
   exactHeightInput.addEventListener("input", function () {
@@ -482,6 +491,7 @@
         exactWidthInput.value = "";
       }
     }
+    atjaunotPlatumaSlidniAktivitati();
     apstradatVisus();
   });
 
