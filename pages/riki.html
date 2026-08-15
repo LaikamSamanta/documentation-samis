@@ -10,7 +10,7 @@
 <link rel="manifest" href="../manifest.json" />
 <meta name="theme-color" content="#9d5cff" />
 <title>Rīki - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=40" />
+<link rel="stylesheet" href="../css/style.css?v=41" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -200,9 +200,16 @@
 
       <div class="riki-tool riki-color-tool">
         <div class="riki-color-top">
-          <div class="riki-color-swatch-wrap">
-            <input type="color" id="color-picker" class="riki-color-picker" value="#6d28d9" aria-label="Krāsu izvēlētājs" />
-            <div class="riki-color-swatch" id="color-swatch"></div>
+          <div class="riki-color-swatch-col">
+            <div class="riki-color-swatch-wrap" title="Klikšķini, lai atvērtu krāsu izvēlētāju">
+              <input type="color" id="color-picker" class="riki-color-picker" value="#6d28d9" aria-label="Krāsu izvēlētājs" />
+              <div class="riki-color-swatch" id="color-swatch"></div>
+              <svg class="riki-color-swatch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg>
+            </div>
+            <button type="button" id="color-eyedropper" class="riki-eyedropper-btn" style="display:none;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 22 1-1h3l9-9"/><path d="M3 21v-3l9-9"/><path d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3l.4.4Z"/></svg>
+              Paņemt no ekrāna
+            </button>
           </div>
           <div class="riki-color-hex-wrap">
             <label>HEX</label>
@@ -258,6 +265,7 @@
         <div class="doc-mini-card"><h4>Divvirziena sinhronizācija</h4><p>Maini jebkuru lauku - HEX tekstu, R/G/B/A skaitļus vai krāsu izvēlētāju - un visi pārējie atjaunojas uzreiz. HEX atbalsta gan 3, gan 6, gan 8 ciparu formu (<code>#f00</code>, <code>#ff0000</code>, <code>#ff0000ff</code> ar alfa kanālu).</p></div>
         <div class="doc-mini-card"><h4>Kā atrasta tuvākā krāsa</h4><p>Katram no ~148 standarta CSS krāsu nosaukumiem (<code>tomato</code>, <code>cornflowerblue</code> u.c.) pārlūks pats atrisina precīzo RGB vērtību (uzstādot <code>canvas.fillStyle = nosaukums</code> un nolasot rezultātu atpakaļ) - tas garantē pareizību bez manuāli ierakstītas tabulas. Tad starp visām meklē mazāko RGB attālumu (<code>Math.sqrt</code> no R/G/B starpību kvadrātu summas), tāpat kā fona noņemšanas rīkā augstāk.</p></div>
         <div class="doc-mini-card"><h4>Kāpēc RGBA atsevišķi no RGB</h4><p><code>rgb()</code> CSS ierakstā nozīmē pilnībā necaurspīdīgu krāsu. <code>rgba()</code> pievieno ceturto - alfa (0 = pilnībā caurspīdīgs, 1 = necaurspīdīgs) - noderīgs, piemēram, pusgruntu overlay slāņiem vai hover efektiem.</p></div>
+        <div class="doc-mini-card"><h4>"Paņemt no ekrāna" (Eyedropper)</h4><p>Izmanto pārlūka iebūvēto <code>EyeDropper</code> API - noklikšķinot uz pogas, var izvēlēties jebkuru pikseli EKRĀNĀ (arī ārpus šīs lapas, citā logā), un tā krāsa tiek ielasīta rīkā. <strong>Godīgi par ierobežojumu:</strong> šo API pašlaik atbalsta tikai Chrome/Edge (un citi Chromium pārlūki) - Firefox un Safari to neatbalsta, tāpēc poga parādās tikai pārlūkos, kur tā tiešām strādā.</p></div>
       </div>
     </section>
 
@@ -268,8 +276,8 @@
   </main>
 </div>
 
-<script src="../js/theme.js?v=40"></script>
-<script src="../js/main.js?v=40"></script>
+<script src="../js/theme.js?v=41"></script>
+<script src="../js/main.js?v=41"></script>
 <script>
 (function () {
   var dropzone = document.getElementById("riki-dropzone");
@@ -922,6 +930,7 @@
   var copyHexBtn = document.getElementById("copy-hex");
   var copyRgbBtn = document.getElementById("copy-rgb");
   var copyRgbaBtn = document.getElementById("copy-rgba");
+  var eyedropperBtn = document.getElementById("color-eyedropper");
 
   var KRASU_NOSAUKUMI = [
     "aliceblue", "antiquewhite", "aqua", "aquamarine", "azure", "beige", "bisque", "black",
@@ -1097,6 +1106,25 @@
   iestatitKopesanasPogu(copyHexBtn, function () { return hexInput.value; });
   iestatitKopesanasPogu(copyRgbBtn, function () { return outRgb.textContent; });
   iestatitKopesanasPogu(copyRgbaBtn, function () { return outRgba.textContent; });
+
+  if (window.EyeDropper) {
+    eyedropperBtn.style.display = "flex";
+    eyedropperBtn.addEventListener("click", function () {
+      var ed = new window.EyeDropper();
+      ed.open()
+        .then(function (result) {
+          var parsed = hexToRgb(result.sRGBHex);
+          if (!parsed) return;
+          rInput.value = parsed.r;
+          gInput.value = parsed.g;
+          bInput.value = parsed.b;
+          atjauninatVisu();
+        })
+        .catch(function () {
+          // lietotājs atcēla (Esc vai klikšķis ārpus) - nekas jādara nav
+        });
+    });
+  }
 
   atjauninatVisu();
 })();
