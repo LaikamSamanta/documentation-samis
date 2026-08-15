@@ -10,7 +10,7 @@
 <link rel="manifest" href="../manifest.json" />
 <meta name="theme-color" content="#9d5cff" />
 <title>Rīki - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=41" />
+<link rel="stylesheet" href="../css/style.css?v=42" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -46,6 +46,24 @@
     <div class="doc-sidebar-group">
       <h4>Krāsas</h4>
       <a href="#krasu-riks"><span class="bullet"></span>HEX / RGB / RGBA pārveidotājs</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Teksts &amp; dati</h4>
+      <a href="#json-formatetajs"><span class="bullet"></span>JSON formatētājs</a>
+      <a href="#base64-url"><span class="bullet"></span>Base64 / URL kodēšana</a>
+      <a href="#uuid-generators"><span class="bullet"></span>UUID ģenerators</a>
+      <a href="#unix-laiks"><span class="bullet"></span>Unix laika konvertētājs</a>
+      <a href="#regex-testeris"><span class="bullet"></span>Regex testeris</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Drošība</h4>
+      <a href="#jwt-dekoderis"><span class="bullet"></span>JWT dekodētājs</a>
+      <a href="#hash-generators"><span class="bullet"></span>Hash ģenerators</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>CSS</h4>
+      <a href="#css-gradients"><span class="bullet"></span>Gradient ģenerators</a>
+      <a href="#css-box-shadow"><span class="bullet"></span>Box-shadow ģenerators</a>
     </div>
   </aside>
 
@@ -269,6 +287,331 @@
       </div>
     </section>
 
+    <section class="doc-section" id="json-formatetajs">
+      <h2>JSON formatētājs</h2>
+      <p>Ielīmē JSON zemāk - "Formatēt" sakārto to lasāmā veidā ar atkāpēm, "Saspiest" izņem visas liekās atstarpes. Ja JSON ir bojāts, uzreiz redzēsi, kurā rindā un kolonnā ir kļūda.</p>
+
+      <div class="riki-tool riki-text-tool">
+        <textarea id="json-input" class="riki-textarea" placeholder='{"piemers": true, "skaitlis": 42, "masivs": [1, 2, 3]}' spellcheck="false"></textarea>
+
+        <div class="riki-btn-row">
+          <button class="riki-btn" id="json-format-btn">Formatēt</button>
+          <button class="riki-btn riki-btn-secondary" id="json-minify-btn">Saspiest</button>
+          <button class="riki-btn riki-btn-secondary" id="json-clear-btn">Notīrīt</button>
+        </div>
+
+        <p class="riki-hint" id="json-status"></p>
+
+        <div class="riki-output-wrap" id="json-output-wrap" style="display:none;">
+          <div class="riki-output-toolbar">
+            <span>Rezultāts</span>
+            <button type="button" class="code-copy-btn" id="json-copy-btn" aria-label="Kopēt">
+              <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>
+              <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            </button>
+          </div>
+          <pre class="riki-output-pre"><code id="json-output"></code></pre>
+        </div>
+      </div>
+
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>Kā strādā formatēšana</h4><p><code>JSON.parse()</code> pārbauda un pārveido tekstu par JS objektu, tad <code>JSON.stringify(objekts, null, 2)</code> to atkal pārvērš tekstā ar 2 atstarpju atkāpēm katrā līmenī.</p></div>
+        <div class="doc-mini-card"><h4>Kļūdas vietas atrašana</h4><p>Daudzos gadījumos pārlūka <code>JSON.parse</code> kļūdas ziņojumā ir simbola pozīcija tekstā (piem., "position 45") - rīks to pārvērš rindas/kolonnas numurā, saskaitot rindu pārtraukumus līdz tai pozīcijai. Dažām kļūdām (piem., nederīgai vērtībai) pārlūks pozīciju nenorāda vispār - tad redzēsi tikai paša pārlūka ziņojumu.</p></div>
+        <div class="doc-mini-card"><h4>Kāpēc saspiešana noder</h4><p>Formatēts JSON ir lasāmāks izstrādei, bet saspiests (bez atstarpēm) ir mazāks pārraidei - tāpēc API atbildes parasti nāk saspiestas, bet dev rīkos tās formatē lasīšanai.</p></div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="base64-url">
+      <h2>Base64 / URL kodēšana</h2>
+      <p>Kodēšana pārveido tekstu drošam pārsūtīšanas/glabāšanas formātam - tā <strong>nav šifrēšana</strong> (jebkurš var to atkodēt atpakaļ, nav vajadzīga parole). Base64 bieži izmanto, iegulstot mazus datus tekstā; URL kodēšana - liekot speciālus simbolus (piem., atstarpes, &amp;) URL adresē.</p>
+
+      <div class="riki-tool riki-text-tool">
+        <textarea id="b64-input" class="riki-textarea" placeholder="Ievadi tekstu..." spellcheck="false"></textarea>
+
+        <div class="riki-btn-row riki-btn-row-wrap">
+          <button class="riki-btn riki-btn-secondary" id="b64-encode-btn">Base64 kodēt</button>
+          <button class="riki-btn riki-btn-secondary" id="b64-decode-btn">Base64 dekodēt</button>
+          <button class="riki-btn riki-btn-secondary" id="url-encode-btn">URL kodēt</button>
+          <button class="riki-btn riki-btn-secondary" id="url-decode-btn">URL dekodēt</button>
+        </div>
+
+        <p class="riki-hint" id="b64-status"></p>
+
+        <div class="riki-output-wrap" id="b64-output-wrap" style="display:none;">
+          <div class="riki-output-toolbar">
+            <span>Rezultāts</span>
+            <button type="button" class="code-copy-btn" id="b64-copy-btn" aria-label="Kopēt">
+              <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>
+              <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            </button>
+          </div>
+          <pre class="riki-output-pre"><code id="b64-output"></code></pre>
+        </div>
+      </div>
+
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>UTF-8 atbalsts</h4><p>Pārlūka <code>btoa()</code>/<code>atob()</code> pa vecam strādā tikai ar Latin1 simboliem un salūzt uz garumzīmēm (ā, š, ē). Rīks vispirms pārveido tekstu par UTF-8 baitiem ar <code>TextEncoder</code>, tad kodē tos - tāpēc latviešu teksts strādā pareizi.</p></div>
+        <div class="doc-mini-card"><h4>Base64 vs URL kodēšana</h4><p>Base64 pārveido JEBKURUS baitus par burtu/ciparu/+/= virkni (der binārajiem datiem). URL kodēšana (<code>encodeURIComponent</code>) aizvieto tikai īpašos simbolus ar <code>%XX</code> secēm, atstājot pārējo tekstu lasāmu.</p></div>
+        <div class="doc-mini-card"><h4>Kāpēc tas nav drošs paroļu glabāšanai</h4><p>Base64 kodējumu var atkodēt jebkurš, kam ir teksts - tā nav šifrēšana vai hash. Paroles glabā ar hash (skat. rīku zemāk vai Drošības kategoriju), ne Base64.</p></div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="uuid-generators">
+      <h2>UUID ģenerators</h2>
+      <p>Ģenerē nejaušus UUID v4 identifikatorus - noder datubāzu rindu ID, sesiju tokeniem, failu nosaukumiem u.c., kur vajag garantēti unikālu vērtību bez centrālas skaitīšanas.</p>
+
+      <div class="riki-tool">
+        <div class="riki-btn-row">
+          <button class="riki-btn" id="uuid-generate-btn">Ģenerēt</button>
+          <div class="riki-uuid-count-wrap">
+            <label for="uuid-count">Skaits:</label>
+            <input type="number" id="uuid-count" class="riki-select riki-uuid-count" min="1" max="50" value="1" />
+          </div>
+        </div>
+
+        <div class="riki-uuid-list" id="uuid-list"></div>
+      </div>
+
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>crypto.randomUUID()</h4><p>Modernie pārlūki UUID v4 ģenerē tieši - <code>crypto.randomUUID()</code> - kriptogrāfiski droši nejaušs, bez papildu bibliotēkām.</p></div>
+        <div class="doc-mini-card"><h4>Kāpēc "v4"</h4><p>UUID versijas nosaka, kā tas veidots - v4 nozīmē "gandrīz pilnībā nejaušs" (122 nejauši biti no 128). Sadursmes iespējamība ir tik zema, ka praksē to var uzskatīt par garantēti unikālu.</p></div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="unix-laiks">
+      <h2>Unix laika konvertētājs</h2>
+      <p>Unix laika zīmogs (timestamp) ir sekunžu skaits kopš 1970. gada 1. janvāra (UTC) - tā serveri un API parasti glabā/pārraida laiku. Pārvērš abos virzienos.</p>
+
+      <div class="riki-tool riki-unix-tool">
+        <p class="riki-hint">Pašreizējais Unix laiks: <code id="unix-now">-</code></p>
+
+        <div class="riki-unix-row">
+          <label>Unix laika zīmogs</label>
+          <div class="riki-color-field">
+            <input type="text" id="unix-timestamp-input" class="riki-select" placeholder="piem. 1700000000" spellcheck="false" />
+            <button type="button" class="riki-btn-secondary riki-small-btn" id="unix-now-btn">Tagad</button>
+          </div>
+          <p class="riki-hint" id="unix-to-date-output">-</p>
+        </div>
+
+        <div class="riki-unix-row">
+          <label>Datums un laiks (Tavā laika joslā)</label>
+          <input type="datetime-local" id="unix-date-input" class="riki-select" step="1" />
+          <p class="riki-hint" id="unix-to-timestamp-output">-</p>
+        </div>
+      </div>
+
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>Sekundes vai milisekundes?</h4><p>JavaScript <code>Date</code> iekšēji strādā ar MILISEKUNDĒM (<code>Date.now()</code>), bet lielākā daļa API/datubāžu izmanto SEKUNDES. Rīks pats nosaka, kuru vienību esi ievadījis, pēc skaitļa garuma.</p></div>
+        <div class="doc-mini-card"><h4>Laika josla</h4><p><code>&lt;input type="datetime-local"&gt;</code> rāda/pieņem laiku TAVĀ pārlūka laika joslā, bet Unix timestamp vienmēr ir absolūts (UTC) - konvertācija to ņem vērā automātiski.</p></div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="regex-testeris">
+      <h2>Regex testeris</h2>
+      <p>Ievadi regulāro izteiksmi un testa tekstu - sakritības tiek iekrāsotas tieši tekstā, un zemāk redzi katras sakritības detaļas (arī uztvertās grupas, ja tādas ir).</p>
+
+      <div class="riki-tool riki-regex-tool">
+        <div class="riki-regex-pattern-row">
+          <span class="riki-regex-slash">/</span>
+          <input type="text" id="regex-pattern" class="riki-select riki-regex-input" placeholder="regulārā izteiksme" spellcheck="false" />
+          <span class="riki-regex-slash">/</span>
+          <input type="text" id="regex-flags" class="riki-select riki-regex-flags" placeholder="gi" spellcheck="false" value="g" />
+        </div>
+
+        <textarea id="regex-test-text" class="riki-textarea" placeholder="Ielīmē testa tekstu šeit..." spellcheck="false"></textarea>
+
+        <p class="riki-hint" id="regex-status">Ievadi regulāro izteiksmi, lai sāktu.</p>
+
+        <div class="riki-regex-highlighted" id="regex-highlighted"></div>
+
+        <div class="riki-regex-matches" id="regex-matches"></div>
+      </div>
+
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>Karodziņi (flags)</h4><p><code>g</code> - visas sakritības (nevis tikai pirmā). <code>i</code> - neievēro reģistru. <code>m</code> - <code>^</code>/<code>$</code> strādā katrā rindā atsevišķi. <code>s</code> - <code>.</code> sakrīt arī ar jaunrindu.</p></div>
+        <div class="doc-mini-card"><h4>Uztvertās grupas</h4><p>Iekavas <code>(...)</code> regex izteiksmē izveido "uztverto grupu" - katras sakritības daļu var izmantot atsevišķi (piem., datumā <code>(\d{4})-(\d{2})-(\d{2})</code> uztver gadu, mēnesi, dienu atsevišķi).</p></div>
+        <div class="doc-mini-card"><h4>Kāpēc reizēm regex "nesakrīt"</h4><p>Bieža kļūda - aizmirsts <code>g</code> karodziņš (tad atrod tikai pirmo sakritību), vai speciālie simboli (<code>. * + ? ( ) [ ] { } ^ $ |</code>) nav pareizi "escapoti" ar <code>\</code>, ja tos grib meklēt burtiski.</p></div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="jwt-dekoderis">
+      <h2>JWT dekodētājs</h2>
+      <p>Ielīmē JWT (JSON Web Token) - rīks izkodē un parāda header un payload daļas lasāmā JSON formātā. <strong>Godīgi par ierobežojumu:</strong> šis TIKAI dekodē (base64url dekodēšana, ne šifrēšana) - tas NEVERIFICĒ parakstu, tāpēc jebkurš var izlasīt saturu, bet tas neapstiprina, ka tokens ir īsts/neizmainīts. Parakstu var pārbaudīt tikai ar servera slepeno atslēgu.</p>
+
+      <div class="riki-tool riki-text-tool">
+        <textarea id="jwt-input" class="riki-textarea" placeholder="eyJhbGciOiJIUzI1NiIs..." spellcheck="false"></textarea>
+
+        <p class="riki-hint" id="jwt-status"></p>
+
+        <div class="riki-jwt-result" id="jwt-result" style="display:none;">
+          <div class="riki-jwt-part">
+            <div class="riki-output-toolbar"><span>Header</span></div>
+            <pre class="riki-output-pre"><code id="jwt-header"></code></pre>
+          </div>
+          <div class="riki-jwt-part">
+            <div class="riki-output-toolbar"><span>Payload</span></div>
+            <pre class="riki-output-pre"><code id="jwt-payload"></code></pre>
+          </div>
+          <p class="riki-hint" id="jwt-expiry"></p>
+        </div>
+      </div>
+
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>Kā veidots JWT</h4><p>Trīs base64url daļas, atdalītas ar punktu: <code>header.payload.signature</code>. Header un payload ir vienkārši JSON, kodēts base64url (nevis šifrēts!) - tos var izlasīt jebkurš bez atslēgas.</p></div>
+        <div class="doc-mini-card"><h4>Kāpēc paraksts nav pārbaudīts</h4><p>Paraksta pārbaudei vajadzīga servera slepenā atslēga (HMAC) vai publiskā atslēga (RSA/ECDSA) - tā NEKAD nedrīkst nonākt pārlūkā/klienta pusē, tāpēc šis rīks var tikai parādīt SATURU, ne apstiprināt tā īstumu.</p></div>
+        <div class="doc-mini-card"><h4>exp / iat / nbf</h4><p>Standarta laika lauki payload: <code>iat</code> - izdošanas laiks, <code>exp</code> - derīguma beigas, <code>nbf</code> - derīgs no. Visi ir Unix timestamp (sekundēs) - rīks tos parāda arī cilvēkam lasāmā formātā.</p></div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="hash-generators">
+      <h2>Hash ģenerators</h2>
+      <p>Aprēķina teksta kriptogrāfisko hash (kontrolsummu) ar pārlūka iebūvēto Web Crypto API. Hash ir vienvirziena - no rezultāta nevar atgūt oriģinālo tekstu.</p>
+
+      <div class="riki-tool riki-text-tool">
+        <textarea id="hash-input" class="riki-textarea" placeholder="Ievadi tekstu..." spellcheck="false"></textarea>
+
+        <div class="riki-hash-outputs" id="hash-outputs">
+          <div class="riki-hash-row">
+            <label>SHA-1</label>
+            <div class="riki-color-field">
+              <code class="riki-hash-value" id="hash-sha1">-</code>
+              <button type="button" class="code-copy-btn" id="hash-copy-sha1" aria-label="Kopēt">
+                <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>
+                <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="riki-hash-row">
+            <label>SHA-256</label>
+            <div class="riki-color-field">
+              <code class="riki-hash-value" id="hash-sha256">-</code>
+              <button type="button" class="code-copy-btn" id="hash-copy-sha256" aria-label="Kopēt">
+                <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>
+                <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="riki-hash-row">
+            <label>SHA-384</label>
+            <div class="riki-color-field">
+              <code class="riki-hash-value" id="hash-sha384">-</code>
+              <button type="button" class="code-copy-btn" id="hash-copy-sha384" aria-label="Kopēt">
+                <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>
+                <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="riki-hash-row">
+            <label>SHA-512</label>
+            <div class="riki-color-field">
+              <code class="riki-hash-value" id="hash-sha512">-</code>
+              <button type="button" class="code-copy-btn" id="hash-copy-sha512" aria-label="Kopēt">
+                <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>
+                <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>Kāpēc nav MD5</h4><p>Pārlūka iebūvētais <code>crypto.subtle.digest</code> MD5 neatbalsta vispār (tas jau sen uzskatīts par kriptogrāfiski salauztu) - tikai SHA-1 (arī novecojis, bet vēl sastopams) un SHA-2 saime (256/384/512, šobrīd drošs standarts).</p></div>
+        <div class="doc-mini-card"><h4>Kā strādā</h4><p><code>crypto.subtle.digest("SHA-256", baiti)</code> atgriež hash kā <code>ArrayBuffer</code> - to pārvērš par hex virkni, katru baitu formatējot kā 2 hex ciparus.</p></div>
+        <div class="doc-mini-card"><h4>Hash vs šifrēšana</h4><p>Hash NAV atgriezenisks (nevar "atšifrēt" atpakaļ) - der paroļu glabāšanai un datu integritātes pārbaudei. Šifrēšana IR atgriezeniska ar pareizo atslēgu - der datu slēpšanai. Vairāk par to skaties Drošības kategorijā.</p></div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="css-gradients">
+      <h2>Gradient ģenerators</h2>
+      <p>Vizuāli pielāgo krāsu pāreju un uzreiz dabū gatavu CSS kodu kopēšanai.</p>
+
+      <div class="riki-tool riki-gradient-tool">
+        <div class="riki-gradient-preview" id="gradient-preview"></div>
+
+        <div class="riki-settings-bar">
+          <div class="riki-settings-col">
+            <label>Tips</label>
+            <select id="gradient-type" class="riki-select">
+              <option value="linear">Lineārs (linear-gradient)</option>
+              <option value="radial">Radiāls (radial-gradient)</option>
+            </select>
+          </div>
+          <div class="riki-settings-col" id="gradient-angle-wrap">
+            <label>Leņķis: <span id="gradient-angle-value">90</span>°</label>
+            <input type="range" id="gradient-angle" min="0" max="360" step="5" value="90" />
+          </div>
+        </div>
+
+        <div class="riki-gradient-stops" id="gradient-stops"></div>
+        <button type="button" class="riki-btn-secondary riki-small-btn" id="gradient-add-stop">+ Pievienot krāsu</button>
+
+        <div class="riki-output-wrap">
+          <div class="riki-output-toolbar">
+            <span>CSS</span>
+            <button type="button" class="code-copy-btn" id="gradient-copy-btn" aria-label="Kopēt">
+              <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>
+              <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            </button>
+          </div>
+          <pre class="riki-output-pre"><code id="gradient-output"></code></pre>
+        </div>
+      </div>
+
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>Gradient krāsu pieturas</h4><p>Katra krāsu "pietura" (stop) sastāv no krāsas un procentuālas pozīcijas (0-100%) - starp pieturām pārlūks pats izrēķina gludu pāreju.</p></div>
+        <div class="doc-mini-card"><h4>Lineārs vs radiāls</h4><p>Lineārs iet taisnā līnijā konkrētā leņķī (0° = no apakšas uz augšu, 90° = no kreisās uz labo). Radiāls izplešas no centra uz āru riņķa veidā - leņķis tam neattiecas.</p></div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="css-box-shadow">
+      <h2>Box-shadow ģenerators</h2>
+      <p>Vizuāli pielāgo ēnu un uzreiz dabū gatavu CSS kodu kopēšanai.</p>
+
+      <div class="riki-tool riki-shadow-tool">
+        <div class="riki-shadow-preview-wrap">
+          <div class="riki-shadow-preview" id="shadow-preview"></div>
+        </div>
+
+        <div class="riki-color-channels riki-shadow-channels">
+          <div class="riki-color-channel"><label>X nobīde</label><input type="number" id="shadow-x" value="0" /></div>
+          <div class="riki-color-channel"><label>Y nobīde</label><input type="number" id="shadow-y" value="10" /></div>
+          <div class="riki-color-channel"><label>Izplūdums</label><input type="number" id="shadow-blur" min="0" value="20" /></div>
+          <div class="riki-color-channel"><label>Izplešanās</label><input type="number" id="shadow-spread" value="0" /></div>
+        </div>
+
+        <div class="riki-settings-bar">
+          <div class="riki-settings-col">
+            <label>Krāsa</label>
+            <input type="color" id="shadow-color" class="riki-select" value="#000000" />
+          </div>
+          <div class="riki-settings-col">
+            <label>Necaurspīdīgums: <span id="shadow-opacity-value">35</span>%</label>
+            <input type="range" id="shadow-opacity" min="0" max="100" value="35" />
+          </div>
+          <div class="riki-settings-col riki-shadow-inset-col">
+            <label><input type="checkbox" id="shadow-inset" /> Iekšējā ēna (inset)</label>
+          </div>
+        </div>
+
+        <div class="riki-output-wrap">
+          <div class="riki-output-toolbar">
+            <span>CSS</span>
+            <button type="button" class="code-copy-btn" id="shadow-copy-btn" aria-label="Kopēt">
+              <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>
+              <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            </button>
+          </div>
+          <pre class="riki-output-pre"><code id="shadow-output"></code></pre>
+        </div>
+      </div>
+
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>Box-shadow parametri</h4><p><code>box-shadow: X Y izplūdums izplešanās krāsa;</code> - X/Y nobīda ēnu no elementa, izplūdums to izpludina, izplešanās palielina/samazina ēnas izmēru pirms izplūduma.</p></div>
+        <div class="doc-mini-card"><h4>inset</h4><p>Parasti box-shadow "izceļas" ārpus elementa malas. <code>inset</code> pārvērš to par IEKŠĒJU ēnu - noder, piemēram, iespiestas (pressed) pogas vai iedobuma efektam.</p></div>
+      </div>
+    </section>
+
     <div class="doc-pager">
       <a href="python-riki.html"><span class="lbl">← Iepriekšējais</span>Python rīki</a>
       <a class="to-next" href="../index.html"><span class="lbl">Atpakaļ →</span>Visas kategorijas</a>
@@ -276,9 +619,35 @@
   </main>
 </div>
 
-<script src="../js/theme.js?v=41"></script>
-<script src="../js/main.js?v=41"></script>
+<script src="../js/theme.js?v=42"></script>
+<script src="../js/main.js?v=42"></script>
 <script>
+function rikuKopetTekstu(btn, iegutTekstu) {
+  function showCopied() {
+    btn.classList.add("copied");
+    setTimeout(function () { btn.classList.remove("copied"); }, 1500);
+  }
+  function fallbackCopy(text) {
+    var textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.style.position = "fixed";
+    textarea.style.opacity = "0";
+    document.body.appendChild(textarea);
+    textarea.select();
+    try { document.execCommand("copy"); } catch (e) {}
+    document.body.removeChild(textarea);
+    showCopied();
+  }
+  btn.addEventListener("click", function () {
+    var text = iegutTekstu();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(showCopied, function () { fallbackCopy(text); });
+    } else {
+      fallbackCopy(text);
+    }
+  });
+}
+
 (function () {
   var dropzone = document.getElementById("riki-dropzone");
   var fileInput = document.getElementById("riki-file-input");
@@ -1127,6 +1496,529 @@
   }
 
   atjauninatVisu();
+})();
+
+(function () {
+  var input = document.getElementById("json-input");
+  var formatBtn = document.getElementById("json-format-btn");
+  var minifyBtn = document.getElementById("json-minify-btn");
+  var clearBtn = document.getElementById("json-clear-btn");
+  var status = document.getElementById("json-status");
+  var outputWrap = document.getElementById("json-output-wrap");
+  var output = document.getElementById("json-output");
+  var copyBtn = document.getElementById("json-copy-btn");
+
+  function atrastRindasKolonnu(teksts, pozicija) {
+    var rinda = 1;
+    var kolonna = 1;
+    for (var i = 0; i < pozicija && i < teksts.length; i++) {
+      if (teksts.charAt(i) === "\n") {
+        rinda++;
+        kolonna = 1;
+      } else {
+        kolonna++;
+      }
+    }
+    return { rinda: rinda, kolonna: kolonna };
+  }
+
+  function parsetVaiRadit(atstarpes) {
+    var teksts = input.value.trim();
+    if (!teksts) {
+      status.textContent = "Ievadi JSON, lai sāktu.";
+      status.className = "riki-hint";
+      outputWrap.style.display = "none";
+      return;
+    }
+    try {
+      var objekts = JSON.parse(teksts);
+      output.textContent = JSON.stringify(objekts, null, atstarpes);
+      outputWrap.style.display = "block";
+      status.textContent = "Derīgs JSON.";
+      status.className = "riki-hint";
+    } catch (e) {
+      outputWrap.style.display = "none";
+      var m = e.message.match(/position (\d+)/);
+      if (m && !/line \d+ column \d+/.test(e.message)) {
+        var vieta = atrastRindasKolonnu(teksts, parseInt(m[1], 10));
+        status.textContent = "Kļūda: " + e.message + " (rinda " + vieta.rinda + ", kolonna " + vieta.kolonna + ")";
+      } else {
+        status.textContent = "Kļūda: " + e.message;
+      }
+      status.className = "riki-hint riki-status-error";
+    }
+  }
+
+  formatBtn.addEventListener("click", function () { parsetVaiRadit(2); });
+  minifyBtn.addEventListener("click", function () { parsetVaiRadit(0); });
+  clearBtn.addEventListener("click", function () {
+    input.value = "";
+    outputWrap.style.display = "none";
+    status.textContent = "";
+  });
+
+  rikuKopetTekstu(copyBtn, function () { return output.textContent; });
+})();
+
+(function () {
+  var input = document.getElementById("b64-input");
+  var encodeBtn = document.getElementById("b64-encode-btn");
+  var decodeBtn = document.getElementById("b64-decode-btn");
+  var urlEncodeBtn = document.getElementById("url-encode-btn");
+  var urlDecodeBtn = document.getElementById("url-decode-btn");
+  var status = document.getElementById("b64-status");
+  var outputWrap = document.getElementById("b64-output-wrap");
+  var output = document.getElementById("b64-output");
+  var copyBtn = document.getElementById("b64-copy-btn");
+
+  function utf8ToBase64(str) {
+    var bytes = new TextEncoder().encode(str);
+    var binary = "";
+    bytes.forEach(function (b) { binary += String.fromCharCode(b); });
+    return btoa(binary);
+  }
+  function base64ToUtf8(b64) {
+    var binary = atob(b64);
+    var bytes = new Uint8Array(binary.length);
+    for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    return new TextDecoder().decode(bytes);
+  }
+
+  function pariidiRezultatu(teksts) {
+    output.textContent = teksts;
+    outputWrap.style.display = "block";
+    status.textContent = "";
+  }
+  function pariidiKludu(e) {
+    outputWrap.style.display = "none";
+    status.textContent = "Kļūda: " + e.message;
+    status.className = "riki-hint riki-status-error";
+  }
+
+  encodeBtn.addEventListener("click", function () {
+    try { pariidiRezultatu(utf8ToBase64(input.value)); } catch (e) { pariidiKludu(e); }
+  });
+  decodeBtn.addEventListener("click", function () {
+    try { pariidiRezultatu(base64ToUtf8(input.value.trim())); } catch (e) { pariidiKludu(e); }
+  });
+  urlEncodeBtn.addEventListener("click", function () {
+    try { pariidiRezultatu(encodeURIComponent(input.value)); } catch (e) { pariidiKludu(e); }
+  });
+  urlDecodeBtn.addEventListener("click", function () {
+    try { pariidiRezultatu(decodeURIComponent(input.value)); } catch (e) { pariidiKludu(e); }
+  });
+
+  rikuKopetTekstu(copyBtn, function () { return output.textContent; });
+})();
+
+(function () {
+  var generateBtn = document.getElementById("uuid-generate-btn");
+  var countInput = document.getElementById("uuid-count");
+  var list = document.getElementById("uuid-list");
+
+  function veidotUUID() {
+    if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    var baiti = crypto.getRandomValues(new Uint8Array(16));
+    baiti[6] = (baiti[6] & 0x0f) | 0x40;
+    baiti[8] = (baiti[8] & 0x3f) | 0x80;
+    var hex = Array.prototype.map.call(baiti, function (b) {
+      var s = b.toString(16);
+      return s.length === 1 ? "0" + s : s;
+    }).join("");
+    return hex.substr(0, 8) + "-" + hex.substr(8, 4) + "-" + hex.substr(12, 4) + "-" + hex.substr(16, 4) + "-" + hex.substr(20, 12);
+  }
+
+  function pievienotRindu(uuid) {
+    var rinda = document.createElement("div");
+    rinda.className = "riki-uuid-row";
+    var kods = document.createElement("code");
+    kods.textContent = uuid;
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "code-copy-btn";
+    btn.setAttribute("aria-label", "Kopēt");
+    btn.innerHTML =
+      '<svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>' +
+      '<svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+    rikuKopetTekstu(btn, function () { return uuid; });
+    rinda.appendChild(kods);
+    rinda.appendChild(btn);
+    list.insertBefore(rinda, list.firstChild);
+  }
+
+  generateBtn.addEventListener("click", function () {
+    var skaits = Math.max(1, Math.min(50, parseInt(countInput.value, 10) || 1));
+    for (var i = 0; i < skaits; i++) pievienotRindu(veidotUUID());
+  });
+
+  pievienotRindu(veidotUUID());
+})();
+
+(function () {
+  var nowEl = document.getElementById("unix-now");
+  var timestampInput = document.getElementById("unix-timestamp-input");
+  var nowBtn = document.getElementById("unix-now-btn");
+  var toDateOutput = document.getElementById("unix-to-date-output");
+  var dateInput = document.getElementById("unix-date-input");
+  var toTimestampOutput = document.getElementById("unix-to-timestamp-output");
+
+  function atjauninatTagadejo() {
+    nowEl.textContent = Math.floor(Date.now() / 1000);
+  }
+  atjauninatTagadejo();
+  setInterval(atjauninatTagadejo, 1000);
+
+  function formatetDatumu(datums) {
+    return datums.toLocaleString("lv-LV", { dateStyle: "medium", timeStyle: "medium" }) + " (vietējā laika josla) / " + datums.toISOString() + " (UTC)";
+  }
+
+  timestampInput.addEventListener("input", function () {
+    var teksts = timestampInput.value.trim();
+    if (!teksts || !/^-?\d+$/.test(teksts)) {
+      toDateOutput.textContent = teksts ? "Nederīgs skaitlis." : "-";
+      return;
+    }
+    var skaitlis = parseInt(teksts, 10);
+    var milisekundes = Math.abs(skaitlis) < 100000000000 ? skaitlis * 1000 : skaitlis;
+    var datums = new Date(milisekundes);
+    if (isNaN(datums.getTime())) {
+      toDateOutput.textContent = "Nederīgs datums.";
+      return;
+    }
+    toDateOutput.textContent = formatetDatumu(datums);
+  });
+
+  nowBtn.addEventListener("click", function () {
+    timestampInput.value = Math.floor(Date.now() / 1000);
+    timestampInput.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+
+  dateInput.addEventListener("input", function () {
+    if (!dateInput.value) {
+      toTimestampOutput.textContent = "-";
+      return;
+    }
+    var datums = new Date(dateInput.value);
+    if (isNaN(datums.getTime())) {
+      toTimestampOutput.textContent = "Nederīgs datums.";
+      return;
+    }
+    toTimestampOutput.textContent = Math.floor(datums.getTime() / 1000) + " (sekundēs) / " + datums.getTime() + " (milisekundēs)";
+  });
+})();
+
+(function () {
+  var patternInput = document.getElementById("regex-pattern");
+  var flagsInput = document.getElementById("regex-flags");
+  var testText = document.getElementById("regex-test-text");
+  var status = document.getElementById("regex-status");
+  var highlighted = document.getElementById("regex-highlighted");
+  var matchesEl = document.getElementById("regex-matches");
+
+  function escapeHtml(s) {
+    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  function atjauninat() {
+    var pattern = patternInput.value;
+    var flags = flagsInput.value;
+    var teksts = testText.value;
+
+    highlighted.innerHTML = "";
+    matchesEl.innerHTML = "";
+
+    if (!pattern) {
+      status.textContent = "Ievadi regulāro izteiksmi, lai sāktu.";
+      status.className = "riki-hint";
+      return;
+    }
+
+    var regex;
+    try {
+      regex = new RegExp(pattern, flags.indexOf("g") === -1 ? flags + "g" : flags);
+    } catch (e) {
+      status.textContent = "Nederīga regulārā izteiksme: " + e.message;
+      status.className = "riki-hint riki-status-error";
+      return;
+    }
+
+    if (!teksts) {
+      status.textContent = "Ievadi testa tekstu, lai redzētu sakritības.";
+      status.className = "riki-hint";
+      return;
+    }
+
+    var sakritibas = Array.from(teksts.matchAll(regex));
+    status.textContent = sakritibas.length + (sakritibas.length === 1 ? " sakritība." : " sakritības.");
+    status.className = "riki-hint";
+
+    var html = "";
+    var pedeja = 0;
+    sakritibas.forEach(function (m) {
+      html += escapeHtml(teksts.slice(pedeja, m.index));
+      html += "<mark>" + escapeHtml(m[0]) + "</mark>";
+      pedeja = m.index + m[0].length;
+    });
+    html += escapeHtml(teksts.slice(pedeja));
+    highlighted.innerHTML = html || "&nbsp;";
+
+    sakritibas.slice(0, 50).forEach(function (m, i) {
+      var rinda = document.createElement("div");
+      rinda.className = "riki-regex-match-row";
+      var teksts2 = "#" + (i + 1) + ": \"" + m[0] + "\" (pozīcija " + m.index + ")";
+      if (m.length > 1) {
+        var grupas = [];
+        for (var g = 1; g < m.length; g++) grupas.push("grupa " + g + ": \"" + (m[g] === undefined ? "" : m[g]) + "\"");
+        teksts2 += " - " + grupas.join(", ");
+      }
+      rinda.textContent = teksts2;
+      matchesEl.appendChild(rinda);
+    });
+  }
+
+  patternInput.addEventListener("input", atjauninat);
+  flagsInput.addEventListener("input", atjauninat);
+  testText.addEventListener("input", atjauninat);
+})();
+
+(function () {
+  var input = document.getElementById("jwt-input");
+  var status = document.getElementById("jwt-status");
+  var resultEl = document.getElementById("jwt-result");
+  var headerEl = document.getElementById("jwt-header");
+  var payloadEl = document.getElementById("jwt-payload");
+  var expiryEl = document.getElementById("jwt-expiry");
+
+  function base64UrlDekodet(str) {
+    var base64 = str.replace(/-/g, "+").replace(/_/g, "/");
+    var atlikums = base64.length % 4;
+    if (atlikums === 2) base64 += "==";
+    else if (atlikums === 3) base64 += "=";
+    var binary = atob(base64);
+    var bytes = new Uint8Array(binary.length);
+    for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    return new TextDecoder().decode(bytes);
+  }
+
+  function formatetUnixLaiku(sekundes) {
+    return new Date(sekundes * 1000).toLocaleString("lv-LV", { dateStyle: "medium", timeStyle: "medium" });
+  }
+
+  input.addEventListener("input", function () {
+    var teksts = input.value.trim();
+    if (!teksts) {
+      status.textContent = "Ielīmē JWT, lai to izkodētu.";
+      status.className = "riki-hint";
+      resultEl.style.display = "none";
+      return;
+    }
+
+    var dalas = teksts.split(".");
+    if (dalas.length !== 3) {
+      status.textContent = "Nederīgs JWT - vajag 3 daļas, atdalītas ar punktu (header.payload.signature).";
+      status.className = "riki-hint riki-status-error";
+      resultEl.style.display = "none";
+      return;
+    }
+
+    try {
+      var header = JSON.parse(base64UrlDekodet(dalas[0]));
+      var payload = JSON.parse(base64UrlDekodet(dalas[1]));
+
+      headerEl.textContent = JSON.stringify(header, null, 2);
+      payloadEl.textContent = JSON.stringify(payload, null, 2);
+      resultEl.style.display = "block";
+      status.textContent = "Izkodēts (paraksts NAV pārbaudīts).";
+      status.className = "riki-hint";
+
+      var laikaInfo = [];
+      if (payload.iat) laikaInfo.push("izdots: " + formatetUnixLaiku(payload.iat));
+      if (payload.nbf) laikaInfo.push("derīgs no: " + formatetUnixLaiku(payload.nbf));
+      if (payload.exp) {
+        var beidzies = payload.exp * 1000 < Date.now();
+        laikaInfo.push("derīgs līdz: " + formatetUnixLaiku(payload.exp) + (beidzies ? " (BEIDZIES)" : " (vēl derīgs)"));
+      }
+      expiryEl.textContent = laikaInfo.join(" | ");
+    } catch (e) {
+      status.textContent = "Kļūda dekodējot: " + e.message;
+      status.className = "riki-hint riki-status-error";
+      resultEl.style.display = "none";
+    }
+  });
+})();
+
+(function () {
+  var input = document.getElementById("hash-input");
+  var algoritmi = [
+    { id: "sha1", nosaukums: "SHA-1" },
+    { id: "sha256", nosaukums: "SHA-256" },
+    { id: "sha384", nosaukums: "SHA-384" },
+    { id: "sha512", nosaukums: "SHA-512" },
+  ];
+
+  function baitiUzHex(buffer) {
+    var baiti = new Uint8Array(buffer);
+    var hex = "";
+    for (var i = 0; i < baiti.length; i++) {
+      var s = baiti[i].toString(16);
+      hex += s.length === 1 ? "0" + s : s;
+    }
+    return hex;
+  }
+
+  var elementi = {};
+  algoritmi.forEach(function (a) {
+    elementi[a.id] = {
+      value: document.getElementById("hash-" + a.id),
+      copyBtn: document.getElementById("hash-copy-" + a.id),
+    };
+    rikuKopetTekstu(elementi[a.id].copyBtn, function () { return elementi[a.id].value.textContent; });
+  });
+
+  var debounceTaimeris = null;
+  function aprekinatVisus() {
+    var teksts = input.value;
+    if (!teksts) {
+      algoritmi.forEach(function (a) { elementi[a.id].value.textContent = "-"; });
+      return;
+    }
+    var baiti = new TextEncoder().encode(teksts);
+    algoritmi.forEach(function (a) {
+      crypto.subtle.digest(a.nosaukums, baiti).then(function (buffer) {
+        elementi[a.id].value.textContent = baitiUzHex(buffer);
+      });
+    });
+  }
+
+  input.addEventListener("input", function () {
+    clearTimeout(debounceTaimeris);
+    debounceTaimeris = setTimeout(aprekinatVisus, 200);
+  });
+})();
+
+(function () {
+  var preview = document.getElementById("gradient-preview");
+  var typeSelect = document.getElementById("gradient-type");
+  var angleWrap = document.getElementById("gradient-angle-wrap");
+  var angleInput = document.getElementById("gradient-angle");
+  var angleValue = document.getElementById("gradient-angle-value");
+  var stopsWrap = document.getElementById("gradient-stops");
+  var addStopBtn = document.getElementById("gradient-add-stop");
+  var output = document.getElementById("gradient-output");
+  var copyBtn = document.getElementById("gradient-copy-btn");
+
+  var noklusetasKrasas = ["#6d28d9", "#f472b6"];
+
+  function veidotStopRindu(krasa, pozicija) {
+    var rinda = document.createElement("div");
+    rinda.className = "riki-gradient-stop-row";
+
+    var krasasInput = document.createElement("input");
+    krasasInput.type = "color";
+    krasasInput.value = krasa;
+    krasasInput.addEventListener("input", atjauninat);
+
+    var pozicijasInput = document.createElement("input");
+    pozicijasInput.type = "number";
+    pozicijasInput.min = "0";
+    pozicijasInput.max = "100";
+    pozicijasInput.value = pozicija;
+    pozicijasInput.addEventListener("input", atjauninat);
+
+    var nonemBtn = document.createElement("button");
+    nonemBtn.type = "button";
+    nonemBtn.className = "riki-gradient-stop-remove";
+    nonemBtn.textContent = "×";
+    nonemBtn.addEventListener("click", function () {
+      if (stopsWrap.children.length <= 2) return;
+      rinda.remove();
+      atjauninat();
+    });
+
+    rinda.appendChild(krasasInput);
+    rinda.appendChild(pozicijasInput);
+    rinda.appendChild(nonemBtn);
+    stopsWrap.appendChild(rinda);
+  }
+
+  function iegutStopus() {
+    return Array.prototype.map.call(stopsWrap.children, function (rinda) {
+      var inputi = rinda.querySelectorAll("input");
+      return { krasa: inputi[0].value, pozicija: inputi[1].value };
+    });
+  }
+
+  function atjauninat() {
+    var stopi = iegutStopus();
+    var stopuTeksts = stopi.map(function (s) { return s.krasa + " " + s.pozicija + "%"; }).join(", ");
+    var css;
+    if (typeSelect.value === "radial") {
+      angleWrap.style.display = "none";
+      css = "radial-gradient(circle, " + stopuTeksts + ")";
+    } else {
+      angleWrap.style.display = "";
+      css = "linear-gradient(" + angleInput.value + "deg, " + stopuTeksts + ")";
+    }
+    preview.style.background = css;
+    output.textContent = "background: " + css + ";";
+  }
+
+  typeSelect.addEventListener("change", atjauninat);
+  angleInput.addEventListener("input", function () {
+    angleValue.textContent = angleInput.value;
+    atjauninat();
+  });
+  addStopBtn.addEventListener("click", function () {
+    var skaits = stopsWrap.children.length;
+    var nejausaKrasa = "#" + Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, "0");
+    veidotStopRindu(nejausaKrasa, Math.min(100, Math.round((skaits / (skaits + 1)) * 100)));
+    atjauninat();
+  });
+
+  veidotStopRindu(noklusetasKrasas[0], 0);
+  veidotStopRindu(noklusetasKrasas[1], 100);
+  atjauninat();
+
+  rikuKopetTekstu(copyBtn, function () { return output.textContent; });
+})();
+
+(function () {
+  var preview = document.getElementById("shadow-preview");
+  var xInput = document.getElementById("shadow-x");
+  var yInput = document.getElementById("shadow-y");
+  var blurInput = document.getElementById("shadow-blur");
+  var spreadInput = document.getElementById("shadow-spread");
+  var colorInput = document.getElementById("shadow-color");
+  var opacityInput = document.getElementById("shadow-opacity");
+  var opacityValue = document.getElementById("shadow-opacity-value");
+  var insetInput = document.getElementById("shadow-inset");
+  var output = document.getElementById("shadow-output");
+  var copyBtn = document.getElementById("shadow-copy-btn");
+
+  function hexToRgbVienkarsi(hex) {
+    hex = hex.replace("#", "");
+    var r = parseInt(hex.substr(0, 2), 16);
+    var g = parseInt(hex.substr(2, 2), 16);
+    var b = parseInt(hex.substr(4, 2), 16);
+    return r + ", " + g + ", " + b;
+  }
+
+  function atjauninat() {
+    opacityValue.textContent = opacityInput.value;
+    var krasa = "rgba(" + hexToRgbVienkarsi(colorInput.value) + ", " + (parseInt(opacityInput.value, 10) / 100) + ")";
+    var css =
+      (insetInput.checked ? "inset " : "") +
+      xInput.value + "px " + yInput.value + "px " + blurInput.value + "px " + spreadInput.value + "px " + krasa;
+    preview.style.boxShadow = css;
+    output.textContent = "box-shadow: " + css + ";";
+  }
+
+  [xInput, yInput, blurInput, spreadInput, colorInput, opacityInput, insetInput].forEach(function (el) {
+    el.addEventListener("input", atjauninat);
+  });
+
+  atjauninat();
+  rikuKopetTekstu(copyBtn, function () { return output.textContent; });
 })();
 </script>
 </body>
