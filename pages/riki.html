@@ -10,7 +10,7 @@
 <link rel="manifest" href="../manifest.json" />
 <meta name="theme-color" content="#9d5cff" />
 <title>Rīki - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=36" />
+<link rel="stylesheet" href="../css/style.css?v=37" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -90,7 +90,16 @@
                 <label>Kvalitāte: <span id="riki-quality-value">85</span>%</label>
                 <input type="range" id="riki-quality" min="10" max="100" step="5" value="85" />
               </div>
+              <div class="riki-settings-col riki-settings-col-exact">
+                <label>Precīzs izmērs (px) - nav obligāts</label>
+                <div class="riki-exact-size">
+                  <input type="number" id="riki-exact-width" class="riki-select riki-exact-input" min="1" max="10000" placeholder="platums" />
+                  <span class="riki-exact-x">×</span>
+                  <input type="number" id="riki-exact-height" class="riki-select riki-exact-input" min="1" max="10000" placeholder="augstums" />
+                </div>
+              </div>
             </div>
+            <p class="riki-hint riki-exact-hint">Ja aizpildīsi precīzu izmēru, attēls tiks izstiepts/saspiests tieši uz šo izmēru (nevis apgriezts) - lietderīgi, ja vajag konkrētu izšķirtspēju, piemēram, 500×500. Aizpildot tikai vienu no laukiem, otrs tiek aprēķināts automātiski, saglabājot proporcijas. Ja abi lauki tukši, izmantots "Maks. platums" iestatījums augstāk.</p>
 
             <div class="riki-file-list" id="riki-file-list"></div>
 
@@ -131,6 +140,8 @@
       <div class="doc-cards">
         <div class="doc-mini-card"><h4>Vairāki faili</h4><p>Katrs pievienotais attēls tiek apstrādāts neatkarīgi, ar tiem pašiem platuma/kvalitātes/formāta iestatījumiem - maini iestatījumus vienreiz, tie pielietojas visiem uzreiz.</p></div>
         <div class="doc-mini-card"><h4>Apgriešana ar fiksētu proporciju</h4><p>Katram failam ir poga "Apgriezt" - atver rāmi, ko var vilkt un mainīt izmēru. Izvēlies 1:1 / 4:3 / 16:9 / 9:16, lai rāmja proporcija paliktu fiksēta, vai "Brīvi" jebkurai formai. Apgrieztais attēls aizstāj oriģinālu un tālāk iet cauri parastajai izmēra/formāta apstrādei.</p></div>
+        <div class="doc-mini-card"><h4>No kāda uz kādu formātu</h4><p>Katram failam pie nosaukuma redzams, piemēram, "PNG → JPEG" - tas parāda, kādā formātā attēls tika augšupielādēts un kādā formātā tas tiks lejupielādēts pēc apstrādes (atbilstoši izvēlētajam "Formāts" laukam).</p></div>
+        <div class="doc-mini-card"><h4>Precīzs izmērs (bez apgriešanas)</h4><p>Papildus "Maks. platums" slīdnim var ievadīt konkrētu platumu un/vai augstumu pikseļos, piemēram, 500×500 - attēls tiek izstiepts/saspiests tieši uz šo izšķirtspēju (<code>ctx.drawImage(img, 0, 0, platums, augstums)</code>), nevis apgriezts. Ja aizpilda tikai vienu lauku, otrs tiek aprēķināts automātiski pēc oriģinālā attēla proporcijām; ja aizpilda abus, izmērs ir tieši tāds, kāds ievadīts (var izstiept, ja proporcijas nesakrīt ar oriģinālu). Tukši lauki nozīmē, ka tiek izmantots "Maks. platums" iestatījums.</p></div>
         <div class="doc-mini-card"><h4>WebP formāts</h4><p><code>canvas.toBlob(callback, "image/webp", kvalitāte)</code> - atbalstīts visos modernajos pārlūkos. Parasti dod mazāku faila izmēru par JPEG pie vizuāli identiskas kvalitātes.</p></div>
         <div class="doc-mini-card"><h4>Kāpēc PNG bez kvalitātes slīdņa</h4><p>PNG ir bezzudumu formāts - kvalitātes parametru tas neatbalsta, tāpēc slīdnis pazūd, izvēloties PNG. Der attēliem ar caurspīdīgumu vai tekstu/ikonām, kur JPEG/WebP saspiešanas artefakti būtu redzami.</p></div>
       </div>
@@ -183,8 +194,8 @@
   </main>
 </div>
 
-<script src="../js/theme.js?v=36"></script>
-<script src="../js/main.js?v=36"></script>
+<script src="../js/theme.js?v=37"></script>
+<script src="../js/main.js?v=37"></script>
 <script>
 (function () {
   var dropzone = document.getElementById("riki-dropzone");
@@ -197,8 +208,24 @@
   var widthValue = document.getElementById("riki-width-value");
   var qualityValue = document.getElementById("riki-quality-value");
   var formatSelect = document.getElementById("riki-format");
+  var exactWidthInput = document.getElementById("riki-exact-width");
+  var exactHeightInput = document.getElementById("riki-exact-height");
   var downloadAllBtn = document.getElementById("riki-download-all");
   var resetBtn = document.getElementById("riki-reset");
+
+  var FORMATA_NOSAUKUMI = {
+    "image/png": "PNG",
+    "image/jpeg": "JPEG",
+    "image/webp": "WebP",
+    "image/gif": "GIF",
+    "image/bmp": "BMP",
+    "image/svg+xml": "SVG",
+    "image/avif": "AVIF",
+  };
+
+  function formatoNosaukums(mime) {
+    return FORMATA_NOSAUKUMI[mime] || (mime || "").replace("image/", "").toUpperCase() || "?";
+  }
 
   var faili = [];
   var nakosaisId = 0;
@@ -229,10 +256,14 @@
     var nosaukums = document.createElement("div");
     nosaukums.className = "riki-file-name";
     nosaukums.textContent = ieraksts.originalName;
+    var formatoTeksts = document.createElement("div");
+    formatoTeksts.className = "riki-file-format";
+    formatoTeksts.textContent = formatoNosaukums(ieraksts.originalType) + " → " + formatoNosaukums(formatSelect.value);
     var statistika = document.createElement("div");
     statistika.className = "riki-file-stats";
     statistika.textContent = "Apstrādā...";
     info.appendChild(nosaukums);
+    info.appendChild(formatoTeksts);
     info.appendChild(statistika);
     rinda.appendChild(info);
 
@@ -255,20 +286,41 @@
     rinda.appendChild(lejupBtn);
 
     fileList.appendChild(rinda);
-    return { rinda: rinda, thumb: thumb, statistika: statistika };
+    return { rinda: rinda, thumb: thumb, statistika: statistika, formatoTeksts: formatoTeksts };
   }
 
   function apstradatVienuFailu(ieraksts) {
     if (!ieraksts.originalImage) return;
-    var maxPlatums = parseInt(widthSlider.value, 10);
     var formats = formatSelect.value;
     var kvalitate = parseInt(qualitySlider.value, 10) / 100;
 
-    var platums = ieraksts.originalImage.width;
-    var augstums = ieraksts.originalImage.height;
-    if (platums > maxPlatums) {
-      augstums = Math.round(augstums * (maxPlatums / platums));
-      platums = maxPlatums;
+    if (ieraksts.elements.formatoTeksts) {
+      ieraksts.elements.formatoTeksts.textContent = formatoNosaukums(ieraksts.originalType) + " → " + formatoNosaukums(formats);
+    }
+
+    var natPlatums = ieraksts.originalImage.width;
+    var natAugstums = ieraksts.originalImage.height;
+    var precW = parseInt(exactWidthInput.value, 10) || 0;
+    var precH = parseInt(exactHeightInput.value, 10) || 0;
+
+    var platums, augstums;
+    if (precW && precH) {
+      platums = precW;
+      augstums = precH;
+    } else if (precW) {
+      platums = precW;
+      augstums = Math.max(1, Math.round(natAugstums * (precW / natPlatums)));
+    } else if (precH) {
+      augstums = precH;
+      platums = Math.max(1, Math.round(natPlatums * (precH / natAugstums)));
+    } else {
+      var maxPlatums = parseInt(widthSlider.value, 10);
+      platums = natPlatums;
+      augstums = natAugstums;
+      if (platums > maxPlatums) {
+        augstums = Math.round(augstums * (maxPlatums / platums));
+        platums = maxPlatums;
+      }
     }
 
     var canvas = document.createElement("canvas");
@@ -308,6 +360,7 @@
         id: nakosaisId++,
         originalImage: null,
         originalName: file.name.replace(/\.[^.]+$/, "") || "attels",
+        originalType: file.type || "image/jpeg",
         originalSize: file.size,
         resultBlob: null,
       };
@@ -352,6 +405,8 @@
     faili = [];
     fileList.innerHTML = "";
     fileInput.value = "";
+    exactWidthInput.value = "";
+    exactHeightInput.value = "";
     controls.style.display = "none";
     dropzone.style.display = "block";
   }
@@ -387,6 +442,8 @@
     qualityWrap.style.display = formatSelect.value === "image/png" ? "none" : "block";
     apstradatVisus();
   });
+  exactWidthInput.addEventListener("input", apstradatVisus);
+  exactHeightInput.addEventListener("input", apstradatVisus);
 
   downloadAllBtn.addEventListener("click", function () {
     faili.forEach(function (ieraksts, indekss) {
