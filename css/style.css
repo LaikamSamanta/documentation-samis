@@ -1549,10 +1549,36 @@ pre.code-block code {
   min-width: 0;
   text-align: center;
 }
-.riki-exact-x {
+.riki-exact-lock {
   flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
   color: var(--text-muted);
-  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s var(--ease), background 0.15s var(--ease), color 0.15s var(--ease);
+}
+.riki-exact-lock:hover {
+  border-color: var(--page-accent);
+}
+.riki-exact-lock.locked {
+  border-color: var(--page-accent);
+  background: var(--page-accent-soft);
+  color: var(--page-accent-2);
+}
+.riki-exact-lock .link-off {
+  display: none;
+}
+.riki-exact-lock:not(.locked) .link-on {
+  display: none;
+}
+.riki-exact-lock:not(.locked) .link-off {
+  display: block;
 }
 .riki-exact-hint {
   margin-top: -6px;

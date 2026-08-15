@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "pages/wordpress-problemas.html", "pages/wordpress-snippets.html",
     "pages/wordpress.html", "pages/python-riki.html", "pages/riki.html"
   ];
-  var SEARCH_INDEX_VERSION = "37"; // bump together with the ?v= cache-bust number
+  var SEARCH_INDEX_VERSION = "38"; // bump together with the ?v= cache-bust number
   var searchIndex = null;
   var searchIndexPromise = null;
 
