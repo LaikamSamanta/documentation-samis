@@ -10,7 +10,7 @@
 <link rel="manifest" href="../manifest.json" />
 <meta name="theme-color" content="#9d5cff" />
 <title>Rīki - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=39" />
+<link rel="stylesheet" href="../css/style.css?v=40" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -42,6 +42,10 @@
       <h4>Attēli</h4>
       <a href="#attelu-izmers" class="active"><span class="bullet"></span>Izmērs, formāts &amp; saspiešana</a>
       <a href="#fona-nonemsana"><span class="bullet"></span>Vienkrāsaina fona noņemšana</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Krāsas</h4>
+      <a href="#krasu-riks"><span class="bullet"></span>HEX / RGB / RGBA pārveidotājs</a>
     </div>
   </aside>
 
@@ -190,6 +194,73 @@
       </div>
     </section>
 
+    <section class="doc-section" id="krasu-riks">
+      <h2>Krāsu rīks (HEX / RGB / RGBA)</h2>
+      <p>Ievadi krāsu jebkurā formātā - HEX, atsevišķie R/G/B/A kanāli vai vizuālais izvēlētājs - visi pārējie lauki pārrēķinās uzreiz. Zemāk arī redzi, kāds ir tuvākais zināmais CSS krāsas nosaukums šai HEX vērtībai (piem., ievadot <code>#ff6347</code>, redzēsi "tomato").</p>
+
+      <div class="riki-tool riki-color-tool">
+        <div class="riki-color-top">
+          <div class="riki-color-swatch-wrap">
+            <input type="color" id="color-picker" class="riki-color-picker" value="#6d28d9" aria-label="Krāsu izvēlētājs" />
+            <div class="riki-color-swatch" id="color-swatch"></div>
+          </div>
+          <div class="riki-color-hex-wrap">
+            <label>HEX</label>
+            <div class="riki-color-field">
+              <input type="text" id="color-hex" class="riki-select" value="#6d28d9" spellcheck="false" autocomplete="off" />
+              <button type="button" class="code-copy-btn" id="copy-hex" aria-label="Kopēt HEX">
+                <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>
+                <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              </button>
+            </div>
+            <p class="riki-hint riki-color-name" id="color-name">Tuvākā zināmā krāsa: -</p>
+          </div>
+        </div>
+
+        <div class="riki-color-channels">
+          <div class="riki-color-channel">
+            <label>R</label>
+            <input type="number" id="color-r" min="0" max="255" step="1" value="109" />
+          </div>
+          <div class="riki-color-channel">
+            <label>G</label>
+            <input type="number" id="color-g" min="0" max="255" step="1" value="40" />
+          </div>
+          <div class="riki-color-channel">
+            <label>B</label>
+            <input type="number" id="color-b" min="0" max="255" step="1" value="217" />
+          </div>
+          <div class="riki-color-channel">
+            <label>A</label>
+            <input type="number" id="color-a" min="0" max="1" step="0.01" value="1" />
+          </div>
+        </div>
+
+        <div class="riki-color-outputs">
+          <div class="riki-color-output">
+            <code id="out-rgb">rgb(109, 40, 217)</code>
+            <button type="button" class="code-copy-btn" id="copy-rgb" aria-label="Kopēt RGB">
+              <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>
+              <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            </button>
+          </div>
+          <div class="riki-color-output">
+            <code id="out-rgba">rgba(109, 40, 217, 1)</code>
+            <button type="button" class="code-copy-btn" id="copy-rgba" aria-label="Kopēt RGBA">
+              <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>
+              <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>Divvirziena sinhronizācija</h4><p>Maini jebkuru lauku - HEX tekstu, R/G/B/A skaitļus vai krāsu izvēlētāju - un visi pārējie atjaunojas uzreiz. HEX atbalsta gan 3, gan 6, gan 8 ciparu formu (<code>#f00</code>, <code>#ff0000</code>, <code>#ff0000ff</code> ar alfa kanālu).</p></div>
+        <div class="doc-mini-card"><h4>Kā atrasta tuvākā krāsa</h4><p>Katram no ~148 standarta CSS krāsu nosaukumiem (<code>tomato</code>, <code>cornflowerblue</code> u.c.) pārlūks pats atrisina precīzo RGB vērtību (uzstādot <code>canvas.fillStyle = nosaukums</code> un nolasot rezultātu atpakaļ) - tas garantē pareizību bez manuāli ierakstītas tabulas. Tad starp visām meklē mazāko RGB attālumu (<code>Math.sqrt</code> no R/G/B starpību kvadrātu summas), tāpat kā fona noņemšanas rīkā augstāk.</p></div>
+        <div class="doc-mini-card"><h4>Kāpēc RGBA atsevišķi no RGB</h4><p><code>rgb()</code> CSS ierakstā nozīmē pilnībā necaurspīdīgu krāsu. <code>rgba()</code> pievieno ceturto - alfa (0 = pilnībā caurspīdīgs, 1 = necaurspīdīgs) - noderīgs, piemēram, pusgruntu overlay slāņiem vai hover efektiem.</p></div>
+      </div>
+    </section>
+
     <div class="doc-pager">
       <a href="python-riki.html"><span class="lbl">← Iepriekšējais</span>Python rīki</a>
       <a class="to-next" href="../index.html"><span class="lbl">Atpakaļ →</span>Visas kategorijas</a>
@@ -197,8 +268,8 @@
   </main>
 </div>
 
-<script src="../js/theme.js?v=39"></script>
-<script src="../js/main.js?v=39"></script>
+<script src="../js/theme.js?v=40"></script>
+<script src="../js/main.js?v=40"></script>
 <script>
 (function () {
   var dropzone = document.getElementById("riki-dropzone");
@@ -835,6 +906,199 @@
     controls.style.display = "none";
     dropzone.style.display = "block";
   });
+})();
+
+(function () {
+  var picker = document.getElementById("color-picker");
+  var swatch = document.getElementById("color-swatch");
+  var hexInput = document.getElementById("color-hex");
+  var rInput = document.getElementById("color-r");
+  var gInput = document.getElementById("color-g");
+  var bInput = document.getElementById("color-b");
+  var aInput = document.getElementById("color-a");
+  var outRgb = document.getElementById("out-rgb");
+  var outRgba = document.getElementById("out-rgba");
+  var nameEl = document.getElementById("color-name");
+  var copyHexBtn = document.getElementById("copy-hex");
+  var copyRgbBtn = document.getElementById("copy-rgb");
+  var copyRgbaBtn = document.getElementById("copy-rgba");
+
+  var KRASU_NOSAUKUMI = [
+    "aliceblue", "antiquewhite", "aqua", "aquamarine", "azure", "beige", "bisque", "black",
+    "blanchedalmond", "blue", "blueviolet", "brown", "burlywood", "cadetblue", "chartreuse",
+    "chocolate", "coral", "cornflowerblue", "cornsilk", "crimson", "cyan", "darkblue", "darkcyan",
+    "darkgoldenrod", "darkgray", "darkgreen", "darkgrey", "darkkhaki", "darkmagenta",
+    "darkolivegreen", "darkorange", "darkorchid", "darkred", "darksalmon", "darkseagreen",
+    "darkslateblue", "darkslategray", "darkslategrey", "darkturquoise", "darkviolet", "deeppink",
+    "deepskyblue", "dimgray", "dimgrey", "dodgerblue", "firebrick", "floralwhite", "forestgreen",
+    "fuchsia", "gainsboro", "ghostwhite", "gold", "goldenrod", "gray", "green", "greenyellow",
+    "grey", "honeydew", "hotpink", "indianred", "indigo", "ivory", "khaki", "lavender",
+    "lavenderblush", "lawngreen", "lemonchiffon", "lightblue", "lightcoral", "lightcyan",
+    "lightgoldenrodyellow", "lightgray", "lightgreen", "lightgrey", "lightpink", "lightsalmon",
+    "lightseagreen", "lightskyblue", "lightslategray", "lightslategrey", "lightsteelblue",
+    "lightyellow", "lime", "limegreen", "linen", "magenta", "maroon", "mediumaquamarine",
+    "mediumblue", "mediumorchid", "mediumpurple", "mediumseagreen", "mediumslateblue",
+    "mediumspringgreen", "mediumturquoise", "mediumvioletred", "midnightblue", "mintcream",
+    "mistyrose", "moccasin", "navajowhite", "navy", "oldlace", "olive", "olivedrab", "orange",
+    "orangered", "orchid", "palegoldenrod", "palegreen", "paleturquoise", "palevioletred",
+    "papayawhip", "peachpuff", "peru", "pink", "plum", "powderblue", "purple", "rebeccapurple",
+    "red", "rosybrown", "royalblue", "saddlebrown", "salmon", "sandybrown", "seagreen", "seashell",
+    "sienna", "silver", "skyblue", "slateblue", "slategray", "slategrey", "snow", "springgreen",
+    "steelblue", "tan", "teal", "thistle", "tomato", "turquoise", "violet", "wheat", "white",
+    "whitesmoke", "yellow", "yellowgreen",
+  ];
+
+  var nosauktoKrasuTabula = null;
+
+  function parseAnyColorString(str) {
+    if (str.charAt(0) === "#") return hexToRgb(str);
+    var m = str.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+    if (m) return { r: +m[1], g: +m[2], b: +m[3] };
+    return null;
+  }
+
+  function veidotNosaukumuTabulu() {
+    var canvas = document.createElement("canvas");
+    var ctx = canvas.getContext("2d");
+    var sentinel = "#010203";
+    var table = [];
+    KRASU_NOSAUKUMI.forEach(function (name) {
+      ctx.fillStyle = sentinel;
+      var before = ctx.fillStyle;
+      ctx.fillStyle = name;
+      var after = ctx.fillStyle;
+      if (after === before) return;
+      var rgb = parseAnyColorString(after);
+      if (rgb) table.push({ name: name, r: rgb.r, g: rgb.g, b: rgb.b });
+    });
+    return table;
+  }
+
+  function clampByte(n) {
+    return Math.max(0, Math.min(255, Math.round(n)));
+  }
+  function clamp01(n) {
+    return Math.max(0, Math.min(1, n));
+  }
+
+  function hexToRgb(hex) {
+    hex = hex.trim().replace(/^#/, "");
+    if (hex.length === 3 || hex.length === 4) {
+      hex = hex.split("").map(function (ch) { return ch + ch; }).join("");
+    }
+    if (hex.length !== 6 && hex.length !== 8) return null;
+    if (!/^[0-9a-fA-F]+$/.test(hex)) return null;
+    var r = parseInt(hex.substr(0, 2), 16);
+    var g = parseInt(hex.substr(2, 2), 16);
+    var b = parseInt(hex.substr(4, 2), 16);
+    var a = hex.length === 8 ? parseInt(hex.substr(6, 2), 16) / 255 : 1;
+    return { r: r, g: g, b: b, a: a };
+  }
+
+  function rgbToHex(r, g, b) {
+    function baits(n) {
+      var s = clampByte(n).toString(16);
+      return s.length === 1 ? "0" + s : s;
+    }
+    return "#" + baits(r) + baits(g) + baits(b);
+  }
+
+  function atrastTuvakoKrasu(r, g, b) {
+    if (!nosauktoKrasuTabula) nosauktoKrasuTabula = veidotNosaukumuTabulu();
+    var labaka = null;
+    var labakaisAttalums = Infinity;
+    nosauktoKrasuTabula.forEach(function (krasa) {
+      var d = Math.sqrt(Math.pow(r - krasa.r, 2) + Math.pow(g - krasa.g, 2) + Math.pow(b - krasa.b, 2));
+      if (d < labakaisAttalums) {
+        labakaisAttalums = d;
+        labaka = krasa;
+      }
+    });
+    return labaka ? { name: labaka.name, dist: labakaisAttalums } : null;
+  }
+
+  function atjauninatVisu() {
+    var r = clampByte(parseFloat(rInput.value) || 0);
+    var g = clampByte(parseFloat(gInput.value) || 0);
+    var b = clampByte(parseFloat(bInput.value) || 0);
+    var a = clamp01(parseFloat(aInput.value));
+    if (isNaN(a)) a = 1;
+
+    var hex = rgbToHex(r, g, b);
+
+    rInput.value = r;
+    gInput.value = g;
+    bInput.value = b;
+    aInput.value = a;
+    hexInput.value = hex;
+    picker.value = hex;
+    swatch.style.background = "rgba(" + r + ", " + g + ", " + b + ", " + a + ")";
+    outRgb.textContent = "rgb(" + r + ", " + g + ", " + b + ")";
+    outRgba.textContent = "rgba(" + r + ", " + g + ", " + b + ", " + a + ")";
+
+    var tuvaka = atrastTuvakoKrasu(r, g, b);
+    if (tuvaka) {
+      nameEl.textContent =
+        tuvaka.dist === 0
+          ? "Precīza sakritība: " + tuvaka.name
+          : "Tuvākā zināmā krāsa: " + tuvaka.name + " (attālums " + Math.round(tuvaka.dist) + ")";
+    }
+  }
+
+  hexInput.addEventListener("input", function () {
+    var parsed = hexToRgb(hexInput.value);
+    if (!parsed) return;
+    rInput.value = parsed.r;
+    gInput.value = parsed.g;
+    bInput.value = parsed.b;
+    aInput.value = parsed.a;
+    atjauninatVisu();
+  });
+
+  [rInput, gInput, bInput, aInput].forEach(function (el) {
+    el.addEventListener("input", atjauninatVisu);
+  });
+
+  picker.addEventListener("input", function () {
+    var parsed = hexToRgb(picker.value);
+    if (!parsed) return;
+    rInput.value = parsed.r;
+    gInput.value = parsed.g;
+    bInput.value = parsed.b;
+    atjauninatVisu();
+  });
+
+  function iestatitKopesanasPogu(btn, iegutTekstu) {
+    function showCopied() {
+      btn.classList.add("copied");
+      setTimeout(function () { btn.classList.remove("copied"); }, 1500);
+    }
+    function fallbackCopy(text) {
+      var textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      try { document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(textarea);
+      showCopied();
+    }
+    btn.addEventListener("click", function () {
+      var text = iegutTekstu();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(showCopied, function () { fallbackCopy(text); });
+      } else {
+        fallbackCopy(text);
+      }
+    });
+  }
+
+  iestatitKopesanasPogu(copyHexBtn, function () { return hexInput.value; });
+  iestatitKopesanasPogu(copyRgbBtn, function () { return outRgb.textContent; });
+  iestatitKopesanasPogu(copyRgbaBtn, function () { return outRgba.textContent; });
+
+  atjauninatVisu();
 })();
 </script>
 </body>
