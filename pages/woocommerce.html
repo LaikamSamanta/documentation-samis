@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="lv" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="manifest" href="../manifest.json" />
+<meta name="theme-color" content="#9d5cff" />
+<title>WooCommerce pamati - Documentation Samis</title>
+<link rel="stylesheet" href="../css/style.css?v=44" />
+<script>
+  (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
+</script>
+</head>
+<body class="cat-wordpress">
+<div class="bg-glow"></div>
+<div class="bg-grid"></div>
+
+<header class="topbar">
+  <a class="brand" href="../index.html">
+    <span class="mark"><svg viewBox="0 0 32 32" width="30" height="30"><defs><linearGradient id="logomarkG" x1="2" y1="1" x2="30" y2="31" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#6d28d9"/><stop offset="50%" stop-color="#9d5cff"/><stop offset="100%" stop-color="#f472b6"/></linearGradient><radialGradient id="logomarkGlow" cx="0.78" cy="0.18" r="0.65"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.4"/><stop offset="100%" stop-color="#ffffff" stop-opacity="0"/></radialGradient></defs><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#logomarkG)"/><rect x="1" y="1" width="30" height="30" rx="9" fill="url(#logomarkGlow)"/><path d="M 12 9.5 L 6.5 16 L 12 22.5" fill="none" stroke="#ffffff" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M 20 9.5 L 25.5 16 L 20 22.5" fill="none" stroke="#ffffff" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M 17.6 7.5 L 14.4 24.5" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-opacity="0.92"/></svg></span>
+    Documentation Samis
+  </a>
+  <div class="topbar-actions">
+    <a class="btn-back" href="wordpress.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M5 12h14"/></svg>
+      WordPress
+    </a>
+    <a class="btn-back" href="../index.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M5 12h14"/></svg>
+      Kategorijas
+    </a>
+    <a class="quick-link" href="riki.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      Rīki
+    </a>
+    <a class="quick-link" href="wordpress-snippets.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      Ātrie risinājumi
+    </a>
+    <button class="icon-btn" id="theme-toggle" title="Pārslēgt tēmu" aria-label="Pārslēgt tēmu">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="doc-shell">
+  <aside class="doc-sidebar">
+    <div class="doc-sidebar-group">
+      <h4>Pamati</h4>
+      <a href="#wc-overview" class="active"><span class="bullet"></span>Pārskats</a>
+      <a href="#wc-produkti"><span class="bullet"></span>Produktu iegūšana</a>
+      <a href="#wc-hooks"><span class="bullet"></span>Galvenie hooks</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Grozs &amp; pasūtījumi</h4>
+      <a href="#wc-grozs"><span class="bullet"></span>Grozs (Cart)</a>
+      <a href="#wc-pasutijumi"><span class="bullet"></span>Pasūtījumi (Orders)</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Pielāgošana</h4>
+      <a href="#wc-custom-fields"><span class="bullet"></span>Pielāgoti produktu lauki</a>
+      <a href="#wc-common"><span class="bullet"></span>Biežas pielāgošanas</a>
+      <a href="#wc-templates"><span class="bullet"></span>Veidņu pārrakstīšana</a>
+    </div>
+  </aside>
+
+  <main class="doc-main">
+    <div class="doc-breadcrumb">
+      <a href="../index.html">Sākums</a>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <a href="wordpress.html">WordPress</a>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span>WooCommerce</span>
+    </div>
+
+    <div class="doc-header">
+      <div class="icon" style="background: var(--c-wordpress-soft); color: var(--c-wordpress);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+      </div>
+      <h1 style="margin-bottom:0;">WooCommerce pamati</h1>
+    </div>
+    <p class="doc-lead">WooCommerce ir spraudnis, kas pārvērš WordPress par e-komercijas platformu - tas NAV WordPress kodola daļa, tāpēc viss zemāk strādā tikai tad, ja spraudnis ir instalēts un aktivizēts. Šī lapa sedz praktiskos pamatus (produkti, hooks, grozs, pasūtījumi, pielāgošana) - pilnu API skaties <a href="https://developer.woocommerce.com/" target="_blank" rel="noopener">oficiālajā WooCommerce izstrādātāju dokumentācijā</a>.</p>
+
+    <section class="doc-section" id="wc-overview">
+      <h2>Pārskats</h2>
+      <p>WooCommerce reģistrē savu pielāgoto ieraksta tipu (Custom Post Type) <code>product</code> - tāpēc produkti pamatā ir WordPress ieraksti ar papildu datiem (cena, krājums, attēli) un savu <code>WC_Product</code> objektu klasi virs tiem. Tas nozīmē - viss, ko jau zini par <a href="wordpress.html#cpt">Custom Post Types</a> un <a href="wordpress.html#wp-query">WP_Query</a>, attiecas arī uz produktiem, plus WooCommerce pievieno savu papildu hooks sistēmu virs WordPress standarta <code>add_action</code>/<code>add_filter</code>.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>product</h4><p>CPT, ar ko glabā katru produktu - pamatā tas pats, kas parasts ieraksts, plus WooCommerce papildu meta lauki (cena, SKU, krājums).</p></div>
+        <div class="doc-mini-card"><h4>WC_Product</h4><p>PHP klase, kas apvieno visus produkta datus vienā objektā ar ērtām metodēm (<code>get_price()</code>, <code>get_name()</code>) - nevis jāvelk katrs meta lauks atsevišķi.</p></div>
+        <div class="doc-mini-card"><h4>WC()</h4><p>Globāla funkcija, kas atgriež galveno WooCommerce objektu - caur to piekļūst grozam (<code>WC()->cart</code>), sesijai un citām aktīvās apmeklējuma daļām.</p></div>
+      </div>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Vietējai izstrādei WooCommerce hooks/funkcijas var izsaukt tikai, kad spraudnis ir aktīvs - der pārbaudīt ar <code>if (class_exists('WooCommerce'))</code>, ja kods jāizmanto arī vietnēs bez WooCommerce.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="wc-produkti">
+      <h2>Produktu iegūšana</h2>
+      <p>Vienam produktam - <code>wc_get_product()</code>, vairākiem (sarakstam/arhīvam) - parasts <code>WP_Query</code> ar <code>post_type =&gt; 'product'</code>.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Viens konkrēts produkts pēc ID</span>
+<span class="tok-fn">$produkts</span> = <span class="tok-kw">wc_get_product</span>( 123 );
+
+<span class="tok-kw">if</span> ( <span class="tok-fn">$produkts</span> ) {
+    <span class="tok-kw">echo</span> <span class="tok-fn">$produkts</span>-&gt;<span class="tok-kw">get_name</span>();
+    <span class="tok-kw">echo</span> <span class="tok-fn">$produkts</span>-&gt;<span class="tok-kw">get_price_html</span>(); <span class="tok-com">// formatēta cena ar valūtu</span>
+}
+
+<span class="tok-com">// Saraksts - 12 jaunākie publicētie produkti</span>
+<span class="tok-fn">$vaicajums</span> = <span class="tok-kw">new</span> <span class="tok-kw">WP_Query</span>([
+    <span class="tok-str">'post_type'</span>      =&gt; <span class="tok-str">'product'</span>,
+    <span class="tok-str">'posts_per_page'</span> =&gt; 12,
+]);
+
+<span class="tok-kw">while</span> ( <span class="tok-fn">$vaicajums</span>-&gt;<span class="tok-kw">have_posts</span>() ) : <span class="tok-fn">$vaicajums</span>-&gt;<span class="tok-kw">the_post</span>();
+    <span class="tok-fn">$p</span> = <span class="tok-kw">wc_get_product</span>( <span class="tok-kw">get_the_ID</span>() );
+    <span class="tok-kw">echo</span> <span class="tok-fn">$p</span>-&gt;<span class="tok-kw">get_name</span>();
+<span class="tok-kw">endwhile</span>;
+<span class="tok-kw">wp_reset_postdata</span>();</code></pre>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>get_price() vs get_price_html()</h4><p><code>get_price()</code> atgriež jēlu skaitli (der aprēķiniem), <code>get_price_html()</code> atgriež gatavu, formatētu HTML ar valūtas simbolu un, ja piemērojams, arī atsvītrotu vecu cenu (izpārdošanai).</p></div>
+        <div class="doc-mini-card"><h4>get_stock_quantity() / is_in_stock()</h4><p>Krājuma daudzums un vienkāršs true/false, vai produkts pašlaik pērkams.</p></div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="wc-hooks">
+      <h2>Galvenie hooks</h2>
+      <p>WooCommerce veidnes ir pilnas ar saviem <code>do_action()</code> izsaukumiem - tie ļauj pievienot/noņemt saturu produktu un norēķinu lapās, negrozot pašus veidņu failus.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Parāda pielāgotu tekstu virs produkta pievienot-grozam pogas</span>
+<span class="tok-kw">add_action</span>( <span class="tok-str">'woocommerce_before_add_to_cart_button'</span>, <span class="tok-kw">function</span> () {
+    <span class="tok-kw">echo</span> <span class="tok-str">'&lt;p&gt;Bezmaksas piegāde pasūtījumiem virs 50€&lt;/p&gt;'</span>;
+});
+
+<span class="tok-com">// Izpilda kodu, kad pasūtījuma statuss mainās (piem., apmaksāts)</span>
+<span class="tok-kw">add_action</span>( <span class="tok-str">'woocommerce_order_status_changed'</span>, <span class="tok-kw">function</span> ( <span class="tok-fn">$order_id</span>, <span class="tok-fn">$vecais</span>, <span class="tok-fn">$jaunais</span> ) {
+    <span class="tok-kw">if</span> ( <span class="tok-str">'completed'</span> === <span class="tok-fn">$jaunais</span> ) {
+        <span class="tok-com">// piem., piešķir piekļuvi digitālam produktam</span>
+    }
+}, 10, 3 );
+
+<span class="tok-com">// Izpilda kodu "paldies" lapā uzreiz pēc veiksmīga pasūtījuma</span>
+<span class="tok-kw">add_action</span>( <span class="tok-str">'woocommerce_thankyou'</span>, <span class="tok-kw">function</span> ( <span class="tok-fn">$order_id</span> ) {
+    <span class="tok-com">// piem., nosūta papildu paziņojumu</span>
+});</code></pre>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>woocommerce_before/after_single_product_summary</h4><p>Ietver visu produkta lapas labo pusi (nosaukums, cena, poga) - der, lai pievienotu saturu tieši pirms/pēc tā.</p></div>
+        <div class="doc-mini-card"><h4>woocommerce_before_shop_loop_item</h4><p>Izsaukts pirms katra produkta kartītes veikala/kategorijas sarakstā - der iezīmēm ("Jauns", "Izpārdošana") virs attēla.</p></div>
+        <div class="doc-mini-card"><h4>woocommerce_order_status_changed</h4><p>Trīs argumenti: pasūtījuma ID, vecais statuss, jaunais statuss. Biežākie statusi: <code>pending</code>, <code>processing</code>, <code>completed</code>, <code>cancelled</code>, <code>refunded</code>.</p></div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="wc-grozs">
+      <h2>Grozs (Cart)</h2>
+      <p>Aktīvā apmeklētāja grozs ir pieejams caur <code>WC()->cart</code> jebkurā vietā, kur WooCommerce ir ielādēts.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Cik produktu grozā kopā</span>
+<span class="tok-fn">$skaits</span> = <span class="tok-kw">WC</span>()-&gt;<span class="tok-fn">cart</span>-&gt;<span class="tok-kw">get_cart_contents_count</span>();
+
+<span class="tok-com">// Groza kopsumma (ar formatējumu)</span>
+<span class="tok-kw">echo</span> <span class="tok-kw">WC</span>()-&gt;<span class="tok-fn">cart</span>-&gt;<span class="tok-kw">get_cart_total</span>();
+
+<span class="tok-com">// Iziet cauri katrai groza rindai</span>
+<span class="tok-kw">foreach</span> ( <span class="tok-kw">WC</span>()-&gt;<span class="tok-fn">cart</span>-&gt;<span class="tok-kw">get_cart</span>() <span class="tok-kw">as</span> <span class="tok-fn">$rinda</span> ) {
+    <span class="tok-fn">$produkts</span> = <span class="tok-fn">$rinda</span>[<span class="tok-str">'data'</span>]; <span class="tok-com">// WC_Product objekts</span>
+    <span class="tok-fn">$daudzums</span> = <span class="tok-fn">$rinda</span>[<span class="tok-str">'quantity'</span>];
+}</code></pre>
+    </section>
+
+    <section class="doc-section" id="wc-pasutijumi">
+      <h2>Pasūtījumi (Orders)</h2>
+      <p>Pasūtījums arī ir pielāgots ieraksta tips (<code>shop_order</code>) ar savu <code>WC_Order</code> objektu - iegūst ar <code>wc_get_order()</code>.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">$pasutijums</span> = <span class="tok-kw">wc_get_order</span>( <span class="tok-fn">$order_id</span> );
+
+<span class="tok-kw">echo</span> <span class="tok-fn">$pasutijums</span>-&gt;<span class="tok-kw">get_total</span>();          <span class="tok-com">// kopsumma</span>
+<span class="tok-kw">echo</span> <span class="tok-fn">$pasutijums</span>-&gt;<span class="tok-kw">get_status</span>();         <span class="tok-com">// piem., "processing"</span>
+<span class="tok-kw">echo</span> <span class="tok-fn">$pasutijums</span>-&gt;<span class="tok-kw">get_billing_email</span>();
+
+<span class="tok-com">// Katra pasūtītā produkta rinda</span>
+<span class="tok-kw">foreach</span> ( <span class="tok-fn">$pasutijums</span>-&gt;<span class="tok-kw">get_items</span>() <span class="tok-kw">as</span> <span class="tok-fn">$vieniba</span> ) {
+    <span class="tok-kw">echo</span> <span class="tok-fn">$vieniba</span>-&gt;<span class="tok-kw">get_name</span>();
+    <span class="tok-kw">echo</span> <span class="tok-fn">$vieniba</span>-&gt;<span class="tok-kw">get_quantity</span>();
+}</code></pre>
+    </section>
+
+    <section class="doc-section" id="wc-custom-fields">
+      <h2>Pielāgoti produktu lauki</h2>
+      <p>Lai admin panelī produkta rediģēšanas lapā (cilnē "General") pievienotu savu lauku un saglabātu to - divi hooks kopā: viens izvada HTML lauku, otrs to saglabā.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 1. Izvada jaunu lauku "Ražotāja kods" produkta datu cilnē</span>
+<span class="tok-kw">add_action</span>( <span class="tok-str">'woocommerce_product_options_general_product_data'</span>, <span class="tok-kw">function</span> () {
+    <span class="tok-kw">woocommerce_wp_text_input</span>([
+        <span class="tok-str">'id'</span>          =&gt; <span class="tok-str">'razotaja_kods'</span>,
+        <span class="tok-str">'label'</span>       =&gt; <span class="tok-str">'Ražotāja kods'</span>,
+        <span class="tok-str">'desc_tip'</span>    =&gt; <span class="tok-kw">true</span>,
+        <span class="tok-str">'description'</span> =&gt; <span class="tok-str">'Iekšējais ražotāja identifikators.'</span>,
+    ]);
+});
+
+<span class="tok-com">// 2. Saglabā ievadīto vērtību, kad produktu saglabā</span>
+<span class="tok-kw">add_action</span>( <span class="tok-str">'woocommerce_process_product_meta'</span>, <span class="tok-kw">function</span> ( <span class="tok-fn">$product_id</span> ) {
+    <span class="tok-kw">if</span> ( <span class="tok-kw">isset</span>( <span class="tok-fn">$_POST</span>[<span class="tok-str">'razotaja_kods'</span>] ) ) {
+        <span class="tok-kw">update_post_meta</span>(
+            <span class="tok-fn">$product_id</span>,
+            <span class="tok-str">'razotaja_kods'</span>,
+            <span class="tok-kw">sanitize_text_field</span>( <span class="tok-fn">$_POST</span>[<span class="tok-str">'razotaja_kods'</span>] )
+        );
+    }
+});</code></pre>
+      <p>Nolasīšana pēc tam - parasts <code>get_post_meta()</code>, tāpat kā jebkuram citam pielāgotam laukam (skat. <a href="wordpress.html#custom-fields">Pielāgoti lauki</a>):</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">$kods</span> = <span class="tok-kw">get_post_meta</span>( <span class="tok-fn">$product_id</span>, <span class="tok-str">'razotaja_kods'</span>, <span class="tok-kw">true</span> );</code></pre>
+    </section>
+
+    <section class="doc-section" id="wc-common">
+      <h2>Biežas pielāgošanas</h2>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Maina "Pievienot grozam" pogas tekstu produkta lapā</span>
+<span class="tok-kw">add_filter</span>( <span class="tok-str">'woocommerce_product_single_add_to_cart_text'</span>, <span class="tok-kw">function</span> () {
+    <span class="tok-kw">return</span> <span class="tok-str">'Pasūtīt tagad'</span>;
+});
+
+<span class="tok-com">// Noņem cilni "Papildu informācija" no visiem produktiem</span>
+<span class="tok-kw">add_filter</span>( <span class="tok-str">'woocommerce_product_tabs'</span>, <span class="tok-kw">function</span> ( <span class="tok-fn">$cilnes</span> ) {
+    <span class="tok-kw">unset</span>( <span class="tok-fn">$cilnes</span>[<span class="tok-str">'additional_information'</span>] );
+    <span class="tok-kw">return</span> <span class="tok-fn">$cilnes</span>;
+});
+
+<span class="tok-com">// Pievieno pielāgotu tekstu aiz katras cenas</span>
+<span class="tok-kw">add_filter</span>( <span class="tok-str">'woocommerce_get_price_html'</span>, <span class="tok-kw">function</span> ( <span class="tok-fn">$cena_html</span> ) {
+    <span class="tok-kw">return</span> <span class="tok-fn">$cena_html</span> . <span class="tok-str">' &lt;small&gt;ar PVN&lt;/small&gt;'</span>;
+});</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>woocommerce_get_price_html</code> filtrs izpildās katrai produkta kartītei sarakstos (ne tikai produkta lapā) - ja pievieno kaut ko smagu (piem., datubāzes vaicājumu), tas atkārtosies katram produktam sarakstā un var palēnināt lapu.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="wc-templates">
+      <h2>Veidņu pārrakstīšana</h2>
+      <p>WooCommerce izvada HTML no saviem veidņu failiem (<code>wp-content/plugins/woocommerce/templates/</code>). Lai pielāgotu izkārtojumu bez spraudņa failu rediģēšanas (kas pazustu pie nākamā atjauninājuma) - nokopē konkrēto failu uz tēmas <code>woocommerce/</code> mapi, saglabājot to pašu ceļu struktūru. WooCommerce vispirms meklē failu tēmā un tikai tad krīt atpakaļ uz spraudņa oriģinālu.</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Piemērs - pārraksta vienas preces lapas veidni</span>
+<span class="tok-com"># No:</span>
+wp-content/plugins/woocommerce/templates/single-product.php
+<span class="tok-com"># Uz:</span>
+wp-content/themes/tava-tema/woocommerce/single-product.php</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Pēc katra WooCommerce atjauninājuma admin panelī (Statuss → Sistēmas statuss) parādās brīdinājums, ja pārrakstītā veidne ir "novecojusi" salīdzinājumā ar jauno spraudņa versiju - der pārbaudīt, vai jaunajā oriģinālā nav svarīgu izmaiņu, ko manuāli pārnest uz savu kopiju.</p>
+      </div>
+    </section>
+
+    <div class="doc-pager">
+      <a href="wordpress.html"><span class="lbl">← Atpakaļ</span>Pilnā WordPress dokumentācija</a>
+      <a class="to-next" href="../index.html"><span class="lbl">Atpakaļ →</span>Visas kategorijas</a>
+    </div>
+  </main>
+</div>
+
+<script src="../js/theme.js?v=44"></script>
+<script src="../js/main.js?v=44"></script>
+</body>
+</html>
