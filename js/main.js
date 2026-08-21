@@ -29,9 +29,13 @@ document.addEventListener("DOMContentLoaded", function () {
     "pages/web-izveide.html", "pages/web-problemas.html",
     "pages/wordpress-problemas.html", "pages/wordpress-snippets.html",
     "pages/wordpress.html", "pages/python-riki.html", "pages/riki.html",
-    "pages/woocommerce.html"
+    "pages/woocommerce.html",
+    "pages/cheatsheet-api.html", "pages/cheatsheet-git.html",
+    "pages/cheatsheet-javascript.html", "pages/cheatsheet-php.html",
+    "pages/cheatsheet-ssh.html", "pages/cheatsheet-web.html",
+    "pages/cheatsheet-wordpress.html"
   ];
-  var SEARCH_INDEX_VERSION = "45"; // bump together with the ?v= cache-bust number
+  var SEARCH_INDEX_VERSION = "46"; // bump together with the ?v= cache-bust number
   var searchIndex = null;
   var searchIndexPromise = null;
 
@@ -72,6 +76,36 @@ document.addEventListener("DOMContentLoaded", function () {
                 id: sec.id,
                 title: h2.textContent.trim(),
                 snippet: p ? p.textContent.trim().slice(0, 140) : ""
+              });
+            });
+            // cheatsheet pages use their own structure (.cheat-section with
+            // either .cheat-card grids or .cheat-table rows) instead of
+            // .doc-section, so index those separately at the finer, per-card
+            // / per-row granularity - a search for one specific function name
+            // should find its own card, not just the whole section title.
+            doc.querySelectorAll(".cheat-section[id]").forEach(function (sec) {
+              sec.querySelectorAll(".cheat-card").forEach(function (card) {
+                var h4 = card.querySelector("h4");
+                if (!h4) return;
+                var p = card.querySelector("p");
+                entries.push({
+                  page: path,
+                  pageTitle: pageTitle,
+                  id: sec.id,
+                  title: h4.textContent.trim(),
+                  snippet: p ? p.textContent.trim().slice(0, 140) : ""
+                });
+              });
+              sec.querySelectorAll(".cheat-table tr").forEach(function (row) {
+                var cells = row.querySelectorAll("td");
+                if (cells.length < 2) return;
+                entries.push({
+                  page: path,
+                  pageTitle: pageTitle,
+                  id: sec.id,
+                  title: cells[0].textContent.trim(),
+                  snippet: cells[1].textContent.trim().slice(0, 140)
+                });
               });
             });
             return entries;
