@@ -10,7 +10,7 @@
 <link rel="manifest" href="../manifest.json" />
 <meta name="theme-color" content="#9d5cff" />
 <title>WordPress Cheatsheet - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=44" />
+<link rel="stylesheet" href="../css/style.css?v=45" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -78,7 +78,6 @@
     <a href="#ct-data-api">Options &amp; HTTP API</a>
     <a href="#ct-i18n">i18n &amp; Gutenberg</a>
     <a href="#ct-misc">Citas noderīgas</a>
-    <a href="#ct-wpcli">WP-CLI komandas</a>
   </nav>
 
   <section class="cheat-section" id="ct-tags">
@@ -316,39 +315,13 @@ delete_option('versija');</code></pre></div>
     </div>
   </section>
 
-  <section class="cheat-section" id="ct-wpcli">
-    <h2>WP-CLI komandas</h2>
-    <p class="cheat-sub">Oficiālais WordPress komandrindas rīks - pārvalda spraudņus, tēmas, lietotājus un datubāzi bez admin paneļa. Uzstādīšanu skaties <a href="wordpress-problemas.html#wp-cli-uzstadisana">"WP-CLI uzstādīšana"</a> problēmu risinājumu lapā. Visas komandas jāizpilda tajā pašā mapē, kur atrodas <code>wp-config.php</code>.</p>
-
-    <div class="cheat-grid">
-      <div class="cheat-card"><h4>wp core version</h4><p>Parāda instalēto WordPress versiju - ātrs veids pārbaudīt, bez admin paneļa atvēršanas.</p><pre><code>wp core version</code></pre></div>
-      <div class="cheat-card"><h4>wp core update</h4><p>Atjaunina WordPress kodolu uz jaunāko versiju tieši no komandrindas.</p><pre><code>wp core update</code></pre></div>
-      <div class="cheat-card"><h4>wp plugin list</h4><p>Uzskaita visus instalētos spraudņus ar statusu (aktīvs/neaktīvs) un pieejamiem atjauninājumiem.</p><pre><code>wp plugin list</code></pre></div>
-      <div class="cheat-card"><h4>wp plugin install</h4><p>Instalē spraudni no WordPress.org repozitorija pēc tā slug un uzreiz aktivizē.</p><pre><code>wp plugin install wordfence --activate</code></pre></div>
-      <div class="cheat-card"><h4>wp plugin update --all</h4><p>Atjaunina VISUS instalētos spraudņus uzreiz - der pirms tam izveidot dublējumu.</p><pre><code>wp plugin update --all</code></pre></div>
-      <div class="cheat-card"><h4>wp plugin deactivate</h4><p>Izslēdz konkrētu spraudni, neizdzēšot tā failus - noder problēmu diagnostikai.</p><pre><code>wp plugin deactivate wordfence</code></pre></div>
-      <div class="cheat-card"><h4>wp theme list / activate</h4><p>Uzskaita instalētās tēmas vai pārslēdz aktīvo tēmu pēc tās slug.</p><pre><code>wp theme activate twentytwentyfour</code></pre></div>
-      <div class="cheat-card"><h4>wp db export</h4><p>Izveido pilnu datubāzes dublējumu kā .sql failu - pirmais solis pirms jebkuras riskantas izmaiņas.</p><pre><code>wp db export dublejums.sql</code></pre></div>
-      <div class="cheat-card"><h4>wp db search-replace</h4><p>Aizvieto tekstu visā datubāzē (piem., mainot domēnu pēc pārcelšanas uz citu serveri) - pareizi apstrādā WordPress serializētos datus, ko parasts MySQL <code>UPDATE</code> sabojātu. Vienmēr vispirms ar <code>--dry-run</code>, lai redzētu, kas mainīsies, nemainot neko.</p><pre><code>wp search-replace 'vecaislapa.lv' 'jaunalapa.lv' --dry-run
-wp search-replace 'vecaislapa.lv' 'jaunalapa.lv'</code></pre></div>
-      <div class="cheat-card"><h4>wp user list / create</h4><p>Uzskaita lietotājus vai izveido jaunu tieši no komandrindas - noder, ja admin panelis nav pieejams.</p><pre><code>wp user create janis janis@piemers.lv --role=administrator</code></pre></div>
-      <div class="cheat-card"><h4>wp user update</h4><p>Maina esoša lietotāja datus, visbiežāk paroli - der, ja aizmirsta parole un e-pasts neatnāk.</p><pre><code>wp user update janis --user_pass="JaunaParole123!"</code></pre></div>
-      <div class="cheat-card"><h4>wp post generate</h4><p>Ģenerē norādīto skaitu testa ierakstu ar aizpildītu tekstu - noder izstrādes/testa vidē, lai pārbaudītu, kā tēma izskatās ar reālu satura apjomu.</p><pre><code>wp post generate --count=20</code></pre></div>
-      <div class="cheat-card"><h4>wp cache flush</h4><p>Iztukšo objektu kešatmiņu (ja izmantots Redis/Memcached) - der pēc izmaiņām, kas ceš neatspoguļojas uzreiz.</p><pre><code>wp cache flush</code></pre></div>
-      <div class="cheat-card"><h4>wp cron event list / run</h4><p>Parāda ieplānotos cron uzdevumus vai piespiedu kārtā izpilda tos uzreiz, neguldot uz nākamo apmeklētāju (skat. <a href="wordpress.html#cron">Cron uzdevumi</a>).</p><pre><code>wp cron event run --all</code></pre></div>
-      <div class="cheat-card"><h4>wp config get / set</h4><p>Nolasa vai maina konstanti <code>wp-config.php</code> failā bez faila manuālas rediģēšanas.</p><pre><code>wp config set WP_DEBUG true --raw</code></pre></div>
-      <div class="cheat-card"><h4>wp maintenance-mode</h4><p>Ieslēdz/izslēdz apkopes režīmu - apmeklētāji redz pagaidu ziņojumu, kamēr veic riskantas izmaiņas.</p><pre><code>wp maintenance-mode activate
-wp maintenance-mode deactivate</code></pre></div>
-    </div>
-  </section>
-
   <div class="doc-pager">
     <a href="wordpress.html"><span class="lbl">← Atpakaļ</span>Pilnā WordPress dokumentācija</a>
     <a class="to-next" href="../index.html"><span class="lbl">Atpakaļ →</span>Visas kategorijas</a>
   </div>
 </main>
 
-<script src="../js/theme.js?v=44"></script>
-<script src="../js/main.js?v=44"></script>
+<script src="../js/theme.js?v=45"></script>
+<script src="../js/main.js?v=45"></script>
 </body>
 </html>
