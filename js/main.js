@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "pages/cheatsheet-ssh.html", "pages/cheatsheet-web.html",
     "pages/cheatsheet-wordpress.html"
   ];
-  var SEARCH_INDEX_VERSION = "48"; // bump together with the ?v= cache-bust number
+  var SEARCH_INDEX_VERSION = "49"; // bump together with the ?v= cache-bust number
   var searchIndex = null;
   var searchIndexPromise = null;
 
