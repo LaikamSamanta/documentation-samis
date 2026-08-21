@@ -10,7 +10,7 @@
 <link rel="manifest" href="../manifest.json" />
 <meta name="theme-color" content="#9d5cff" />
 <title>PHP Cheatsheet - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=49" />
+<link rel="stylesheet" href="../css/style.css?v=50" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -172,6 +172,16 @@ sort($arr); rsort($arr);</code></pre></div>
 array_values($arr);</code></pre></div>
       <div class="cheat-card"><h4>array_slice()</h4><p>Izgriež masīva daļu pēc sākuma pozīcijas un garuma, neko nemainot oriģinālajā masīvā.</p><pre><code>array_slice($arr, 1, 2);</code></pre></div>
       <div class="cheat-card"><h4>Asociatīvais masīvs</h4><p>Masīvs ar teksta atslēgām (nevis secīgiem skaitļiem) - pieejai pie vērtībām izmanto atslēgas nosaukumu, nevis indeksu.</p><pre><code>$a = ['vards' =&gt; 'Anna', 'vecums' =&gt; 30];</code></pre></div>
+      <div class="cheat-card"><h4>array_push/pop/shift/unshift</h4><p>push/pop pievieno vai noņem BEIGĀS (kā "steks"); unshift/shift dara to pašu SĀKUMĀ (kā "rinda").</p><pre><code>array_push($a, 'x'); array_pop($a);
+array_unshift($a, 'x'); array_shift($a);</code></pre></div>
+      <div class="cheat-card"><h4>array_key_exists()</h4><p>Atšķirībā no isset(), atgriež true arī tad, ja atslēgas vērtība ir null - pārbauda ATSLĒGAS esamību, ne vērtību.</p><pre><code>array_key_exists('vecums', $dati);</code></pre></div>
+      <div class="cheat-card"><h4>array_column()</h4><p>Izvelk vienu kolonnu no daudzdimensiju masīva (piem., PDO fetchAll() rezultāta) - trešais parametrs pārkārto pēc atslēgas.</p><pre><code>array_column($rows, 'vards', 'id');</code></pre></div>
+      <div class="cheat-card"><h4>array_unique()</h4><p>Atgriež masīvu bez dublējošamies vērtībām - atslēgas paliek oriģinālās, tāpēc bieži seko array_values().</p><pre><code>array_values(array_unique($arr));</code></pre></div>
+      <div class="cheat-card"><h4>array_diff() / array_intersect()</h4><p>diff() atgriež elementus, kas ir PIRMAJĀ, bet nav OTRAJĀ masīvā; intersect() - kas ir ABOS.</p><pre><code>array_diff($a, $b);
+array_intersect($a, $b);</code></pre></div>
+      <div class="cheat-card"><h4>usort()</h4><p>Kārto masīvu pēc pašrocīgi definēta salīdzinājuma - callback atgriež negatīvu/0/pozitīvu skaitli (der spaceship &lt;=&gt;).</p><pre><code>usort($arr, fn($a,$b) =&gt; $a['cena'] &lt;=&gt; $b['cena']);</code></pre></div>
+      <div class="cheat-card"><h4>array_sum() / range()</h4><p>sum() summē visas skaitliskās vērtības; range() ģenerē masīvu ar secīgām vērtībām starp diviem punktiem.</p><pre><code>array_sum([1,2,3]); // 6
+range(1, 5); // [1,2,3,4,5]</code></pre></div>
     </div>
   </section>
 
@@ -189,6 +199,13 @@ strtolower($s);</code></pre></div>
       <div class="cheat-card"><h4>sprintf()</h4><p>Formatē tekstu, ievietojot mainīgos noteiktā formātā (piem., decimālskaitļus ar fiksētu ciparu skaitu aiz komata).</p><pre><code>sprintf("Cena: %.2f EUR", 9.5);</code></pre></div>
       <div class="cheat-card"><h4>str_contains/starts/ends</h4><p>Pārbauda, vai teksts satur/sākas/beidzas ar norādīto apakštekstu - atgriež true/false (PHP 8+).</p><pre><code>str_contains($s, "abc");
 str_starts_with($s, "a");</code></pre></div>
+      <div class="cheat-card"><h4>strpos() / stripos()</h4><p>Atrod apakšteksta POZĪCIJU tekstā (skaitlis) vai false, ja neatrasts - stripos() ir tas pats, bet neievēro reģistru.</p><pre><code>strpos("Sveiki", "eik"); // 2
+strpos("Sveiki", "x");   // false</code></pre></div>
+      <div class="cheat-card"><h4>ucfirst() / ucwords()</h4><p>ucfirst() padara lielu tikai PIRMO burtu; ucwords() - katra VĀRDA pirmo burtu.</p><pre><code>ucfirst('labrīt'); // "Labrīt"
+ucwords('labrīt visiem'); // "Labrīt Visiem"</code></pre></div>
+      <div class="cheat-card"><h4>str_pad() / str_repeat()</h4><p>pad() papildina tekstu līdz norādītam garumam ar simbolu; repeat() atkārto tekstu N reizes.</p><pre><code>str_pad('7', 3, '0', STR_PAD_LEFT); // "007"
+str_repeat('-', 10);</code></pre></div>
+      <div class="cheat-card"><h4>number_format()</h4><p>Formatē skaitli ar tūkstošu atdalītājiem un fiksētu decimālo ciparu skaitu - noder cenu/summu izvadei.</p><pre><code>number_format(1234567.891, 2); // "1,234,567.89"</code></pre></div>
     </div>
   </section>
 
@@ -214,6 +231,15 @@ C::$skaits++;</code></pre></div>
   abstract public function laukums(): float;
 }</code></pre></div>
       <div class="cheat-card"><h4>Redzamība</h4><p>Kontrolē, no kurienes drīkst piekļūt īpašībai/metodei - public (visur), protected (klase + mantotāji), private (tikai šī klase).</p><pre><code>public, protected, private</code></pre></div>
+      <div class="cheat-card"><h4>self:: / static:: / parent::</h4><p>self:: - vienmēr rakstītā klase; static:: - faktiskā (bērn)klase, no kuras izsaukts (late static binding); parent:: - tieši vecākklases versija.</p><pre><code>parent::__construct($vards);
+static::skana(); // bērnklases versija, ja pārrakstīta</code></pre></div>
+      <div class="cheat-card"><h4>__toString()</h4><p>Maģiskā metode - bez tās echo $objekts izmestu kļūdu; ar to objektu var izmantot tieši, kur sagaida tekstu.</p><pre><code>public function __toString(): string {
+  return $this-&gt;nosaukums;
+}</code></pre></div>
+      <div class="cheat-card"><h4>__get() / __set()</h4><p>Izsauktas, kad piekļūst/iestata NEEKSISTĒJOŠU vai privātu īpašību - ļauj klasei "izlikties", ka tai ir jebkāda īpašība.</p><pre><code>public function __get($v) { return $this-&gt;dati[$v] ?? null; }</code></pre></div>
+      <div class="cheat-card"><h4>__call()</h4><p>Noķer izsaukumus uz neeksistējošām metodēm - izmanto framework/bibliotēku "burvju" API (piem., query builderi).</p><pre><code>public function __call($metode, $args) { ... }</code></pre></div>
+      <div class="cheat-card"><h4>__destruct()</h4><p>Izsaukta automātiski, kad objekts tiek iznīcināts (skripta beigās vai ar unset()) - noder resursu (failu, savienojumu) slēgšanai.</p><pre><code>public function __destruct() { echo "Iznīcināts"; }</code></pre></div>
+      <div class="cheat-card"><h4>::class</h4><p>Atgriež klases pilno nosaukumu kā tekstu - drošāk nekā rakstīt to burtiski, jo IDE seko līdzi pārsaukšanai/refaktoringam.</p><pre><code>Lietotajs::class; // "Lietotajs"</code></pre></div>
     </div>
   </section>
 
@@ -227,6 +253,7 @@ C::$skaits++;</code></pre></div>
 } finally {}</code></pre></div>
       <div class="cheat-card"><h4>throw</h4><p>Apzināti izmet izņēmumu - apstādina tālāko koda izpildi, ja vien to neaptver try/catch augstāk izsaukumu ķēdē.</p><pre><code>throw new InvalidArgumentException("kļūda");</code></pre></div>
       <div class="cheat-card"><h4>Custom exception</h4><p>Sava izņēmumu klase, kas manto no Exception - ļauj catch blokā atšķirt savas kļūdas no citām, pēc to tipa.</p><pre><code>class ManaKluda extends Exception {}</code></pre></div>
+      <div class="cheat-card"><h4>catch (Throwable)</h4><p>Noķer GAN Exception, GAN Error (piem. DivisionByZeroError, TypeError) - parasts catch (Exception) fatālas PHP kļūdas nenoķer.</p><pre><code>catch (\Throwable $e) { ... }</code></pre></div>
     </div>
   </section>
 
@@ -257,6 +284,10 @@ include 'header.php';</code></pre></div>
 file_put_contents('fails.txt', $s);</code></pre></div>
       <div class="cheat-card"><h4>file_exists()</h4><p>Pārbauda, vai fails vai mape eksistē pirms mēģini to lasīt/rakstīt - izvairās no kļūdas, ja ceļš nepareizs.</p><pre><code>if (file_exists('fails.txt')) {}</code></pre></div>
       <div class="cheat-card"><h4>__DIR__ / __FILE__</h4><p>__DIR__ ir pašreizējā faila mapes ceļš, __FILE__ - paša faila pilnais ceļš - droši lietot include ceļos neatkarīgi no tā, no kurienes skripts izsaukts.</p><pre><code>require __DIR__ . '/config.php';</code></pre></div>
+      <div class="cheat-card"><h4>is_dir() / mkdir()</h4><p>is_dir() pārbauda, vai mape eksistē; mkdir() izveido jaunu - bieži lieto kopā, lai neizmestu kļūdu, mēģinot izveidot jau esošu mapi.</p><pre><code>if (!is_dir($m)) mkdir($m);</code></pre></div>
+      <div class="cheat-card"><h4>unlink()</h4><p>Izdzēš failu (nevis mapi - mapēm lieto rmdir()) - neatgriezeniski, tāpēc der pārbaudīt file_exists() vispirms.</p><pre><code>unlink('vecs-fails.txt');</code></pre></div>
+      <div class="cheat-card"><h4>basename() / dirname()</h4><p>basename() izvelk faila NOSAUKUMU no pilna ceļa; dirname() - tikai MAPES daļu (bez faila nosaukuma).</p><pre><code>basename('/mape/fails.txt'); // "fails.txt"
+dirname('/mape/fails.txt');  // "/mape"</code></pre></div>
     </div>
   </section>
 
@@ -267,6 +298,7 @@ file_put_contents('fails.txt', $s);</code></pre></div>
       <div class="cheat-card"><h4>DateTime</h4><p>Objektorientēts veids darbam ar datumiem - modify() ļauj ērti pieskaitīt/atņemt laika periodus.</p><pre><code>$d = new DateTime('2026-07-25');
 $d-&gt;modify('+1 day');</code></pre></div>
       <div class="cheat-card"><h4>strtotime()</h4><p>Pārvērš cilvēkam saprotamu teksta izteiksmi ("+1 week", "next monday") par Unix laika zīmogu (skaitli).</p><pre><code>strtotime('+1 week');</code></pre></div>
+      <div class="cheat-card"><h4>DateTime::diff()</h4><p>Aprēķina starpību starp diviem datumiem, atgriežot DateInterval objektu ar y/m/d (gadi/mēneši/dienas) un days (kopā dienas).</p><pre><code>$d1-&gt;diff($d2)-&gt;days;</code></pre></div>
     </div>
   </section>
 
@@ -276,6 +308,8 @@ $d-&gt;modify('+1 day');</code></pre></div>
       <div class="cheat-card"><h4>preg_match()</h4><p>Pārbauda, vai teksts atbilst regulārai izteiksmei, un ieraksta atrasto sakritību mainīgajā ($m) - atgriež 1 (atrasts) vai 0.</p><pre><code>preg_match('/^[a-z]+$/', $s, $m);</code></pre></div>
       <div class="cheat-card"><h4>preg_replace()</h4><p>Aizvieto visas regulārajai izteiksmei atbilstošās vietas tekstā ar norādīto aizvietotāju.</p><pre><code>preg_replace('/\d+/', '#', $s);</code></pre></div>
       <div class="cheat-card"><h4>preg_match_all()</h4><p>Tas pats, kas preg_match(), bet atrod VISAS sakritības tekstā, nevis tikai pirmo, un saglabā tās masīvā.</p><pre><code>preg_match_all('/\d+/', $s, $m);</code></pre></div>
+      <div class="cheat-card"><h4>preg_split()</h4><p>Sadala tekstu masīvā pēc regulāras izteiksmes - noder, kad parasts explode() ar fiksētu atdalītāju nepietiek.</p><pre><code>preg_split('/[\s,]+/', 'a, b  c');</code></pre></div>
+      <div class="cheat-card"><h4>preg_quote()</h4><p>"Escapo" regex speciālos simbolus (piem. . * + ?) lietotāja ievadītā tekstā - vajadzīgs, ja meklē burtisku tekstu, kas var saturēt šos simbolus.</p><pre><code>preg_quote('cena: 5€?'); // "cena\: 5€\?"</code></pre></div>
     </div>
   </section>
 
@@ -316,6 +350,11 @@ $id = $pdo-&gt;lastInsertId();</code></pre></div>
 json_decode($json, true);</code></pre></div>
       <div class="cheat-card"><h4>htmlspecialchars()</h4><p>Pārvērš speciālos HTML simbolus (&lt;, &gt;, &amp;) par to drošajiem ekvivalentiem - obligāti pirms lietotāja ievadītu tekstu izvadīt lapā, lai novērstu XSS.</p><pre><code>echo htmlspecialchars($lietotaja_teksts);</code></pre></div>
       <div class="cheat-card"><h4>null safe operator</h4><p>?-&gt; droši piekļūst iegultai objekta īpašībai - ja jebkura daļa ceļā ir null, visa izteiksme atgriež null, nevis met kļūdu (PHP 8+).</p><pre><code>$pilseta = $lietotajs?-&gt;adrese?-&gt;pilseta;</code></pre></div>
+      <div class="cheat-card"><h4>filter_var()</h4><p>Pārbauda, vai vērtība atbilst norādītam formātam (e-pasts, skaitlis u.c.) - atgriež attīrītu vērtību vai false, ja neiztur.</p><pre><code>filter_var($e, FILTER_VALIDATE_EMAIL);</code></pre></div>
+      <div class="cheat-card"><h4>is_numeric() / ctype_digit()</h4><p>is_numeric() pārbauda, vai virkne IZSKATĀS pēc skaitļa (arī "3.14", "-5"); ctype_digit() - vai satur TIKAI ciparus 0-9.</p><pre><code>is_numeric('3.14');  // true
+ctype_digit('42');   // true</code></pre></div>
+      <div class="cheat-card"><h4>compact() / extract()</h4><p>compact() savāc norādītos mainīgos masīvā pēc to nosaukuma; extract() dara pretējo - izveido mainīgos no masīva atslēgām. Bieži lieto, padodot datus include veidnei.</p><pre><code>$dati = compact('vards', 'vecums');
+extract($dati);</code></pre></div>
     </div>
   </section>
 
@@ -325,7 +364,7 @@ json_decode($json, true);</code></pre></div>
   </div>
 </main>
 
-<script src="../js/theme.js?v=49"></script>
-<script src="../js/main.js?v=49"></script>
+<script src="../js/theme.js?v=50"></script>
+<script src="../js/main.js?v=50"></script>
 </body>
 </html>

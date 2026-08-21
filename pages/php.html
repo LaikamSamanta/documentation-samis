@@ -10,7 +10,7 @@
 <link rel="manifest" href="../manifest.json" />
 <meta name="theme-color" content="#9d5cff" />
 <title>PHP dokumentācija - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=49" />
+<link rel="stylesheet" href="../css/style.css?v=50" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -70,7 +70,9 @@
     <div class="doc-sidebar-group">
       <h4>OOP</h4>
       <a href="#klases"><span class="bullet"></span>Klases &amp; objekti</a>
+      <a href="#magiskas-metodes"><span class="bullet"></span>Maģiskās metodes</a>
       <a href="#mantojums"><span class="bullet"></span>Mantojums</a>
+      <a href="#self-static-parent"><span class="bullet"></span>self, static, parent</a>
       <a href="#interfeisi"><span class="bullet"></span>Interfeisi</a>
       <a href="#traits"><span class="bullet"></span>Traits</a>
     </div>
@@ -199,6 +201,40 @@
 // vecums: 30</span>
 
 <span class="tok-kw">echo</span> <span class="tok-fn">count</span>(<span class="tok-fn">$augli</span>); <span class="tok-com">// 3 - elementu skaits</span></code></pre>
+      <p>Papildus <code>foreach</code>/<code>count()</code> - biežāk lietotās funkcijas masīvu MAINĪŠANAI un pārveidošanai:</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-fn">$grozs</span> = [<span class="tok-str">'maize'</span>, <span class="tok-str">'piens'</span>];
+
+<span class="tok-fn">array_push</span>(<span class="tok-fn">$grozs</span>, <span class="tok-str">'siers'</span>, <span class="tok-str">'olas'</span>); <span class="tok-com">// pievieno BEIGĀS</span>
+<span class="tok-fn">$pedejais</span> = <span class="tok-fn">array_pop</span>(<span class="tok-fn">$grozs</span>);        <span class="tok-com">// noņem un atgriež PĒDĒJO</span>
+<span class="tok-fn">$pirmais</span> = <span class="tok-fn">array_shift</span>(<span class="tok-fn">$grozs</span>);       <span class="tok-com">// noņem un atgriež PIRMO</span>
+<span class="tok-fn">array_unshift</span>(<span class="tok-fn">$grozs</span>, <span class="tok-str">'sviests'</span>);    <span class="tok-com">// pievieno SĀKUMĀ</span>
+
+<span class="tok-com">// isset() vs array_key_exists() - svarīga atšķirība ar null vērtībām</span>
+<span class="tok-fn">$dati</span> = [<span class="tok-str">'vards'</span> => <span class="tok-str">'Anna'</span>, <span class="tok-str">'vecums'</span> => <span class="tok-kw">null</span>];
+<span class="tok-fn">var_dump</span>(<span class="tok-fn">isset</span>(<span class="tok-fn">$dati</span>[<span class="tok-str">'vecums'</span>]));            <span class="tok-com">// false - vērtība IR null</span>
+<span class="tok-fn">var_dump</span>(<span class="tok-fn">array_key_exists</span>(<span class="tok-str">'vecums'</span>, <span class="tok-fn">$dati</span>)); <span class="tok-com">// true - atslēga EKSISTĒ</span>
+
+<span class="tok-com">// array_column() - noder $pdo->fetchAll() rezultātu pārkārtošanai pēc ID</span>
+<span class="tok-fn">$lietotaji</span> = [
+    [<span class="tok-str">'id'</span> => 1, <span class="tok-str">'vards'</span> => <span class="tok-str">'Anna'</span>],
+    [<span class="tok-str">'id'</span> => 2, <span class="tok-str">'vards'</span> => <span class="tok-str">'Jānis'</span>],
+];
+<span class="tok-fn">$idUzVardu</span> = <span class="tok-fn">array_column</span>(<span class="tok-fn">$lietotaji</span>, <span class="tok-str">'vards'</span>, <span class="tok-str">'id'</span>);
+<span class="tok-com">// [1 => 'Anna', 2 => 'Jānis']</span>
+
+<span class="tok-com">// usort() - kārto pēc pašrocīgi definēta salīdzinājuma</span>
+<span class="tok-fn">$produkti</span> = [
+    [<span class="tok-str">'nosaukums'</span> => <span class="tok-str">'B produkts'</span>, <span class="tok-str">'cena'</span> => 15],
+    [<span class="tok-str">'nosaukums'</span> => <span class="tok-str">'A produkts'</span>, <span class="tok-str">'cena'</span> => 5],
+];
+<span class="tok-fn">usort</span>(<span class="tok-fn">$produkti</span>, <span class="tok-kw">fn</span>(<span class="tok-fn">$a</span>, <span class="tok-fn">$b</span>) => <span class="tok-fn">$a</span>[<span class="tok-str">'cena'</span>] &lt;=&gt; <span class="tok-fn">$b</span>[<span class="tok-str">'cena'</span>]);
+<span class="tok-com">// tagad kārtoti pēc cenas: A produkts (5), B produkts (15)</span></code></pre>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>array_push/pop/shift/unshift</h4><p>Pievieno vai noņem elementus masīva sākumā vai beigās - <code>push</code>/<code>pop</code> darbojas ar beigām (kā "steks"), <code>unshift</code>/<code>shift</code> ar sākumu (kā "rinda").</p></div>
+        <div class="doc-mini-card"><h4>isset() vs array_key_exists()</h4><p><code>isset()</code> atgriež <code>false</code> arī tad, ja atslēga eksistē, bet tās vērtība ir <code>null</code> - ja svarīgi zināt, vai atslēga vispār EKSISTĒ (neatkarīgi no vērtības), lieto <code>array_key_exists()</code>.</p></div>
+        <div class="doc-mini-card"><h4>array_column()</h4><p>Izvelk vienu kolonnu no daudzdimensiju masīva (piem., PDO rezultātiem) - otrais parametrs pārkārto rezultātu pēc norādītās atslēgas, ērtai vēlākai meklēšanai pēc ID.</p></div>
+      </div>
     </section>
 
     <section class="doc-section" id="strings">
@@ -235,6 +271,24 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
         <p>Šie dati nāk tieši no lietotāja - nekad neuzticies tiem tieši. Vienmēr pārbaudi/attīri ar <code>htmlspecialchars()</code> pirms izvadīšanas HTML, lai novērstu XSS uzbrukumus.</p>
       </div>
+      <p>Bet <code>htmlspecialchars()</code> tikai padara datus DROŠUS izvadei - tas nepārbauda, vai dati vispār ir JĒGPILNI (piem., vai "e-pasts" tiešām ir e-pasts). Tam der <code>filter_var()</code>:</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-fn">$epasts</span> = <span class="tok-fn">filter_var</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'epasts'</span>] ?? <span class="tok-str">''</span>, FILTER_VALIDATE_EMAIL);
+
+<span class="tok-kw">if</span> (<span class="tok-fn">$epasts</span> === <span class="tok-kw">false</span>) {
+    <span class="tok-kw">echo</span> <span class="tok-str">"Nederīgs e-pasts."</span>;
+} <span class="tok-kw">else</span> {
+    <span class="tok-kw">echo</span> <span class="tok-str">"Derīgs e-pasts: "</span> . <span class="tok-fn">$epasts</span>;
+}
+
+<span class="tok-com">// ar papildu ierobežojumiem (min/max robeža)</span>
+<span class="tok-fn">$vecums</span> = <span class="tok-fn">filter_var</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'vecums'</span>] ?? <span class="tok-str">''</span>, FILTER_VALIDATE_INT, [
+    <span class="tok-str">'options'</span> => [<span class="tok-str">'min_range'</span> => 0, <span class="tok-str">'max_range'</span> => 120],
+]);
+<span class="tok-kw">if</span> (<span class="tok-fn">$vecums</span> === <span class="tok-kw">false</span>) {
+    <span class="tok-kw">echo</span> <span class="tok-str">"Nederīgs vecums."</span>;
+}</code></pre>
+      <p><code>filter_var()</code> atgriež <code>false</code>, ja vērtība NEIZTUR pārbaudi - tāpēc vienmēr jāsalīdzina ar <code>=== false</code> (nevis vienkārši <code>if (!$epasts)</code>), citādi derīga vērtība <code>"0"</code> nepareizi tiktu uzskatīta par kļūdu. Ātrākām, vienkāršākām pārbaudēm der arī <code>is_numeric()</code> (vai virkne izskatās pēc skaitļa) vai <code>ctype_digit()</code> (vai virkne satur TIKAI ciparus).</p>
     </section>
 
     <section class="doc-section" id="sesijas">
@@ -295,6 +349,17 @@
 <span class="tok-kw">console</span>.log(<span class="tok-kw">new</span> Date(serverisLaiks * 1000).toISOString());</code></pre>
 
       <p>Vēl viens fakts, ko vērts zināt teorētiski - <strong>"2038. gada problēma"</strong>: vecākās, 32-bitu sistēmās Unix laika zīmogu glabā kā parakstītu 32-bitu skaitli, kas pārplūst 2038. gada 19. janvārī, plkst. 03:14:07 UTC (tāpat kā Y2K problēma, bet Unix pasaulē). Mūsdienu 64-bitu sistēmas to vairs neskar, bet dažkārt tas joprojām parādās vecākā aparatūrā, iegultajās sistēmās vai 32-bitu datubāzu laukos.</p>
+
+      <p>Praktisks uzdevums, kas laika zīmogus izmanto retāk, bet kur <code>time()</code> atņemšana kļūst neērta - "cik dienu/gadu ir starp diviem datumiem?" Tam der <code>DateTime</code> klase ar <code>diff()</code>:</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-fn">$dzimsanasDiena</span> = <span class="tok-kw">new</span> <span class="tok-fn">DateTime</span>(<span class="tok-str">'2000-05-15'</span>);
+<span class="tok-fn">$sodien</span> = <span class="tok-kw">new</span> <span class="tok-fn">DateTime</span>(); <span class="tok-com">// bez argumenta = tagad</span>
+
+<span class="tok-fn">$starpiba</span> = <span class="tok-fn">$sodien</span>->diff(<span class="tok-fn">$dzimsanasDiena</span>); <span class="tok-com">// atgriež DateInterval objektu</span>
+
+<span class="tok-kw">echo</span> <span class="tok-str">"Vecums: {$starpiba->y} gadi, {$starpiba->m} mēneši, {$starpiba->d} dienas\n"</span>;
+<span class="tok-kw">echo</span> <span class="tok-str">"Kopā dienas: {$starpiba->days}"</span>;</code></pre>
+      <p><code>DateInterval</code> objektam ir gatavas īpašības katrai vienībai - <code>y</code> (gadi), <code>m</code> (mēneši), <code>d</code> (dienas), <code>h</code>/<code>i</code>/<code>s</code> (stundas/minūtes/sekundes), un <code>days</code> - KOPĒJAIS dienu skaits starp datumiem (nevis sadalīts pa vienībām). Šis ir daudz uzticamāks veids nekā manuāli dalīt <code>time()</code> starpību ar 86400 (sekundes dienā) - <code>DateTime</code> pareizi ņem vērā garos gadus (leap years), vasaras/ziemas laiku un mēnešu atšķirīgo garumu.</p>
     </section>
 
     <section class="doc-section" id="include">
@@ -353,6 +418,63 @@
       <p>Konstruktora argumenti ar <code>private</code>/<code>public</code> priekšā (PHP 8+) automātiski izveido un aizpilda attiecīgās klases īpašības - bez šī saīsinājuma vajadzētu rakstīt <code>$this-&gt;vards = $vards;</code> katram parametram atsevišķi.</p>
     </section>
 
+    <section class="doc-section" id="magiskas-metodes">
+      <h2>Maģiskās metodes</h2>
+      <p>Metodes ar dubultu pasvītrojumu priekšā (<code>__nosaukums</code>), ko PHP izsauc <strong>automātiski</strong> noteiktos brīžos - ne pats tās izsauc, bet valoda tās izsauc tavā vietā. <code>__construct</code> jau redzēji augstāk - zemāk pārējās biežāk sastopamās, vienā klasē:</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-kw">class</span> <span class="tok-fn">Produkts</span> {
+    <span class="tok-kw">private array</span> <span class="tok-fn">$dati</span> = [];
+
+    <span class="tok-kw">public function</span> <span class="tok-fn">__construct</span>(
+        <span class="tok-kw">public string</span> <span class="tok-fn">$nosaukums</span>,
+        <span class="tok-kw">public float</span> <span class="tok-fn">$cena</span>
+    ) {}
+
+    <span class="tok-com">// __toString - ļauj klases objektu izmantot tieši kā tekstu, piem. echo $produkts</span>
+    <span class="tok-kw">public function</span> <span class="tok-fn">__toString</span>(): <span class="tok-kw">string</span> {
+        <span class="tok-kw">return</span> <span class="tok-kw">$this</span>->nosaukums . <span class="tok-str">' ('</span> . <span class="tok-fn">number_format</span>(<span class="tok-kw">$this</span>->cena, 2) . <span class="tok-str">' EUR)'</span>;
+    }
+
+    <span class="tok-com">// __get - izsaukts, kad piekļūst NEEKSISTĒJOŠAI vai privātai īpašībai</span>
+    <span class="tok-kw">public function</span> <span class="tok-fn">__get</span>(<span class="tok-kw">string</span> <span class="tok-fn">$vards</span>) {
+        <span class="tok-kw">if</span> (<span class="tok-fn">$vards</span> === <span class="tok-str">'cenaArPVN'</span>) {
+            <span class="tok-kw">return</span> <span class="tok-fn">number_format</span>(<span class="tok-kw">$this</span>->cena * 1.21, 2) . <span class="tok-str">' EUR'</span>;
+        }
+        <span class="tok-kw">return</span> <span class="tok-kw">$this</span>->dati[<span class="tok-fn">$vards</span>] ?? <span class="tok-kw">null</span>;
+    }
+
+    <span class="tok-com">// __set - izsaukts, kad iestata NEEKSISTĒJOŠU vai privātu īpašību</span>
+    <span class="tok-kw">public function</span> <span class="tok-fn">__set</span>(<span class="tok-kw">string</span> <span class="tok-fn">$vards</span>, <span class="tok-fn">$vertiba</span>): <span class="tok-kw">void</span> {
+        <span class="tok-kw">$this</span>->dati[<span class="tok-fn">$vards</span>] = <span class="tok-fn">$vertiba</span>;
+    }
+
+    <span class="tok-com">// __call - izsaukts, kad izsauc NEEKSISTĒJOŠU metodi uz objekta</span>
+    <span class="tok-kw">public function</span> <span class="tok-fn">__call</span>(<span class="tok-kw">string</span> <span class="tok-fn">$metode</span>, <span class="tok-kw">array</span> <span class="tok-fn">$argumenti</span>) {
+        <span class="tok-kw">return</span> <span class="tok-str">"Metode '$metode' neeksistē, bet saņēma "</span> . <span class="tok-fn">count</span>(<span class="tok-fn">$argumenti</span>) . <span class="tok-str">" argumentus."</span>;
+    }
+
+    <span class="tok-com">// __destruct - izsaukts, kad objekts tiek iznīcināts (skripta beigās vai unset())</span>
+    <span class="tok-kw">public function</span> <span class="tok-fn">__destruct</span>() {
+        <span class="tok-kw">echo</span> <span class="tok-str">"Produkts '{$this->nosaukums}' tiek iznīcināts.\n"</span>;
+    }
+}
+
+<span class="tok-fn">$p</span> = <span class="tok-kw">new</span> <span class="tok-fn">Produkts</span>(<span class="tok-str">'Kafijas krūze'</span>, 9.99);
+
+<span class="tok-kw">echo</span> <span class="tok-fn">$p</span> . <span class="tok-str">"\n"</span>;                          <span class="tok-com">// __toString: "Kafijas krūze (9.99 EUR)"</span>
+<span class="tok-kw">echo</span> <span class="tok-str">"Cena ar PVN: "</span> . <span class="tok-fn">$p</span>->cenaArPVN . <span class="tok-str">"\n"</span>; <span class="tok-com">// __get: "Cena ar PVN: 12.09 EUR"</span>
+<span class="tok-fn">$p</span>->krasa = <span class="tok-str">'zila'</span>;                    <span class="tok-com">// __set</span>
+<span class="tok-kw">echo</span> <span class="tok-str">"Krāsa: "</span> . <span class="tok-fn">$p</span>->krasa . <span class="tok-str">"\n"</span>;       <span class="tok-com">// __get atkal: "Krāsa: zila"</span>
+<span class="tok-kw">echo</span> <span class="tok-fn">$p</span>->nekadaMetode(1, 2, 3);         <span class="tok-com">// __call</span>
+
+<span class="tok-fn">unset</span>(<span class="tok-fn">$p</span>);                                <span class="tok-com">// trigerē __destruct</span></code></pre>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>__toString()</h4><p>Bez šīs metodes <code>echo $objekts</code> izmestu kļūdu "Object could not be converted to string" - ar to objektu var lietot tieši, kur sagaida tekstu.</p></div>
+        <div class="doc-mini-card"><h4>__get() / __set()</h4><p>Ļauj klasei "izlikties", ka tai ir jebkāda īpašība, pat ja tā nav deklarēta - noder aprēķinātām vērtībām (kā <code>cenaArPVN</code> augstāk) vai elastīgiem datu konteineriem.</p></div>
+        <div class="doc-mini-card"><h4>__call()</h4><p>Noķer izsaukumus uz neeksistējošām metodēm - to izmanto framework/bibliotēku "burvju" API (piem., Eloquent stila query builderi), lai ģenerētu metodes dinamiski.</p></div>
+      </div>
+    </section>
+
     <section class="doc-section" id="mantojums">
       <h2>Mantojums</h2>
       <p>Klase var pārmantot citas klases funkcionalitāti ar <code>extends</code> - noder, kad vairākām klasēm ir kopīga bāze. <code>abstract</code> klase pati nevar tikt izveidota (<code>new</code>), tā ir tikai "veidne" citām klasēm.</p>
@@ -379,6 +501,54 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
         <p>Dod priekšroku <strong>composition over inheritance</strong> ("sastāvs pār mantojumu") - ja hierarhija kļūst dziļa un sarežģīta, interfeisi un mazākas, koplietojamas klases bieži ir elastīgāks risinājums.</p>
       </div>
+    </section>
+
+    <section class="doc-section" id="self-static-parent">
+      <h2>self, static, parent</h2>
+      <p>Trīs atslēgvārdi, ko lieto klases IEKŠPUSĒ, lai atsauktos uz pašu klasi vai tās vecākklasi - katrs nozīmē kaut ko citu:</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>self::</h4><p>Vienmēr attiecas tieši uz klasi, KURĀ šis kods ir uzrakstīts - pat ja izsauc no bērnklases objekta.</p></div>
+        <div class="doc-mini-card"><h4>static::</h4><p>Attiecas uz FAKTISKO klasi, no kuras izsaukums nāca ("late static binding") - ja bērnklase pārraksta metodi, <code>static::</code> izsauks tieši bērnklases versiju.</p></div>
+        <div class="doc-mini-card"><h4>parent::</h4><p>Izsauc tieši VECĀKKLASES versiju metodes/konstruktora - visbiežāk lieto, lai bērnklases konstruktors papildinātu (nevis pilnībā aizvietotu) vecākklases konstruktoru.</p></div>
+      </div>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-kw">class</span> <span class="tok-fn">Dzivnieks</span> {
+    <span class="tok-kw">protected static int</span> <span class="tok-fn">$kopejaisSkaits</span> = 0;
+
+    <span class="tok-kw">public function</span> <span class="tok-fn">__construct</span>(<span class="tok-kw">protected string</span> <span class="tok-fn">$vards</span>) {
+        <span class="tok-com">// self:: - VIENMĒR attiecas tieši uz Dzivnieks, pat ja izsauc no bērnklases</span>
+        <span class="tok-fn">self</span>::<span class="tok-fn">$kopejaisSkaits</span>++;
+    }
+
+    <span class="tok-kw">public static function</span> <span class="tok-fn">skaits</span>(): <span class="tok-kw">int</span> {
+        <span class="tok-kw">return</span> <span class="tok-fn">self</span>::<span class="tok-fn">$kopejaisSkaits</span>;
+    }
+
+    <span class="tok-kw">public function</span> <span class="tok-fn">iepazistinat</span>(): <span class="tok-kw">string</span> {
+        <span class="tok-com">// static:: izsauc BĒRNKLASES versiju metodes, ja tāda ir pārrakstīta</span>
+        <span class="tok-kw">return</span> <span class="tok-fn">static</span>::<span class="tok-fn">skana</span>() . <span class="tok-str">"! Mans vārds ir {$this->vards}."</span>;
+    }
+
+    <span class="tok-kw">public static function</span> <span class="tok-fn">skana</span>(): <span class="tok-kw">string</span> {
+        <span class="tok-kw">return</span> <span class="tok-str">'Kaut kāda skaņa'</span>;
+    }
+}
+
+<span class="tok-kw">class</span> <span class="tok-fn">Suns</span> <span class="tok-kw">extends</span> <span class="tok-fn">Dzivnieks</span> {
+    <span class="tok-kw">public function</span> <span class="tok-fn">__construct</span>(<span class="tok-kw">string</span> <span class="tok-fn">$vards</span>) {
+        <span class="tok-fn">parent</span>::<span class="tok-fn">__construct</span>(<span class="tok-fn">$vards</span>); <span class="tok-com">// parent:: izsauc VECĀKKLASES konstruktoru</span>
+    }
+
+    <span class="tok-com">// pārraksta vecākklases metodi</span>
+    <span class="tok-kw">public static function</span> <span class="tok-fn">skana</span>(): <span class="tok-kw">string</span> {
+        <span class="tok-kw">return</span> <span class="tok-str">'Vau'</span>;
+    }
+}
+
+<span class="tok-fn">$s</span> = <span class="tok-kw">new</span> <span class="tok-fn">Suns</span>(<span class="tok-str">'Reksis'</span>);
+<span class="tok-kw">echo</span> <span class="tok-fn">$s</span>->iepazistinat();      <span class="tok-com">// "Vau! Mans vārds ir Reksis." - nevis "Kaut kāda skaņa!"</span>
+<span class="tok-kw">echo</span> <span class="tok-fn">Dzivnieks</span>::<span class="tok-fn">skaits</span>(); <span class="tok-com">// 1</span></code></pre>
+      <p>Rezultāts pierāda "late static binding": lai gan <code>iepazistinat()</code> ir definēta <code>Dzivnieks</code> klasē un tur izsauc <code>static::skana()</code>, faktiski izpildās <code>Suns::skana()</code> versija - tieši tāpēc, ka objekts, uz kura metode izsaukta, ir <code>Suns</code>, nevis <code>Dzivnieks</code>.</p>
     </section>
 
     <section class="doc-section" id="interfeisi">
@@ -565,7 +735,7 @@ composer require dompdf/dompdf</code></pre>
   </main>
 </div>
 
-<script src="../js/theme.js?v=49"></script>
-<script src="../js/main.js?v=49"></script>
+<script src="../js/theme.js?v=50"></script>
+<script src="../js/main.js?v=50"></script>
 </body>
 </html>
