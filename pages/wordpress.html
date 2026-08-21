@@ -10,7 +10,7 @@
 <link rel="manifest" href="../manifest.json" />
 <meta name="theme-color" content="#9d5cff" />
 <title>WordPress dokumentācija - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=47" />
+<link rel="stylesheet" href="../css/style.css?v=48" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -62,56 +62,86 @@
 
 <div class="doc-shell">
   <aside class="doc-sidebar">
-    <div class="doc-sidebar-group">
-      <h4>Pamati</h4>
-      <a href="#temas" class="active"><span class="bullet"></span>Tēmu izveide</a>
-      <a href="#child-tema"><span class="bullet"></span>Bērnu tēmas (Child Themes)</a>
-      <a href="#wpconfig"><span class="bullet"></span>wp-config.php</a>
-      <a href="#spraudnis"><span class="bullet"></span>Spraudņa pamatstruktūra</a>
-      <a href="#template-hierarchy"><span class="bullet"></span>Template Hierarchy</a>
+    <div class="doc-sidebar-accordion open">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Pamati</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#temas" class="active"><span class="bullet"></span>Tēmu izveide</a>
+        <a href="#child-tema"><span class="bullet"></span>Bērnu tēmas (Child Themes)</a>
+        <a href="#wpconfig"><span class="bullet"></span>wp-config.php</a>
+        <a href="#spraudnis"><span class="bullet"></span>Spraudņa pamatstruktūra</a>
+        <a href="#template-hierarchy"><span class="bullet"></span>Template Hierarchy</a>
+      </div>
     </div>
-    <div class="doc-sidebar-group">
-      <h4>Saturs &amp; vaicājumi</h4>
-      <a href="#loop"><span class="bullet"></span>The Loop</a>
-      <a href="#template-tags"><span class="bullet"></span>Template Tags</a>
-      <a href="#conditional-tags"><span class="bullet"></span>Conditional Tags</a>
-      <a href="#wp-query"><span class="bullet"></span>WP_Query (pielāgoti vaicājumi)</a>
-      <a href="#taksonomijas"><span class="bullet"></span>Taksonomijas</a>
-      <a href="#cpt"><span class="bullet"></span>Custom Post Types</a>
-      <a href="#custom-fields"><span class="bullet"></span>Pielāgoti lauki</a>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Saturs &amp; vaicājumi</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#loop"><span class="bullet"></span>The Loop</a>
+        <a href="#template-tags"><span class="bullet"></span>Template Tags</a>
+        <a href="#conditional-tags"><span class="bullet"></span>Conditional Tags</a>
+        <a href="#wp-query"><span class="bullet"></span>WP_Query (pielāgoti vaicājumi)</a>
+        <a href="#taksonomijas"><span class="bullet"></span>Taksonomijas</a>
+        <a href="#cpt"><span class="bullet"></span>Custom Post Types</a>
+        <a href="#custom-fields"><span class="bullet"></span>Pielāgoti lauki</a>
+      </div>
     </div>
-    <div class="doc-sidebar-group">
-      <h4>Izstrādes rīki</h4>
-      <a href="#izvelnes"><span class="bullet"></span>Izvēlnes</a>
-      <a href="#enqueue"><span class="bullet"></span>Skriptu/stilu pieslēgšana</a>
-      <a href="#tailwind-compile"><span class="bullet"></span>Tailwind CSS kompilēšana (bez CDN)</a>
-      <a href="#hooks"><span class="bullet"></span>Hooks &amp; Filters</a>
-      <a href="#shortcodes"><span class="bullet"></span>Shortcodes</a>
-      <a href="#widgets"><span class="bullet"></span>Widgets &amp; Sidebars</a>
-      <a href="#ajax"><span class="bullet"></span>AJAX pamati</a>
-      <a href="#gutenberg"><span class="bullet"></span>Gutenberg bloki</a>
-      <a href="#block-temas"><span class="bullet"></span>Block tēmas &amp; theme.json</a>
-      <a href="#i18n"><span class="bullet"></span>Tulkošana (i18n)</a>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Izstrādes rīki</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#izvelnes"><span class="bullet"></span>Izvēlnes</a>
+        <a href="#enqueue"><span class="bullet"></span>Skriptu/stilu pieslēgšana</a>
+        <a href="#tailwind-compile"><span class="bullet"></span>Tailwind CSS kompilēšana (bez CDN)</a>
+        <a href="#hooks"><span class="bullet"></span>Hooks &amp; Filters</a>
+        <a href="#shortcodes"><span class="bullet"></span>Shortcodes</a>
+        <a href="#widgets"><span class="bullet"></span>Widgets &amp; Sidebars</a>
+        <a href="#ajax"><span class="bullet"></span>AJAX pamati</a>
+        <a href="#gutenberg"><span class="bullet"></span>Gutenberg bloki</a>
+        <a href="#block-temas"><span class="bullet"></span>Block tēmas &amp; theme.json</a>
+        <a href="#i18n"><span class="bullet"></span>Tulkošana (i18n)</a>
+      </div>
     </div>
-    <div class="doc-sidebar-group">
-      <h4>Drošība &amp; lietotāji</h4>
-      <a href="#drosiba"><span class="bullet"></span>Drošība (nonce &amp; escaping)</a>
-      <a href="#sanitizacija"><span class="bullet"></span>Sanitizācija (wp_kses u.c.)</a>
-      <a href="#lomas"><span class="bullet"></span>Lietotāju lomas &amp; tiesības</a>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Drošība &amp; lietotāji</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#drosiba"><span class="bullet"></span>Drošība (nonce &amp; escaping)</a>
+        <a href="#sanitizacija"><span class="bullet"></span>Sanitizācija (wp_kses u.c.)</a>
+        <a href="#lomas"><span class="bullet"></span>Lietotāju lomas &amp; tiesības</a>
+      </div>
     </div>
-    <div class="doc-sidebar-group">
-      <h4>Datubāze &amp; serviss</h4>
-      <a href="#wpdb"><span class="bullet"></span>$wpdb vaicājumi</a>
-      <a href="#options-api"><span class="bullet"></span>Options API</a>
-      <a href="#transients"><span class="bullet"></span>Transients (kešošana)</a>
-      <a href="#cron"><span class="bullet"></span>Cron uzdevumi</a>
-      <a href="#http-api"><span class="bullet"></span>HTTP API (wp_remote_*)</a>
-      <a href="#rest-api"><span class="bullet"></span>REST API pamati</a>
-      <a href="#json"><span class="bullet"></span>JSON kodēšana/dekodēšana</a>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Datubāze &amp; serviss</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#wpdb"><span class="bullet"></span>$wpdb vaicājumi</a>
+        <a href="#options-api"><span class="bullet"></span>Options API</a>
+        <a href="#transients"><span class="bullet"></span>Transients (kešošana)</a>
+        <a href="#cron"><span class="bullet"></span>Cron uzdevumi</a>
+        <a href="#http-api"><span class="bullet"></span>HTTP API (wp_remote_*)</a>
+        <a href="#rest-api"><span class="bullet"></span>REST API pamati</a>
+        <a href="#json"><span class="bullet"></span>JSON kodēšana/dekodēšana</a>
+      </div>
     </div>
-    <div class="doc-sidebar-group">
-      <h4>Veiktspēja</h4>
-      <a href="#veiktspejas-merisana"><span class="bullet"></span>Ātruma mērīšana (Core Web Vitals)</a>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Veiktspēja</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#veiktspejas-merisana"><span class="bullet"></span>Ātruma mērīšana (Core Web Vitals)</a>
+      </div>
     </div>
   </aside>
 
@@ -1342,7 +1372,7 @@ GET /wp-json/wp/v2/produkts     → CPT ieraksti (ja show_in_rest: true)</code><
   </main>
 </div>
 
-<script src="../js/theme.js?v=47"></script>
-<script src="../js/main.js?v=47"></script>
+<script src="../js/theme.js?v=48"></script>
+<script src="../js/main.js?v=48"></script>
 </body>
 </html>

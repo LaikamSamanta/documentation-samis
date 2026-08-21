@@ -10,7 +10,7 @@
 <link rel="manifest" href="../manifest.json" />
 <meta name="theme-color" content="#9d5cff" />
 <title>Ātrie risinājumi - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=47" />
+<link rel="stylesheet" href="../css/style.css?v=48" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -62,60 +62,105 @@
 
 <div class="doc-shell">
   <aside class="doc-sidebar">
-    <div class="doc-sidebar-group">
-      <h4>Drošība</h4>
-      <a href="#snip-svg" class="active"><span class="bullet"></span>SVG augšupielāžu atbalsts</a>
-      <a href="#snip-version"><span class="bullet"></span>Noņemt WP versijas numuru</a>
-      <a href="#snip-xmlrpc"><span class="bullet"></span>Izslēgt XML-RPC</a>
+    <div class="doc-sidebar-accordion open">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Drošība</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#snip-svg" class="active"><span class="bullet"></span>SVG augšupielāžu atbalsts</a>
+        <a href="#snip-version"><span class="bullet"></span>Noņemt WP versijas numuru</a>
+        <a href="#snip-xmlrpc"><span class="bullet"></span>Izslēgt XML-RPC</a>
+      </div>
     </div>
-    <div class="doc-sidebar-group">
-      <h4>Admin &amp; pieteikšanās</h4>
-      <a href="#snip-comments"><span class="bullet"></span>Izslēgt komentārus pilnībā</a>
-      <a href="#snip-menu"><span class="bullet"></span>Paslēpt admin izvēlnes punktus</a>
-      <a href="#snip-login-logo"><span class="bullet"></span>Pieteikšanās logo, saite &amp; fons</a>
-      <a href="#snip-login-redirect"><span class="bullet"></span>Novirzīšana pēc pieteikšanās</a>
-      <a href="#snip-admin-locale"><span class="bullet"></span>Piespiedu admin valoda</a>
-      <a href="#snip-admin-colors"><span class="bullet"></span>Admin &amp; pieteikšanās krāsas</a>
-      <a href="#snip-editor-customizer"><span class="bullet"></span>Redaktoram - Customizer piekļuve</a>
-      <a href="#snip-cache-button"><span class="bullet"></span>Kešatmiņas tīrīšanas poga admin joslā</a>
-      <a href="#snip-hide-notices"><span class="bullet"></span>Paslēpt admin paziņojumus konkrētā ekrānā</a>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Admin &amp; pieteikšanās</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#snip-comments"><span class="bullet"></span>Izslēgt komentārus pilnībā</a>
+        <a href="#snip-menu"><span class="bullet"></span>Paslēpt admin izvēlnes punktus</a>
+        <a href="#snip-login-logo"><span class="bullet"></span>Pieteikšanās logo, saite &amp; fons</a>
+        <a href="#snip-login-redirect"><span class="bullet"></span>Novirzīšana pēc pieteikšanās</a>
+        <a href="#snip-admin-locale"><span class="bullet"></span>Piespiedu admin valoda</a>
+        <a href="#snip-admin-colors"><span class="bullet"></span>Admin &amp; pieteikšanās krāsas</a>
+        <a href="#snip-editor-customizer"><span class="bullet"></span>Redaktoram - Customizer piekļuve</a>
+        <a href="#snip-cache-button"><span class="bullet"></span>Kešatmiņas tīrīšanas poga admin joslā</a>
+        <a href="#snip-hide-notices"><span class="bullet"></span>Paslēpt admin paziņojumus konkrētā ekrānā</a>
+      </div>
     </div>
-    <div class="doc-sidebar-group">
-      <h4>Saturs &amp; veiktspēja</h4>
-      <a href="#snip-excerpt"><span class="bullet"></span>Izraksta garums</a>
-      <a href="#snip-image-size"><span class="bullet"></span>Pielāgots attēla izmērs</a>
-      <a href="#snip-emoji"><span class="bullet"></span>Izslēgt emoji skriptus</a>
-      <a href="#snip-classic-editor"><span class="bullet"></span>Piespiedu klasiskais redaktors</a>
-      <a href="#snip-gettext"><span class="bullet"></span>Jebkura teksta aizstāšana</a>
-      <a href="#snip-clear-transients"><span class="bullet"></span>Iztīrīt transientus pēc prefiksa</a>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Saturs &amp; veiktspēja</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#snip-excerpt"><span class="bullet"></span>Izraksta garums</a>
+        <a href="#snip-image-size"><span class="bullet"></span>Pielāgots attēla izmērs</a>
+        <a href="#snip-emoji"><span class="bullet"></span>Izslēgt emoji skriptus</a>
+        <a href="#snip-classic-editor"><span class="bullet"></span>Piespiedu klasiskais redaktors</a>
+        <a href="#snip-gettext"><span class="bullet"></span>Jebkura teksta aizstāšana</a>
+        <a href="#snip-clear-transients"><span class="bullet"></span>Iztīrīt transientus pēc prefiksa</a>
+      </div>
     </div>
-    <div class="doc-sidebar-group">
-      <h4>Navigācija</h4>
-      <a href="#snip-bootstrap-walker"><span class="bullet"></span>Bootstrap saderīga izvēlne (Walker)</a>
-      <a href="#snip-term-redirect"><span class="bullet"></span>Novirzīt kategoriju uz citu URL</a>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Navigācija</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#snip-bootstrap-walker"><span class="bullet"></span>Bootstrap saderīga izvēlne (Walker)</a>
+        <a href="#snip-term-redirect"><span class="bullet"></span>Novirzīt kategoriju uz citu URL</a>
+      </div>
     </div>
-    <div class="doc-sidebar-group">
-      <h4>Redaktors (TinyMCE)</h4>
-      <a href="#snip-tinymce-custom"><span class="bullet"></span>Pielāgoti fonti &amp; krāsu palete</a>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Redaktors (TinyMCE)</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#snip-tinymce-custom"><span class="bullet"></span>Pielāgoti fonti &amp; krāsu palete</a>
+      </div>
     </div>
-    <div class="doc-sidebar-group">
-      <h4>Pielāgoti lauki &amp; iestatījumi</h4>
-      <a href="#snip-metabox"><span class="bullet"></span>Pielāgota metabox (avota lauks)</a>
-      <a href="#snip-customizer-settings"><span class="bullet"></span>Vietnes iestatījumi caur Customizer</a>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Pielāgoti lauki &amp; iestatījumi</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#snip-metabox"><span class="bullet"></span>Pielāgota metabox (avota lauks)</a>
+        <a href="#snip-customizer-settings"><span class="bullet"></span>Vietnes iestatījumi caur Customizer</a>
+      </div>
     </div>
-    <div class="doc-sidebar-group">
-      <h4>WooCommerce</h4>
-      <a href="#snip-stripe-locale"><span class="bullet"></span>Stripe apmaksas formas valoda</a>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>WooCommerce</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#snip-stripe-locale"><span class="bullet"></span>Stripe apmaksas formas valoda</a>
+      </div>
     </div>
-    <div class="doc-sidebar-group">
-      <h4>Daudzvalodu (TranslatePress)</h4>
-      <a href="#snip-trp-indeksesana"><span class="bullet"></span>Indeksēšana citai valodai - soli pa solim</a>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Daudzvalodu (TranslatePress)</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#snip-trp-indeksesana"><span class="bullet"></span>Indeksēšana citai valodai - soli pa solim</a>
+      </div>
     </div>
-    <div class="doc-sidebar-group">
-      <h4>Contact Form 7</h4>
-      <a href="#snip-cf7-autofill"><span class="bullet"></span>Automātiska aizpilde pieteikušamies</a>
-      <a href="#snip-cf7-valoda"><span class="bullet"></span>Forma divās valodās (pēc URL)</a>
-      <a href="#snip-cf7-assets"><span class="bullet"></span>Ielādēt CF7 skriptus tikai vajadzīgajā lapā</a>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Contact Form 7</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#snip-cf7-autofill"><span class="bullet"></span>Automātiska aizpilde pieteikušamies</a>
+        <a href="#snip-cf7-valoda"><span class="bullet"></span>Forma divās valodās (pēc URL)</a>
+        <a href="#snip-cf7-assets"><span class="bullet"></span>Ielādēt CF7 skriptus tikai vajadzīgajā lapā</a>
+      </div>
     </div>
   </aside>
 
@@ -1080,7 +1125,7 @@
   </main>
 </div>
 
-<script src="../js/theme.js?v=47"></script>
-<script src="../js/main.js?v=47"></script>
+<script src="../js/theme.js?v=48"></script>
+<script src="../js/main.js?v=48"></script>
 </body>
 </html>

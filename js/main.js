@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "pages/cheatsheet-ssh.html", "pages/cheatsheet-web.html",
     "pages/cheatsheet-wordpress.html"
   ];
-  var SEARCH_INDEX_VERSION = "46"; // bump together with the ?v= cache-bust number
+  var SEARCH_INDEX_VERSION = "48"; // bump together with the ?v= cache-bust number
   var searchIndex = null;
   var searchIndexPromise = null;
 
@@ -244,11 +244,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // instant feedback on click - don't wait for the scroll/observer to
     // settle, since a clicked heading can briefly land outside the
-    // tracked band while the page is still scrolling to it
+    // tracked band while the page is still scrolling to it. Also open the
+    // clicked link's own accordion group right away instead of waiting on
+    // the observer, since a link inside a collapsed group would otherwise
+    // navigate the page while leaving its own sidebar entry hidden.
     links.forEach(function (l) {
       l.addEventListener("click", function () {
         links.forEach(function (o) { o.classList.remove("active"); });
         l.classList.add("active");
+        openAncestorAccordion(l);
       });
     });
 
