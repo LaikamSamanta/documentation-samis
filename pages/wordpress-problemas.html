@@ -10,7 +10,7 @@
 <link rel="manifest" href="../manifest.json" />
 <meta name="theme-color" content="#9d5cff" />
 <title>WordPress kļūdas un problēmu risinājumi - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=46" />
+<link rel="stylesheet" href="../css/style.css?v=47" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -223,23 +223,15 @@ wp search-replace 'http://vecais-domens.lv' 'https://jauns-domens.lv' --all-tabl
 
     <section class="doc-section" id="failu-tiesibas">
       <h2>Nepareizas failu tiesības</h2>
-      <p>Nevar augšupielādēt attēlus, atjaunināt spraudņus vai rediģēt tēmu tieši no admin paneļa ("HTTP error" augšupielādei, vai lūgums ievadīt FTP datus atjaunināšanai) - parasti nozīmē, ka failu īpašnieks vai tiesības neatbilst tam, ar kuru strādā web serveris.</p>
-      <p><strong>Risinājums caur SSH</strong> - WordPress ieteiktās standarta tiesības:</p>
-      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Īpašnieks - lietotājs, ar kuru strādā web serveris (bieži www-data)</span>
-sudo chown -R www-data:www-data /var/www/piemers.lv
-
-<span class="tok-com"># Mapēm 755, failiem 644</span>
-find /var/www/piemers.lv -type d -exec chmod 755 {} \;
-find /var/www/piemers.lv -type f -exec chmod 644 {} \;
-
-<span class="tok-com"># wp-config.php drīkst būt stingrāks, jo tajā ir paroles</span>
+      <p>Nevar augšupielādēt attēlus, atjaunināt spraudņus vai rediģēt tēmu tieši no admin paneļa ("HTTP error" augšupielādei, vai lūgums ievadīt FTP datus atjaunināšanai) - parasti nozīmē, ka failu īpašnieks vai tiesības neatbilst tam, ar kuru strādā web serveris. Standarta chown/chmod labošanu (arī caur FTP, bez SSH) skaties <a href="web-problemas.html#err-permissions">"Permission denied kļūdas"</a> vispārīgo problēmu lapā - zemāk tikai WordPress specifiskais papildinājums.</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Papildus standarta chown/chmod labojumam (skat. saiti augstāk) -
+# wp-config.php drīkst būt stingrāks, jo tajā ir paroles</span>
 chmod 600 /var/www/piemers.lv/wp-config.php</code></pre>
-      <p><strong>Alternatīva caur failiem:</strong> FTP klientā (FileZilla) labais klikšķis uz <code>wp-content</code> mapi → "File permissions" → <code>755</code>, atzīmējot "Recurse into subdirectories" un "Apply to directories only", tad atkārto ar <code>644</code> tikai failiem.</p>
     </section>
 
     <section class="doc-section" id="htaccess-500">
       <h2>Bojāts .htaccess → 500 kļūda</h2>
-      <p>WordPress izmanto <code>.htaccess</code> pastāvīgo saišu (permalinks) darbībai - manuāli pievienots vai spraudņa sabojāts noteikums šajā failā uzreiz padara visu vietni nesasniedzamu ar 500 kļūdu.</p>
+      <p>WordPress izmanto <code>.htaccess</code> pastāvīgo saišu (permalinks) darbībai - manuāli pievienots vai spraudņa sabojāts noteikums šajā failā uzreiz padara visu vietni nesasniedzamu ar 500 kļūdu. Vispārīgu Apache konfigurācijas diagnostiku (<code>apache2ctl configtest</code>), kas noder arī ne-WordPress vietnēm, skaties <a href="web-problemas.html#err-htaccess-500">"htaccess sintakses kļūda"</a> vispārīgo problēmu lapā.</p>
       <p><strong>Risinājums caur SSH:</strong></p>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Pārdēvē .htaccess, lai pilnībā izslēgtu un pārbaudītu, vai tas ir vainīgais</span>
 cd /var/www/piemers.lv
@@ -459,7 +451,7 @@ wp plugin install w3-total-cache --activate</code></pre>
   </main>
 </div>
 
-<script src="../js/theme.js?v=46"></script>
-<script src="../js/main.js?v=46"></script>
+<script src="../js/theme.js?v=47"></script>
+<script src="../js/main.js?v=47"></script>
 </body>
 </html>

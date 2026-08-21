@@ -10,7 +10,7 @@
 <link rel="manifest" href="../manifest.json" />
 <meta name="theme-color" content="#9d5cff" />
 <title>Servera problēmas un risinājumi - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=46" />
+<link rel="stylesheet" href="../css/style.css?v=47" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -316,22 +316,16 @@ find /var/www/piemers.lv -type f -exec chmod 644 {} \;</code></pre>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
         <p>Nekad neiestati <code>777</code> tiesības kā "ātru labojumu" - tas ļauj rakstīt failus jebkuram serverī esošam procesam, tostarp ļaunprātīgam kodam, ja serveris tiek kompromitēts.</p>
       </div>
+      <p>WordPress vietnēm der arī papildu solis <code>wp-config.php</code> failam - skaties <a href="wordpress-problemas.html#failu-tiesibas">"Nepareizas failu tiesības"</a> WordPress problēmu lapā.</p>
     </section>
 
     <section class="doc-section" id="err-htaccess-500">
       <h2>.htaccess sintakses kļūda → 500</h2>
       <p>Apache lasa <code>.htaccess</code> failu katrā pieprasījumā - ja tajā ir sintakses kļūda (bieži pēc manuālas rediģēšanas vai spraudņa pievienota noteikuma), rezultāts ir tūlītēja 500 kļūda visai vietnei.</p>
-      <p><strong>Risinājums caur SSH:</strong></p>
+      <p><strong>Diagnostika caur SSH:</strong></p>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Pārbauda Apache konfigurācijas sintaksi</span>
-sudo apache2ctl configtest
-
-<span class="tok-com"># Pārdēvē .htaccess, lai izslēgtu to pilnībā un pārbaudītu, vai tas ir vainīgais</span>
-cd /var/www/piemers.lv
-mv .htaccess .htaccess.bak
-
-<span class="tok-com"># Ja vietne tagad strādā - problēma bija .htaccess iekšpusē,</span>
-<span class="tok-com"># atver .htaccess.bak un salīdzini ar WordPress noklusējuma versiju</span></code></pre>
-      <p><strong>Alternatīva caur failiem:</strong> FTP klientā lejupielādē <code>.htaccess</code>, pārsauc/izdzēs to serverī un WordPress admin panelī atver "Iestatījumi → Pastāvīgās saites" un tikai nospied "Saglabāt izmaiņas" - WordPress automātiski uzģenerēs jaunu, korektu <code>.htaccess</code> failu.</p>
+sudo apache2ctl configtest</code></pre>
+      <p>Ja vietne ir uz WordPress - pilnu labošanas soli (pārdēvēšana, jauna .htaccess ģenerēšana caur wp-admin vai <code>wp rewrite flush</code>) skaties <a href="wordpress-problemas.html#htaccess-500">"Bojāts .htaccess → 500 kļūda"</a> WordPress problēmu lapā. Citām (ne-WordPress) vietnēm - pārsauc failu, lai to izslēgtu, tad salīdzini ar attiecīgā CMS/framework noklusējuma versiju.</p>
     </section>
 
     <section class="doc-section" id="err-php-version">
@@ -382,10 +376,7 @@ sudo systemctl reload nginx</code></pre>
 
     <section class="doc-section" id="err-cors">
       <h2>CORS kļūda</h2>
-      <p>CORS kļūda parādās, kad lapā ielādēts JavaScript no viena domēna mēģina ar <code>fetch()</code> piekļūt datiem no <strong>cita</strong> domēna, un tas serveris skaidri nav atļāvis šādus pieprasījumus.</p>
-      <pre class="code-block"><span class="lang">text</span><code>Access to fetch at 'https://api.citssrverits.lv/dati' from origin
-'https://mana-app.lv' has been blocked by CORS policy: No
-'Access-Control-Allow-Origin' header is present on the requested resource.</code></pre>
+      <p>CORS kļūda parādās, kad lapā ielādēts JavaScript no viena domēna mēģina piekļūt datiem no cita domēna, un tas serveris skaidri nav atļāvis šādus pieprasījumus - pilnu skaidrojumu (kāpēc pārlūks to bloķē un kā izskatās kļūda konsolē) skaties <a href="api.html#drosiba">"Drošība - CORS, HTTPS, rate limiting"</a> API kategorijā. Zemāk - tieši, kā to labot servera pusē.</p>
       <p><strong>Risinājums vienmēr ir servera pusē</strong> - SSH pieslēdzoties serverim, jārediģē Nginx konfigurācija vai backend kods:</p>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Nginx konfigurācijā (piem. /etc/nginx/sites-available/api.conf)</span>
 sudo nano /etc/nginx/sites-available/api.conf
@@ -425,7 +416,7 @@ sudo nginx -t && sudo systemctl reload nginx</code></pre>
   </main>
 </div>
 
-<script src="../js/theme.js?v=46"></script>
-<script src="../js/main.js?v=46"></script>
+<script src="../js/theme.js?v=47"></script>
+<script src="../js/main.js?v=47"></script>
 </body>
 </html>

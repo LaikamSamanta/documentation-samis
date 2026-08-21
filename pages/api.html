@@ -10,7 +10,7 @@
 <link rel="manifest" href="../manifest.json" />
 <meta name="theme-color" content="#9d5cff" />
 <title>API dokumentācija - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=46" />
+<link rel="stylesheet" href="../css/style.css?v=47" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -365,7 +365,7 @@ soks.onclose = <span class="tok-kw">function</span> () {
 'https://tavavietne.lv' has been blocked by CORS policy: No
 'Access-Control-Allow-Origin' header is present on the requested
 resource.</code></pre>
-      <p>To risina <strong>serveris</strong> (ne klients) - pievienojot atbildes galveni, kas skaidri atļauj konkrētu domēnu:</p>
+      <p>To risina <strong>serveris</strong> (ne klients) - pievienojot atbildes galveni, kas skaidri atļauj konkrētu domēnu. Konkrētus komandrindas soļus (Nginx konfigurācija, PHP alternatīva bez SSH) skaties <a href="web-problemas.html#err-cors">"CORS kļūda"</a> problēmu risinājumu lapā.</p>
       <pre class="code-block"><span class="lang">text</span><code>Access-Control-Allow-Origin: https://tavavietne.lv</code></pre>
       <p><strong>HTTPS</strong> - jebkuram API, kas pārsūta autentifikācijas datus (tokenus, atslēgas, paroles), <strong>obligāti</strong> jāstrādā pāri HTTPS, nevis HTTP. Bez tā dati ceļo tīklā atklātā tekstā, un jebkurš pa vidu var tos nolasīt.</p>
       <p><strong>Rate limiting</strong> - lielākā daļa publisko API ierobežo, cik pieprasījumu drīksti sūtīt noteiktā laika periodā. Pārsniedzot limitu, saņemsi <code>429 Too Many Requests</code>, bieži ar galveni <code>Retry-After</code>, kas pasaka, cik ilgi jāgaida:</p>
@@ -637,7 +637,7 @@ curl -v -X POST https://api.piemers.lv/dati \
   </main>
 </div>
 
-<script src="../js/theme.js?v=46"></script>
-<script src="../js/main.js?v=46"></script>
+<script src="../js/theme.js?v=47"></script>
+<script src="../js/main.js?v=47"></script>
 </body>
 </html>
