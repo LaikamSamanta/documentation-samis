@@ -33,9 +33,10 @@ document.addEventListener("DOMContentLoaded", function () {
     "pages/cheatsheet-api.html", "pages/cheatsheet-git.html",
     "pages/cheatsheet-javascript.html", "pages/cheatsheet-php.html",
     "pages/cheatsheet-ssh.html", "pages/cheatsheet-web.html",
-    "pages/cheatsheet-wordpress.html", "pages/docker.html"
+    "pages/cheatsheet-wordpress.html", "pages/docker.html",
+    "pages/vardnica.html"
   ];
-  var SEARCH_INDEX_VERSION = "51"; // bump together with the ?v= cache-bust number
+  var SEARCH_INDEX_VERSION = "52"; // bump together with the ?v= cache-bust number
   var searchIndex = null;
   var searchIndexPromise = null;
 
