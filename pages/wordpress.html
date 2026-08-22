@@ -10,7 +10,7 @@
 <link rel="manifest" href="../manifest.json" />
 <meta name="theme-color" content="#9d5cff" />
 <title>WordPress dokumentācija - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=55" />
+<link rel="stylesheet" href="../css/style.css?v=56" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -120,6 +120,7 @@
       <div class="doc-accordion-body">
         <a href="#drosiba"><span class="bullet"></span>Drošība (nonce &amp; escaping)</a>
         <a href="#sanitizacija"><span class="bullet"></span>Sanitizācija (wp_kses u.c.)</a>
+        <a href="#noklusejuma-riski"><span class="bullet"></span>Noklusējuma iestatījumi, kas pārsteidz</a>
         <a href="#lomas"><span class="bullet"></span>Lietotāju lomas &amp; tiesības</a>
       </div>
     </div>
@@ -938,6 +939,19 @@ registerBlockType('mana-tema/sveiciens', {
       </div>
     </section>
 
+    <section class="doc-section" id="noklusejuma-riski">
+      <h2>Noklusējuma iestatījumi, kas pārsteidz</h2>
+      <p>WordPress pēc noklusējuma ir optimizēts, lai "uzstādīts un strādā uzreiz" - nevis lai būtu drošs pēc noklusējuma. Vairākas rūpnīcas iestatījumu vērtības klusi strādā pret dzīvu vietni, kamēr tās apzināti neizslēdz. Šeit tie, par kuriem visbiežāk uzzina tikai pēc problēmas.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>Komentāru spams</h4><p>Pēc noklusējuma jebkurš var atstāt komentāru bez apstiprinājuma - spama boti sūta pieprasījumu tieši uz <code>wp-comments-post.php</code>, apejot pat tavu formu un tās JS validāciju. <a href="wordpress-snippets.html#snip-comment-spam">Skaties fiksāciju</a>.</p></div>
+        <div class="doc-mini-card"><h4>Lietotājvārdu noplūde</h4><p><code>/wp-json/wp/v2/users</code> un <code>?author=1</code> URL atklāj administratoru lietotājvārdus jebkuram apmeklētājam bez pieslēgšanās - brute-force uzbrukumam tad pietiek uzminēt tikai paroli. <a href="wordpress-snippets.html#snip-user-enum">Skaties fiksāciju</a>.</p></div>
+        <div class="doc-mini-card"><h4>Failu redaktors admin panelī</h4><p>Jebkurš administrators pēc noklusējuma var tieši no admin paneļa rediģēt tēmas/spraudņa PHP failus - ja tas konts tiek uzlauzts, uzbrucējam ir tūlītēja iespēja izpildīt savu kodu serverī. <a href="wordpress-snippets.html#snip-file-edit">Skaties fiksāciju</a>.</p></div>
+        <div class="doc-mini-card"><h4>XML-RPC</h4><p>Vecāks interfeiss ārējiem savienojumiem, kas pēc noklusējuma ir ieslēgts - izplatīts brute-force un DDoS pastiprināšanas (pingback flood) mērķis. <a href="wordpress-snippets.html#snip-xmlrpc">Skaties fiksāciju</a>.</p></div>
+        <div class="doc-mini-card"><h4>Versijas numurs</h4><p>WordPress atklāj savu versiju lapas HTML kodā - atvieglo uzbrucējiem automātiski atrast vietnes ar zināmām, vēl nelabotām ievainojamībām. <a href="wordpress-snippets.html#snip-version">Skaties fiksāciju</a>.</p></div>
+        <div class="doc-mini-card"><h4>WP-Cron nav īsts cron</h4><p>Ieplānotie uzdevumi (publicēšana nākotnē, spraudņu grafiki) izpildās tikai tad, kad kāds apmeklē lapu - zemas apmeklētības vietnēs tie var kavēties vai neizpildīties vispār. <a href="#cron">Skaties risinājumu augstāk</a>.</p></div>
+      </div>
+    </section>
+
     <section class="doc-section" id="lomas">
       <h2>Lietotāju lomas &amp; tiesības</h2>
       <p>WordPress lietotājiem piešķir <strong>lomu</strong> (role), kas satur konkrētu <strong>tiesību</strong> (capability) kopumu - nekad nepārbaudi tiešo lomu kodā, vienmēr pārbaudi konkrētu tiesību, jo tas paliek pareizs pat tad, ja lomu struktūra vēlāk mainās.</p>
@@ -1376,7 +1390,7 @@ GET /wp-json/wp/v2/produkts     → CPT ieraksti (ja show_in_rest: true)</code><
   </main>
 </div>
 
-<script src="../js/theme.js?v=55"></script>
-<script src="../js/main.js?v=55"></script>
+<script src="../js/theme.js?v=56"></script>
+<script src="../js/main.js?v=56"></script>
 </body>
 </html>

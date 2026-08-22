@@ -10,7 +10,7 @@
 <link rel="manifest" href="../manifest.json" />
 <meta name="theme-color" content="#9d5cff" />
 <title>Ātrie risinājumi - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=55" />
+<link rel="stylesheet" href="../css/style.css?v=56" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -75,6 +75,9 @@
         <a href="#snip-svg" class="active"><span class="bullet"></span>SVG augšupielāžu atbalsts</a>
         <a href="#snip-version"><span class="bullet"></span>Noņemt WP versijas numuru</a>
         <a href="#snip-xmlrpc"><span class="bullet"></span>Izslēgt XML-RPC</a>
+        <a href="#snip-comment-spam"><span class="bullet"></span>Komentāru spams (droši iestatījumi)</a>
+        <a href="#snip-user-enum"><span class="bullet"></span>Lietotājvārdu noplūde (REST/?author=)</a>
+        <a href="#snip-file-edit"><span class="bullet"></span>Izslēgt failu rediģēšanu admin panelī</a>
       </div>
     </div>
     <div class="doc-sidebar-accordion">
@@ -219,6 +222,63 @@
       <h2>Izslēgt XML-RPC</h2>
       <p>XML-RPC ir vecāks WordPress interfeiss ārējiem savienojumiem (piem., senākām mobilajām lietotnēm) - tas ir arī izplatīts brute-force uzbrukumu mērķis. Ja to nelieto (lielākā daļa vietņu nelieto), droši izslēdz.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_filter</span>(<span class="tok-str">'xmlrpc_enabled'</span>, <span class="tok-str">'__return_false'</span>);</code></pre>
+    </section>
+
+    <section class="doc-section" id="snip-comment-spam">
+      <h2>Komentāru spams (droši pamata iestatījumi)</h2>
+      <p>Pēc noklusējuma jebkurš var atstāt komentāru bez apstiprinājuma - un komentāru forma nosūta tieši uz <code>wp-comments-post.php</code>, apejot tavu tēmas kodu un jebkādu JS validāciju pavisam. Tāpēc klientpuses pārbaudes pret botiem nedara neko - fiksācija jāliek servera pusē.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 1) Notur komentāru moderācijā, ja tajā ir 1 vai vairāk saišu -
+// spama boti gandrīz vienmēr pievieno saiti, īsti komentētāji reti</span>
+<span class="tok-fn">update_option</span>(<span class="tok-str">'comment_max_links'</span>, 1);
+
+<span class="tok-com">// 2) Vienkāršs "honeypot" lauks - cilvēks to neredz un neaizpilda,
+// bots aizpilda visu, ko atrod</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'comment_form_after_fields'</span>, <span class="tok-kw">function</span> () {
+    <span class="tok-kw">echo</span> <span class="tok-str">'&lt;p style="position:absolute; left:-9999px;"&gt;
+        &lt;label&gt;Atstāj tukšu &lt;input type="text" name="wpds_honeypot" value=""&gt;&lt;/label&gt;
+    &lt;/p&gt;'</span>;
+});
+<span class="tok-fn">add_filter</span>(<span class="tok-str">'pre_comment_approved'</span>, <span class="tok-kw">function</span> (<span class="tok-fn">$approved</span>) {
+    <span class="tok-kw">if</span> (!<span class="tok-fn">empty</span>(<span class="tok-fn">$_POST</span>[<span class="tok-str">'wpds_honeypot'</span>])) {
+        <span class="tok-kw">return</span> <span class="tok-kw">new</span> WP_Error(<span class="tok-str">'spam_detected'</span>, <span class="tok-str">'Komentārs atzīmēts kā spams.'</span>);
+    }
+    <span class="tok-kw">return</span> <span class="tok-fn">$approved</span>;
+});</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Šis ir bezmaksas, bez-atkarību pagaidu risinājums - īstais, pilnais fiksējums ir <strong>Akismet</strong> spraudnis. Tas jau nāk WordPress kodā komplektā, bet ir jāaktivizē un jāpieslēdz bezmaksas API atslēgai (Plugins → Akismet Anti-spam → Activate), lai tas sāktu strādāt.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="snip-user-enum">
+      <h2>Lietotājvārdu noplūde (REST API &amp; ?author=)</h2>
+      <p>Divas WordPress noklusējuma "funkcijas" atklāj administratoru lietotājvārdus jebkuram apmeklētājam bez pieslēgšanās: REST API galapunkts <code>/wp-json/wp/v2/users</code> un vecāks paņēmiens - atverot <code>tavavietne.lv/?author=1</code>, WordPress novirza uz autora arhīvu, kura URL satur lietotājvārdu. Brute-force uzbrukumam tad vairs nevajag minēt lietotājvārdu, tikai paroli.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 1) Noņem /wp-json/wp/v2/users galapunktus no REST API</span>
+<span class="tok-fn">add_filter</span>(<span class="tok-str">'rest_endpoints'</span>, <span class="tok-kw">function</span> (<span class="tok-fn">$endpoints</span>) {
+    <span class="tok-kw">unset</span>(<span class="tok-fn">$endpoints</span>[<span class="tok-str">'/wp/v2/users'</span>]);
+    <span class="tok-kw">unset</span>(<span class="tok-fn">$endpoints</span>[<span class="tok-str">'/wp/v2/users/(?P&lt;id&gt;[\d]+)'</span>]);
+    <span class="tok-kw">return</span> <span class="tok-fn">$endpoints</span>;
+});
+
+<span class="tok-com">// 2) Novirza ?author=1 stila pieprasījumus prom no autora arhīva,
+// kura URL citādi atklāj lietotājvārdu</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'template_redirect'</span>, <span class="tok-kw">function</span> () {
+    <span class="tok-kw">if</span> (<span class="tok-fn">is_author</span>() &amp;&amp; <span class="tok-fn">isset</span>(<span class="tok-fn">$_GET</span>[<span class="tok-str">'author'</span>])) {
+        <span class="tok-fn">wp_safe_redirect</span>(<span class="tok-fn">home_url</span>(<span class="tok-str">'/'</span>), 301);
+        <span class="tok-kw">exit</span>;
+    }
+});</code></pre>
+    </section>
+
+    <section class="doc-section" id="snip-file-edit">
+      <h2>Izslēgt failu rediģēšanu admin panelī</h2>
+      <p>Pēc noklusējuma jebkurš administratora lomas lietotājs var tieši no admin paneļa (Izskats → Tēmas redaktors / Spraudņi → Spraudņa redaktors) rediģēt tēmas un spraudņu PHP failus. Ja tāds konts (vai tikai tā parole) tiek uzlauzts, uzbrucējam tā ir tūlītēja, iebūvēta iespēja ierakstīt un izpildīt savu PHP kodu serverī - bez nepieciešamības meklēt citu ievainojamību.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// wp-config.php</span>
+<span class="tok-kw">define</span>(<span class="tok-str">'DISALLOW_FILE_EDIT'</span>, <span class="tok-kw">true</span>);</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Radniecīga konstante <code>DISALLOW_FILE_MODS</code> iet vēl tālāk - papildus failu redaktoram bloķē arī spraudņu/tēmu instalēšanu un atjaunināšanu tieši no admin paneļa. To parasti izmanto vietnēm, kur izvietošana notiek tikai caur Git/deploy procesu, nevis admin paneli.</p>
+      </div>
     </section>
 
     <section class="doc-section" id="snip-comments">
@@ -1165,7 +1225,7 @@
   </main>
 </div>
 
-<script src="../js/theme.js?v=55"></script>
-<script src="../js/main.js?v=55"></script>
+<script src="../js/theme.js?v=56"></script>
+<script src="../js/main.js?v=56"></script>
 </body>
 </html>
