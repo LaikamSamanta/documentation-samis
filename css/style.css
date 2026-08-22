@@ -78,6 +78,12 @@
   --accent-soft: rgba(157, 92, 255, 0.16);
   --accent-glow: rgba(157, 92, 255, 0.45);
 
+  /* code-block specific surface/text - own variables (not --bg-elevated /
+     --text-secondary) so this can be tuned for readability independently
+     of cards, callouts, and other elevated surfaces */
+  --code-bg: #121219;
+  --code-text: #a6a3c4;
+
   /* code syntax highlight colors - bright/saturated so they read well
      against the dark code-block background */
   --tok-kw: #c084fc;
@@ -127,12 +133,19 @@
   --accent-soft: rgba(124, 58, 237, 0.09);
   --accent-glow: rgba(124, 58, 237, 0.25);
 
+  /* code-block specific surface/text - a plain white block with medium-gray
+     text read as harsh/washed-out, so this uses a soft off-white background
+     (visibly distinct from pure-white cards) and near-black text instead of
+     the lighter --text-secondary used for regular prose */
+  --code-bg: #f4f3fa;
+  --code-text: #2b2740;
+
   /* code syntax highlight colors - the dark-theme values are too light/washed
      out against a white code-block background, so darken each while keeping
-     the same hue family (verified >=4.5:1 contrast against #ffffff) */
+     the same hue family (verified >=4.5:1 contrast against --code-bg) */
   --tok-kw: #6d28d9;
-  --tok-str: #15803d;
-  --tok-com: #6f6b8a;
+  --tok-str: #166534;
+  --tok-com: #605c7a;
   --tok-fn: #1d4ed8;
 
   /* darker tints of each category color, for adequate contrast on light backgrounds
@@ -1062,7 +1075,7 @@ footer.site-footer a:hover {
 .tag.hard { background: rgba(248, 113, 113, 0.15); color: #f87171; }
 
 pre.code-block {
-  background: var(--bg-elevated);
+  background: var(--code-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 0;
@@ -1080,7 +1093,7 @@ pre.code-block {
   justify-content: flex-end;
   gap: 10px;
   padding: 10px 20px;
-  background: var(--bg-elevated);
+  background: var(--code-bg);
   border-bottom: 1px solid var(--border);
   border-radius: var(--radius-md) var(--radius-md) 0 0;
 }
@@ -1126,7 +1139,7 @@ pre.code-block code {
   display: block;
   overflow-x: auto;
   padding: 14px 20px 18px;
-  color: var(--text-secondary);
+  color: var(--code-text);
 }
 .tok-kw { color: var(--tok-kw); }
 .tok-str { color: var(--tok-str); }
