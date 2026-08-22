@@ -23,6 +23,21 @@ document.addEventListener("DOMContentLoaded", function () {
       var href = card.getAttribute("data-href");
       if (href) window.location.href = href;
     });
+
+    // keyboard accessibility - these are <article> elements with only a
+    // mouse click handler, so without this a keyboard/screen-reader user
+    // can't reach or activate them at all
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("role", "link");
+    var cardTitle = card.querySelector("h3");
+    if (cardTitle) card.setAttribute("aria-label", cardTitle.textContent.trim() + " kategorija");
+    card.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        var href = card.getAttribute("data-href");
+        if (href) window.location.href = href;
+      }
+    });
   });
 
   // live filter for category cards - matches per WORD (order-independent),
