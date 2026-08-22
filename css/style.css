@@ -395,30 +395,52 @@ code {
   display: block;
 }
 
+/* .btn-back is used for two different things that used to look
+   identical - links to OTHER pages within this same category
+   (Cheatsheet, Problēmas, etc.) and the one "Kategorijas" link back to
+   the homepage. Default styling below is the category-colored variant;
+   the [href*="index.html"] override further down restores the neutral
+   look specifically for "Kategorijas", so at a glance the colored pills
+   read as "belongs to this category" and the plain one reads as "leave
+   this category entirely". */
 .btn-back {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 9px 14px;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  background: var(--bg-card);
-  color: var(--text-secondary);
+  border: 1px solid color-mix(in srgb, var(--page-accent) 35%, var(--border));
+  background: var(--page-accent-soft);
+  color: var(--page-accent-2);
   font-size: 13.5px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s var(--ease);
 }
 .btn-back:hover {
-  color: var(--text);
+  color: var(--page-accent-2);
   border-color: var(--page-accent);
   transform: translateX(-2px);
 }
 .btn-back:focus-visible {
   outline: none;
-  color: var(--text);
+  color: var(--page-accent-2);
   border-color: var(--page-accent);
   box-shadow: 0 0 0 3px var(--page-accent-soft);
+}
+
+.btn-back[href*="index.html"] {
+  border-color: var(--border);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+}
+.btn-back[href*="index.html"]:hover {
+  color: var(--text);
+  border-color: var(--page-accent);
+}
+.btn-back[href*="index.html"]:focus-visible {
+  color: var(--text);
+  border-color: var(--page-accent);
 }
 
 .quick-link {
