@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="lv" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="manifest" href="../manifest.json" />
+<meta name="theme-color" content="#9d5cff" />
+<title>Docker dokumentācija - Documentation Samis</title>
+<link rel="stylesheet" href="../css/style.css?v=51" />
+<script>
+  (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
+</script>
+</head>
+<body class="cat-docker">
+<div class="bg-glow"></div>
+<div class="bg-grid"></div>
+
+<header class="topbar">
+  <a class="brand" href="../index.html">
+    <span class="mark"><svg viewBox="0 0 32 32" width="30" height="30"><defs><linearGradient id="logomarkG" x1="2" y1="1" x2="30" y2="31" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#6d28d9"/><stop offset="50%" stop-color="#9d5cff"/><stop offset="100%" stop-color="#f472b6"/></linearGradient><radialGradient id="logomarkGlow" cx="0.78" cy="0.18" r="0.65"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.4"/><stop offset="100%" stop-color="#ffffff" stop-opacity="0"/></radialGradient></defs><rect x="1" y="1" width="30" height="30" rx="15" fill="url(#logomarkG)"/><rect x="1" y="1" width="30" height="30" rx="15" fill="url(#logomarkGlow)"/><path d="M 12 9.5 L 6.5 16 L 12 22.5" fill="none" stroke="#000000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M 20 9.5 L 25.5 16 L 20 22.5" fill="none" stroke="#000000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M 17.6 7.5 L 14.4 24.5" fill="none" stroke="#000000" stroke-width="2.2" stroke-linecap="round" stroke-opacity="0.92"/></svg></span>
+    Documentation Samis
+  </a>
+  <div class="topbar-actions">
+    <a class="btn-back" href="../index.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M5 12h14"/></svg>
+      <span class="btn-label">Kategorijas</span>
+    </a>
+    <a class="quick-link" href="riki.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      <span class="btn-label">Rīki</span>
+    </a>
+    <a class="quick-link" href="wordpress-snippets.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      <span class="btn-label">Ātrie risinājumi</span>
+    </a>
+    <button class="icon-btn" id="theme-toggle" title="Pārslēgt tēmu" aria-label="Pārslēgt tēmu">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="doc-shell">
+  <aside class="doc-sidebar">
+    <div class="doc-sidebar-group">
+      <h4>Pamati</h4>
+      <a href="#kas-ir-docker" class="active"><span class="bullet"></span>Kas ir Docker?</a>
+      <a href="#instalacija"><span class="bullet"></span>Instalācija</a>
+      <a href="#pamatjedzieni"><span class="bullet"></span>Pamatjēdzieni</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Konteineru veidošana</h4>
+      <a href="#dockerfile"><span class="bullet"></span>Dockerfile</a>
+      <a href="#docker-compose"><span class="bullet"></span>docker-compose.yml</a>
+      <a href="#wordpress-piemers"><span class="bullet"></span>WordPress + MySQL piemērs</a>
+    </div>
+    <div class="doc-sidebar-group">
+      <h4>Praktiski</h4>
+      <a href="#volumes"><span class="bullet"></span>Volumes (dati)</a>
+      <a href="#komandas"><span class="bullet"></span>Noderīgas komandas</a>
+    </div>
+  </aside>
+
+  <main class="doc-main">
+    <div class="doc-breadcrumb">
+      <a href="../index.html">Sākums</a>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span>Docker</span>
+    </div>
+
+    <div class="doc-header">
+      <div class="icon" style="background: var(--c-docker-soft); color: var(--c-docker);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4a2 2 0 0 0 1-1.73z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+      </div>
+      <h1 style="margin-bottom:0;">Docker</h1>
+    </div>
+    <p class="doc-lead">Konteinerizēta vietējā izstrāde - visa projekta vide (PHP versija, MySQL, spraudņi) aprakstīta failos, kas nonāk Git repozitorijā, tāpēc jebkurš komandas loceklis to var palaist identiski, neatkarīgi no sava datora.</p>
+
+    <section class="doc-section" id="kas-ir-docker">
+      <h2>Kas ir Docker?</h2>
+      <p>Docker palaiž lietotni <strong>konteinerī</strong> - izolētā vidē, kurā jau iepakots viss nepieciešamais (PHP, MySQL, to versijas un konfigurācija), neatkarīgi no tā, kas instalēts pašā datorā. Rezultāts - "pie manis strādā" problēma pazūd, jo visi izstrādātāji (un ražošanas serveris) palaiž <strong>identisku</strong> vidi.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>Konteiners vs virtuālā mašīna</h4><p>Virtuālā mašīna emulē VISU datoru (savu operētājsistēmas kodolu) - smaga un lēna. Konteiners koplieto resursdatora kodolu un izolē tikai procesu/failus - startējas sekundēs, nevis minūtēs.</p></div>
+        <div class="doc-mini-card"><h4>Image vs konteiners</h4><p><strong>Image</strong> ir "recepte" - nemainīgs veidnes fails ar visu nepieciešamo. <strong>Konteiners</strong> ir šīs receptes IZPILDĪTA kopija - vienu image var palaist vairākos konteineros vienlaicīgi.</p></div>
+        <div class="doc-mini-card"><h4>Kāpēc WordPress/PHP izstrādei</h4><p>Vietējā vidē var precīzi atkārtot servera PHP versiju, paplašinājumus un MySQL versiju - novērš pārsteigumus, kad kods strādā lokāli, bet salūzt uz reālā servera.</p></div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="instalacija">
+      <h2>Instalācija</h2>
+      <p>Windows/Mac lietotājiem vienkāršākais ceļš ir <a href="https://www.docker.com/products/docker-desktop/" target="_blank" rel="noopener">Docker Desktop</a> - grafiska lietotne, kas iekļauj gan Docker Engine, gan <code>docker-compose</code>. Linux serveriem instalē Docker Engine tieši:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Ubuntu/Debian - oficiālais uzstādīšanas skripts</span>
+curl -fsSL https://get.docker.com | sh
+
+<span class="tok-com"># Pārbauda, vai instalācija izdevās</span>
+docker --version
+docker compose version</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Jaunākās Docker versijās komanda ir <code>docker compose</code> (ar atstarpi, iebūvēta Docker daļā) - vecākos ceļvežos vēl sastopama <code>docker-compose</code> (ar defisi, atsevišķa programma). Funkcionāli tās ir vienādas, bet jaunajos projektos der izmantot <code>docker compose</code>.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="pamatjedzieni">
+      <h2>Pamatjēdzieni</h2>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>Dockerfile</h4><p>Teksta fails ar soli-pa-solim instrukcijām, kā uzbūvēt savu image - sākot no bāzes image (piem., "php:8.2-apache") un pievienojot savu kodu/konfigurāciju.</p></div>
+        <div class="doc-mini-card"><h4>docker-compose.yml</h4><p>Apraksta VAIRĀKUS konteinerus, kas strādā kopā (piem., PHP + MySQL + phpMyAdmin), ar vienu komandu tos visus palaižot un savienojot vienā tīklā.</p></div>
+        <div class="doc-mini-card"><h4>Volume</h4><p>Mape, kas "izdzīvo" arī pēc konteinera dzēšanas - bez tā visi datubāzes dati pazustu ikreiz, kad konteineru pārstartē.</p></div>
+        <div class="doc-mini-card"><h4>Port mapping</h4><p>Savieno konteinera iekšējo portu (piem., 80) ar datora reālo portu (piem., 8080) - bez tā konteiners no ārpuses nav sasniedzams pārlūkā.</p></div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="dockerfile">
+      <h2>Dockerfile</h2>
+      <p>Piemērs - pielāgots PHP + Apache image ar vajadzīgajiem PHP paplašinājumiem WordPress vajadzībām:</p>
+      <pre class="code-block"><span class="lang">text</span><code><span class="tok-com"># Dockerfile</span>
+FROM php:8.2-apache
+
+<span class="tok-com"># PHP paplašinājumi, kas WordPress nepieciešami MySQL savienojumam un attēlu apstrādei</span>
+RUN docker-php-ext-install mysqli pdo pdo_mysql
+RUN apt-get update && apt-get install -y libpng-dev && docker-php-ext-install gd
+
+<span class="tok-com"># Ieslēdz Apache "mod_rewrite" - nepieciešams WordPress pastāvīgajām saitēm (permalinks)</span>
+RUN a2enmod rewrite
+
+<span class="tok-com"># Kopē pašreizējās mapes saturu konteinera web-servera mapē</span>
+COPY . /var/www/html/</code></pre>
+      <p>Uzbūvē savu image no šī faila ar <code>docker build -t mana-vietne .</code> (punkts beigās nozīmē "izmanto Dockerfile pašreizējā mapē") - bet praksē WordPress projektiem parasti pietiek ar gatavu oficiālo <code>wordpress</code> image (skat. zemāk), un pašrocīgs Dockerfile vajadzīgs tikai tad, ja nepieciešami PAPILDU PHP paplašinājumi vai sistēmas pakotnes.</p>
+    </section>
+
+    <section class="doc-section" id="docker-compose">
+      <h2>docker-compose.yml</h2>
+      <p>Vairāku konteineru apraksts vienā failā - katra atslēga (<code>wordpress</code>, <code>db</code>) ir viens <strong>serviss</strong> (konteiners), kas startējas un tīklojas automātiski.</p>
+      <pre class="code-block"><span class="lang">text</span><code><span class="tok-com"># docker-compose.yml</span>
+services:
+  wordpress:
+    image: wordpress:latest
+    ports:
+      - "8080:80"          <span class="tok-com"># dators:8080 -&gt; konteiners:80</span>
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wp_lietotajs
+      WORDPRESS_DB_PASSWORD: wp_parole
+    volumes:
+      - ./wp-content:/var/www/html/wp-content   <span class="tok-com"># tēmas/spraudņi paliek pieejami arī ārpus konteinera</span>
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wp_lietotajs
+      MYSQL_PASSWORD: wp_parole
+      MYSQL_ROOT_PASSWORD: sakne_parole
+    volumes:
+      - db_dati:/var/lib/mysql   <span class="tok-com"># datubāzes dati saglabājas arī pēc konteinera dzēšanas</span>
+
+volumes:
+  db_dati:</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Servisi savā starpā sazinās pēc <strong>servisa nosaukuma</strong> (šeit - <code>db</code>), nevis <code>localhost</code> - tāpēc <code>WORDPRESS_DB_HOST</code> vērtība ir <code>db</code>, nevis <code>127.0.0.1</code>. Docker Compose automātiski izveido iekšēju tīklu, kurā katrs serviss redz pārējos pēc nosaukuma.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="wordpress-piemers">
+      <h2>WordPress + MySQL piemērs</h2>
+      <p>Ar iepriekšējās sadaļas <code>docker-compose.yml</code> failu, pilna vietējā WordPress vide startējas ar VIENU komandu:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Startē abus konteinerus fonā (-d = detached)</span>
+docker compose up -d
+
+<span class="tok-com"># Vietne pieejama: http://localhost:8080</span>
+<span class="tok-com"># WordPress instalācijas vednis parādīsies automātiski pirmajā reizē</span>
+
+<span class="tok-com"># Aptur un noņem konteinerus (bet volumes/dati paliek)</span>
+docker compose down</code></pre>
+      <p>Lai pievienotu <a href="https://hub.docker.com/_/phpmyadmin" target="_blank" rel="noopener">phpMyAdmin</a> (grafisks datubāzes pārvaldnieks) tai pašai videi, pievieno vēl vienu servisu <code>docker-compose.yml</code> failā:</p>
+      <pre class="code-block"><span class="lang">text</span><code>  phpmyadmin:
+    image: phpmyadmin:latest
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+    depends_on:
+      - db</code></pre>
+      <p>Pēc <code>docker compose up -d</code> phpMyAdmin būs pieejams <code>http://localhost:8081</code>, jau savienots ar <code>db</code> servisu.</p>
+    </section>
+
+    <section class="doc-section" id="volumes">
+      <h2>Volumes (dati)</h2>
+      <p>Konteineri pēc noklusējuma ir <strong>bez atmiņas</strong> - dzēšot konteineru, dzēšas arī viss tā iekšienē izveidotais (ieskaitot datubāzes datus). <strong>Volume</strong> ir mape, ko Docker pārvalda ĀRPUS konteinera dzīves cikla, tāpēc dati pārdzīvo <code>docker compose down</code>.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>Named volume</h4><p><code>db_dati:/var/lib/mysql</code> - Docker pats pārvalda glabāšanas vietu. Vienkāršākais variants datubāzēm, kur precīzs faila ceļš datorā nav svarīgs.</p></div>
+        <div class="doc-mini-card"><h4>Bind mount</h4><p><code>./wp-content:/var/www/html/wp-content</code> - piesaista KONKRĒTU mapi no paša datora. Der kodam (tēmas, spraudņi), ko rediģē tieši ar ierasto teksta redaktoru.</p></div>
+      </div>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>docker compose down -v</code> (ar <code>-v</code>) papildus noņem arī VOLUMES, tātad izdzēš visus datus neatgriezeniski - parastais <code>docker compose down</code> (bez <code>-v</code>) volumes saglabā.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="komandas">
+      <h2>Noderīgas komandas</h2>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Rāda visus PALAISTOS konteinerus</span>
+docker ps
+
+<span class="tok-com"># Rāda VISUS konteinerus, arī apturētos</span>
+docker ps -a
+
+<span class="tok-com"># Skatās konkrēta servisa žurnālu (log) tiešraidē</span>
+docker compose logs -f wordpress
+
+<span class="tok-com"># Atver komandrindu KONTEINERA iekšienē (der failu/datubāzes pārbaudei)</span>
+docker compose exec wordpress bash
+docker compose exec db mysql -u root -p
+
+<span class="tok-com"># Pārstartē vienu konkrētu servisu, nepārstartējot pārējos</span>
+docker compose restart wordpress
+
+<span class="tok-com"># Noņem NEIZMANTOTUS images/konteinerus/tīklus - atbrīvo diska vietu</span>
+docker system prune</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>docker system prune</code> pēc noklusējuma neaiztiek volumes (dati ir droši), bet gan noņem NEIZMANTOTUS images/konteinerus/build kešatmiņu - der pievienot <code>-a</code> tikai tad, ja tiešām jāatbrīvo maksimāli daudz vietas, jo tas izdzēsīs arī images, kas varētu vēl noderēt.</p>
+      </div>
+    </section>
+
+    <div class="doc-pager">
+      <a href="git.html"><span class="lbl">← Iepriekšējais</span>Git</a>
+      <a class="to-next" href="../index.html"><span class="lbl">Atpakaļ →</span>Visas kategorijas</a>
+    </div>
+  </main>
+</div>
+
+<script src="../js/theme.js?v=51"></script>
+<script src="../js/main.js?v=51"></script>
+</body>
+</html>

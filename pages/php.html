@@ -10,7 +10,7 @@
 <link rel="manifest" href="../manifest.json" />
 <meta name="theme-color" content="#9d5cff" />
 <title>PHP dokumentācija - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=50" />
+<link rel="stylesheet" href="../css/style.css?v=51" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -50,36 +50,58 @@
 
 <div class="doc-shell">
   <aside class="doc-sidebar">
-    <div class="doc-sidebar-group">
-      <h4>Pamati</h4>
-      <a href="#ievads" class="active"><span class="bullet"></span>Ievads PHP</a>
-      <a href="#sintakse"><span class="bullet"></span>Sintakse &amp; tipi</a>
-      <a href="#konstantes"><span class="bullet"></span>Konstantes</a>
-      <a href="#nosacijumi-cikli"><span class="bullet"></span>Nosacījumi &amp; cikli</a>
-      <a href="#masivi"><span class="bullet"></span>Masīvi</a>
-      <a href="#strings"><span class="bullet"></span>String funkcijas</a>
+    <div class="doc-sidebar-accordion open">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Pamati</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#ievads" class="active"><span class="bullet"></span>Ievads PHP</a>
+        <a href="#sintakse"><span class="bullet"></span>Sintakse &amp; tipi</a>
+        <a href="#konstantes"><span class="bullet"></span>Konstantes</a>
+        <a href="#nosacijumi-cikli"><span class="bullet"></span>Nosacījumi &amp; cikli</a>
+        <a href="#masivi"><span class="bullet"></span>Masīvi</a>
+        <a href="#strings"><span class="bullet"></span>String funkcijas</a>
+      </div>
     </div>
-    <div class="doc-sidebar-group">
-      <h4>Praktiski</h4>
-      <a href="#superglobali"><span class="bullet"></span>Superglobālie mainīgie</a>
-      <a href="#sesijas"><span class="bullet"></span>Sesijas &amp; sīkdatnes</a>
-      <a href="#unix-timestamps"><span class="bullet"></span>Unix laika zīmogi &amp; "expires"</a>
-      <a href="#include"><span class="bullet"></span>include / require</a>
-      <a href="#klaudas"><span class="bullet"></span>Kļūdu apstrāde</a>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Praktiski</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#superglobali"><span class="bullet"></span>Superglobālie mainīgie</a>
+        <a href="#sesijas"><span class="bullet"></span>Sesijas &amp; sīkdatnes</a>
+        <a href="#unix-timestamps"><span class="bullet"></span>Unix laika zīmogi &amp; "expires"</a>
+        <a href="#include"><span class="bullet"></span>include / require</a>
+        <a href="#klaudas"><span class="bullet"></span>Kļūdu apstrāde</a>
+      </div>
     </div>
-    <div class="doc-sidebar-group">
-      <h4>OOP</h4>
-      <a href="#klases"><span class="bullet"></span>Klases &amp; objekti</a>
-      <a href="#magiskas-metodes"><span class="bullet"></span>Maģiskās metodes</a>
-      <a href="#mantojums"><span class="bullet"></span>Mantojums</a>
-      <a href="#self-static-parent"><span class="bullet"></span>self, static, parent</a>
-      <a href="#interfeisi"><span class="bullet"></span>Interfeisi</a>
-      <a href="#traits"><span class="bullet"></span>Traits</a>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>OOP</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#klases"><span class="bullet"></span>Klases &amp; objekti</a>
+        <a href="#magiskas-metodes"><span class="bullet"></span>Maģiskās metodes</a>
+        <a href="#mantojums"><span class="bullet"></span>Mantojums</a>
+        <a href="#self-static-parent"><span class="bullet"></span>self, static, parent</a>
+        <a href="#interfeisi"><span class="bullet"></span>Interfeisi</a>
+        <a href="#traits"><span class="bullet"></span>Traits</a>
+      </div>
     </div>
-    <div class="doc-sidebar-group">
-      <h4>Rīki</h4>
-      <a href="#datubaze"><span class="bullet"></span>Datubāzes (PDO)</a>
-      <a href="#composer"><span class="bullet"></span>Composer</a>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Rīki</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#datubaze"><span class="bullet"></span>Datubāzes (PDO)</a>
+        <a href="#composer"><span class="bullet"></span>Composer</a>
+        <a href="#testesana-php"><span class="bullet"></span>Testēšana ar PHPUnit</a>
+        <a href="#env-mainigie"><span class="bullet"></span>Vides mainīgie (.env)</a>
+      </div>
     </div>
   </aside>
 
@@ -728,6 +750,88 @@ composer require dompdf/dompdf</code></pre>
       </div>
     </section>
 
+    <section class="doc-section" id="testesana-php">
+      <h2>Testēšana ar PHPUnit</h2>
+      <p><a href="https://phpunit.de/" target="_blank" rel="noopener">PHPUnit</a> ir standarta PHP testēšanas rīks - katrs tests pārbauda vienu konkrētu funkcijas/metodes uzvedību, un tos palaiž automātiski, uzreiz parādot, ja izmaiņas kaut kur netīši sabojā jau strādājošu kodu.</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Instalē PHPUnit kā izstrādes atkarību (skat. Composer sadaļu augstāk)</span>
+composer require --dev phpunit/phpunit</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-com">// src/Kalkulators.php</span>
+<span class="tok-kw">class</span> <span class="tok-fn">Kalkulators</span> {
+    <span class="tok-kw">public function</span> <span class="tok-fn">summa</span>(<span class="tok-kw">float</span> <span class="tok-fn">$a</span>, <span class="tok-kw">float</span> <span class="tok-fn">$b</span>): <span class="tok-kw">float</span> {
+        <span class="tok-kw">return</span> <span class="tok-fn">$a</span> + <span class="tok-fn">$b</span>;
+    }
+
+    <span class="tok-kw">public function</span> <span class="tok-fn">dala</span>(<span class="tok-kw">float</span> <span class="tok-fn">$a</span>, <span class="tok-kw">float</span> <span class="tok-fn">$b</span>): <span class="tok-kw">float</span> {
+        <span class="tok-kw">if</span> (<span class="tok-fn">$b</span> === 0.0) {
+            <span class="tok-kw">throw new</span> <span class="tok-fn">InvalidArgumentException</span>(<span class="tok-str">'Nevar dalīt ar nulli'</span>);
+        }
+        <span class="tok-kw">return</span> <span class="tok-fn">$a</span> / <span class="tok-fn">$b</span>;
+    }
+}</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-com">// tests/KalkulatorsTest.php</span>
+<span class="tok-kw">use</span> PHPUnit\Framework\TestCase;
+
+<span class="tok-kw">require_once</span> __DIR__ . <span class="tok-str">'/../src/Kalkulators.php'</span>;
+
+<span class="tok-kw">class</span> <span class="tok-fn">KalkulatorsTest</span> <span class="tok-kw">extends</span> <span class="tok-fn">TestCase</span> {
+    <span class="tok-kw">private</span> <span class="tok-fn">Kalkulators</span> <span class="tok-fn">$kalkulators</span>;
+
+    <span class="tok-kw">protected function</span> <span class="tok-fn">setUp</span>(): <span class="tok-kw">void</span> {
+        <span class="tok-com">// izpildās PIRMS katra atsevišķa testa - garantē tīru sākumstāvokli</span>
+        <span class="tok-kw">$this</span>->kalkulators = <span class="tok-kw">new</span> <span class="tok-fn">Kalkulators</span>();
+    }
+
+    <span class="tok-kw">public function</span> <span class="tok-fn">testSummaSaskaitaDivusSkaitlus</span>(): <span class="tok-kw">void</span> {
+        <span class="tok-kw">$this</span>->assertSame(5.0, <span class="tok-kw">$this</span>->kalkulators->summa(2, 3));
+    }
+
+    <span class="tok-kw">public function</span> <span class="tok-fn">testDalaArNulliIzmetIznemumu</span>(): <span class="tok-kw">void</span> {
+        <span class="tok-kw">$this</span>->expectException(InvalidArgumentException::class);
+        <span class="tok-kw">$this</span>->kalkulators->dala(5, 0);
+    }
+}</code></pre>
+      <pre class="code-block"><span class="lang">bash</span><code>php vendor/bin/phpunit tests/KalkulatorsTest.php
+
+<span class="tok-com"># OK (2 tests, 2 assertions)</span></code></pre>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>setUp()</h4><p>Izpildās automātiski pirms KATRA testa metodes - der sagatavot "tīru" objektu, lai testi neietekmētu cits citu, izpildoties jebkurā secībā.</p></div>
+        <div class="doc-mini-card"><h4>assertSame() vs assertEquals()</h4><p>assertSame() pārbauda arī TIPU (5 !== "5"), assertEquals() pārbauda tikai vērtību - assertSame() parasti drošāka izvēle.</p></div>
+        <div class="doc-mini-card"><h4>expectException()</h4><p>Pārbauda, ka kods METIENS tieši norādīto izņēmuma tipu - ja izņēmums netiek izmests (vai tiek izmests cits tips), tests neiztur.</p></div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="env-mainigie">
+      <h2>Vides mainīgie (.env)</h2>
+      <p>Datubāzes paroles, API atslēgas un citi noslēpumi <strong>nekad</strong> nedrīkst nonākt Git repozitorijā (arī privātā!) - <code>.env</code> fails tos glabā ārpus koda, un pats <code>.env</code> tiek pievienots <a href="git.html#gitignore"><code>.gitignore</code></a> failam, tāpēc katram izstrādātājam/serverim ir SAVS <code>.env</code> ar savām vērtībām.</p>
+      <pre class="code-block"><span class="lang">bash</span><code>composer require vlucas/phpdotenv</code></pre>
+      <pre class="code-block"><span class="lang">text</span><code><span class="tok-com"># .env (nekad Git repozitorijā!)</span>
+DB_HOST=localhost
+DB_NAME=mana_datubaze
+DB_USER=root
+DB_PASS=slepenaParole123</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-kw">require_once</span> __DIR__ . <span class="tok-str">'/vendor/autoload.php'</span>;
+
+<span class="tok-fn">$dotenv</span> = Dotenv\Dotenv::createImmutable(__DIR__);
+<span class="tok-fn">$dotenv</span>->load();
+
+<span class="tok-kw">echo</span> <span class="tok-str">"Host: "</span> . <span class="tok-fn">$_ENV</span>[<span class="tok-str">'DB_HOST'</span>] . <span class="tok-str">"\n"</span>;
+<span class="tok-kw">echo</span> <span class="tok-str">"Datubāze: "</span> . <span class="tok-fn">$_ENV</span>[<span class="tok-str">'DB_NAME'</span>] . <span class="tok-str">"\n"</span>;
+
+<span class="tok-com">// tagad var lietot PDO savienojumam, nevis rakstīt paroli tieši kodā:</span>
+<span class="tok-fn">$pdo</span> = <span class="tok-kw">new</span> <span class="tok-fn">PDO</span>(
+    <span class="tok-str">"mysql:host={$_ENV['DB_HOST']};dbname={$_ENV['DB_NAME']}"</span>,
+    <span class="tok-fn">$_ENV</span>[<span class="tok-str">'DB_USER'</span>],
+    <span class="tok-fn">$_ENV</span>[<span class="tok-str">'DB_PASS'</span>]
+);</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Vienmēr pievieno projekta saknē arī <code>.env.example</code> failu (BEZ īstajām vērtībām, tikai lauku nosaukumiem) un TO commito Git - tas parāda pārējiem komandas locekļiem, kādi vides mainīgie vispār nepieciešami, nepakļaujot riskam nevienu īsto paroli.</p>
+      </div>
+    </section>
+
     <div class="doc-pager">
       <a href="javascript.html"><span class="lbl">← Iepriekšējais</span>JavaScript</a>
       <a class="to-next" href="web-izveide.html"><span class="lbl">Tālāk →</span>Tīkls</a>
@@ -735,7 +839,7 @@ composer require dompdf/dompdf</code></pre>
   </main>
 </div>
 
-<script src="../js/theme.js?v=50"></script>
-<script src="../js/main.js?v=50"></script>
+<script src="../js/theme.js?v=51"></script>
+<script src="../js/main.js?v=51"></script>
 </body>
 </html>

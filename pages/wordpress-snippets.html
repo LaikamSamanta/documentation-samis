@@ -10,7 +10,7 @@
 <link rel="manifest" href="../manifest.json" />
 <meta name="theme-color" content="#9d5cff" />
 <title>Ātrie risinājumi - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=50" />
+<link rel="stylesheet" href="../css/style.css?v=51" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -160,6 +160,15 @@
         <a href="#snip-cf7-autofill"><span class="bullet"></span>Automātiska aizpilde pieteikušamies</a>
         <a href="#snip-cf7-valoda"><span class="bullet"></span>Forma divās valodās (pēc URL)</a>
         <a href="#snip-cf7-assets"><span class="bullet"></span>Ielādēt CF7 skriptus tikai vajadzīgajā lapā</a>
+      </div>
+    </div>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>E-pasti (SMTP)</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#snip-smtp"><span class="bullet"></span>Uzticama e-pastu sūtīšana caur SMTP</a>
       </div>
     </div>
   </aside>
@@ -1118,6 +1127,33 @@
       </div>
     </section>
 
+    <section class="doc-section" id="snip-smtp">
+      <h2>Uzticama e-pastu sūtīšana caur SMTP</h2>
+      <p>WordPress <code>wp_mail()</code> pēc noklusējuma izmanto servera PHP <code>mail()</code> funkciju - daudzos hostingos tā ir neuzticama vai vispār izslēgta (e-pasti pazūd vai nonāk surogātpastā). Risinājums - liec <code>wp_mail()</code> sūtīt caur ĪSTU SMTP serveri (Gmail, hostinga pašu SMTP, SendGrid u.c.), izmantojot <code>phpmailer_init</code> āķi, kas ļauj pārkonfigurēt WordPress iebūvēto PHPMailer bibliotēku.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'phpmailer_init'</span>, <span class="tok-kw">function</span>(<span class="tok-fn">$phpmailer</span>) {
+    <span class="tok-fn">$phpmailer</span>->isSMTP();
+    <span class="tok-fn">$phpmailer</span>->Host = <span class="tok-str">'smtp.piemers.lv'</span>;
+    <span class="tok-fn">$phpmailer</span>->SMTPAuth = <span class="tok-kw">true</span>;
+    <span class="tok-fn">$phpmailer</span>->Port = 587;
+    <span class="tok-fn">$phpmailer</span>->Username = <span class="tok-str">'noreply@piemers.lv'</span>;
+    <span class="tok-fn">$phpmailer</span>->Password = <span class="tok-fn">$_ENV</span>[<span class="tok-str">'SMTP_PASSWORD'</span>] ?? <span class="tok-str">''</span>; <span class="tok-com">// skat. .env sadaļu PHP kategorijā</span>
+    <span class="tok-fn">$phpmailer</span>->SMTPSecure = <span class="tok-str">'tls'</span>;
+    <span class="tok-fn">$phpmailer</span>->From = <span class="tok-str">'noreply@piemers.lv'</span>;
+    <span class="tok-fn">$phpmailer</span>->FromName = <span class="tok-fn">get_bloginfo</span>(<span class="tok-str">'name'</span>);
+});</code></pre>
+      <p>Pievieno šo <code>functions.php</code> failā (vai spraudnī) - no šī brīža <strong>katrs</strong> <code>wp_mail()</code> izsaukums (arī tas, ko iekšēji izmanto WordPress paroles atiestatīšanai vai jauna lietotāja paziņojumiem) automātiski iet caur norādīto SMTP serveri, nemainot pašu <code>wp_mail()</code> izsaukumu kodu nekur citur.</p>
+      <p>Ātra pārbaude admin panelī vai WP-CLI, vai sūtīšana tiešām strādā:</p>
+      <pre class="code-block"><span class="lang">bash</span><code>wp eval "wp_mail('tavs@epasts.lv', 'Testa vēstule', 'Ja šo saņēmi, SMTP strādā.');"</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><strong>Nekad</strong> neieraksti SMTP paroli tieši kodā, kas nonāk Git repozitorijā - glabā to <code>.env</code> failā (skat. <a href="php.html#env-mainigie">"Vides mainīgie"</a> PHP kategorijā) vai <code>wp-config.php</code> konstantē, kas pati ir ārpus versiju kontroles.</p>
+      </div>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Gmail SMTP izmantošanai (<code>smtp.gmail.com</code>, ports 587) parasti nepieciešama "lietotnes parole" (app password), nevis parastā Google konta parole - jāieslēdz divfaktoru autentifikācija un jāģenerē atsevišķa parole tieši šim nolūkam Google konta drošības iestatījumos.</p>
+      </div>
+    </section>
+
     <div class="doc-pager">
       <a href="wordpress.html"><span class="lbl">← Atpakaļ</span>WordPress dokumentācija</a>
       <a class="to-next" href="../index.html"><span class="lbl">Atpakaļ →</span>Visas kategorijas</a>
@@ -1125,7 +1161,7 @@
   </main>
 </div>
 
-<script src="../js/theme.js?v=50"></script>
-<script src="../js/main.js?v=50"></script>
+<script src="../js/theme.js?v=51"></script>
+<script src="../js/main.js?v=51"></script>
 </body>
 </html>

@@ -45,6 +45,8 @@
   --c-python-soft: rgba(48, 105, 152, 0.15);
   --c-riki: #22d3ee;
   --c-riki-soft: rgba(34, 211, 238, 0.15);
+  --c-docker: #2496ed;
+  --c-docker-soft: rgba(36, 150, 237, 0.15);
 
   /* page-scoped accent - falls back to the brand purple; category pages
      override these (see .cat-* below) so navigation/headings pick up the
@@ -91,6 +93,7 @@
   --c-gdpr-2: color-mix(in srgb, var(--c-gdpr), white 25%);
   --c-python-2: color-mix(in srgb, var(--c-python), white 25%);
   --c-riki-2: color-mix(in srgb, var(--c-riki), white 10%);
+  --c-docker-2: color-mix(in srgb, var(--c-docker), white 15%);
 
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 20px 40px -20px rgba(0, 0, 0, 0.6);
   --shadow-pop: 0 30px 60px -25px rgba(120, 60, 255, 0.35);
@@ -133,6 +136,7 @@
   --c-gdpr-2: color-mix(in srgb, var(--c-gdpr), black 5%);
   --c-python-2: color-mix(in srgb, var(--c-python), black 5%);
   --c-riki-2: color-mix(in srgb, var(--c-riki), black 35%);
+  --c-docker-2: color-mix(in srgb, var(--c-docker), black 15%);
 
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 20px 40px -24px rgba(80, 60, 140, 0.25);
   --shadow-pop: 0 30px 60px -25px rgba(124, 58, 237, 0.25);
@@ -156,6 +160,7 @@ body.cat-css-adv       { --page-accent: var(--c-css-adv);      --page-accent-2: 
 body.cat-gdpr          { --page-accent: var(--c-gdpr);         --page-accent-2: var(--c-gdpr-2);         --page-accent-soft: var(--c-gdpr-soft); }
 body.cat-python        { --page-accent: var(--c-python);       --page-accent-2: var(--c-python-2);       --page-accent-soft: var(--c-python-soft); }
 body.cat-riki          { --page-accent: var(--c-riki);         --page-accent-2: var(--c-riki-2);         --page-accent-soft: var(--c-riki-soft); }
+body.cat-docker        { --page-accent: var(--c-docker);       --page-accent-2: var(--c-docker-2);       --page-accent-soft: var(--c-docker-soft); }
 
 * {
   box-sizing: border-box;
@@ -711,6 +716,7 @@ code {
 .card.gdpr      { --card-color: var(--c-gdpr);      --card-soft: var(--c-gdpr-soft); }
 .card.python    { --card-color: var(--c-python);    --card-soft: var(--c-python-soft); }
 .card.riki      { --card-color: var(--c-riki);      --card-soft: var(--c-riki-soft); }
+.card.docker    { --card-color: var(--c-docker);    --card-soft: var(--c-docker-soft); }
 
 /* ---------- Stats strip ---------- */
 .stats {

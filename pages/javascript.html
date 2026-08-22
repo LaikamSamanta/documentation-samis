@@ -10,7 +10,7 @@
 <link rel="manifest" href="../manifest.json" />
 <meta name="theme-color" content="#9d5cff" />
 <title>JavaScript dokumentācija - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=50" />
+<link rel="stylesheet" href="../css/style.css?v=51" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -50,33 +50,60 @@
 
 <div class="doc-shell">
   <aside class="doc-sidebar">
-    <div class="doc-sidebar-group">
-      <h4>Pamati</h4>
-      <a href="#ievads" class="active"><span class="bullet"></span>Ievads JS</a>
-      <a href="#mainigie"><span class="bullet"></span>Mainīgie &amp; tipi</a>
-      <a href="#nosacijumi"><span class="bullet"></span>Nosacījumi (if/else)</a>
-      <a href="#cikli"><span class="bullet"></span>Cikli (for/while)</a>
-      <a href="#funkcijas"><span class="bullet"></span>Funkcijas</a>
-      <a href="#masivu-metodes"><span class="bullet"></span>Masīvu metodes</a>
+    <div class="doc-sidebar-accordion open">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Pamati</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#ievads" class="active"><span class="bullet"></span>Ievads JS</a>
+        <a href="#mainigie"><span class="bullet"></span>Mainīgie &amp; tipi</a>
+        <a href="#nosacijumi"><span class="bullet"></span>Nosacījumi (if/else)</a>
+        <a href="#cikli"><span class="bullet"></span>Cikli (for/while)</a>
+        <a href="#funkcijas"><span class="bullet"></span>Funkcijas</a>
+        <a href="#masivu-metodes"><span class="bullet"></span>Masīvu metodes</a>
+      </div>
     </div>
-    <div class="doc-sidebar-group">
-      <h4>ES6+</h4>
-      <a href="#klases"><span class="bullet"></span>Klases</a>
-      <a href="#async"><span class="bullet"></span>Async/Await</a>
-      <a href="#destruct"><span class="bullet"></span>Destrukturēšana</a>
-      <a href="#optional-chaining"><span class="bullet"></span>?. un ??</a>
-      <a href="#spread"><span class="bullet"></span>Spread &amp; Rest (...)</a>
-      <a href="#moduli"><span class="bullet"></span>Moduļi</a>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>ES6+</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#klases"><span class="bullet"></span>Klases</a>
+        <a href="#async"><span class="bullet"></span>Async/Await</a>
+        <a href="#destruct"><span class="bullet"></span>Destrukturēšana</a>
+        <a href="#optional-chaining"><span class="bullet"></span>?. un ??</a>
+        <a href="#spread"><span class="bullet"></span>Spread &amp; Rest (...)</a>
+        <a href="#moduli"><span class="bullet"></span>Moduļi</a>
+      </div>
     </div>
-    <div class="doc-sidebar-group">
-      <h4>Praktiski</h4>
-      <a href="#json"><span class="bullet"></span>JSON</a>
-      <a href="#klaudas"><span class="bullet"></span>Kļūdu apstrāde</a>
-      <a href="#storage"><span class="bullet"></span>localStorage</a>
-      <a href="#timers"><span class="bullet"></span>setTimeout / setInterval</a>
-      <a href="#dom"><span class="bullet"></span>DOM manipulācija</a>
-      <a href="#rīki"><span class="bullet"></span>Build rīki</a>
-      <a href="#devtools"><span class="bullet"></span>DevTools &amp; atkļūdošana</a>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Praktiski</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#json"><span class="bullet"></span>JSON</a>
+        <a href="#klaudas"><span class="bullet"></span>Kļūdu apstrāde</a>
+        <a href="#storage"><span class="bullet"></span>localStorage</a>
+        <a href="#timers"><span class="bullet"></span>setTimeout / setInterval</a>
+        <a href="#dom"><span class="bullet"></span>DOM manipulācija</a>
+        <a href="#rīki"><span class="bullet"></span>Build rīki</a>
+        <a href="#devtools"><span class="bullet"></span>DevTools &amp; atkļūdošana</a>
+      </div>
+    </div>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Ietvari &amp; testēšana</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#typescript"><span class="bullet"></span>TypeScript pamati</a>
+        <a href="#testesana-js"><span class="bullet"></span>Testēšana ar Jest</a>
+        <a href="#react-parskats"><span class="bullet"></span>React pārskats</a>
+        <a href="#vue-parskats"><span class="bullet"></span>Vue pārskats</a>
+      </div>
     </div>
   </aside>
 
@@ -568,6 +595,118 @@ copy(dati) <span class="tok-com">// nokopē mainīgā vērtību starpliktuvē k�
       </div>
     </section>
 
+    <section class="doc-section" id="typescript">
+      <h2>TypeScript pamati</h2>
+      <p>TypeScript ir JavaScript ar pievienotu <strong>tipu sistēmu</strong> - kods pirms palaišanas tiek pārbaudīts (kompilēts par parastu JS), un kļūdas kā "aizmirsu lauku" vai "padevu string, kur vajag skaitli" atklājas <strong>uzreiz rakstot kodu</strong>, nevis izpildes laikā pie lietotāja.</p>
+      <pre class="code-block"><span class="lang">ts</span><code><span class="tok-kw">interface</span> <span class="tok-fn">Lietotajs</span> {
+    vards: <span class="tok-kw">string</span>;
+    vecums: <span class="tok-kw">number</span>;
+    epasts?: <span class="tok-kw">string</span>; <span class="tok-com">// ? nozīmē neobligāts lauks</span>
+}
+
+<span class="tok-kw">function</span> <span class="tok-fn">sveiciens</span>(<span class="tok-fn">lietotajs</span>: <span class="tok-fn">Lietotajs</span>): <span class="tok-kw">string</span> {
+    <span class="tok-kw">return</span> <span class="tok-str">`Sveiks, ${lietotajs.vards}! Tu esi ${lietotajs.vecums} gadus vecs.`</span>;
+}
+
+<span class="tok-kw">const</span> <span class="tok-fn">anna</span>: <span class="tok-fn">Lietotajs</span> = { vards: <span class="tok-str">"Anna"</span>, vecums: 25 };
+<span class="tok-fn">console.log</span>(<span class="tok-fn">sveiciens</span>(<span class="tok-fn">anna</span>)); <span class="tok-com">// "Sveiks, Anna! Tu esi 25 gadus vecs."</span>
+
+<span class="tok-com">// Šī rinda NEKOMPILĒSIES - trūkst obligātā lauka 'vecums'</span>
+<span class="tok-kw">const</span> <span class="tok-fn">slikti</span>: <span class="tok-fn">Lietotajs</span> = { vards: <span class="tok-str">"X"</span> };
+<span class="tok-com">// Kļūda: Property 'vecums' is missing in type '{ vards: string; }'</span></code></pre>
+      <p>Papildus tipu pārbaudei parastām vērtībām, <strong>generics</strong> (vispārīgie tipi) ļauj rakstīt funkcijas, kas strādā ar JEBKURU tipu, nezaudējot tipa informāciju:</p>
+      <pre class="code-block"><span class="lang">ts</span><code><span class="tok-kw">function</span> <span class="tok-fn">pirmaisElements</span>&lt;T&gt;(<span class="tok-fn">masivs</span>: T[]): T | <span class="tok-kw">undefined</span> {
+    <span class="tok-kw">return</span> <span class="tok-fn">masivs</span>[0];
+}
+
+<span class="tok-kw">const</span> <span class="tok-fn">skaitlis</span> = <span class="tok-fn">pirmaisElements</span>([1, 2, 3]);      <span class="tok-com">// tips: number | undefined</span>
+<span class="tok-kw">const</span> <span class="tok-fn">teksts</span> = <span class="tok-fn">pirmaisElements</span>([<span class="tok-str">"a"</span>, <span class="tok-str">"b"</span>]); <span class="tok-com">// tips: string | undefined</span></code></pre>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>Kā palaist</h4><p><code>npx tsc fails.ts</code> pārvērš <code>.ts</code> failu par parastu <code>.js</code> - to jau var izpildīt jebkurā pārlūkā vai Node.js, jo pārlūki TypeScript neizprot tieši.</p></div>
+        <div class="doc-mini-card"><h4>interface vs type</h4><p>Abi apraksta objekta formu - <code>interface</code> var vēlāk paplašināt (<code>extends</code>), <code>type</code> ir elastīgāks (var aprakstīt arī savienojumus, piem. <code>"a" | "b"</code>).</p></div>
+        <div class="doc-mini-card"><h4>Kāpēc tas ir vērts</h4><p>Kļūda "cannot read property of undefined" ir viena no biežākajām JS kļūdām produkcijā - TypeScript lielu daļu no tām noķer JAU RAKSTOT kodu, IDE tieši parādot problēmu.</p></div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="testesana-js">
+      <h2>Testēšana ar Jest</h2>
+      <p>Unit testi automātiski pārbauda, vai atsevišķa funkcija dara to, ko tai vajag - uzreiz parāda, ja izmaiņas kaut kur citur netīši sabojā jau strādājošu kodu. <a href="https://jestjs.io/" target="_blank" rel="noopener">Jest</a> ir populārākais JavaScript testēšanas rīks.</p>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// summa.js</span>
+<span class="tok-kw">function</span> <span class="tok-fn">summa</span>(<span class="tok-fn">a</span>, <span class="tok-fn">b</span>) {
+    <span class="tok-kw">return</span> <span class="tok-fn">a</span> + <span class="tok-fn">b</span>;
+}
+
+<span class="tok-fn">module.exports</span> = { summa };</code></pre>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// summa.test.js</span>
+<span class="tok-kw">const</span> { summa } = <span class="tok-fn">require</span>(<span class="tok-str">'./summa'</span>);
+
+<span class="tok-fn">test</span>(<span class="tok-str">'saskaita divus pozitīvus skaitļus'</span>, () =&gt; {
+    <span class="tok-fn">expect</span>(<span class="tok-fn">summa</span>(2, 3)).<span class="tok-fn">toBe</span>(5);
+});
+
+<span class="tok-fn">test</span>(<span class="tok-str">'saskaita ar negatīvu skaitli'</span>, () =&gt; {
+    <span class="tok-fn">expect</span>(<span class="tok-fn">summa</span>(5, -2)).<span class="tok-fn">toBe</span>(3);
+});</code></pre>
+      <p>Palaižot <code>npx jest</code>, Jest automātiski atrod visus <code>*.test.js</code> failus, izpilda katru <code>test()</code> bloku un parāda, kuri iztur (✓) un kuri neiztur (✗) - ja <code>summa()</code> kāds nejauši sabojā, testi to uzreiz parādīs, nevis tas paliks nepamanīts līdz lietotājs sūdzēsies.</p>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Testi der visvairāk funkcijām ar skaidru ieeju/izeju (piem., cenas aprēķins, validācija) - nevis kā "pierādījums, ka kods nekad nesalūzīs", bet kā drošības siets, kas ātri parāda, KAD un KUR kaut kas sabojājās.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="react-parskats">
+      <h2>React pārskats</h2>
+      <p>React ir bibliotēka lietotāja saskarnes (UI) veidošanai no atkārtoti lietojamiem <strong>komponentiem</strong> - katrs komponents ir funkcija, kas atgriež HTML izskatošos elementus (JSX sintakse) un pati "atceras" savu stāvokli (state).</p>
+      <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-kw">import</span> { useState } <span class="tok-kw">from</span> <span class="tok-str">"react"</span>;
+
+<span class="tok-kw">function</span> <span class="tok-fn">Skaititajs</span>() {
+    <span class="tok-kw">const</span> [skaits, setSkaits] = <span class="tok-fn">useState</span>(0); <span class="tok-com">// [vērtība, funkcija to mainīt]</span>
+
+    <span class="tok-kw">return</span> (
+        &lt;div&gt;
+            &lt;p&gt;Skaits: {skaits}&lt;/p&gt;
+            &lt;button onClick={() =&gt; setSkaits(skaits + 1)}&gt;Pieskaitīt&lt;/button&gt;
+        &lt;/div&gt;
+    );
+}
+
+<span class="tok-kw">export default</span> Skaititajs;</code></pre>
+      <p><code>useState(0)</code> ir "hook" - sākotnējā vērtība ir <code>0</code>, un ikreiz, kad izsauc <code>setSkaits(...)</code>, React pats atkārtoti izsauc (re-renderē) komponentu ar jauno vērtību, atjaunojot ekrānā redzamo skaitu. Programmētājam nekad nav manuāli jāatjauno DOM.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>JSX</h4><p>HTML izskatošs sintakse tieši JavaScript kodā - pārlūks to neizprot tieši, tāpēc nepieciešams "build" solis (Vite, Next.js u.c.), kas to pārvērš parastā <code>React.createElement()</code> izsaukumā.</p></div>
+        <div class="doc-mini-card"><h4>Props</h4><p>Dati, ko vecāka komponents padod bērna komponentam - kā funkcijas argumenti, bet HTML atribūtu sintaksē: <code>&lt;Skaititajs sakums={10} /&gt;</code>.</p></div>
+        <div class="doc-mini-card"><h4>Kad izvēlēties React</h4><p>Der lietotnēm ar daudz mainīga, savstarpēji saistīta stāvokļa (dashboard, formas ar validāciju, reāllaika atjauninājumi) - vienkāršai statiskai lapai bieži vien vienkāršs HTML/JS ir pietiekams.</p></div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="vue-parskats">
+      <h2>Vue pārskats</h2>
+      <p>Vue risina to pašu problēmu, ko React (komponenti + reaktīvs stāvoklis), bet ar sintaksi, kas tuvāka parastam HTML/JS - komponents parasti ir viens <code>.vue</code> fails ar atsevišķām <code>&lt;script&gt;</code>, <code>&lt;template&gt;</code> un <code>&lt;style&gt;</code> daļām.</p>
+      <pre class="code-block"><span class="lang">html</span><code><span class="tok-com">&lt;!-- Skaititajs.vue --&gt;</span>
+&lt;script setup&gt;
+<span class="tok-kw">import</span> { ref } <span class="tok-kw">from</span> <span class="tok-str">'vue'</span>;
+
+<span class="tok-kw">const</span> skaits = <span class="tok-fn">ref</span>(0); <span class="tok-com">// reaktīvs mainīgais - .value lasa/maina vērtību</span>
+
+<span class="tok-kw">function</span> <span class="tok-fn">pieskaitit</span>() {
+    skaits.value++;
+}
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;div&gt;
+    &lt;p&gt;Skaits: {{ skaits }}&lt;/p&gt;
+    &lt;button @click="pieskaitit"&gt;Pieskaitīt&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/template&gt;</code></pre>
+      <p><code>ref(0)</code> izveido "reaktīvu" vērtību - Vue automātiski seko līdzi, kur šī vērtība tiek izmantota veidnē (<code>{{ skaits }}</code>), un atjauno TIKAI to konkrēto vietu, kad <code>skaits.value</code> mainās (nevis pārrenderē visu komponentu no jauna).</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>&lt;script setup&gt;</h4><p>Modernā (Composition API) Vue sintakse - viss, kas deklarēts šeit augšā, automātiski pieejams veidnē zemāk, bez papildu <code>return</code> vai <code>export</code>.</p></div>
+        <div class="doc-mini-card"><h4>ref() vs reactive()</h4><p><code>ref()</code> der vienai vērtībai (skaitlim, tekstam) - piekļuve caur <code>.value</code>. <code>reactive()</code> der objektiem/masīviem - piekļuve tieši, bez <code>.value</code>.</p></div>
+        <div class="doc-mini-card"><h4>React vs Vue</h4><p>Funkcionalitāte ļoti līdzīga - React ir tuvāk "tīram JavaScript" (JSX, vairāk manuālas kontroles), Vue tuvāk klasiskam HTML/CSS/JS sadalījumam (bieži uzskatīts par vieglāk apgūstamu iesācējiem).</p></div>
+      </div>
+    </section>
+
     <div class="doc-pager">
       <a href="wordpress.html"><span class="lbl">← Iepriekšējais</span>WordPress</a>
       <a class="to-next" href="php.html"><span class="lbl">Tālāk →</span>PHP</a>
@@ -575,7 +714,7 @@ copy(dati) <span class="tok-com">// nokopē mainīgā vērtību starpliktuvē k�
   </main>
 </div>
 
-<script src="../js/theme.js?v=50"></script>
-<script src="../js/main.js?v=50"></script>
+<script src="../js/theme.js?v=51"></script>
+<script src="../js/main.js?v=51"></script>
 </body>
 </html>
