@@ -71,7 +71,7 @@
   --border-soft: #1c1c29;
   --text: #f3f1fb;
   --text-secondary: #a6a3c4;
-  --text-muted: #6b6890;
+  --text-muted: #8885ab;
 
   --accent: #9d5cff;
   --accent-2: #c084fc;
@@ -88,8 +88,13 @@
      against the dark code-block background */
   --tok-kw: #c084fc;
   --tok-str: #4ade80;
-  --tok-com: #6b6890;
+  --tok-com: #8885ab;
   --tok-fn: #60a5fa;
+
+  /* difficulty-tag colors - same bright/dark-background split as --tok-* */
+  --tag-easy: #4ade80;
+  --tag-mid: #facc15;
+  --tag-hard: #f87171;
 
   /* lighter tints of each category color, for text/accents on dark backgrounds */
   --c-wordpress-2: color-mix(in srgb, var(--c-wordpress), white 25%);
@@ -102,10 +107,10 @@
   --c-ssh-2: color-mix(in srgb, var(--c-ssh), white 15%);
   --c-seo-2: color-mix(in srgb, var(--c-seo), white 20%);
   --c-templates-2: color-mix(in srgb, var(--c-templates), white 20%);
-  --c-security-2: color-mix(in srgb, var(--c-security), white 15%);
+  --c-security-2: color-mix(in srgb, var(--c-security), white 25%);
   --c-sql-2: color-mix(in srgb, var(--c-sql), white 15%);
   --c-css-adv-2: color-mix(in srgb, var(--c-css-adv), white 15%);
-  --c-gdpr-2: color-mix(in srgb, var(--c-gdpr), white 25%);
+  --c-gdpr-2: color-mix(in srgb, var(--c-gdpr), white 30%);
   --c-python-2: color-mix(in srgb, var(--c-python), white 25%);
   --c-riki-2: color-mix(in srgb, var(--c-riki), white 10%);
   --c-docker-2: color-mix(in srgb, var(--c-docker), white 15%);
@@ -126,7 +131,7 @@
   --border-soft: #ece9f7;
   --text: #17141f;
   --text-secondary: #55506e;
-  --text-muted: #8b87a3;
+  --text-muted: #605c7a;
 
   --accent: #7c3aed;
   --accent-2: #a855f7;
@@ -148,6 +153,11 @@
   --tok-com: #605c7a;
   --tok-fn: #1d4ed8;
 
+  /* difficulty-tag colors - darkened same as --tok-* (verified >=4.5:1 vs white) */
+  --tag-easy: #15803d;
+  --tag-mid: #a16207;
+  --tag-hard: #b91c1c;
+
   /* darker tints of each category color, for adequate contrast on light backgrounds
      (percentages tuned so each hits at least ~4.5:1 against the light page background,
      since these colors are used as body text, not just decoration) */
@@ -160,15 +170,15 @@
   --c-git-2: color-mix(in srgb, var(--c-git), black 15%);
   --c-ssh-2: color-mix(in srgb, var(--c-ssh), black 40%);
   --c-seo-2: color-mix(in srgb, var(--c-seo), black 25%);
-  --c-templates-2: color-mix(in srgb, var(--c-templates), black 20%);
+  --c-templates-2: color-mix(in srgb, var(--c-templates), black 40%);
   --c-security-2: color-mix(in srgb, var(--c-security), black 10%);
   --c-sql-2: color-mix(in srgb, var(--c-sql), black 15%);
   --c-css-adv-2: color-mix(in srgb, var(--c-css-adv), black 15%);
   --c-gdpr-2: color-mix(in srgb, var(--c-gdpr), black 5%);
   --c-python-2: color-mix(in srgb, var(--c-python), black 5%);
-  --c-riki-2: color-mix(in srgb, var(--c-riki), black 35%);
-  --c-docker-2: color-mix(in srgb, var(--c-docker), black 15%);
-  --c-vardnica-2: color-mix(in srgb, var(--c-vardnica), black 15%);
+  --c-riki-2: color-mix(in srgb, var(--c-riki), black 45%);
+  --c-docker-2: color-mix(in srgb, var(--c-docker), black 25%);
+  --c-vardnica-2: color-mix(in srgb, var(--c-vardnica), black 40%);
 
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 20px 40px -24px rgba(80, 60, 140, 0.25);
   --shadow-pop: 0 30px 60px -25px rgba(124, 58, 237, 0.25);
@@ -429,7 +439,7 @@ code {
   border-radius: 999px;
   border: 1px solid var(--border);
   background: var(--accent-soft);
-  color: var(--accent-2);
+  color: var(--accent);
   font-size: 12.5px;
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -603,6 +613,7 @@ code {
 
 .card {
   --card-color: var(--accent);
+  --card-color-2: var(--accent-2);
   --card-soft: var(--accent-soft);
   position: relative;
   display: flex;
@@ -728,29 +739,32 @@ code {
   color: var(--text-muted);
 }
 .card-footer b {
-  color: var(--card-color);
+  color: var(--card-color-2);
   font-weight: 700;
 }
 
-/* card color bindings */
-.card.wordpress { --card-color: var(--c-wordpress); --card-soft: var(--c-wordpress-soft); }
-.card.js        { --card-color: var(--c-js);        --card-soft: var(--c-js-soft); }
-.card.php       { --card-color: var(--c-php);       --card-soft: var(--c-php-soft); }
-.card.web       { --card-color: var(--c-web);        --card-soft: var(--c-web-soft); }
-.card.integrations { --card-color: var(--c-integrations); --card-soft: var(--c-integrations-soft); }
-.card.api       { --card-color: var(--c-api);       --card-soft: var(--c-api-soft); }
-.card.git       { --card-color: var(--c-git);       --card-soft: var(--c-git-soft); }
-.card.ssh       { --card-color: var(--c-ssh);       --card-soft: var(--c-ssh-soft); }
-.card.seo       { --card-color: var(--c-seo);       --card-soft: var(--c-seo-soft); }
-.card.templates { --card-color: var(--c-templates); --card-soft: var(--c-templates-soft); }
-.card.security  { --card-color: var(--c-security);  --card-soft: var(--c-security-soft); }
-.card.sql       { --card-color: var(--c-sql);       --card-soft: var(--c-sql-soft); }
-.card.css-adv   { --card-color: var(--c-css-adv);   --card-soft: var(--c-css-adv-soft); }
-.card.gdpr      { --card-color: var(--c-gdpr);      --card-soft: var(--c-gdpr-soft); }
-.card.python    { --card-color: var(--c-python);    --card-soft: var(--c-python-soft); }
-.card.riki      { --card-color: var(--c-riki);      --card-soft: var(--c-riki-soft); }
-.card.docker    { --card-color: var(--c-docker);    --card-soft: var(--c-docker-soft); }
-.card.vardnica  { --card-color: var(--c-vardnica);  --card-soft: var(--c-vardnica-soft); }
+/* card color bindings - each also binds --card-color-2, a contrast-safe
+   variant (darkened per-theme, same as --page-accent-2) used specifically
+   for small text like the "Sākt →" label, since several raw category
+   colors don't reach 4.5:1 against the card background on their own */
+.card.wordpress { --card-color: var(--c-wordpress); --card-color-2: var(--c-wordpress-2); --card-soft: var(--c-wordpress-soft); }
+.card.js        { --card-color: var(--c-js);        --card-color-2: var(--c-js-2);        --card-soft: var(--c-js-soft); }
+.card.php       { --card-color: var(--c-php);       --card-color-2: var(--c-php-2);       --card-soft: var(--c-php-soft); }
+.card.web       { --card-color: var(--c-web);       --card-color-2: var(--c-web-2);        --card-soft: var(--c-web-soft); }
+.card.integrations { --card-color: var(--c-integrations); --card-color-2: var(--c-integrations-2); --card-soft: var(--c-integrations-soft); }
+.card.api       { --card-color: var(--c-api);       --card-color-2: var(--c-api-2);       --card-soft: var(--c-api-soft); }
+.card.git       { --card-color: var(--c-git);       --card-color-2: var(--c-git-2);       --card-soft: var(--c-git-soft); }
+.card.ssh       { --card-color: var(--c-ssh);       --card-color-2: var(--c-ssh-2);       --card-soft: var(--c-ssh-soft); }
+.card.seo       { --card-color: var(--c-seo);       --card-color-2: var(--c-seo-2);       --card-soft: var(--c-seo-soft); }
+.card.templates { --card-color: var(--c-templates); --card-color-2: var(--c-templates-2); --card-soft: var(--c-templates-soft); }
+.card.security  { --card-color: var(--c-security);  --card-color-2: var(--c-security-2);  --card-soft: var(--c-security-soft); }
+.card.sql       { --card-color: var(--c-sql);       --card-color-2: var(--c-sql-2);       --card-soft: var(--c-sql-soft); }
+.card.css-adv   { --card-color: var(--c-css-adv);   --card-color-2: var(--c-css-adv-2);   --card-soft: var(--c-css-adv-soft); }
+.card.gdpr      { --card-color: var(--c-gdpr);      --card-color-2: var(--c-gdpr-2);      --card-soft: var(--c-gdpr-soft); }
+.card.python    { --card-color: var(--c-python);    --card-color-2: var(--c-python-2);    --card-soft: var(--c-python-soft); }
+.card.riki      { --card-color: var(--c-riki);      --card-color-2: var(--c-riki-2);      --card-soft: var(--c-riki-soft); }
+.card.docker    { --card-color: var(--c-docker);    --card-color-2: var(--c-docker-2);    --card-soft: var(--c-docker-soft); }
+.card.vardnica  { --card-color: var(--c-vardnica);  --card-color-2: var(--c-vardnica-2);  --card-soft: var(--c-vardnica-soft); }
 
 /* ---------- Stats strip ---------- */
 .stats {
@@ -1070,9 +1084,9 @@ footer.site-footer a:hover {
   letter-spacing: 0.04em;
 }
 
-.tag.easy { background: rgba(74, 222, 128, 0.15); color: #4ade80; }
-.tag.mid { background: rgba(250, 204, 21, 0.15); color: #facc15; }
-.tag.hard { background: rgba(248, 113, 113, 0.15); color: #f87171; }
+.tag.easy { background: rgba(74, 222, 128, 0.15); color: var(--tag-easy); }
+.tag.mid { background: rgba(250, 204, 21, 0.15); color: var(--tag-mid); }
+.tag.hard { background: rgba(248, 113, 113, 0.15); color: var(--tag-hard); }
 
 pre.code-block {
   background: var(--code-bg);
