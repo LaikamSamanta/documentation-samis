@@ -10,7 +10,7 @@
 <link rel="manifest" href="../manifest.json" />
 <meta name="theme-color" content="#9d5cff" />
 <title>Ātrie risinājumi - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=56" />
+<link rel="stylesheet" href="../css/style.css?v=57" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -78,6 +78,8 @@
         <a href="#snip-comment-spam"><span class="bullet"></span>Komentāru spams (droši iestatījumi)</a>
         <a href="#snip-user-enum"><span class="bullet"></span>Lietotājvārdu noplūde (REST/?author=)</a>
         <a href="#snip-file-edit"><span class="bullet"></span>Izslēgt failu rediģēšanu admin panelī</a>
+        <a href="#snip-default-role"><span class="bullet"></span>Piespiedu droša reģistrācijas loma</a>
+        <a href="#snip-heartbeat"><span class="bullet"></span>Heartbeat API ierobežošana</a>
       </div>
     </div>
     <div class="doc-sidebar-accordion">
@@ -278,6 +280,39 @@
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
         <p>Radniecīga konstante <code>DISALLOW_FILE_MODS</code> iet vēl tālāk - papildus failu redaktoram bloķē arī spraudņu/tēmu instalēšanu un atjaunināšanu tieši no admin paneļa. To parasti izmanto vietnēm, kur izvietošana notiek tikai caur Git/deploy procesu, nevis admin paneli.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="snip-default-role">
+      <h2>Piespiedu droša reģistrācijas loma</h2>
+      <p>Iestatījumi → Vispārīgi panelī ir divi lauki: "Ikviens var reģistrēties" un "Noklusējuma loma jaunam lietotājam". Ja kāds (nejauši, migrācijas dēļ vai spraudņa kļūdas dēļ) noklusējuma lomu iestata uz "Administrators" un reģistrācija ir ieslēgta, jebkurš apmeklētājs var pats sev izveidot pilnu administratora kontu. Šis filtrs to padara neiespējamu neatkarīgi no admin paneļa iestatījuma.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_filter</span>(<span class="tok-str">'option_default_role'</span>, <span class="tok-kw">function</span> (<span class="tok-fn">$role</span>) {
+    <span class="tok-kw">return</span> (<span class="tok-fn">$role</span> === <span class="tok-str">'administrator'</span>) ? <span class="tok-str">'subscriber'</span> : <span class="tok-fn">$role</span>;
+});</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>option_default_role</code> ir WordPress standarta filtrs, kas nostrādā katru reizi, kad kods nolasa <code>default_role</code> opciju ar <code>get_option()</code> - tostarp brīdī, kad reģistrējas jauns lietotājs. Tas neko nemaina admin panelī redzamajā vērtībā, tikai to, kāda loma faktiski tiek piešķirta.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="snip-heartbeat">
+      <h2>Heartbeat API ierobežošana</h2>
+      <p>WordPress Heartbeat API pēc noklusējuma sūta AJAX pieprasījumu ik 15-60 sekundes no katras atvērtas admin cilnes (izmanto autosaglabāšanai, bloķēšanas paziņojumiem "kāds cits jau rediģē" u.c.). Vietnē ar vairākiem vienlaicīgi pieslēgušamies redaktoriem tas var nevajadzīgi noslogot serveri - un lielākajā daļā vietnes priekšpuses (frontend) tas vispār nav vajadzīgs.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 1) Izslēdz Heartbeat pilnībā vietnes priekšpusē (admin panelī atstāj neskartu)</span>
+<span class="tok-fn">add_action</span>(<span class="tok-str">'wp_enqueue_scripts'</span>, <span class="tok-kw">function</span> () {
+    <span class="tok-kw">if</span> (!<span class="tok-fn">is_admin</span>()) {
+        <span class="tok-fn">wp_deregister_script</span>(<span class="tok-str">'heartbeat'</span>);
+    }
+});
+
+<span class="tok-com">// 2) Admin panelī paretina intervālu no dažām sekundēm uz 60</span>
+<span class="tok-fn">add_filter</span>(<span class="tok-str">'heartbeat_settings'</span>, <span class="tok-kw">function</span> (<span class="tok-fn">$settings</span>) {
+    <span class="tok-fn">$settings</span>[<span class="tok-str">'interval'</span>] = 60;
+    <span class="tok-kw">return</span> <span class="tok-fn">$settings</span>;
+});</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Neizslēdz Heartbeat pilnībā admin panelī, ja izmanto Gutenberg redaktoru vai WooCommerce - abi paļaujas uz to autosaglabāšanai un statusa atjaunināšanai. Palielinot intervālu (nevis izslēdzot), saglabā funkcionalitāti, tikai retāk.</p>
       </div>
     </section>
 
@@ -1225,7 +1260,7 @@
   </main>
 </div>
 
-<script src="../js/theme.js?v=56"></script>
-<script src="../js/main.js?v=56"></script>
+<script src="../js/theme.js?v=57"></script>
+<script src="../js/main.js?v=57"></script>
 </body>
 </html>

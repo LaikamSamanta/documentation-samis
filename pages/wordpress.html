@@ -10,7 +10,7 @@
 <link rel="manifest" href="../manifest.json" />
 <meta name="theme-color" content="#9d5cff" />
 <title>WordPress dokumentācija - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=56" />
+<link rel="stylesheet" href="../css/style.css?v=57" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -949,6 +949,11 @@ registerBlockType('mana-tema/sveiciens', {
         <div class="doc-mini-card"><h4>XML-RPC</h4><p>Vecāks interfeiss ārējiem savienojumiem, kas pēc noklusējuma ir ieslēgts - izplatīts brute-force un DDoS pastiprināšanas (pingback flood) mērķis. <a href="wordpress-snippets.html#snip-xmlrpc">Skaties fiksāciju</a>.</p></div>
         <div class="doc-mini-card"><h4>Versijas numurs</h4><p>WordPress atklāj savu versiju lapas HTML kodā - atvieglo uzbrucējiem automātiski atrast vietnes ar zināmām, vēl nelabotām ievainojamībām. <a href="wordpress-snippets.html#snip-version">Skaties fiksāciju</a>.</p></div>
         <div class="doc-mini-card"><h4>WP-Cron nav īsts cron</h4><p>Ieplānotie uzdevumi (publicēšana nākotnē, spraudņu grafiki) izpildās tikai tad, kad kāds apmeklē lapu - zemas apmeklētības vietnēs tie var kavēties vai neizpildīties vispār. <a href="#cron">Skaties risinājumu augstāk</a>.</p></div>
+        <div class="doc-mini-card"><h4>Reģistrēšanās + noklusējuma loma</h4><p>Ja Iestatījumi → Vispārīgi panelī kāds (nejauši vai spraudņa kļūdas dēļ) noklusējuma reģistrācijas lomu iestata uz "Administrators", jebkurš apmeklētājs var pats sev izveidot pilnu admin kontu. <a href="wordpress-snippets.html#snip-default-role">Skaties fiksāciju</a>.</p></div>
+        <div class="doc-mini-card"><h4>Debug režīms produkcijā</h4><p>Aizmirsts <code>WP_DEBUG_DISPLAY</code> ieslēgts ražošanas vietnē atklāj apmeklētājiem failu ceļus un citu jutīgu informāciju tieši kļūdu paziņojumos. <a href="#wpconfig">Skaties skaidrojumu augstāk</a>.</p></div>
+        <div class="doc-mini-card"><h4>Neierobežotas revīzijas</h4><p>WordPress pēc noklusējuma saglabā <strong>katru</strong> ieraksta saglabāšanas reizi kā atsevišķu revīziju uz nenoteiktu laiku - gadu gaitā tas var ievērojami uzpūst datubāzi. <a href="#wpconfig">Skaties skaidrojumu augstāk</a>.</p></div>
+        <div class="doc-mini-card"><h4>Autoloaded opcijas</h4><p>Katra <code>update_option()</code> vērtība pēc noklusējuma ielādējas <strong>katrā</strong> lapas pieprasījumā - aizmirsti lielu vai retu vērtību atzīmēt kā ne-autoload, un tas palēnina visu vietni. <a href="#options-api">Skaties skaidrojumu augstāk</a>.</p></div>
+        <div class="doc-mini-card"><h4>Heartbeat API</h4><p>Admin panelis pēc noklusējuma sūta AJAX pieprasījumu ik 15-60 sekundes no katras atvērtas cilnes - vairāku vienlaicīgu redaktoru gadījumā tas var nevajadzīgi noslogot serveri. <a href="wordpress-snippets.html#snip-heartbeat">Skaties fiksāciju</a>.</p></div>
       </div>
     </section>
 
@@ -1390,7 +1395,7 @@ GET /wp-json/wp/v2/produkts     → CPT ieraksti (ja show_in_rest: true)</code><
   </main>
 </div>
 
-<script src="../js/theme.js?v=56"></script>
-<script src="../js/main.js?v=56"></script>
+<script src="../js/theme.js?v=57"></script>
+<script src="../js/main.js?v=57"></script>
 </body>
 </html>
