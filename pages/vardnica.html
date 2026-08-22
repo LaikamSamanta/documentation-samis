@@ -10,7 +10,7 @@
 <link rel="manifest" href="../manifest.json" />
 <meta name="theme-color" content="#9d5cff" />
 <title>Vārdnīca - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=53" />
+<link rel="stylesheet" href="../css/style.css?v=54" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -66,6 +66,7 @@
     <a href="#vd-dati">Dati & backend</a>
     <a href="#vd-drosiba">Drošība</a>
     <a href="#vd-wp">WordPress & CMS</a>
+    <a href="#vd-integracijas">Integrācijas & maksājumi</a>
   </nav>
 
   <section class="cheat-section" id="vd-web">
@@ -145,11 +146,29 @@
     <h2>WordPress & CMS</h2>
     <div class="cheat-grid">
       <div class="cheat-card"><h4>Spraudnis (Plugin)</h4><p>Papildinājums, kas pievieno WordPress jaunas funkcijas, neskarot pamata kodu.</p></div>
-      <div class="cheat-card"><h4>Motīvs (Theme)</h4><p>Nosaka vietnes izskatu un izkārtojumu - var nomainīt bez satura zaudēšanas.</p></div>
+      <div class="cheat-card"><h4>Tēma (Theme)</h4><p>Nosaka vietnes izskatu un izkārtojumu - var nomainīt bez satura zaudēšanas.</p></div>
       <div class="cheat-card"><h4>Hook</h4><p>"Āķis" kodā, kurā var iekabināt savu funkciju - izpildās noteiktā brīdī (action) vai maina datus pirms izvades (filter).</p></div>
       <div class="cheat-card"><h4>Shortcode</h4><p>Īsa iekava kvadrātiekavās (piem., [galerija]), ko redaktorā ievieto, un WordPress to aizvieto ar dinamisku saturu.</p></div>
       <div class="cheat-card"><h4>Widžets</h4><p>Neliels, pārvietojams satura bloks (piem., sānjoslā vai kājenē) - kalendārs, jaunākie raksti, meklēšana.</p></div>
       <div class="cheat-card"><h4>WP-CLI</h4><p>Komandrindas rīks WordPress pārvaldībai bez admin paneļa - instalēšana, atjaunināšana, datubāzes darbības.</p></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="vd-integracijas">
+    <h2>Integrācijas & maksājumi</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>Webhook</h4><p>HTTP pieprasījums, ko cits serviss (piem., Stripe) nosūta uz tavu serveri, kad kaut kas notiek - pretējs virziens nekā parasts API izsaukums, kur pieprasījumu sāc tu pats.</p></div>
+      <div class="cheat-card"><h4>Webhook paraksts (signing secret)</h4><p>Unikāla atslēga, ar kuru pārbauda, ka ienākošais webhook tiešām nāk no īstā pakalpojuma, nevis no uzbrucēja, kas mēģina viltot ziņu (piem., "apmaksa izdevās").</p></div>
+      <div class="cheat-card"><h4>Stripe</h4><p>Populārs maksājumu apstrādes pakalpojums - apstrādā karšu datus un ar tiem saistītās drošības prasības, lai pašam tos nevajadzētu glabāt.</p></div>
+      <div class="cheat-card"><h4>Checkout Session</h4><p>Objekts, ko izveido pirms katra pirkuma - apraksta, ko pērk un par cik. Pakalpojums (piem., Stripe) atbildē atgriež URL, uz kuru pāradresēt pircēju.</p></div>
+      <div class="cheat-card"><h4>API atslēga (API key)</h4><p>Slepena virkne, ar kuru serviss identificē un autorizē tavu pieprasījumu - nekad nedrīkst nonākt frontend kodā vai Git repozitorijā.</p></div>
+      <div class="cheat-card"><h4>OAuth</h4><p>Standarts, kas ļauj lietotājam piešķirt lietotnei ierobežotu piekļuvi savam kontam citā servisā (piem., "Pieslēgties ar Google"), bez savas paroles nodošanas.</p></div>
+      <div class="cheat-card"><h4>Idempotences atslēga</h4><p>Unikāls identifikators, ko pievieno pieprasījumam, lai to atkārtoti nosūtot (piem., tīkla kļūdas dēļ), darbība (piem., maksājums) netiktu izpildīta divreiz.</p></div>
+      <div class="cheat-card"><h4>REST</h4><p>Visizplatītākais API veidošanas princips - resursi (lietotāji, raksti) tiek adresēti ar URL, darbības ar HTTP metodēm (GET, POST, PUT, DELETE).</p></div>
+      <div class="cheat-card"><h4>GraphQL</h4><p>Alternatīva REST - klients pats apraksta, tieši kādus laukus vēlas, un API atgriež tikai tos, nevis fiksētu, iepriekš noteiktu atbildes formu.</p></div>
+      <div class="cheat-card"><h4>WebSocket</h4><p>Pastāvīgi atvērts, divvirzienu savienojums starp klientu un serveri - noder reāllaika funkcijām (čats, paziņojumi), kur serveris pats var sūtīt datus bez pieprasījuma.</p></div>
+      <div class="cheat-card"><h4>Paginācija (Pagination)</h4><p>Liela rezultātu saraksta sadalīšana lapās/daļās, lai API neatgrieztu visus ierakstus uzreiz vienā smagā atbildē.</p></div>
+      <div class="cheat-card"><h4>Cron job</h4><p>Uzdevums, kas serverī izpildās automātiski pēc grafika (piem., katru nakti), bez cilvēka iejaukšanās katru reizi.</p></div>
     </div>
   </section>
 
@@ -159,7 +178,7 @@
   </div>
 </main>
 
-<script src="../js/theme.js?v=53"></script>
-<script src="../js/main.js?v=53"></script>
+<script src="../js/theme.js?v=54"></script>
+<script src="../js/main.js?v=54"></script>
 </body>
 </html>
