@@ -10,7 +10,7 @@
 <link rel="manifest" href="../manifest.json" />
 <meta name="theme-color" content="#9d5cff" />
 <title>Servera problēmas un risinājumi - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=60" />
+<link rel="stylesheet" href="../css/style.css?v=61" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -79,6 +79,7 @@
       <a href="#err-5xx"><span class="bullet"></span>502 / 503 / 504</a>
       <a href="#err-disk-full"><span class="bullet"></span>Disks pilns</a>
       <a href="#err-permissions"><span class="bullet"></span>Permission denied</a>
+      <a href="#err-case-sensitive"><span class="bullet"></span>Strādā lokāli, salūst serverī</a>
       <a href="#err-htaccess-500"><span class="bullet"></span>.htaccess → 500 kļūda</a>
       <a href="#err-php-version"><span class="bullet"></span>PHP versijas neatbilstība</a>
     </div>
@@ -323,6 +324,19 @@ find /var/www/piemers.lv -type f -exec chmod 644 {} \;</code></pre>
       <p>WordPress vietnēm der arī papildu solis <code>wp-config.php</code> failam - skaties <a href="wordpress-problemas.html#failu-tiesibas">"Nepareizas failu tiesības"</a> WordPress problēmu lapā.</p>
     </section>
 
+    <section class="doc-section" id="err-case-sensitive">
+      <h2>Strādā lokāli, salūst serverī (case-sensitivity)</h2>
+      <p>Windows un Mac failu sistēmas pēc noklusējuma <strong>neatšķir</strong> lielos un mazos burtus faila nosaukumā - <code>Config.php</code> un <code>config.php</code> tur ir viens un tas pats fails. Linux (gandrīz visi hostingi) <strong>gan atšķir</strong> - tie ir divi pilnīgi dažādi faili. Rezultāts: kods, kas lokāli strādā perfekti (jo OS "piedod" nepareizu reģistru), pēc augšupielādes uz serveri met <code>404</code> vai <code>failed to open stream: No such file or directory</code>.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Fails uz diska: helpers/StringUtils.php
+// Šis strādās lokāli Windows/Mac, bet salūzīs Linux serverī:</span>
+<span class="tok-kw">require</span> <span class="tok-str">'helpers/stringutils.php'</span>; <span class="tok-com">// nepareizs reģistrs!</span></code></pre>
+      <p>Tas pats attiecas uz attēlu/CSS/JS ceļiem HTML kodā (<code>&lt;img src="Logo.png"&gt;</code>, kad fails patiesībā ir <code>logo.png</code>) - lokāli attēls parādās, serverī rāda salauztu ikonu.</p>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Ātra pārbaude pirms izvietošanas (deploy) - Git pats var atklāt šīs neatbilstības neatkarīgi no OS: <code>git config core.ignorecase false</code> liek Git stingri atšķirt reģistru arī Windows/Mac lokāli, tāpēc nepareizi rakstīts imports parādīsies kā jauns, nepazīstams fails jau lokāli, nevis tikai pēc izvietošanas serverī.</p>
+      </div>
+    </section>
+
     <section class="doc-section" id="err-htaccess-500">
       <h2>.htaccess sintakses kļūda → 500</h2>
       <p>Apache lasa <code>.htaccess</code> failu katrā pieprasījumā - ja tajā ir sintakses kļūda (bieži pēc manuālas rediģēšanas vai spraudņa pievienota noteikuma), rezultāts ir tūlītēja 500 kļūda visai vietnei.</p>
@@ -420,7 +434,7 @@ sudo nginx -t && sudo systemctl reload nginx</code></pre>
   </main>
 </div>
 
-<script src="../js/theme.js?v=60"></script>
-<script src="../js/main.js?v=60"></script>
+<script src="../js/theme.js?v=61"></script>
+<script src="../js/main.js?v=61"></script>
 </body>
 </html>

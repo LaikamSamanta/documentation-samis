@@ -10,7 +10,7 @@
 <link rel="manifest" href="../manifest.json" />
 <meta name="theme-color" content="#9d5cff" />
 <title>PHP dokumentācija - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=60" />
+<link rel="stylesheet" href="../css/style.css?v=61" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -77,6 +77,8 @@
         <a href="#superglobali"><span class="bullet"></span>Superglobālie mainīgie</a>
         <a href="#sesijas"><span class="bullet"></span>Sesijas &amp; sīkdatnes</a>
         <a href="#unix-timestamps"><span class="bullet"></span>Unix laika zīmogi &amp; "expires"</a>
+        <a href="#laika-joslas"><span class="bullet"></span>Laika joslas (timezones)</a>
+        <a href="#augsupielazu-limiti"><span class="bullet"></span>Augšupielādes limiti</a>
         <a href="#include"><span class="bullet"></span>include / require</a>
         <a href="#klaudas"><span class="bullet"></span>Kļūdu apstrāde</a>
       </div>
@@ -386,6 +388,46 @@
 <span class="tok-kw">echo</span> <span class="tok-str">"Vecums: {$starpiba->y} gadi, {$starpiba->m} mēneši, {$starpiba->d} dienas\n"</span>;
 <span class="tok-kw">echo</span> <span class="tok-str">"Kopā dienas: {$starpiba->days}"</span>;</code></pre>
       <p><code>DateInterval</code> objektam ir gatavas īpašības katrai vienībai - <code>y</code> (gadi), <code>m</code> (mēneši), <code>d</code> (dienas), <code>h</code>/<code>i</code>/<code>s</code> (stundas/minūtes/sekundes), un <code>days</code> - KOPĒJAIS dienu skaits starp datumiem (nevis sadalīts pa vienībām). Šis ir daudz uzticamāks veids nekā manuāli dalīt <code>time()</code> starpību ar 86400 (sekundes dienā) - <code>DateTime</code> pareizi ņem vērā garos gadus (leap years), vasaras/ziemas laiku un mēnešu atšķirīgo garumu.</p>
+    </section>
+
+    <section class="doc-section" id="laika-joslas">
+      <h2>Laika joslas (timezones)</h2>
+      <p>Zelta likums - datumus/laikus datubāzē vienmēr glabā <strong>UTC</strong> laika joslā, un pārvērš uz lietotāja lokālo joslu tikai <strong>izvades</strong> brīdī, veidnē. Ja glabā jau "lokālu" laiku (piem., servera vai vienas konkrētas pilsētas laiku), rodas problēmas, tiklīdz vietnei ir lietotāji citās joslās vai serveris kādreiz pārceļas uz citu datu centru.</p>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-com">// Saglabāšana - vienmēr UTC, neatkarīgi no tā, kur atrodas lietotājs vai serveris</span>
+<span class="tok-fn">$saglabatsUtc</span> = <span class="tok-kw">new</span> <span class="tok-fn">DateTime</span>(<span class="tok-str">'2026-06-15 10:00:00'</span>, <span class="tok-kw">new</span> <span class="tok-fn">DateTimeZone</span>(<span class="tok-str">'UTC'</span>));
+
+<span class="tok-com">// Izvade - pārvērš tikai konkrētajam lietotājam rādot</span>
+<span class="tok-fn">$lietotajaZona</span> = <span class="tok-kw">new</span> <span class="tok-fn">DateTimeZone</span>(<span class="tok-str">'Europe/Riga'</span>);
+<span class="tok-fn">$radits</span> = <span class="tok-kw">clone</span> <span class="tok-fn">$saglabatsUtc</span>;
+<span class="tok-fn">$radits</span>->setTimezone(<span class="tok-fn">$lietotajaZona</span>);
+<span class="tok-kw">echo</span> <span class="tok-fn">$radits</span>->format(<span class="tok-str">'Y-m-d H:i:s'</span>); <span class="tok-com">// 2026-06-15 13:00:00 (vasaras laiks, UTC+3)</span></code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Vienam un tam pašam UTC laikam nobīde uz Rīgu <strong>mainās gada laikā</strong> - vasarā UTC+3, ziemā UTC+2 (vasaras/ziemas laika dēļ). Ja glabātu jau "gatavu" Rīgas laiku bez joslas informācijas, nebūtu iespējams vēlāk droši pārrēķināt uz citu joslu vai pat pareizi zināt, kurš no diviem UTC nobīdes variantiem attiecas uz konkrēto ierakstu.</p>
+      </div>
+      <p>Vēl viena bieža sajaukšanās vieta - MySQL <code>TIMESTAMP</code> kolonnas tips automātiski konvertē vērtību uz/no servera (vai savienojuma) laika joslas, bet <code>DATETIME</code> tips <strong>nekonvertē neko</strong> - glabā tieši to, ko ieraksti, bez jebkādas joslas izpratnes. Jaucot abus tipus vienā projektā, bez skaidras izpratnes, kurš dara ko, rodas laika nobīdes kļūdas, kas parādās tikai dažiem lietotājiem vai tikai noteiktā gada laikā.</p>
+    </section>
+
+    <section class="doc-section" id="augsupielazu-limiti">
+      <h2>Augšupielādes limiti (vairāki slāņi)</h2>
+      <p>Faila augšupielādes maksimālo izmēru ierobežo <strong>vairāki neatkarīgi slāņi</strong> vienlaikus - palielinot tikai vienu, augšupielāde joprojām var neizdoties bez skaidra iemesla kļūdas ziņojumā.</p>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Slānis</th><th>Iestatījums</th></tr></thead>
+          <tbody>
+            <tr><td>PHP - viena faila limits</td><td><code>upload_max_filesize</code> (php.ini)</td></tr>
+            <tr><td>PHP - visa pieprasījuma limits</td><td><code>post_max_size</code> (php.ini) - <strong>jābūt vienādam vai lielākam</strong> par <code>upload_max_filesize</code>, jo augšupielādētais fails ir daļa no POST pieprasījuma satura</td></tr>
+            <tr><td>PHP - izpildes laiks</td><td><code>max_execution_time</code>/<code>max_input_time</code> - liels fails uz lēna savienojuma var pārsniegt noklusējuma taimautu vēl pirms PHP vispār sāk to apstrādāt</td></tr>
+            <tr><td>Web serveris (nginx)</td><td><code>client_max_body_size</code> (nginx.conf) - noklusējumā bieži tikai 1MB, atsakās pat pirms pieprasījums sasniedz PHP</td></tr>
+            <tr><td>Aplikācijas līmenis</td><td>WordPress: <code>upload_max_size</code> filtrs / plugin savs limits; citi ietvari: savs konfigurācijas fails</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Ja nginx <code>client_max_body_size</code> ir mazāks par PHP iestatījumiem, pieprasījums nekad nesasniedz PHP vispār - parādās vispārīga <code>413 Request Entity Too Large</code> vai pat tukša atbilde, nevis PHP specifiska kļūda, kas apgrūtina īstā cēloņa atrašanu.</p>
+      </div>
     </section>
 
     <section class="doc-section" id="include">
@@ -843,7 +885,7 @@ DB_PASS=slepenaParole123</code></pre>
   </main>
 </div>
 
-<script src="../js/theme.js?v=60"></script>
-<script src="../js/main.js?v=60"></script>
+<script src="../js/theme.js?v=61"></script>
+<script src="../js/main.js?v=61"></script>
 </body>
 </html>

@@ -10,7 +10,7 @@
 <link rel="manifest" href="../manifest.json" />
 <meta name="theme-color" content="#9d5cff" />
 <title>Tīkls - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=60" />
+<link rel="stylesheet" href="../css/style.css?v=61" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -66,6 +66,7 @@
       <a href="#dns-records"><span class="bullet"></span>DNS ieraksti (A, CNAME, MX...)</a>
       <a href="#www-vs-non"><span class="bullet"></span>www vs bez-www</a>
       <a href="#cdn-basics"><span class="bullet"></span>CDN īsumā</a>
+      <a href="#browser-cache"><span class="bullet"></span>Pārlūka kešs pēc deploy</a>
     </div>
     <div class="doc-sidebar-group">
       <h4>SSL / HTTPS</h4>
@@ -156,6 +157,19 @@ dig piemers.lv TXT</code></pre>
       <p>Blakusefekts, kas iesācējus bieži mulsina: kad domēns ir "aiz" CDN, DNS uzziņas (<code>dig</code>) parāda <strong>CDN servera</strong> IP adresi, nevis īsto vietnes servera IP - tas apzināti tā, lai īstā servera adrese paliktu paslēpta un aizsargāta no tiešiem uzbrukumiem.</p>
     </section>
 
+    <section class="doc-section" id="browser-cache">
+      <h2>Pārlūka kešs pēc izvietošanas (deploy)</h2>
+      <p>Pārlūki agresīvi kešo CSS/JS/attēlu failus pēc to <strong>URL</strong> - ja jauna faila versija tiek augšupielādēta ar to pašu nosaukumu (piem., <code>style.css</code>), daļa apmeklētāju var turpināt redzēt VECO, kešoto versiju vēl dienām vai nedēļām, kaut serverī jau sen ir jaunā. Izstrādātājs to bieži nepamana, jo savā pārlūkā piespiedu kārtā atsvaidzina lapu (Ctrl+Shift+R), bet parasti apmeklētāji to nedara.</p>
+      <pre class="code-block"><span class="lang">html</span><code><span class="tok-com">&lt;!-- Risinājums - "cache-busting": maini pašu URL ikreiz, kad fails mainās,
+     lai pārlūks to uztvertu kā PILNĪGI JAUNU resursu, nevis to pašu, kešoto --&gt;</span>
+&lt;link rel="stylesheet" href="style.css?v=42"&gt;
+&lt;script src="main.js?v=42"&gt;&lt;/script&gt;</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Versijas skaitli (<code>?v=42</code>) jāatceras <strong>pašam</strong> palielināt katru reizi, kad fails mainās - ja to aizmirst, izmaiņas "nestrādā", kaut kods serverī jau ir pareizs. Nobriedušāki būvēšanas rīki (Vite, Webpack) šo automatizē pilnībā, iekļaujot faila satura hash tieši nosaukumā (piem., <code>style.a3f9c1.css</code>) - mainoties saturam, mainās arī nosaukums, bez manuālas versijas sekošanas.</p>
+      </div>
+    </section>
+
     <section class="doc-section" id="ssl-basics">
       <h2>Kas ir SSL/HTTPS</h2>
       <p><strong>SSL</strong> (Secure Sockets Layer) un tā mūsdienu, drošāks pēctecis <strong>TLS</strong> (Transport Layer Security) ir protokoli, kas šifrē datu plūsmu starp pārlūku un serveri, lai neviens pa vidu (piem., tajā pašā publiskajā WiFi tīklā) nevarētu to nolasīt vai klusi izmainīt. <strong>HTTPS = HTTP + šis šifrējums.</strong> Ikdienā termins "SSL" joprojām tiek lietots, kaut arī tehniski visur jau strādā TLS.</p>
@@ -212,7 +226,7 @@ ipconfig /flushdns</code></pre>
   </main>
 </div>
 
-<script src="../js/theme.js?v=60"></script>
-<script src="../js/main.js?v=60"></script>
+<script src="../js/theme.js?v=61"></script>
+<script src="../js/main.js?v=61"></script>
 </body>
 </html>

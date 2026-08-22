@@ -10,7 +10,7 @@
 <link rel="manifest" href="../manifest.json" />
 <meta name="theme-color" content="#9d5cff" />
 <title>JavaScript dokumentācija - Documentation Samis</title>
-<link rel="stylesheet" href="../css/style.css?v=60" />
+<link rel="stylesheet" href="../css/style.css?v=61" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -62,6 +62,7 @@
       <div class="doc-accordion-body">
         <a href="#ievads" class="active"><span class="bullet"></span>Ievads JS</a>
         <a href="#mainigie"><span class="bullet"></span>Mainīgie &amp; tipi</a>
+        <a href="#peldosais-punkts"><span class="bullet"></span>Peldošā punkta precizitāte</a>
         <a href="#nosacijumi"><span class="bullet"></span>Nosacījumi (if/else)</a>
         <a href="#cikli"><span class="bullet"></span>Cikli (for/while)</a>
         <a href="#funkcijas"><span class="bullet"></span>Funkcijas</a>
@@ -173,6 +174,29 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
         <p><code>const</code> nenozīmē "pilnīgi nemaināms" objektam/masīvam - tas nozīmē, ka mainīgais vienmēr norādīs uz <em>to pašu</em> objektu, bet paša objekta īpašības tomēr var mainīt (<code>lietotajs.vecums = 26</code> strādās).</p>
       </div>
+    </section>
+
+    <section class="doc-section" id="peldosais-punkts">
+      <h2>Peldošā punkta precizitāte</h2>
+      <p>JavaScript (tāpat kā gandrīz visas programmēšanas valodas) skaitļus ar decimāldaļu glabā IEEE 754 formātā - tas binārā veidā precīzi var attēlot tikai noteiktas daļskaitļu vērtības, līdzīgi kā decimālā sistēmā nevar precīzi uzrakstīt 1/3 (0.333...). Rezultāts - šķietami vienkārši aprēķini dod negaidītu atbildi.</p>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-fn">console</span>.log(0.1 + 0.2);           <span class="tok-com">// 0.30000000000000004 - NE 0.3!</span>
+<span class="tok-fn">console</span>.log(0.1 + 0.2 === 0.3); <span class="tok-com">// false</span></code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Tas ir bīstami tieši <strong>naudas</strong> aprēķinos - saskaitot cenas ar decimāldaļām (piem., grozā), noapaļotas kļūdas var uzkrāties un galīgā summa neizies "līdz santīmam" pareiza. Nekad nesalīdzini divus float skaitļus ar <code>===</code>.</p>
+      </div>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// PAREIZI risinājumi:</span>
+
+<span class="tok-com">// 1) Salīdzināšanai - pieļauj ļoti mazu starpību (epsilon)</span>
+<span class="tok-kw">function</span> <span class="tok-fn">gandrizVienadi</span>(a, b) {
+  <span class="tok-kw">return</span> Math.abs(a - b) &lt; Number.EPSILON;
+}
+<span class="tok-fn">console</span>.log(<span class="tok-fn">gandrizVienadi</span>(0.1 + 0.2, 0.3)); <span class="tok-com">// true</span>
+
+<span class="tok-com">// 2) Naudai - rēķina veselos centos, nevis daļskaitļos eiro</span>
+<span class="tok-kw">const</span> cenaCentos = 1050; <span class="tok-com">// 10.50 EUR kā vesels skaitlis</span>
+<span class="tok-kw">const</span> summaCentos = cenaCentos * 3;
+<span class="tok-fn">console</span>.log((summaCentos / 100).toFixed(2)); <span class="tok-com">// "31.50" - precīzi</span></code></pre>
     </section>
 
     <section class="doc-section" id="nosacijumi">
@@ -718,7 +742,7 @@ copy(dati) <span class="tok-com">// nokopē mainīgā vērtību starpliktuvē k�
   </main>
 </div>
 
-<script src="../js/theme.js?v=60"></script>
-<script src="../js/main.js?v=60"></script>
+<script src="../js/theme.js?v=61"></script>
+<script src="../js/main.js?v=61"></script>
 </body>
 </html>
