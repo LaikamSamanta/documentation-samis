@@ -1,4 +1,17 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // measures the actual topbar height (varies - wraps to 2 rows on phones with
+  // many quick-links) so sticky elements (e.g. code-block copy button) can
+  // offset below it without hardcoding a value that breaks on some pages
+  (function () {
+    var topbar = document.querySelector(".topbar");
+    if (!topbar) return;
+    function updateTopbarHeight() {
+      document.documentElement.style.setProperty("--topbar-h", topbar.getBoundingClientRect().height + "px");
+    }
+    updateTopbarHeight();
+    window.addEventListener("resize", updateTopbarHeight);
+  })();
+
   // subtle spotlight cursor effect on cards
   document.querySelectorAll(".card").forEach(function (card) {
     card.addEventListener("mousemove", function (e) {

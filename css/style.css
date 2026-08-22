@@ -1051,18 +1051,19 @@ pre.code-block {
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 18px 20px;
-  overflow-x: auto;
   font-size: 13.5px;
   line-height: 1.6;
   margin-top: 16px;
   position: relative;
 }
 .code-block-toolbar {
-  position: absolute;
-  top: 8px;
-  right: 12px;
+  position: sticky;
+  top: calc(var(--topbar-h, 70px) + 10px);
+  height: 0;
+  z-index: 5;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: flex-end;
   gap: 10px;
 }
 pre.code-block .lang {
@@ -1071,6 +1072,11 @@ pre.code-block .lang {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-weight: 700;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 5px 8px;
+  line-height: 1;
 }
 .code-copy-btn {
   display: flex;
@@ -1099,6 +1105,8 @@ pre.code-block .lang {
 .code-copy-btn.copied .icon-copy { display: none; }
 .code-copy-btn.copied .icon-check { display: block; }
 pre.code-block code {
+  display: block;
+  overflow-x: auto;
   color: var(--text-secondary);
 }
 .tok-kw { color: var(--accent-2); }
