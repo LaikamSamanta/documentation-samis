@@ -78,6 +78,13 @@
   --accent-soft: rgba(157, 92, 255, 0.16);
   --accent-glow: rgba(157, 92, 255, 0.45);
 
+  /* code syntax highlight colors - bright/saturated so they read well
+     against the dark code-block background */
+  --tok-kw: #c084fc;
+  --tok-str: #4ade80;
+  --tok-com: #6b6890;
+  --tok-fn: #60a5fa;
+
   /* lighter tints of each category color, for text/accents on dark backgrounds */
   --c-wordpress-2: color-mix(in srgb, var(--c-wordpress), white 25%);
   --c-js-2: color-mix(in srgb, var(--c-js), white 20%);
@@ -119,6 +126,14 @@
   --accent-2: #a855f7;
   --accent-soft: rgba(124, 58, 237, 0.09);
   --accent-glow: rgba(124, 58, 237, 0.25);
+
+  /* code syntax highlight colors - the dark-theme values are too light/washed
+     out against a white code-block background, so darken each while keeping
+     the same hue family (verified >=4.5:1 contrast against #ffffff) */
+  --tok-kw: #6d28d9;
+  --tok-str: #15803d;
+  --tok-com: #6f6b8a;
+  --tok-fn: #1d4ed8;
 
   /* darker tints of each category color, for adequate contrast on light backgrounds
      (percentages tuned so each hits at least ~4.5:1 against the light page background,
@@ -1113,10 +1128,10 @@ pre.code-block code {
   padding: 14px 20px 18px;
   color: var(--text-secondary);
 }
-.tok-kw { color: var(--accent-2); }
-.tok-str { color: #4ade80; }
-.tok-com { color: var(--text-muted); font-style: italic; }
-.tok-fn { color: #60a5fa; }
+.tok-kw { color: var(--tok-kw); }
+.tok-str { color: var(--tok-str); }
+.tok-com { color: var(--tok-com); font-style: italic; }
+.tok-fn { color: var(--tok-fn); }
 
 .callout {
   display: flex;
