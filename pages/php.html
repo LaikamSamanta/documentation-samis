@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=69" />
+<link rel="stylesheet" href="../css/style.css?v=70" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -84,6 +84,7 @@
         <a href="#augsupielazu-limiti"><span class="bullet"></span>Augšupielādes limiti</a>
         <a href="#include"><span class="bullet"></span>include / require</a>
         <a href="#klaudas"><span class="bullet"></span>Kļūdu apstrāde</a>
+        <a href="#kludu-monitorings"><span class="bullet"></span>Kļūdu monitorings produkcijā</a>
       </div>
     </div>
     <div class="doc-sidebar-accordion">
@@ -466,6 +467,31 @@
     <span class="tok-kw">echo</span> <span class="tok-str">"\nAprēķins pabeigts."</span>;
 }
 <span class="tok-com">// izvada: "Kļūda: Nevar dalīt ar nulli" tad "Aprēķins pabeigts."</span></code></pre>
+    </section>
+
+    <section class="doc-section" id="kludu-monitorings">
+      <h2>Kļūdu monitorings produkcijā</h2>
+      <p>Produkcijā apmeklētājam kļūdas nekad nerāda (skaties <a href="drosiba.html#error-disclosure">Drošība → Kļūdu ziņojumi</a>) - tās raksta failā ar <code>error_log</code>. Problēma - <strong>fails, ko neviens nelasa, praktiski neeksistē</strong>. Kļūda var gadīties simtiem reižu, pirms kāds nejauši ieskatās žurnālā vai kāds lietotājs beidzot sūdzas.</p>
+      <p>Kļūdu monitoringa serviss (Sentry, Bugsnag u.tml.) atrisina šo - katru neapstrādāto izņēmumu automātiski nosūta uz ārēju paneli ar pilnu steku (stack trace), pieprasījuma datiem un tūlītēju paziņojumu (e-pasts, Slack), tā vietā, lai tas klusi pazustu log failā.</p>
+      <pre class="code-block"><span class="lang">bash</span><code>composer require sentry/sdk</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code>&lt;?php
+<span class="tok-fn">require</span> __DIR__ . <span class="tok-str">'/vendor/autoload.php'</span>;
+
+<span class="tok-fn">\Sentry\init</span>([
+    <span class="tok-str">'dsn'</span> => <span class="tok-str">'https://tavs-atslegas-kods@o0.ingest.sentry.io/0'</span>, <span class="tok-com">// no Sentry projekta iestatījumiem</span>
+]);
+
+<span class="tok-kw">try</span> {
+    <span class="tok-fn">dargais_aprekins</span>();
+} <span class="tok-kw">catch</span> (<span class="tok-fn">\Throwable</span> <span class="tok-fn">$e</span>) {
+    <span class="tok-fn">\Sentry\captureException</span>(<span class="tok-fn">$e</span>); <span class="tok-com">// nosūta uz Sentry paneli ar pilnu steku</span>
+    <span class="tok-com">// apmeklētājam turpina rādīt drošu, vispārīgu kļūdas lapu</span>
+}</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Pēc <code>\Sentry\init()</code> izsaukšanas <strong>neapstrādātie</strong> (bez try/catch) izņēmumi un fatālās PHP kļūdas nosūtās automātiski, bez papildu koda - <code>captureException()</code> vajag tikai tur, kur kļūda jau tiek apzināti noķerta ar <code>try/catch</code> un citādi paliktu nepamanīta.</p>
+      </div>
+      <p>WordPress kontekstā tas pats princips strādā caur spraudni (piem., "WP Sentry"), kas automātiski pieslēdzas WordPress kļūdu apstrādes āķiem - nav jāraksta manuāls <code>try/catch</code> katrā spraudnī vai tēmā.</p>
     </section>
 
     <section class="doc-section" id="klases">
@@ -888,7 +914,7 @@ DB_PASS=slepenaParole123</code></pre>
   </main>
 </div>
 
-<script src="../js/theme.js?v=69"></script>
-<script src="../js/main.js?v=69"></script>
+<script src="../js/theme.js?v=70"></script>
+<script src="../js/main.js?v=70"></script>
 </body>
 </html>

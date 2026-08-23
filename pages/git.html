@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=69" />
+<link rel="stylesheet" href="../css/style.css?v=70" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -84,6 +84,7 @@
       <a href="#gitignore"><span class="bullet"></span>.gitignore</a>
       <a href="#line-endings"><span class="bullet"></span>Rindu galotnes (CRLF vs LF)</a>
       <a href="#lockfailu"><span class="bullet"></span>Lock faili (package-lock.json)</a>
+      <a href="#semver"><span class="bullet"></span>Semantiskā versionēšana (semver)</a>
       <a href="#atsaukt-izmainas"><span class="bullet"></span>Izmaiņu atsaukšana</a>
       <a href="#stash"><span class="bullet"></span>git stash</a>
       <a href="#labas-prakses"><span class="bullet"></span>Labas prakses</a>
@@ -398,6 +399,30 @@ vendor/
       </div>
     </section>
 
+    <section class="doc-section" id="semver">
+      <h2>Semantiskā versionēšana (semver)</h2>
+      <p>Iepriekšējā sadaļā redzētie versiju numuri (<code>1.2.3</code>) nav patvaļīgi - katrs no trim skaitļiem nozīmē kaut ko konkrētu, un pēc tā var spriest, cik droši ir atjaunināt, <strong>nelasot pat izmaiņu sarakstu</strong>.</p>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Pozīcija</th><th>Nosaukums</th><th>Palielinās, kad...</th></tr></thead>
+          <tbody>
+            <tr><td><code>1</code>.2.3</td><td><strong>Major</strong></td><td>Kaut kas salūzt - mainījusies funkciju darbība vai tās izņemtas. Atjauninot jāpārbauda kods.</td></tr>
+            <tr><td>1.<code>2</code>.3</td><td><strong>Minor</strong></td><td>Pievienota jauna funkcionalitāte, bet vecā turpina strādāt tieši tāpat. Droši atjaunināt bez izmaiņām kodā.</td></tr>
+            <tr><td>1.2.<code>3</code></td><td><strong>Patch</strong></td><td>Tikai kļūdu labojumi, uzvedība nemainās. Vienmēr droši atjaunināt.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Tieši šo loģiku izmanto <code>package.json</code>/<code>composer.json</code> versiju diapazonu simboli:</p>
+      <pre class="code-block"><span class="lang">text</span><code>^1.2.3   → atļauj 1.x.x jebkuru versiju (bet ne 2.0.0) - "droši, jo minor/patch nesalauž"
+~1.2.3   → atļauj tikai 1.2.x (bet ne 1.3.0) - stingrāk, tikai patch līmeņa labojumus
+1.2.3    → tieši šī viena versija, bez izņēmumiem</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Semver ir <strong>solījums, ne garantija</strong> - tas paļaujas uz to, ka paketes autors pareizi klasificē katru izmaiņu. Reāli gadās, ka "minor" atjauninājums netīšām kaut ko salauž (cilvēks kļūdījās, ne process). Tāpēc lock fails (iepriekš) joprojām ir vajadzīgs pat semver pasaulē - tas fiksē konkrētu, PĀRBAUDĪTU versiju, nevis paļaujas, ka katrs diapazons vienmēr uzvedīsies pareizi.</p>
+      </div>
+      <p>Versijas <code>0.x.y</code> (major = 0) semver specifikācijā tiek uzskatītas par "vēl nestabilām" - te pat minor versijas lēciens (<code>0.1.0</code> → <code>0.2.0</code>) drīkst salauzt saderību, tāpēc pirms-1.0 pakotnes vienmēr jāatjaunina piesardzīgāk, neatkarīgi no diapazona simbola.</p>
+    </section>
+
     <section class="doc-section" id="atsaukt-izmainas">
       <h2>Izmaiņu atsaukšana</h2>
       <p>Vairāki līmeņi, atkarībā no tā, cik "dziļi" jāatsaucas:</p>
@@ -451,7 +476,7 @@ git stash list</code></pre>
   </main>
 </div>
 
-<script src="../js/theme.js?v=69"></script>
-<script src="../js/main.js?v=69"></script>
+<script src="../js/theme.js?v=70"></script>
+<script src="../js/main.js?v=70"></script>
 </body>
 </html>
