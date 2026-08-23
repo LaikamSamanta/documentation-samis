@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=70" />
+<link rel="stylesheet" href="../css/style.css?v=71" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -62,6 +62,7 @@
       <a href="#ievads" class="active"><span class="bullet"></span>Kas ir Git?</a>
       <a href="#instalacija"><span class="bullet"></span>Instalācija &amp; konfigurācija</a>
       <a href="#pirmais-repo"><span class="bullet"></span>Pirmais repozitorijs</a>
+      <a href="#esoss-projekts"><span class="bullet"></span>Esoša projekta pievienošana</a>
       <a href="#vesture"><span class="bullet"></span>Vēsture (log, diff)</a>
     </div>
     <div class="doc-sidebar-group">
@@ -162,6 +163,39 @@ git commit -m <span class="tok-str">"Pievieno lietotāja reģistrācijas formu"<
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
         <p>"Sagatavošana" (<code>git add</code>) ir savs, atsevišķs solis - Git NEsaglabā izmaiņas commit'ā automātiski, tikai tās, kuras skaidri pievienoji ar <code>add</code>. Tas ļauj izvēlēties, kuras no vairākām vienlaicīgi izdarītām izmaiņām iet vienā commit'ā, kuras citā - <code>git status</code> vienmēr rāda, kas tieši ir "sagatavots" un kas vēl nav.</p>
       </div>
+    </section>
+
+    <section class="doc-section" id="esoss-projekts">
+      <h2>Esoša projekta pievienošana Git</h2>
+      <p>Bieža situācija - projekts (piem., WordPress vietne) jau pastāv, ar simtiem failu diskā, un Git tam nekad nav bijis pievienots no paša sākuma. Secība ir tāda pati kā jaunam repo (skat. <a href="#pirmais-repo">Pirmais repozitorijs</a>), bet ar vienu kritisku papildu soli - <code>.gitignore</code> jāizveido <strong>pirms</strong> pirmā <code>git add</code>, nevis pēc:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># 1. Dodies uz esošā projekta mapi un inicializē repo</span>
+<span class="tok-kw">cd</span> mana-wp-vietne
+git init
+
+<span class="tok-com"># 2. VISPIRMS izveido .gitignore - pirms jebkāda add (skat. #gitignore)</span>
+<span class="tok-com"># WordPress projektam tipiski jāizslēdz:</span>
+<span class="tok-com">#   wp-config.php      - satur datubāzes paroli</span>
+<span class="tok-com">#   wp-content/uploads/ - lietotāju augšupielādētie faili, gigabaitiem lieli</span>
+<span class="tok-com">#   wp-content/cache/   - ģenerēts kešs, nav jēgas sekot</span>
+<span class="tok-com">#   node_modules/, vendor/ - atkarības, atjaunojamas no package.json/composer.json</span>
+
+<span class="tok-com"># 3. Pārbaudi, KAS tieši tiks pievienots, PIRMS commit</span>
+git status
+
+<span class="tok-com"># 4. Pievieno un commito esošo kodu kā sākuma stāvokli</span>
+git add .
+git commit -m <span class="tok-str">"Sākotnējais commit - esošais projekts"</span></code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Pēc <code>git add .</code> vienmēr palaid <code>git status</code> vēlreiz un pārskaties sarakstu, PIRMS <code>commit</code> - ja tur parādās <code>wp-config.php</code> vai kas cits sensitīvs, <code>.gitignore</code> vēl nestrādā pareizi. Vieglāk to pamanīt tagad, nekā tīrīt no vēstures pēc tam (skat. brīdinājumu pie <a href="#gitignore">.gitignore</a>).</p>
+      </div>
+      <p>Tālāk - savieno lokālo repo ar tukšu, jau izveidotu GitHub repozitoriju:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># GitHub → New repository → NEatzīmē "Add a README" (lai tas paliek tukšs)</span>
+<span class="tok-com"># tad savieno un nosūti esošo vēsturi:</span>
+git remote add origin https://github.com/lietotajs/mana-wp-vietne.git
+git branch -M main
+git push -u origin main</code></pre>
+      <p>No šī brīža vietne ir pilnībā zem versiju kontroles - turpmākās izmaiņas seko parastajam ciklam (<code>status</code> → <code>add</code> → <code>commit</code> → <code>push</code>), tāpat kā projektam, kas Git bija no pirmās dienas.</p>
     </section>
 
     <section class="doc-section" id="vesture">
@@ -476,7 +510,7 @@ git stash list</code></pre>
   </main>
 </div>
 
-<script src="../js/theme.js?v=70"></script>
-<script src="../js/main.js?v=70"></script>
+<script src="../js/theme.js?v=71"></script>
+<script src="../js/main.js?v=71"></script>
 </body>
 </html>
