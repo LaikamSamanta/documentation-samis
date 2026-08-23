@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=68" />
+<link rel="stylesheet" href="../css/style.css?v=69" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -77,6 +77,7 @@
       <a href="#push-pull"><span class="bullet"></span>push / pull / fetch</a>
       <a href="#ssh-atslegas"><span class="bullet"></span>SSH atslēgas GitHub</a>
       <a href="#pull-requests"><span class="bullet"></span>Pull requesti</a>
+      <a href="#cicd"><span class="bullet"></span>CI/CD ar GitHub Actions</a>
     </div>
     <div class="doc-sidebar-group">
       <h4>Praktiski</h4>
@@ -314,6 +315,43 @@ ssh -T git@github.com</code></pre>
       </div>
     </section>
 
+    <section class="doc-section" id="cicd">
+      <h2>CI/CD ar GitHub Actions</h2>
+      <p><strong>CI</strong> (Continuous Integration) - katrs push/PR automātiski palaiž pārbaudes (testi, linter). <strong>CD</strong> (Continuous Deployment) - ja pārbaudes izietas, izmaiņas automātiski nonāk serverī, bez manuālas FTP/SSH kopēšanas. GitHub Actions ir GitHub iebūvēts rīks abām lietām - konfigurē ar vienu <code>.yml</code> failu repozitorijā.</p>
+      <pre class="code-block"><span class="lang">text</span><code><span class="tok-com"># .github/workflows/deploy.yml - fails jāizveido tieši šajā ceļā</span></code></pre>
+      <pre class="code-block"><span class="lang">yaml</span><code><span class="tok-fn">name</span>: Deploy uz produkciju
+
+<span class="tok-fn">on</span>:
+  <span class="tok-fn">push</span>:
+    <span class="tok-fn">branches</span>: [main]
+
+<span class="tok-fn">jobs</span>:
+  <span class="tok-fn">deploy</span>:
+    <span class="tok-fn">runs-on</span>: ubuntu-latest
+    <span class="tok-fn">steps</span>:
+      - <span class="tok-fn">name</span>: Izņem kodu
+        <span class="tok-fn">uses</span>: actions/checkout@v4
+
+      - <span class="tok-fn">name</span>: Izvieto pa SSH/rsync
+        <span class="tok-fn">uses</span>: burnett01/rsync-deployments@7.0.0
+        <span class="tok-fn">with</span>:
+          <span class="tok-fn">switches</span>: -avzr --delete
+          <span class="tok-fn">path</span>: /
+          <span class="tok-fn">remote_path</span>: ${{ secrets.DEPLOY_PATH }}
+          <span class="tok-fn">remote_host</span>: ${{ secrets.DEPLOY_HOST }}
+          <span class="tok-fn">remote_user</span>: ${{ secrets.DEPLOY_USER }}
+          <span class="tok-fn">remote_key</span>: ${{ secrets.DEPLOY_SSH_KEY }}</code></pre>
+      <p>Šis workflow palaižas automātiski pēc katra <code>push</code> uz <code>main</code> zaru: (1) paņem jaunāko kodu, (2) sinhronizē to uz serveri caur SSH/rsync, izmantojot gatavu, kopienas veidotu "action" (<code>burnett01/rsync-deployments</code>) - nevis raksta SSH loģiku pašrocīgi.</p>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Servera SSH adrese, lietotājvārds un privātā atslēga <strong>nekad</strong> netiek rakstīti tieši <code>.yml</code> failā (tas ir publiski redzams repozitorijā) - tos pievieno kā "Secrets" (GitHub repo → Settings → Secrets and variables → Actions), un workflow tos nolasa ar <code>${{ secrets.NOSAUKUMS }}</code> sintaksi. GitHub tos šifrē un nekad neatklāj logos, pat ja kāds mēģina tos izvadīt ar <code>echo</code>.</p>
+      </div>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Pirms deploy soļa der pievienot arī pārbaudes soli (piem., <code>npm test</code> vai <code>vendor/bin/phpunit</code>) - ja tas neizietas, workflow apstājas <strong>pirms</strong> izvietošanas, un salauzts kods nekad nenonāk produkcijā. Tieši šī secība (testi → tikai tad deploy) ir CI/CD galvenā vērtība salīdzinājumā ar manuālu FTP kopēšanu.</p>
+      </div>
+    </section>
+
     <section class="doc-section" id="gitignore">
       <h2>.gitignore</h2>
       <p>Fails <code>.gitignore</code> projekta saknē pasaka Git, kurus failus/mapes <strong>nekad</strong> nesekot un neieteikt pievienot - parasti ģenerētus failus, atkarības un slepenus datus, kam nav vietas versiju kontrolē.</p>
@@ -413,7 +451,7 @@ git stash list</code></pre>
   </main>
 </div>
 
-<script src="../js/theme.js?v=68"></script>
-<script src="../js/main.js?v=68"></script>
+<script src="../js/theme.js?v=69"></script>
+<script src="../js/main.js?v=69"></script>
 </body>
 </html>

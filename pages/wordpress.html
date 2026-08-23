@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=68" />
+<link rel="stylesheet" href="../css/style.css?v=69" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -113,6 +113,7 @@
         <a href="#gutenberg"><span class="bullet"></span>Gutenberg bloki</a>
         <a href="#block-temas"><span class="bullet"></span>Block tēmas &amp; theme.json</a>
         <a href="#i18n"><span class="bullet"></span>Tulkošana (i18n)</a>
+        <a href="#pieejamiba"><span class="bullet"></span>Pieejamība (a11y) tēmās</a>
       </div>
     </div>
     <div class="doc-sidebar-accordion">
@@ -136,9 +137,11 @@
         <a href="#wpdb"><span class="bullet"></span>$wpdb vaicājumi</a>
         <a href="#options-api"><span class="bullet"></span>Options API</a>
         <a href="#transients"><span class="bullet"></span>Transients (kešošana)</a>
+        <a href="#kesosanas-slani"><span class="bullet"></span>Kešošanas slāņi (Object cache, OPcache)</a>
         <a href="#cron"><span class="bullet"></span>Cron uzdevumi</a>
         <a href="#http-api"><span class="bullet"></span>HTTP API (wp_remote_*)</a>
         <a href="#rest-api"><span class="bullet"></span>REST API pamati</a>
+        <a href="#headless-wordpress"><span class="bullet"></span>Headless WordPress</a>
         <a href="#json"><span class="bullet"></span>JSON kodēšana/dekodēšana</a>
       </div>
     </div>
@@ -898,6 +901,78 @@ registerBlockType('mana-tema/sveiciens', {
       <p>Pašus tulkojumus glabā <code>.po</code>/<code>.mo</code> failos <code>languages</code> mapē - tos ģenerē un rediģē ar rīkiem kā <a href="https://poedit.net/" target="_blank" rel="noopener">Poedit</a>, kas nolasa kodā izmantotos <code>__()</code>/<code>_e()</code> izsaukumus un veido no tiem tulkojamo tekstu sarakstu.</p>
     </section>
 
+    <section class="doc-section" id="pieejamiba">
+      <h2>Pieejamība (a11y) tēmās</h2>
+      <p>Pieejamība (accessibility, saīsināti a11y) nozīmē - lapu var lietot arī klaviatūras lietotājs, ekrāna lasītāja lietotājs vai cilvēks ar redzes traucējumiem, ne tikai kāds ar peli un perfektu redzi. Pašrakstītā tēmā/veidnē tas nenotiek automātiski - jāievēro daži konkrēti principi.</p>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Semantiskais HTML vispirms</h3>
+      <p>Pareizi izvēlēti tagi (<code>&lt;nav&gt;</code>, <code>&lt;button&gt;</code> nevis <code>&lt;div onclick&gt;</code>, virsrakstu hierarhija bez izlaistiem līmeņiem) "par brīvu" dod lielāko daļu pieejamības - ekrāna lasītājs jau zina, kā ar tiem uzvesties. Sīkāk par semantiskajiem tagiem un virsrakstu hierarhiju skaties <a href="seo.html#semantic-html">SEO → Semantiskais HTML</a> (tas pats, kas palīdz meklētājprogrammām, palīdz arī ekrāna lasītājiem).</p>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">"Skip to content" saite</h3>
+      <p>WordPress noklusējuma tēmas (Twenty Twenty-Four u.c.) to iekļauj automātiski - bet pašrakstītā tēmā, veidojot <code>header.php</code> no nulles, šo saiti bieži aizmirst. Bez tās klaviatūras lietotājam katrā lapā jāizspiež cauri visai izvēlnei, pirms tiek pie galvenā satura.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Uzreiz aiz &lt;body&gt; taga, pirms izvēlnes</span>
+&lt;a class="skip-link screen-reader-text" href="#main"&gt;Pāriet uz saturu&lt;/a&gt;
+
+...
+
+&lt;main id="main"&gt;
+    &lt;?php <span class="tok-fn">if</span> (<span class="tok-fn">have_posts</span>()) : <span class="tok-kw">while</span> (<span class="tok-fn">have_posts</span>()) : <span class="tok-fn">the_post</span>(); ?&gt;
+        &lt;?php <span class="tok-fn">the_content</span>(); ?&gt;
+    &lt;?php <span class="tok-kw">endwhile</span>; <span class="tok-kw">endif</span>; ?&gt;
+&lt;/main&gt;</code></pre>
+      <pre class="code-block"><span class="lang">css</span><code><span class="tok-com">/* Paslēpta pēc noklusējuma, bet parādās, tiklīdz uz to uzTab-o klaviatūrā */</span>
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #000;
+    color: #fff;
+    padding: 8px 16px;
+    z-index: 100000;
+}
+.skip-link:focus {
+    top: 0;
+}</code></pre>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Fokusa stāvokļi pašrakstītiem elementiem</h3>
+      <p>Pārlūka noklusējuma fokusa gredzenu bieži noņem ar <code>outline: none</code> tikai vizuālu apsvērumu dēļ - bet bez aizvietotāja klaviatūras lietotājs vairs neredz, kur tieši atrodas fokuss. <code>:focus-visible</code> ļauj pielāgot izskatu, nezaudējot pašu funkciju - tas nostrādā tikai klaviatūras (ne peles klikšķa) fokusam:</p>
+      <pre class="code-block"><span class="lang">css</span><code>.mans-elements:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.4);
+}</code></pre>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">ARIA - tikai, kad semantika nepietiek</h3>
+      <p>ARIA atribūti <strong>papildina</strong> HTML, ne aizvieto to - der tieši pielāgotiem UI elementiem, kam nav dabiska HTML ekvivalenta (piem., mobilā izvēlne, kas parādās/pazūd ar JS). Pogai, kas atver/aizver izvēlni, jāpasaka, kāds ir tās PAŠREIZĒJAIS stāvoklis:</p>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;button
+    class="mobile-menu-toggle"
+    aria-expanded="false"
+    aria-controls="mobile-menu"
+&gt;
+    Izvēlne
+&lt;/button&gt;
+&lt;nav id="mobile-menu" hidden&gt;
+    ...
+&lt;/nav&gt;</code></pre>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">const</span> poga = <span class="tok-fn">document</span>.querySelector(<span class="tok-str">'.mobile-menu-toggle'</span>);
+<span class="tok-kw">const</span> izvelne = <span class="tok-fn">document</span>.getElementById(<span class="tok-str">'mobile-menu'</span>);
+
+poga.addEventListener(<span class="tok-str">'click'</span>, () => {
+  <span class="tok-kw">const</span> atverta = poga.getAttribute(<span class="tok-str">'aria-expanded'</span>) === <span class="tok-str">'true'</span>;
+  poga.setAttribute(<span class="tok-str">'aria-expanded'</span>, <span class="tok-kw">String</span>(!atverta));
+  izvelne.hidden = atverta;
+});</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>hidden</code> atribūts (nevis tikai CSS <code>display: none</code> caur klasi) ir uzticamāks veids, kā slēpt saturu no ekrāna lasītājiem - tas ir standarta HTML atribūts, ko atbalsta visi palīgtehnoloģiju rīki, nevis atkarīgs no konkrētas CSS klases nosaukuma.</p>
+      </div>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Attēli un formas</h3>
+      <p>Ja attēlu izvada ar <code>wp_get_attachment_image()</code> (nevis pats rokas <code>&lt;img&gt;</code> tagu), WordPress <code>alt</code> tekstu automātiski paņem no Media Library attēla "Alternative Text" lauka - jāaizpilda tas augšupielādes brīdī, nevis jāraksta katrā veidnē no jauna. Vairāk par <code>alt</code> tekstu - <a href="seo.html#images">SEO → Attēlu optimizācija</a>.</p>
+      <p>Katram formas laukam vajag <code>&lt;label&gt;</code>, kas saistīts ar konkrēto lauku caur <code>for</code>/<code>id</code> pāri - bez tā ekrāna lasītājs paziņo tikai "ievades lauks", nevis ko tajā ievadīt:</p>
+      <pre class="code-block"><span class="lang">html</span><code>&lt;label for="lietotaja-epasts"&gt;E-pasta adrese&lt;/label&gt;
+&lt;input type="email" id="lietotaja-epasts" name="epasts"&gt;</code></pre>
+    </section>
+
     <section class="doc-section" id="drosiba">
       <h2>Drošība: nonce &amp; escaping</h2>
       <p>Divi drošības jēdzieni, kas jāzina no paša sākuma. <strong>Escaping</strong> - izvadot jebkādus datus HTML, izmanto <code>esc_html()</code>/<code>esc_attr()</code>, lai novērstu XSS (kāds ievieto ļaunprātīgu <code>&lt;script&gt;</code> tagu, kas izpildās citu apmeklētāju pārlūkos). <strong>Nonce</strong> - formas, kas maina datus, aizsargā ar vienreizēju "biļeti", kas apliecina, ka pieprasījums patiešām nāk no tavas lapas.</p>
@@ -1213,6 +1288,53 @@ registerBlockType('mana-tema/sveiciens', {
       </div>
     </section>
 
+    <section class="doc-section" id="kesosanas-slani">
+      <h2>Kešošanas slāņi (Object cache, Page cache, OPcache)</h2>
+      <p>Transients (iepriekš) ir viens, vienkāršs kešošanas veids - bet reālā vietnē tas ir tikai viens no <strong>trim neatkarīgiem slāņiem</strong>, kas katrs paātrina citu daļu no pieprasījuma. Ja vietne joprojām lēna pēc transientu izmantošanas, cēlonis parasti ir kāds no pārējiem diviem.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>1️⃣ Page cache</h4><p>Saglabā <strong>gatavu HTML</strong> visai lapai - nākamajam apmeklētājam PHP/datubāze pat neieslēdzas, serveris uzreiz atdod jau gatavu failu. Ātrākais, bet neder ielogotiem lietotājiem/personalizētam saturam.</p></div>
+        <div class="doc-mini-card"><h4>2️⃣ Object cache</h4><p>Kešo <strong>atsevišķu PHP mainīgo/vaicājuma rezultātu</strong> starp pieprasījumiem - tas pats mehānisms, ko izmanto transienti, ja pieejams pastāvīgs (persistent) backend. Bez tā - tikai vienas lapas ielādes robežās.</p></div>
+        <div class="doc-mini-card"><h4>3️⃣ OPcache</h4><p>Kešo PHP koda <strong>kompilēto bytecode</strong>, lai PHP to nepārkompilētu no jauna katrā pieprasījumā. Servera/PHP konfigurācijas līmenī, neatkarīgi no WordPress - ietekmē katru PHP vietni uz servera.</p></div>
+      </div>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Object cache: wp_cache_* funkcijas</h3>
+      <p><code>wp_cache_get()</code>/<code>wp_cache_set()</code> izskatās un strādā tieši tā pat kā transienti, ar vienu būtisku atšķirību - <strong>pēc noklusējuma tie glabājas tikai vienas lapas ielādes atmiņā</strong> un pazūd, tiklīdz pieprasījums beidzas. Lai tie patiešām saglabātos <em>starp</em> pieprasījumiem (kā transienti), vajag "persistent object cache" - Redis vai Memcached serveri plus attiecīgu spraudni/drop-in failu.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">function</span> <span class="tok-fn">iegut_dargu_rezultatu</span>() {
+    <span class="tok-fn">$cached</span> = <span class="tok-fn">wp_cache_get</span>(<span class="tok-str">'dargais_rezultats'</span>, <span class="tok-str">'mana_tema'</span>);
+    <span class="tok-kw">if</span> (<span class="tok-fn">$cached</span> !== <span class="tok-kw">false</span>) {
+        <span class="tok-kw">return</span> <span class="tok-fn">$cached</span>;
+    }
+
+    <span class="tok-fn">$rezultats</span> = <span class="tok-fn">dargais_aprekins</span>(); <span class="tok-com">// piem., smags $wpdb vaicājums</span>
+    <span class="tok-fn">wp_cache_set</span>(<span class="tok-str">'dargais_rezultats'</span>, <span class="tok-fn">$rezultats</span>, <span class="tok-str">'mana_tema'</span>, HOUR_IN_SECONDS);
+    <span class="tok-kw">return</span> <span class="tok-fn">$rezultats</span>;
+}</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Tāpēc reālos projektos bieži izmanto <strong>transientu</strong>, nevis <code>wp_cache_*</code> tieši - transients pats iekšēji izmanto object cache, JA tāds pieejams, bet automātiski atkāpjas uz <code>wp_options</code> tabulu (datubāzi), JA nav - tātad strādā uzticami abos gadījumos, bez papildu koda zarošanas.</p>
+      </div>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">Redis/Memcached pieslēgšana</h3>
+      <p>Lai <code>wp_cache_*</code> (un transienti) patiešām kļūtu pastāvīgi, vajag uzstādīt Redis vai Memcached serveri (parasti pieejams caur hostinga paneli vai <code>apt install redis-server</code>) un attiecīgu WordPress spraudni (piem., "Redis Object Cache"), kas pēc aktivizācijas pats nokopē nepieciešamo <code>object-cache.php</code> failu uz <code>wp-content</code> mapi:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// wp-config.php - Redis Object Cache spraudnim</span>
+<span class="tok-kw">define</span>(<span class="tok-str">'WP_REDIS_HOST'</span>, <span class="tok-str">'127.0.0.1'</span>);
+<span class="tok-kw">define</span>(<span class="tok-str">'WP_REDIS_PORT'</span>, 6379);</code></pre>
+
+      <h3 style="font-size:17px; margin:32px 0 10px;">OPcache (php.ini)</h3>
+      <p>Bez WordPress-specifiska koda - PHP serverim jāpasaka, lai kompilēto bytecode patur atmiņā starp pieprasījumiem, nevis kompilē katru <code>.php</code> failu no jauna katrreiz:</p>
+      <pre class="code-block"><span class="lang">text</span><code><span class="tok-com">; php.ini</span>
+opcache.enable=1
+opcache.memory_consumption=128
+opcache.max_accelerated_files=10000
+opcache.validate_timestamps=1
+opcache.revalidate_freq=2</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>opcache.validate_timestamps=1</code> ar <code>revalidate_freq=2</code> pārbauda, vai fails mainījies, ik pēc 2 sekundēm - der izstrādei. Produkcijā, kur faili mainās tikai deploy brīdī, iestata <code>validate_timestamps=0</code> (nekad automātiski nepārbauda) un restartē PHP-FPM manuāli pēc katra izvietojuma - nedaudz ātrāk, bet aizmirsts restarts nozīmē, ka izmaiņas "neparādās" vēl ilgi pēc deploy.</p>
+      </div>
+      <p>Ātrs, praktisks kešošanas trūkuma labojums (spraudņa uzstādīšana) jau aprakstīts <a href="wordpress-problemas.html#lena-vietne">Problēmas → Lēna WordPress vietne</a> - šī sadaļa paskaidro, <strong>kas</strong> tur notiek zem virsmas.</p>
+    </section>
+
     <section class="doc-section" id="cron">
       <h2>Cron uzdevumi</h2>
       <p>WordPress Cron <strong>nav</strong> īsts servera cron - tas ieplānoto uzdevumu pārbauda un izpilda tikai tad, kad kāds apmeklē vietni. Vienmēr vispirms pārbaudi ar <code>wp_next_scheduled()</code>, vai uzdevums jau nav ieplānots, citādi katrā aktivizācijā izveidosi dublikātus.</p>
@@ -1292,6 +1414,36 @@ GET /wp-json/wp/v2/produkts     → CPT ieraksti (ja show_in_rest: true)</code><
     ]);
 });
 <span class="tok-com">// Pieejams: /wp-json/mana-tema/v1/sveiciens</span></code></pre>
+    </section>
+
+    <section class="doc-section" id="headless-wordpress">
+      <h2>Headless WordPress</h2>
+      <p>"Headless" nozīmē - WordPress vairs <strong>nerenderē</strong> nevienu lapu pašs (nav tēmas, nav <code>header.php</code>/<code>footer.php</code>). Tas kalpo tikai kā satura backend, kas atgriež JSON caur REST API (iepriekš) vai GraphQL, un pilnīgi atsevišķa lietotne (React/Vue/Next.js, vai pat tīrs JavaScript) to saņem un pati uzzīmē lapu.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>✅ Kad izmantot</h4><p>Vajag pilnīgu kontroli pār frontend veiktspēju/UX (piem., ļoti interaktīva lietotne), vai tas pats saturs jārāda vairākās vietās (vietne + mobilā app), vai komanda jau strādā JS ietvaros, nevis PHP tēmās.</p></div>
+        <div class="doc-mini-card"><h4>❌ Kad neizmantot</h4><p>Vienkāršai satura vietnei (bloga, uzņēmuma lapa) - zaudē WordPress iebūvēto Gutenberg priekšskatījumu, daudzi spraudņi (SEO, kešošana) paļaujas uz to, ka WordPress pats renderē HTML, un jāraksta divreiz vairāk koda (backend + atsevišķs frontend).</p></div>
+      </div>
+      <p>Vienkāršākais piemērs - statiska JS lapa, kas ielādē un uzzīmē pēdējos rakstus tieši no publiskā, jau eksistējošā REST API galapunkta, bez papildu autentifikācijas (jo tikai lasa publicētu saturu):</p>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">async</span> <span class="tok-kw">function</span> <span class="tok-fn">ieladetRakstus</span>() {
+  <span class="tok-kw">const</span> atbilde = <span class="tok-kw">await</span> <span class="tok-fn">fetch</span>(<span class="tok-str">'https://tavavietne.lv/wp-json/wp/v2/posts?per_page=5'</span>);
+  <span class="tok-kw">const</span> raksti = <span class="tok-kw">await</span> atbilde.json();
+
+  <span class="tok-kw">const</span> saraksts = <span class="tok-fn">document</span>.getElementById(<span class="tok-str">'raksti'</span>);
+  saraksts.innerHTML = raksti.map(<span class="tok-fn">raksts</span> => <span class="tok-str">`
+    &lt;article&gt;
+      &lt;h2&gt;${raksts.title.rendered}&lt;/h2&gt;
+      &lt;div&gt;${raksts.excerpt.rendered}&lt;/div&gt;
+    &lt;/article&gt;
+  `</span>).join(<span class="tok-str">''</span>);
+}
+
+<span class="tok-fn">ieladetRakstus</span>();</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Ja frontend un WordPress dzīvo <strong>dažādos domēnos/portos</strong> (bieži izstrādes laikā - piem., frontend uz <code>localhost:3000</code>, WordPress uz <code>localhost:8080</code>), pārlūks šo pieprasījumu bloķēs ar CORS kļūdu. Pilns skaidrojums un WordPress puses labojums (<code>Access-Control-Allow-Origin</code> galvene) - <a href="web-problemas.html#err-cors">Tīkls → CORS kļūda</a>.</p>
+      </div>
+      <p>Lasīšanai (GET) publiski pieejamam saturam papildu autentifikācija nav vajadzīga - bet <strong>rakstīšanai</strong> (jauna komentāra, pasūtījuma izveide no frontend puses) WordPress REST API pēc noklusējuma prasa pieteikšanos. Tam der <strong>Application Passwords</strong> (WordPress iebūvēts kopš 5.6 - Lietotāji → Profils → "Application Passwords") vai JWT tokens spraudnis - abi darbojas kā <code>Authorization: Bearer ...</code> galvene katrā pieprasījumā.</p>
+      <p>Alternatīva REST API vietā - <a href="https://www.wpgraphql.com/" target="_blank" rel="noopener">WPGraphQL</a> spraudnis, kas ļauj frontend pieprasīt <strong>tieši</strong> tos laukus, kas vajadzīgi (nevis vienmēr visu objektu, kā REST API), vienā pieprasījumā, arī saistītiem datiem (piem., raksts + tā autors + kategorijas vienā atbildē).</p>
     </section>
 
     <section class="doc-section" id="json">
@@ -1397,7 +1549,7 @@ GET /wp-json/wp/v2/produkts     → CPT ieraksti (ja show_in_rest: true)</code><
   </main>
 </div>
 
-<script src="../js/theme.js?v=68"></script>
-<script src="../js/main.js?v=68"></script>
+<script src="../js/theme.js?v=69"></script>
+<script src="../js/main.js?v=69"></script>
 </body>
 </html>
