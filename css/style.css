@@ -2241,14 +2241,21 @@ pre.code-block code {
   min-height: 200px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border);
-  background: repeating-conic-gradient(var(--bg-elevated) 0% 25%, var(--bg-card) 0% 50%) 50% / 20px 20px;
+  /* fixed light checkerboard, not theme-linked - a dark-on-dark checkerboard
+     (var(--bg-elevated)/var(--bg-card) in dark mode) gives the default
+     black shadow almost nothing to contrast against, making the whole
+     tool unreadable in dark mode */
+  background: repeating-conic-gradient(#e5e5ea 0% 25%, #f7f7fa 0% 50%) 50% / 20px 20px;
   margin-bottom: 18px;
 }
 .riki-shadow-preview {
   width: 120px;
   height: 120px;
   border-radius: var(--radius-md);
-  background: var(--bg-card);
+  /* fixed light surface for the same reason - the shadow this tool
+     generates needs a consistently light backdrop to read clearly
+     regardless of the site's own dark/light theme */
+  background: #fafafa;
 }
 .riki-shadow-channels {
   margin-bottom: 18px;
