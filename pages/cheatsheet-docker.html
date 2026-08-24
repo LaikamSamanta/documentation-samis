@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="lv" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="manifest" href="../manifest.json" />
+<meta name="theme-color" content="#9d5cff" />
+<title>Docker Cheatsheet - Documentation Samis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css?v=74" />
+<script>
+  (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
+</script>
+</head>
+<body class="cat-docker">
+<div class="bg-glow"></div>
+<div class="bg-grid"></div>
+
+<header class="topbar">
+  <a class="brand" href="../index.html">
+    <span class="mark"><svg viewBox="0 0 32 32" width="30" height="30"><defs><linearGradient id="logomarkG" x1="2" y1="1" x2="30" y2="31" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#6d28d9"/><stop offset="50%" stop-color="#9d5cff"/><stop offset="100%" stop-color="#f472b6"/></linearGradient><radialGradient id="logomarkGlow" cx="0.78" cy="0.18" r="0.65"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.4"/><stop offset="100%" stop-color="#ffffff" stop-opacity="0"/></radialGradient></defs><rect x="1" y="1" width="30" height="30" rx="15" fill="url(#logomarkG)"/><rect x="1" y="1" width="30" height="30" rx="15" fill="url(#logomarkGlow)"/><path d="M 12 9.5 L 6.5 16 L 12 22.5" fill="none" stroke="#000000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M 20 9.5 L 25.5 16 L 20 22.5" fill="none" stroke="#000000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M 17.6 7.5 L 14.4 24.5" fill="none" stroke="#000000" stroke-width="2.2" stroke-linecap="round" stroke-opacity="0.92"/></svg></span>
+    Documentation Samis
+  </a>
+  <div class="topbar-actions">
+    <a class="btn-back" href="docker.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M5 12h14"/></svg>
+      <span class="btn-label">Pilnā dokumentācija</span>
+    </a>
+    <a class="quick-link" href="riki.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      <span class="btn-label">Rīki</span>
+    </a>
+    <a class="quick-link" href="wordpress-snippets.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      <span class="btn-label">Ātrie risinājumi</span>
+    </a>
+    <a class="quick-link" href="vardnica.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+      <span class="btn-label">Vārdnīca</span>
+    </a>
+    <button class="icon-btn" id="theme-toggle" title="Pārslēgt tēmu" aria-label="Pārslēgt tēmu">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main class="doc-main" style="max-width:1300px; margin:0 auto;">
+  <div class="doc-breadcrumb">
+    <a href="../index.html">Sākums</a>
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    <a href="docker.html">Docker</a>
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+    <span>Cheatsheet</span>
+  </div>
+
+  <div class="doc-header">
+    <div class="icon" style="background: var(--c-docker-soft); color: var(--c-docker);">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4a2 2 0 0 0 1-1.73z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+    </div>
+    <h1 style="margin-bottom:0;">Docker Cheatsheet</h1>
+  </div>
+  <p class="doc-lead">Ātrās uzziņas lapa - katrai kartiņai īss skaidrojums un komandas fragments. Pamatjēdzienus un pilnu WordPress + MySQL piemēru skaties <a href="docker.html">pilnajā Docker dokumentācijā</a>.</p>
+
+  <nav class="cheat-jump">
+    <a href="#ct-images">Attēli (images)</a>
+    <a href="#ct-containers">Konteineri</a>
+    <a href="#ct-compose">Compose</a>
+    <a href="#ct-volumes">Volumes &amp; tīkli</a>
+    <a href="#ct-logs">Žurnāli &amp; atkļūdošana</a>
+    <a href="#ct-cleanup">Tīrīšana</a>
+  </nav>
+
+  <section class="cheat-section" id="ct-images">
+    <h2>Attēli (images)</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>docker build</h4><p>Uzbūvē image no Dockerfile pašreizējā mapē.</p><pre><code>docker build -t mans-app .</code></pre></div>
+      <div class="cheat-card"><h4>docker images</h4><p>Rāda visus lokāli lejupielādētos/uzbūvētos images.</p><pre><code>docker images</code></pre></div>
+      <div class="cheat-card"><h4>docker pull</h4><p>Lejupielādē gatavu image no Docker Hub.</p><pre><code>docker pull nginx:latest</code></pre></div>
+      <div class="cheat-card"><h4>docker rmi</h4><p>Izdzēš vienu image (jābūt bez aktīviem konteineriem, kas to lieto).</p><pre><code>docker rmi mans-app</code></pre></div>
+      <div class="cheat-card"><h4>docker tag</h4><p>Piešķir image papildu nosaukumu/versiju, piem. pirms push uz reģistru.</p><pre><code>docker tag mans-app mans-app:v2</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-containers">
+    <h2>Konteineri</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>docker run</h4><p>Palaiž jaunu konteineru no image, fonā, ar porta piesaisti.</p><pre><code>docker run -d -p 8080:80 nginx</code></pre></div>
+      <div class="cheat-card"><h4>docker ps</h4><p>Palaistie konteineri / arī apturētie ar <code>-a</code>.</p><pre><code>docker ps
+docker ps -a</code></pre></div>
+      <div class="cheat-card"><h4>docker stop / start</h4><p>Aptur vai atsāk konteineru, nedzēšot to.</p><pre><code>docker stop konteiners
+docker start konteiners</code></pre></div>
+      <div class="cheat-card"><h4>docker restart</h4><p>Pārstartē konteineru - noder pēc konfigurācijas maiņas.</p><pre><code>docker restart konteiners</code></pre></div>
+      <div class="cheat-card"><h4>docker rm</h4><p>Izdzēš apturētu konteineru (pievieno <code>-f</code>, lai piespiestu, ja vēl darbojas).</p><pre><code>docker rm konteiners</code></pre></div>
+      <div class="cheat-card"><h4>docker exec</h4><p>Atver termināli KONTEINERA iekšienē - failu vai datubāzes pārbaudei.</p><pre><code>docker exec -it konteiners bash</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-compose">
+    <h2>Docker Compose</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>docker compose up</h4><p>Palaiž visus servisus no docker-compose.yml fonā.</p><pre><code>docker compose up -d</code></pre></div>
+      <div class="cheat-card"><h4>docker compose down</h4><p>Aptur un izdzēš visus servisus (volumes paliek droši).</p><pre><code>docker compose down</code></pre></div>
+      <div class="cheat-card"><h4>docker compose build</h4><p>Pārbūvē images pēc Dockerfile vai atkarību izmaiņām.</p><pre><code>docker compose build</code></pre></div>
+      <div class="cheat-card"><h4>docker compose restart</h4><p>Pārstartē VIENU konkrētu servisu, neietekmējot pārējos.</p><pre><code>docker compose restart wordpress</code></pre></div>
+      <div class="cheat-card"><h4>docker compose exec</h4><p>Termināls konkrētā compose servisā.</p><pre><code>docker compose exec wordpress bash</code></pre></div>
+      <div class="cheat-card"><h4>docker compose ps</h4><p>Rāda visu compose projekta servisu statusu.</p><pre><code>docker compose ps</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-volumes">
+    <h2>Volumes &amp; tīkli</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>docker volume ls</h4><p>Rāda visus Docker pārvaldītos volumes (pastāvīgos datus).</p><pre><code>docker volume ls</code></pre></div>
+      <div class="cheat-card"><h4>docker volume rm</h4><p>Izdzēš volume - <strong>neatgriezeniski</strong> dzēš tajā glabātos datus.</p><pre><code>docker volume rm db_dati</code></pre></div>
+      <div class="cheat-card"><h4>docker network ls</h4><p>Rāda visus Docker tīklus, kas savieno konteinerus savā starpā.</p><pre><code>docker network ls</code></pre></div>
+      <div class="cheat-card"><h4>docker network inspect</h4><p>Rāda, kuri konteineri pievienoti konkrētam tīklam.</p><pre><code>docker network inspect tikls</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-logs">
+    <h2>Žurnāli &amp; atkļūdošana</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>docker logs</h4><p>Konteinera izvades žurnāls, <code>-f</code> seko tiešraidē.</p><pre><code>docker logs -f konteiners</code></pre></div>
+      <div class="cheat-card"><h4>docker compose logs</h4><p>Tas pats, bet konkrētam compose servisam.</p><pre><code>docker compose logs -f wordpress</code></pre></div>
+      <div class="cheat-card"><h4>docker inspect</h4><p>Pilna konteinera/image konfigurācija JSON formātā (porti, volumes, env).</p><pre><code>docker inspect konteiners</code></pre></div>
+      <div class="cheat-card"><h4>docker stats</h4><p>CPU/RAM/tīkla lietojums visiem palaistajiem konteineriem, tiešraidē.</p><pre><code>docker stats</code></pre></div>
+      <div class="cheat-card"><h4>docker top</h4><p>Rāda procesus, kas darbojas konteinera iekšienē.</p><pre><code>docker top konteiners</code></pre></div>
+    </div>
+  </section>
+
+  <section class="cheat-section" id="ct-cleanup">
+    <h2>Tīrīšana</h2>
+    <div class="cheat-grid">
+      <div class="cheat-card"><h4>docker system prune</h4><p>Noņem NEIZMANTOTUS images/konteinerus/build kešu - volumes paliek droši.</p><pre><code>docker system prune</code></pre></div>
+      <div class="cheat-card"><h4>docker container prune</h4><p>Izdzēš tikai apturētos konteinerus.</p><pre><code>docker container prune</code></pre></div>
+      <div class="cheat-card"><h4>docker image prune</h4><p>Izdzēš tikai neizmantotos (dangling) images.</p><pre><code>docker image prune</code></pre></div>
+      <div class="cheat-card"><h4>docker system prune -a --volumes</h4><p><strong>Bīstami</strong> - izdzēš arī VISUS neizmantotos volumes (dati zūd neatgriezeniski). Lieto tikai, ja tiešām jāatbrīvo maksimāli daudz vietas.</p><pre><code>docker system prune -a --volumes</code></pre></div>
+    </div>
+  </section>
+
+  <div class="doc-pager">
+    <a href="docker.html"><span class="lbl">← Atpakaļ</span>Pilnā Docker dokumentācija</a>
+    <a class="to-next" href="../index.html"><span class="lbl">Atpakaļ →</span>Visas kategorijas</a>
+  </div>
+</main>
+
+<script src="../js/theme.js?v=74"></script>
+<script src="../js/main.js?v=74"></script>
+</body>
+</html>

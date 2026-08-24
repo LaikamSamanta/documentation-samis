@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=73" />
+<link rel="stylesheet" href="../css/style.css?v=74" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -178,11 +178,21 @@
     </div>
     <div class="doc-sidebar-accordion">
       <button class="doc-accordion-toggle" type="button">
-        <span>E-pasti (SMTP)</span>
+        <span>E-pasti</span>
         <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
       </button>
       <div class="doc-accordion-body">
         <a href="#snip-smtp"><span class="bullet"></span>Uzticama e-pastu sūtīšana caur SMTP</a>
+        <a href="#gmail-forward-filter"><span class="bullet"></span>Gmail filtrs kā automātisks forward</a>
+      </div>
+    </div>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Google atsauksmes</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#snip-google-reviews"><span class="bullet"></span>Atsauksmju karuselis (shortcode)</a>
       </div>
     </div>
   </aside>
@@ -1311,6 +1321,232 @@
       </div>
     </section>
 
+    <section class="doc-section" id="gmail-forward-filter">
+      <h2>Gmail filtrs, kas darbojas kā automātisks forward</h2>
+      <p>Šis nav kods - tā ir Gmail konta iestatījumu secība, bet noder tieši tāpēc, ka bieži kāda projekta paziņojumi (piem., kontaktformas iesniegumi no <a href="integracijas.html#contact-form-php">servera apstrādes</a> augstāk) krīt vienā koplietotā Gmail iesūtnē, un daļa no tiem jāpārsūta tālāk konkrētam cilvēkam vai citai adresei - bez papildu koda, tikai ar iestatījumiem pašā Gmail.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>1. Apstiprini pārsūtīšanas adresi</h4><p>Iestatījumi (zobrats) → <strong>Skatīt visus iestatījumus</strong> → cilne <strong>Pārsūtīšana un POP/IMAP</strong> → <strong>Pievienot pārsūtīšanas adresi</strong>. Gmail uz to nosūta apstiprinājuma saiti - bez klikšķa uz tās adrese nekur nebūs izvēlama.</p></div>
+        <div class="doc-mini-card"><h4>2. Izveido jaunu filtru</h4><p>Meklēšanas lauciņā labajā pusē klikšķini uz bultiņas ikonas (izvērstā meklēšana) - vai Iestatījumi → <strong>Filtri un bloķētās adreses</strong> → <strong>Izveidot jaunu filtru</strong>.</p></div>
+        <div class="doc-mini-card"><h4>3. Nosaki kritēriju</h4><p>Piem., <strong>No</strong>: <code>noreply@tavavietne.lv</code> vai <strong>Temats satur</strong>: "Jauns pieprasījums" - jo šaurāks kritērijs, jo precīzāk pārsūtīsies tikai tas, kas tiešām jāpārsūta.</p></div>
+        <div class="doc-mini-card"><h4>4. Izvēlies darbību</h4><p>Pēc "Izveidot filtru" atzīmē <strong>Pārsūtīt to uz</strong> un izvēlies 1. solī apstiprināto adresi. Pēc izvēles atzīmē arī "Izlaist iesūtni (arhivēt to)", ja oriģināls e-pasts tavā kontā vairs nav jāredz.</p></div>
+      </div>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Nesajaukt ar Iestatījumi → <strong>Pārsūtīšana un POP/IMAP</strong> → "Pārsūtīt ienākošo pastu uz" - tas pārsūta <strong>PILNĪGI VISU</strong> ienākošo pastu bez izņēmuma. Filtra "Pārsūtīt to" darbība pārsūta <strong>tikai</strong> vēstules, kas atbilst filtra kritērijam - abiem veidiem tomēr vispirms jāapstiprina tā pati mērķa adrese 1. solī.</p>
+      </div>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Pirms filtra izveides der vispirms ierakstīt kritēriju parastajā meklēšanas laukā un nospiest Enter - ja meklēšanas rezultāti satur tieši tos e-pastus, kas jāpārsūta (un neko citu), tas pats kritērijs droši pārnesas uz filtru ar pogu "Izveidot filtru no šī meklējuma".</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="snip-google-reviews">
+      <h2>Google atsauksmju karuselis (shortcode)</h2>
+      <p>Bezgalīgi ritinošs, automātiski ejošs kartīšu karuselis ar Google atsauksmēm - ievieto jebkurā lapā ar <code>[google_atsauksmes]</code>. Katrai atsauksmei attēls vai krāsains avatārs ar iniciāli, zvaigznīšu vērtējums un garāka teksta "Lasīt vairāk" saīsināšana. Augšā kopējā vērtējuma josla ar saiti uz jaunas atsauksmes atstāšanu.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">function</span> google_reviews_carousel_shortcode() {
+    <span class="tok-fn">ob_start</span>();
+?&gt;
+&lt;style&gt;
+.review-carousel-wrapper {
+    max-width: 1180px;
+    margin: 0 auto;
+    font-family: 'Montserrat', sans-serif;
+    padding: 40px 20px;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+}
+.google-overall-rating-bar {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto 40px auto;
+    text-align: center;
+    padding: 15px 20px;
+    border: 1px solid #baad7b;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+.overall-rating-stars-logo { display: flex; justify-content: center; align-items: center; margin-bottom: 10px; }
+.overall-rating-stars-logo .rating-text { font-size: 22px; font-weight: 700; margin-right: 12px; color: #486173; }
+.overall-rating-stars-logo .stars { color: #fbbc04; font-size: 26px; margin-right: 12px; }
+.view-all-reviews-link { display: inline-block; font-size: 14px; padding: 10px 30px; border: 1px solid #baad7b; border-radius: 6px; text-decoration: none; color: #486173; transition: 0.3s; font-weight: 600; }
+.view-all-reviews-link:hover { color: #baad7b; transform: scale(1.03); }
+.review-carousel { display: flex; gap: 26px; transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); will-change: transform; transform: translateZ(0); }
+.google-review-card { background: #fff; border-radius: 16px; border: 1px solid #baad7b; padding: 30px 24px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.08); transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s; flex-shrink: 0; }
+.google-review-card:hover { border-color: #9d8f5a; box-shadow: 0 0 15px rgba(0,0,0,0.2); filter: brightness(1.1); }
+.reviewer-avatar { width: 50px; height: 50px; border-radius: 50%; margin: 0 auto 10px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.reviewer-avatar-img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.reviewer-avatar-initial { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 22px; font-weight: 600; border-radius: 50%; }
+.person-name { margin: 0; font-size: 17px; font-weight: 600; }
+.reviewer-info span { font-size: 13px; color: #555; display: block; margin-top: 3px; }
+.rating-row { display: flex; justify-content: center; align-items: center; margin-bottom: 16px; }
+.rating-row .stars { color: #fbbc04; font-size: 19px; }
+.review-text { font-size: 15px; line-height: 1.6; color: #333; }
+
+/* 4 kartītes uz galddatora, 2 uz planšetes, 1 uz mobilā */
+@media (min-width: 1025px) { .google-review-card { flex: 0 0 calc(25% - 19.5px); } }
+@media (max-width: 1024px) and (min-width: 601px) { .google-review-card { flex: 0 0 calc(50% - 10px); } }
+@media (max-width: 600px) { .google-review-card { flex: 0 0 100%; } }
+&lt;/style&gt;
+
+&lt;div class="review-carousel-wrapper"&gt;
+    &lt;div class="google-overall-rating-bar"&gt;
+        &lt;div class="overall-rating-stars-logo"&gt;
+            &lt;span class="rating-text"&gt;5&lt;/span&gt;
+            &lt;span class="stars"&gt;★★★★★&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;a href="https://search.google.com/local/writereview?placeid=TAVS_GOOGLE_PLACE_ID" target="_blank" class="view-all-reviews-link"&gt;Pievienot atsauksmi&lt;/a&gt;
+    &lt;/div&gt;
+
+    &lt;div class="review-carousel" id="google-review-carousel"&gt;
+    &lt;?php
+        <span class="tok-fn">$reviews</span> = [
+            [<span class="tok-str">'image_url'</span> =&gt; <span class="tok-str">''</span>, <span class="tok-str">'initial'</span> =&gt; <span class="tok-str">'A'</span>, <span class="tok-str">'color'</span> =&gt; <span class="tok-str">'#ec407a'</span>, <span class="tok-str">'name'</span> =&gt; <span class="tok-str">'Anna Bērziņa'</span>, <span class="tok-str">'time'</span> =&gt; <span class="tok-str">'pirms gada'</span>, <span class="tok-str">'text'</span> =&gt; <span class="tok-str">'Ļoti laba pieredze, viss noticis laicīgi un profesionāli.'</span>],
+            [<span class="tok-str">'image_url'</span> =&gt; <span class="tok-str">''</span>, <span class="tok-str">'initial'</span> =&gt; <span class="tok-str">'M'</span>, <span class="tok-str">'color'</span> =&gt; <span class="tok-str">'#0288d1'</span>, <span class="tok-str">'name'</span> =&gt; <span class="tok-str">'Māris Ozoliņš'</span>, <span class="tok-str">'time'</span> =&gt; <span class="tok-str">'pirms gada'</span>, <span class="tok-str">'text'</span> =&gt; <span class="tok-str">'Izsaku lielu pateicību par atsaucību un korekti izskaidrotu procesu.'</span>],
+            [<span class="tok-str">'image_url'</span> =&gt; <span class="tok-str">'https://tavavietne.lv/wp-content/uploads/2026/01/klients.png'</span>, <span class="tok-str">'initial'</span> =&gt; <span class="tok-str">'I'</span>, <span class="tok-str">'color'</span> =&gt; <span class="tok-str">'#689f38'</span>, <span class="tok-str">'name'</span> =&gt; <span class="tok-str">'Ieva Kalniņa'</span>, <span class="tok-str">'time'</span> =&gt; <span class="tok-str">'pirms 3 mēnešiem'</span>, <span class="tok-str">'text'</span> =&gt; <span class="tok-str">'Cena atbilst kvalitātei, komunikācija bija skaidra visā procesā.'</span>],
+        ];
+
+        <span class="tok-com">// Klonē atsauksmes 3x, lai karuselim būtu par ko "ritināt" bezgalīgas kustības ilūzijai</span>
+        <span class="tok-fn">$full_reviews</span> = <span class="tok-fn">array_merge</span>(<span class="tok-fn">$reviews</span>, <span class="tok-fn">$reviews</span>, <span class="tok-fn">$reviews</span>);
+
+        <span class="tok-kw">foreach</span> (<span class="tok-fn">$full_reviews</span> <span class="tok-kw">as</span> <span class="tok-fn">$review</span>) { ?&gt;
+            &lt;div class="google-review-card"&gt;
+                &lt;div class="reviewer-avatar"&gt;
+    &lt;?php <span class="tok-kw">if</span> (!<span class="tok-fn">empty</span>(<span class="tok-fn">$review</span>[<span class="tok-str">'image_url'</span>])) : ?&gt;
+        &lt;img
+            src="&lt;?= esc_url($review['image_url']); ?&gt;"
+            alt="&lt;?= esc_attr($review['name']); ?&gt;"
+            class="reviewer-avatar-img"
+            loading="lazy"
+        &gt;
+    &lt;?php <span class="tok-kw">else</span> : ?&gt;
+        &lt;div class="reviewer-avatar-initial" style="background-color: &lt;?= esc_attr($review['color']); ?&gt;;"&gt;
+            &lt;?= esc_html($review['initial']); ?&gt;
+        &lt;/div&gt;
+    &lt;?php <span class="tok-kw">endif</span>; ?&gt;
+                &lt;/div&gt;
+                &lt;div class="reviewer-info"&gt;
+                    &lt;div class="person-name"&gt;&lt;?= esc_html($review['name']); ?&gt;&lt;/div&gt;
+                    &lt;span&gt;&lt;?= esc_html($review['time']); ?&gt;&lt;/span&gt;
+                &lt;/div&gt;
+                &lt;div class="rating-row"&gt;
+                    &lt;div class="stars"&gt;★★★★★&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;p class="review-text"&gt;&lt;?= esc_html($review['text']); ?&gt;&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;?php } ?&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+setTimeout(() =&gt; {
+    const carousel = document.getElementById('google-review-carousel');
+    if (!carousel) return;
+
+    const cards = carousel.querySelectorAll('.google-review-card');
+    const ORIGINAL_LENGTH = cards.length / 3;
+    let scrollIndex = 0;
+    let interval;
+    let resizeTimeout;
+    let isResetting = false;
+
+    function getCardWidth() {
+        const gap = parseInt(getComputedStyle(carousel).gap) || 26;
+        return cards[0].offsetWidth + gap;
+    }
+
+    function scrollNext() {
+        if (isResetting) return;
+        scrollIndex++;
+        carousel.style.transition = 'transform 0.5s ease-in-out';
+        carousel.style.transform = `translateX(-${scrollIndex * getCardWidth()}px)`;
+        if (scrollIndex &gt;= ORIGINAL_LENGTH) {
+            isResetting = true;
+            setTimeout(() =&gt; {
+                carousel.style.transition = 'none';
+                carousel.style.transform = 'translateX(0)';
+                scrollIndex = 0;
+                carousel.getBoundingClientRect();
+                isResetting = false;
+            }, 520);
+        }
+    }
+
+    function startCarousel() {
+        clearInterval(interval);
+        interval = setInterval(scrollNext, 3500);
+    }
+
+    function stopCarousel() {
+        clearInterval(interval);
+    }
+
+    carousel.addEventListener('mouseenter', stopCarousel);
+    carousel.addEventListener('mouseleave', startCarousel);
+
+    window.addEventListener('resize', () =&gt; {
+        stopCarousel();
+        clearTimeout(resizeTimeout);
+        carousel.style.transition = 'none';
+        carousel.style.transform = 'translateX(0)';
+        scrollIndex = 0;
+        isResetting = false;
+        resizeTimeout = setTimeout(startCarousel, 150);
+    });
+
+    const MAX_CHARS = 120;
+    const isRussian = window.location.href.includes('/ru/');
+    const textReadMore = isRussian ? 'Читать далее' : 'Lasīt vairāk';
+    const textReadLess = isRussian ? 'Скрыть' : 'Lasīt mazāk';
+
+    carousel.querySelectorAll('.review-text').forEach(function(el) {
+        const fullText = el.innerText.trim();
+        if (fullText.length &lt;= MAX_CHARS) return;
+        const shortText = fullText.slice(0, MAX_CHARS).trimEnd() + '...';
+        el.innerHTML =
+            '&lt;span class="review-short"&gt;' + shortText + '&lt;/span&gt;' +
+            '&lt;span class="review-full" style="display:none"&gt;' + fullText + '&lt;/span&gt;' +
+            ' &lt;a href="#" class="review-toggle" style="color:#baad7b;font-size:13px;white-space:nowrap"&gt;' + textReadMore + '&lt;/a&gt;';
+        el.querySelector('.review-toggle').addEventListener('click', function(e) {
+            e.preventDefault();
+            const short = el.querySelector('.review-short');
+            const full = el.querySelector('.review-full');
+            if (full.style.display === 'none') {
+                short.style.display = 'none';
+                full.style.display = 'inline';
+                this.textContent = textReadLess;
+            } else {
+                short.style.display = 'inline';
+                full.style.display = 'none';
+                this.textContent = textReadMore;
+            }
+        });
+    });
+
+    startCarousel();
+});
+&lt;/script&gt;
+
+&lt;?php
+    <span class="tok-kw">return</span> <span class="tok-fn">ob_get_clean</span>();
+}
+<span class="tok-fn">add_shortcode</span>(<span class="tok-str">'google_atsauksmes'</span>, <span class="tok-str">'google_reviews_carousel_shortcode'</span>);</code></pre>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4><code>array_merge($reviews, $reviews, $reviews)</code></h4><p>Klonē atsauksmju sarakstu 3x pirms izvades - karuselis vienmēr ritina caur VIDĒJO kopiju, tāpēc abpus vienmēr ir vēl kartītes redzamas, pirms JS bez animācijas "pārlec" atpakaļ uz sākumu.</p></div>
+        <div class="doc-mini-card"><h4><code>getCardWidth()</code> katrā solī</h4><p>Kartītes platums mainās pēc ekrāna izmēra (4/2/1 kolonna - skat. media query augstāk), tāpēc <code>translateX</code> nobīde tiek pārrēķināta katru reizi, nevis fiksēta ar vienu konstanti.</p></div>
+        <div class="doc-mini-card"><h4>Debounced <code>resize</code></h4><p>Katrs izmēra maiņas notikums attur iepriekšējo taimeri (<code>clearTimeout</code>) - biežas <code>resize</code> notikumu virknes (izplatīts mobilajā, kad adreses josla parādās/pazūd) rada tikai VIENU jaunu intervālu, nevis vairākus sakrautus.</p></div>
+        <div class="doc-mini-card"><h4><code>isRussian</code> pārbaude</h4><p>Nosaka valodu pēc <code>/ru/</code> URL ceļa - tāda pati pieeja, kā <a href="#snip-trp-indeksesana">TranslatePress daudzvalodu sadaļā</a>, jo "Lasīt vairāk" teksts jātulko arī tur, kur pārējo lapas saturu jau tulko spraudnis.</p></div>
+      </div>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>image_url</code> tukšs - rāda krāsainu apli ar iniciāli (<code>reviewer-avatar-initial</code>); ja aizpildīts - rāda īstu attēlu (<code>reviewer-avatar-img</code>). Šī "vai nu/vai" pārbaude nozīmē, ka nav obligāti augšupielādēt attēlu katrai atsauksmei - jauna atsauksme uzreiz izskatās pabeigta arī bez tā.</p>
+      </div>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>TAVS_GOOGLE_PLACE_ID</code> jāaizstāj ar sava uzņēmuma īsto Place ID - to atrodi Google Business Profile panelī pie "Iegūt vairāk atsauksmju" saites, vai meklējot <a href="https://developers.google.com/maps/documentation/places/web-service/place-id" target="_blank" rel="noopener">Google Place ID Finder</a> rīkā pēc uzņēmuma nosaukuma. Atsauksmju teksts šeit ievadīts manuāli masīvā - lai tas atjauninātos automātiski no īstā Google profila, vajadzētu Google Places API integrāciju, kas ir atsevišķa (un maksas) tēma.</p>
+      </div>
+    </section>
+
     <div class="doc-pager">
       <a href="wordpress.html"><span class="lbl">← Atpakaļ</span>WordPress dokumentācija</a>
       <a class="to-next" href="../index.html"><span class="lbl">Atpakaļ →</span>Visas kategorijas</a>
@@ -1318,7 +1554,7 @@
   </main>
 </div>
 
-<script src="../js/theme.js?v=73"></script>
-<script src="../js/main.js?v=73"></script>
+<script src="../js/theme.js?v=74"></script>
+<script src="../js/main.js?v=74"></script>
 </body>
 </html>

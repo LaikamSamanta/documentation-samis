@@ -58,13 +58,14 @@ document.addEventListener("DOMContentLoaded", function () {
     "pages/wordpress-problemas.html", "pages/wordpress-snippets.html",
     "pages/wordpress.html", "pages/python-riki.html", "pages/riki.html",
     "pages/woocommerce.html",
-    "pages/cheatsheet-api.html", "pages/cheatsheet-git.html",
+    "pages/cheatsheet-api.html", "pages/cheatsheet-docker.html",
+    "pages/cheatsheet-git.html",
     "pages/cheatsheet-javascript.html", "pages/cheatsheet-php.html",
     "pages/cheatsheet-ssh.html", "pages/cheatsheet-web.html",
     "pages/cheatsheet-wordpress.html", "pages/docker.html",
     "pages/vardnica.html"
   ];
-  var SEARCH_INDEX_VERSION = "73"; // bump together with the ?v= cache-bust number
+  var SEARCH_INDEX_VERSION = "74"; // bump together with the ?v= cache-bust number
   var searchIndex = null;
   var searchIndexPromise = null;
 
