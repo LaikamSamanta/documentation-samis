@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=74" />
+<link rel="stylesheet" href="../css/style.css?v=75" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -183,6 +183,8 @@
       </button>
       <div class="doc-accordion-body">
         <a href="#snip-smtp"><span class="bullet"></span>Uzticama e-pastu sūtīšana caur SMTP</a>
+        <a href="#gws-setup"><span class="bullet"></span>Google Workspace kā e-pasta serviss</a>
+        <a href="#gws-alias"><span class="bullet"></span>E-pasta alias iestatīšana (Directory)</a>
         <a href="#gmail-forward-filter"><span class="bullet"></span>Gmail filtrs kā automātisks forward</a>
       </div>
     </div>
@@ -1321,6 +1323,49 @@
       </div>
     </section>
 
+    <section class="doc-section" id="gws-setup">
+      <h2>Google Workspace kā e-pasta serviss (soli pa solim)</h2>
+      <p>Kad domēns (piem., <code>tavavietne.lv</code>) jau pieder, bet e-pasts uz tā (<code>janis@tavavietne.lv</code>) vēl jāiestata caur īstu, uzticamu pasta pakalpojumu - Google Workspace ir viens no biežākajiem risinājumiem, jo dod Gmail saskarni ar sava domēna adresēm. Šis ir konta/DNS iestatījumu process, nevis kods.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>1. Reģistrē kontu</h4><p><a href="https://workspace.google.com" target="_blank" rel="noopener">workspace.google.com</a> → "Sākt" → ievadi domēnu un uzņēmuma datus → izvēlies plānu (piem., Business Starter). Domēnu var arī iegādāties tieši šeit, ja tāda vēl nav.</p></div>
+        <div class="doc-mini-card"><h4>2. Apstiprini domēna īpašumtiesības</h4><p>Google dod <strong>TXT</strong> ierakstu (<code>google-site-verification=...</code>) - jāievieto domēna DNS pārvaldniekā (tur, kur pārvaldi arī <a href="web-izveide.html#dns-records">A/CNAME ierakstus</a>). Bez šī soļa Workspace neatļaus turpināt.</p></div>
+        <div class="doc-mini-card"><h4>3. Iestati MX ierakstu</h4><p>Jaunām domēna e-pasta konfigurācijām Google tagad iesaka <strong>vienu</strong> MX ierakstu, nevis piecus atsevišķus - vienkāršāk uzstādīt un uzturēt.</p></div>
+        <div class="doc-mini-card"><h4>4. Izveido pirmo pastkastīti</h4><p>Admin console → Directory → Users → "Add new user" - ievadi vārdu un vēlamo e-pasta adresi (piem., <code>janis@tavavietne.lv</code>), Google izveido pagaidu paroli pirmajai pieteikšanās reizei.</p></div>
+      </div>
+      <p>MX ieraksts jāpievieno tajā pašā DNS pārvaldniekā, kur pārējie domēna ieraksti (skat. <a href="web-izveide.html#dns-records">DNS ieraksti</a> vispārīgam MX skaidrojumam):</p>
+      <pre class="code-block"><span class="lang">text</span><code>Tips:      MX
+Resursdatora nosaukums: @  (vai tukšs - visam domēnam)
+Prioritāte: 1
+Vērtība:   smtp.google.com</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Ja domēnam jau ir citi MX ieraksti (piem., no vecā hostinga pasta) - tie <strong>jāizdzēš</strong>, nevis jāpievieno klāt. Divi konkurējoši MX ieraksti nozīmē neparedzamu piegādi - daļa e-pastu var nonākt vecajā, vairs neizmantotajā pastkastītē. DNS izmaiņas var aizņemt līdz 72 stundām, lai izplatītos globāli - e-pasts šajā laikā var strādāt nekonsekventi.</p>
+      </div>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Ja Workspace kontam jau <strong>vairākus gadus</strong> - iespējams, ka tam vēl uzstādīti veci, piecu ierakstu MX ieraksti (<code>ASPMX.L.GOOGLE.COM</code> u.c., no laika pirms 2023). Tie joprojām strādā un <strong>nav</strong> obligāti jāmaina - vienkāršotais viena ieraksta variants ir tikai jaunāka, ērtāka alternatīva jaunām konfigurācijām.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="gws-alias">
+      <h2>E-pasta alias iestatīšana (Directory)</h2>
+      <p>"Alias" Google Workspace kontekstā nozīmē - viena un tā pati pastkastīte saņem pastu uz <strong>vairākām</strong> adresēm (piem., <code>info@</code> un <code>janis@</code> abas nonāk tajā pašā iesūtnē), bez atsevišķa lietotāja konta veidošanas katrai adresei.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>1. Atver lietotāju</h4><p>Admin console → <strong>Directory</strong> → <strong>Users</strong> → klikšķini uz konkrētā lietotāja vārda.</p></div>
+        <div class="doc-mini-card"><h4>2. Pievieno alternatīvo e-pastu</h4><p>Zem lietotāja vārda kreisajā pusē → <strong>"Add alternate emails"</strong> → <strong>"Alternate email"</strong> → ievadi jauno adreses daļu pirms <code>@</code>.</p></div>
+        <div class="doc-mini-card"><h4>3. Saglabā</h4><p>Izmaiņas parasti darbojas dažu minūšu laikā - uz jauno adresi sūtīts pasts nonāk tajā pašā, oriģinālajā iesūtnē.</p></div>
+        <div class="doc-mini-card"><h4>Limits: 30 uz kontu</h4><p>Vienam lietotāja kontam var pievienot līdz 30 alias adresēm - tās ir bez papildu maksas (nav jāpērk jauna licence katrai).</p></div>
+      </div>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><strong>Tas, kas visbiežāk padara alias "nepilnvērtīgu"</strong>: Admin console solis augstāk ļauj alias adresei <strong>SAŅEMT</strong> pastu, bet nenozīmē, ka lietotājs var arī <strong>NOSŪTĪT</strong> no tās Gmail saskarnē - tas jāiestata atsevišķi, paša lietotāja pusē: Gmail → Iestatījumi → <strong>Konti</strong> → "Sūtīt e-pastu kā" → "Pievienot citu e-pasta adresi" → ievada to pašu alias adresi → Google nosūta apstiprinājuma kodu uz to (kas darbojas, jo alias jau saņem pastu tajā pašā iesūtnē). Bez šī otrā soļa lietotājs var tikai <strong>saņemt</strong> uz alias adresi, bet atbildot vienmēr redzēs savu galveno adresi kā sūtītāju.</p>
+      </div>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Ja adresei (piem., <code>info@tavavietne.lv</code>) jāsūta pasts <strong>vairākiem cilvēkiem</strong> vienlaicīgi (nevis vienai pastkastītei) - tas nav lietotāja alias, bet <strong>Grupa</strong> (Directory → Groups → Create group), kur adrese darbojas kā saraksta e-pasts un katrs dalībnieks saņem savu kopiju.</p>
+      </div>
+    </section>
+
     <section class="doc-section" id="gmail-forward-filter">
       <h2>Gmail filtrs, kas darbojas kā automātisks forward</h2>
       <p>Šis nav kods - tā ir Gmail konta iestatījumu secība, bet noder tieši tāpēc, ka bieži kāda projekta paziņojumi (piem., kontaktformas iesniegumi no <a href="integracijas.html#contact-form-php">servera apstrādes</a> augstāk) krīt vienā koplietotā Gmail iesūtnē, un daļa no tiem jāpārsūta tālāk konkrētam cilvēkam vai citai adresei - bez papildu koda, tikai ar iestatījumiem pašā Gmail.</p>
@@ -1554,7 +1599,7 @@ setTimeout(() =&gt; {
   </main>
 </div>
 
-<script src="../js/theme.js?v=74"></script>
-<script src="../js/main.js?v=74"></script>
+<script src="../js/theme.js?v=75"></script>
+<script src="../js/main.js?v=75"></script>
 </body>
 </html>
