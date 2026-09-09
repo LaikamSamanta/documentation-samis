@@ -67,6 +67,36 @@ document.addEventListener("DOMContentLoaded", function () {
     return IS_SUBPAGE ? "pages/" + file : file;
   }
 
+  // Satellite pages (cheatsheets, vardnica, problem/snippet pages) share a
+  // body.cat-X class with their parent NAV_DATA category but aren't
+  // themselves NAV_DATA entries. Map cat-X -> the parent's href so the nav
+  // still highlights the right category when browsing those pages.
+  var CATEGORY_SLUG_MAP = {
+    "cat-api": "pages/api.html",
+    "cat-docker": "pages/docker.html",
+    "cat-git": "pages/git.html",
+    "cat-js": "pages/javascript.html",
+    "cat-laravel": "pages/laravel.html",
+    "cat-php": "pages/php.html",
+    "cat-react": "pages/react.html",
+    "cat-ssh": "pages/ssh.html",
+    "cat-web": "pages/web-izveide.html",
+    "cat-wordpress": "pages/wordpress.html",
+    "cat-css-adv": "pages/css-advanced.html",
+    "cat-sql": "pages/datubazes.html",
+    "cat-security": "pages/drosiba.html",
+    "cat-gdpr": "pages/gdpr.html",
+    "cat-python": "pages/python-riki.html",
+    "cat-riki": "pages/riki.html",
+    "cat-templates": "pages/sagataves.html",
+    "cat-vardnica": "pages/vardnica.html"
+  };
+
+  function currentCategoryHref() {
+    var m = document.body.className.match(/\bcat-[a-z0-9-]+\b/);
+    return m ? CATEGORY_SLUG_MAP[m[0]] || null : null;
+  }
+
   function escapeHtml(str) {
     var div = document.createElement("div");
     div.textContent = str;
@@ -88,6 +118,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function renderNav() {
     var current = currentPagePath();
+    var categoryHref = currentCategoryHref();
     var sections = readCurrentPageSections();
 
     var html = '<div class="global-nav-brand">' +
@@ -110,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
     NAV_DATA.forEach(function (group) {
       html += '<div class="global-nav-group"><h4>' + escapeHtml(group.group) + '</h4>';
       group.items.forEach(function (item) {
-        var isActive = item.href === current;
+        var isActive = item.href === current || (categoryHref !== null && item.href === categoryHref);
         html += '<div class="global-nav-category">';
         html += '<a class="global-nav-cat-link' + (isActive ? ' active' : '') + '" href="' + BASE + item.href + '">' +
           '<span class="dot"></span>' + escapeHtml(item.name) + '</a>';
@@ -192,7 +223,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "pages/cheatsheet-wordpress.html", "pages/docker.html",
     "pages/vardnica.html"
   ];
-  var SEARCH_INDEX_VERSION = "79";
+  var SEARCH_INDEX_VERSION = "80";
   var searchIndex = null;
   var searchIndexPromise = null;
 
