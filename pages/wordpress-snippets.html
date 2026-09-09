@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=76" />
+<link rel="stylesheet" href="../css/style.css?v=77" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -1326,6 +1326,27 @@
     <section class="doc-section" id="gws-setup">
       <h2>Google Workspace kā e-pasta serviss (soli pa solim)</h2>
       <p>Kad domēns (piem., <code>tavavietne.lv</code>) jau pieder, bet e-pasts uz tā (<code>janis@tavavietne.lv</code>) vēl jāiestata caur īstu, uzticamu pasta pakalpojumu - Google Workspace ir viens no biežākajiem risinājumiem, jo dod Gmail saskarni ar sava domēna adresēm. Šis ir konta/DNS iestatījumu process, nevis kods.</p>
+      <div class="doc-diagram">
+        <svg viewBox="0 0 680 120" xmlns="http://www.w3.org/2000/svg">
+          <line x1="105" y1="55" x2="135" y2="55" class="dg-line"></line>
+          <polygon points="135,55 126,50.5 126,59.5" class="dg-arrowhead"></polygon>
+          <line x1="295" y1="55" x2="325" y2="55" class="dg-line"></line>
+          <polygon points="325,55 316,50.5 316,59.5" class="dg-arrowhead"></polygon>
+          <line x1="485" y1="55" x2="515" y2="55" class="dg-line"></line>
+          <polygon points="515,55 506,50.5 506,59.5" class="dg-arrowhead"></polygon>
+
+          <rect x="15" y="35" width="90" height="40" rx="9" class="dg-node"></rect>
+          <rect x="135" y="35" width="160" height="40" rx="9" class="dg-node-accent"></rect>
+          <rect x="325" y="35" width="160" height="40" rx="9" class="dg-node"></rect>
+          <rect x="515" y="35" width="150" height="40" rx="9" class="dg-node"></rect>
+
+          <text x="60" y="59" class="dg-label" text-anchor="middle">Sūtītājs</text>
+          <text x="215" y="59" class="dg-label dg-label-accent" text-anchor="middle">MX ieraksts?</text>
+          <text x="405" y="59" class="dg-label" text-anchor="middle">smtp.google.com</text>
+          <text x="590" y="59" class="dg-label" text-anchor="middle">Workspace iesūtne</text>
+        </svg>
+        <p class="dg-caption">E-pasts uz <code>janis@tavavietne.lv</code> vispirms prasa domēna <strong>MX ierakstu</strong> - tas pasaka, KURŠ serveris apstrādā šī domēna pastu. Ja MX rāda uz Google (kā iestatīts zemāk), pasts nonāk Workspace iesūtnē; ja MX joprojām rāda uz veco hostingu, pasts pazūd TUR, nevis Google pusē.</p>
+      </div>
       <div class="doc-cards">
         <div class="doc-mini-card"><h4>1. Reģistrē kontu</h4><p><a href="https://workspace.google.com" target="_blank" rel="noopener">workspace.google.com</a> → "Sākt" → ievadi domēnu un uzņēmuma datus → izvēlies plānu (piem., Business Starter). Domēnu var arī iegādāties tieši šeit, ja tāda vēl nav.</p></div>
         <div class="doc-mini-card"><h4>2. Apstiprini domēna īpašumtiesības</h4><p>Google dod <strong>TXT</strong> ierakstu (<code>google-site-verification=...</code>) - jāievieto domēna DNS pārvaldniekā (tur, kur pārvaldi arī <a href="web-izveide.html#dns-records">A/CNAME ierakstus</a>). Bez šī soļa Workspace neatļaus turpināt.</p></div>
@@ -1635,7 +1656,7 @@ setTimeout(() =&gt; {
   </main>
 </div>
 
-<script src="../js/theme.js?v=76"></script>
-<script src="../js/main.js?v=76"></script>
+<script src="../js/theme.js?v=77"></script>
+<script src="../js/main.js?v=77"></script>
 </body>
 </html>

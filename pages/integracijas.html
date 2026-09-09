@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=76" />
+<link rel="stylesheet" href="../css/style.css?v=77" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -1279,6 +1279,39 @@ document.querySelectorAll(<span class="tok-str">'.pirkt-poga[data-produkts]'</sp
     <section class="doc-section" id="stripe-webhook-handler">
       <h2>7. Webhook apstrāde &amp; paraksta pārbaude</h2>
       <p>Šis galapunkts saņem Stripe paziņojumus. <strong>Vispirms vienmēr pārbauda parakstu</strong> - bez tā jebkurš internetā varētu nosūtīt viltus "apmaksāts" pieprasījumu un saņemt produktu par velti.</p>
+      <div class="doc-diagram">
+        <svg viewBox="0 0 660 280" xmlns="http://www.w3.org/2000/svg">
+          <line x1="115" y1="55" x2="115" y2="85" class="dg-line"></line>
+          <polygon points="115,85 110.5,76 119.5,76" class="dg-arrowhead"></polygon>
+          <line x1="115" y1="125" x2="115" y2="155" class="dg-line"></line>
+          <polygon points="115,155 110.5,146 119.5,146" class="dg-arrowhead"></polygon>
+          <line x1="115" y1="195" x2="115" y2="225" class="dg-line-success"></line>
+          <polygon points="115,225 110.5,216 119.5,216" class="dg-arrowhead-success"></polygon>
+
+          <line x1="210" y1="105" x2="310" y2="105" class="dg-line dg-line-dashed"></line>
+          <polygon points="310,105 301,100.5 301,109.5" class="dg-arrowhead"></polygon>
+          <line x1="210" y1="175" x2="310" y2="175" class="dg-line dg-line-dashed"></line>
+          <polygon points="310,175 301,170.5 301,179.5" class="dg-arrowhead"></polygon>
+
+          <rect x="20" y="15" width="190" height="40" rx="9" class="dg-node"></rect>
+          <rect x="20" y="85" width="190" height="40" rx="9" class="dg-node-accent"></rect>
+          <rect x="20" y="155" width="190" height="40" rx="9" class="dg-node-accent"></rect>
+          <rect x="20" y="225" width="190" height="40" rx="9" class="dg-node-success"></rect>
+          <rect x="310" y="85" width="160" height="40" rx="9" class="dg-node dg-node-dashed"></rect>
+          <rect x="310" y="155" width="160" height="40" rx="9" class="dg-node dg-node-dashed"></rect>
+
+          <text x="115" y="39" class="dg-label" text-anchor="middle">POST /stripe-webhook</text>
+          <text x="115" y="109" class="dg-label dg-label-accent" text-anchor="middle">Paraksts derīgs?</text>
+          <text x="115" y="179" class="dg-label dg-label-accent" text-anchor="middle">Jau apstrādāts?</text>
+          <text x="115" y="249" class="dg-label dg-label-success" text-anchor="middle">Fulfillment</text>
+          <text x="390" y="109" class="dg-label" text-anchor="middle">400 - noraidīts</text>
+          <text x="390" y="179" class="dg-label" text-anchor="middle">200 - dublikāts</text>
+
+          <text x="260" y="97" class="dg-sublabel" text-anchor="middle">nē</text>
+          <text x="260" y="167" class="dg-sublabel" text-anchor="middle">jā</text>
+        </svg>
+        <p class="dg-caption">Divi vārti, PIRMS jebkas mainās datubāzē: nederīgs paraksts noraida uzreiz, jau apstrādāts <code>session_id</code> (transient atzīme) apstājas bez atkārtotas piekļuves piešķiršanas - tā Stripe drīkst droši sūtīt to pašu notikumu vairākas reizes.</p>
+      </div>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">add_action</span>(<span class="tok-str">'rest_api_init'</span>, <span class="tok-kw">function</span> () {
     <span class="tok-fn">register_rest_route</span>(<span class="tok-str">'mana-tema/v1'</span>, <span class="tok-str">'/stripe-webhook'</span>, [
         <span class="tok-str">'methods'</span>             => <span class="tok-str">'POST'</span>,
@@ -1437,6 +1470,42 @@ stripe listen --forward-to localhost:8000/wp-json/mana-tema/v1/stripe-webhook
     <section class="doc-section" id="auth-overview">
       <h2>Autentifikācija &amp; abonementi - pārskats</h2>
       <p>Šī integrācija aizstāj WordPress noklusējuma <code>wp-login.php</code> ar pilnībā pielāgotu, uz tavas vietnes stila balstītu pieteikšanās/reģistrācijas plūsmu, un pievieno <strong>laika-ierobežotu abonementa</strong> sistēmu - noderīgu jebkurai vietnei, kur piekļuve saturam (kursi, materiāli, rīki) jāpiešķir tikai uz noteiktu periodu pēc apmaksas.</p>
+      <div class="doc-diagram">
+        <svg viewBox="0 0 660 270" xmlns="http://www.w3.org/2000/svg">
+          <line x1="160" y1="62.5" x2="200" y2="62.5" class="dg-line"></line>
+          <polygon points="200,62.5 191,58 191,67" class="dg-arrowhead"></polygon>
+          <line x1="370" y1="62.5" x2="410" y2="62.5" class="dg-line"></line>
+          <polygon points="410,62.5 401,58 401,67" class="dg-arrowhead"></polygon>
+
+          <path d="M480,85 C 480,115 460,115 460,140" class="dg-line-success"></path>
+          <polygon points="460,140 455,131 465,131" class="dg-arrowhead-success"></polygon>
+          <path d="M480,85 C 480,115 600,115 600,140" class="dg-line dg-line-dashed"></path>
+          <polygon points="600,140 595,131 605,131" class="dg-arrowhead"></polygon>
+
+          <rect x="20" y="40" width="140" height="45" rx="9" class="dg-node"></rect>
+          <rect x="200" y="40" width="170" height="45" rx="9" class="dg-node-accent"></rect>
+          <rect x="410" y="40" width="140" height="45" rx="9" class="dg-node"></rect>
+          <rect x="400" y="140" width="120" height="42" rx="9" class="dg-node-success"></rect>
+          <rect x="540" y="140" width="120" height="42" rx="9" class="dg-node dg-node-dashed"></rect>
+
+          <text x="90" y="67" class="dg-label" text-anchor="middle">Stripe maksājums</text>
+          <text x="285" y="67" class="dg-label dg-label-accent" text-anchor="middle">Pagarina piekļuvi</text>
+          <text x="480" y="67" class="dg-label" text-anchor="middle">Lapas pieprasījums</text>
+          <text x="460" y="165" class="dg-label dg-label-success" text-anchor="middle">✓ Atļauts</text>
+          <text x="600" y="165" class="dg-label" text-anchor="middle">✕ Bloķēts</text>
+          <text x="430" y="120" class="dg-sublabel" text-anchor="middle">termiņš derīgs</text>
+          <text x="600" y="120" class="dg-sublabel" text-anchor="middle">termiņš beidzies</text>
+
+          <text x="20" y="205" class="dg-sublabel">Paralēli, neatkarīgi no lapas apmeklējumiem:</text>
+          <line x1="170" y1="236" x2="210" y2="236" class="dg-line-accent"></line>
+          <polygon points="210,236 201,231.5 201,240.5" class="dg-arrowhead-accent"></polygon>
+          <rect x="20" y="215" width="150" height="42" rx="9" class="dg-node-accent dg-node-dashed"></rect>
+          <rect x="210" y="215" width="190" height="42" rx="9" class="dg-node"></rect>
+          <text x="95" y="240" class="dg-label dg-label-accent" text-anchor="middle">Cron (katru dienu)</text>
+          <text x="305" y="240" class="dg-label" text-anchor="middle">Atgādinājuma e-pasts</text>
+        </svg>
+        <p class="dg-caption">Katrs Stripe maksājums pagarina lietotāja piekļuves termiņu (<code>access_until</code>) - piekļuves pārbaude notiek pie katra lapas pieprasījuma, bet atgādinājuma e-pasti nāk no atsevišķa, ar cron palaista procesa (skat. <a href="#sub-reminders">8. Atjaunošanas atgādinājumi</a> zemāk), neatkarīgi no tā, vai lietotājs tobrīd apmeklē vietni.</p>
+      </div>
       <div class="doc-cards">
         <div class="doc-mini-card"><h4>🔑 Auth</h4><p>Custom pieteikšanās, reģistrācija un paroles atjaunošana - ar rate limiting un Turnstile pret bruteforce/botiem.</p></div>
         <div class="doc-mini-card"><h4>⏳ Abonementi</h4><p>Nevis īsta Stripe Subscriptions API, bet gudrāks paņēmiens - viena maksājuma "plāni" (1/6/12 mēn.), kas pagarina lietotāja piekļuves termiņu.</p></div>
@@ -2643,7 +2712,7 @@ gtag('set', 'user_data', {
   </main>
 </div>
 
-<script src="../js/theme.js?v=76"></script>
-<script src="../js/main.js?v=76"></script>
+<script src="../js/theme.js?v=77"></script>
+<script src="../js/main.js?v=77"></script>
 </body>
 </html>

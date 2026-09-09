@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=76" />
+<link rel="stylesheet" href="../css/style.css?v=77" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -124,6 +124,36 @@ curl ifconfig.me</code></pre>
       <h2>Kas ir DNS</h2>
       <p>DNS (Domain Name System) ir sadalīta, hierarhiska "tālruņu grāmata" internetam - tā pārvērš cilvēkam ērtu domēna vārdu (<code>piemers.lv</code>) par IP adresi, kuru pārlūks tehniski var izmantot savienojuma izveidei.</p>
       <p>Kad pārlūkā ieraksti adresi, notiek aptuveni šāda secība: pārlūks vaicā DNS resolverim (parasti interneta pakalpojumu sniedzēja vai publiskam, piem. 8.8.8.8) → resolvers vaicā root serveriem → tie norāda uz attiecīgā domēna zonas (<code>.lv</code>) serveriem → tie norāda uz domēna paša autoritatīvajiem nameserveriem → tie beidzot atbild ar konkrētu IP adresi. Rezultāts tiek <strong>kešots</strong> uz noteiktu laiku (<strong>TTL</strong>, Time To Live), lai nevajadzētu atkārtot visu ceļu katru reizi - tieši tāpēc DNS izmaiņas var kļūt redzamas ne uzreiz visiem, bet dažu minūšu līdz pat 48 stundu laikā ("propagācija").</p>
+      <div class="doc-diagram">
+        <svg viewBox="0 0 680 175" xmlns="http://www.w3.org/2000/svg">
+          <line x1="110" y1="57.5" x2="140" y2="57.5" class="dg-line"></line>
+          <polygon points="140,57.5 131,53 131,62" class="dg-arrowhead"></polygon>
+          <line x1="250" y1="57.5" x2="280" y2="57.5" class="dg-line"></line>
+          <polygon points="280,57.5 271,53 271,62" class="dg-arrowhead"></polygon>
+          <line x1="375" y1="57.5" x2="405" y2="57.5" class="dg-line"></line>
+          <polygon points="405,57.5 396,53 396,62" class="dg-arrowhead"></polygon>
+          <line x1="505" y1="57.5" x2="535" y2="57.5" class="dg-line"></line>
+          <polygon points="535,57.5 526,53 526,62" class="dg-arrowhead"></polygon>
+
+          <path d="M600,80 C 600,135 80,135 65,80" class="dg-line-accent dg-line-dashed"></path>
+          <polygon points="65,80 71,72 78,78" class="dg-arrowhead-accent"></polygon>
+
+          <rect x="15" y="35" width="95" height="45" rx="9" class="dg-node"></rect>
+          <rect x="140" y="35" width="110" height="45" rx="9" class="dg-node"></rect>
+          <rect x="280" y="35" width="95" height="45" rx="9" class="dg-node"></rect>
+          <rect x="405" y="35" width="100" height="45" rx="9" class="dg-node"></rect>
+          <rect x="535" y="35" width="130" height="45" rx="9" class="dg-node-accent"></rect>
+
+          <text x="62.5" y="62" class="dg-label" text-anchor="middle">Pārlūks</text>
+          <text x="195" y="62" class="dg-label" text-anchor="middle">Resolvers</text>
+          <text x="327.5" y="62" class="dg-label" text-anchor="middle">Root NS</text>
+          <text x="455" y="62" class="dg-label" text-anchor="middle">.lv zona</text>
+          <text x="600" y="62" class="dg-label dg-label-accent" text-anchor="middle">Autoritatīvs NS</text>
+
+          <text x="330" y="150" class="dg-sublabel" text-anchor="middle">atbild ar IP → rezultāts kešots (TTL), tālākos pieprasījumus resolvers vairs nesūta tālāk</text>
+        </svg>
+        <p class="dg-caption">Katrs solis ceļā uz priekšu var kešot atbildi savu TTL laiku - tāpēc DNS izmaiņu redzamība nav uzreiz vienāda visiem apmeklētājiem.</p>
+      </div>
       <pre class="code-block"><span class="lang">bash</span><code>dig piemers.lv +short
 <span class="tok-com"># izvada tikai IP adresi, piem.: 81.198.171.19</span></code></pre>
     </section>
@@ -229,7 +259,7 @@ ipconfig /flushdns</code></pre>
   </main>
 </div>
 
-<script src="../js/theme.js?v=76"></script>
-<script src="../js/main.js?v=76"></script>
+<script src="../js/theme.js?v=77"></script>
+<script src="../js/main.js?v=77"></script>
 </body>
 </html>

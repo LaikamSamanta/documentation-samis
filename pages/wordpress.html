@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=76" />
+<link rel="stylesheet" href="../css/style.css?v=77" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -721,6 +721,31 @@ mv tailwindcss-linux-x64 tailwindcss</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
         <p>Biežākie āķi, ar kuriem sāksi: <code>init</code> (WordPress ielādēts), <code>wp_enqueue_scripts</code> (CSS/JS), <code>wp_head</code>/<code>wp_footer</code> (lapas sākums/beigas).</p>
+      </div>
+      <div class="doc-diagram">
+        <svg viewBox="0 0 715 120" xmlns="http://www.w3.org/2000/svg">
+          <line x1="90" y1="55" x2="115" y2="55" class="dg-line"></line>
+          <polygon points="115,55 106,50.5 106,59.5" class="dg-arrowhead"></polygon>
+          <line x1="295" y1="55" x2="320" y2="55" class="dg-line"></line>
+          <polygon points="320,55 311,50.5 311,59.5" class="dg-arrowhead"></polygon>
+          <line x1="425" y1="55" x2="445" y2="55" class="dg-line"></line>
+          <polygon points="445,55 436,50.5 436,59.5" class="dg-arrowhead"></polygon>
+          <line x1="580" y1="55" x2="600" y2="55" class="dg-line"></line>
+          <polygon points="600,55 591,50.5 591,59.5" class="dg-arrowhead"></polygon>
+
+          <rect x="15" y="35" width="75" height="40" rx="9" class="dg-node"></rect>
+          <rect x="115" y="35" width="180" height="40" rx="9" class="dg-node"></rect>
+          <rect x="320" y="35" width="105" height="40" rx="9" class="dg-node"></rect>
+          <rect x="445" y="35" width="135" height="40" rx="9" class="dg-node-accent"></rect>
+          <rect x="600" y="35" width="100" height="40" rx="9" class="dg-node"></rect>
+
+          <text x="52.5" y="59" class="dg-label" text-anchor="middle">init</text>
+          <text x="205" y="59" class="dg-label" text-anchor="middle">wp_enqueue_scripts</text>
+          <text x="372.5" y="59" class="dg-label" text-anchor="middle">wp_head</text>
+          <text x="512.5" y="59" class="dg-label dg-label-accent" text-anchor="middle">Lapas saturs</text>
+          <text x="650" y="59" class="dg-label" text-anchor="middle">wp_footer</text>
+        </svg>
+        <p class="dg-caption">Vienkāršota secība - reālajā WordPress ielādē starp šiem ir vēl daudz citu hooks (skat. pilno sarakstu zemāk). Svarīgākais: <code>wp_enqueue_scripts</code> jau izpildās PIRMS <code>wp_head</code>, tāpēc tas ir pareizā vieta CSS/JS reģistrēšanai, nevis paša <code>wp_head</code> hook.</p>
       </div>
       <p><strong>Kur atrast VISUS pieejamos hooks?</strong> - šeit parādīti tikai daži piemēri no simtiem, kas eksistē WordPress kodolā. Pilns, meklējams saraksts ar katra hook aprakstu un pieejamajiem parametriem ir <a href="https://developer.wordpress.org/reference/hooks/" target="_blank" rel="noopener">developer.wordpress.org/reference/hooks/</a> - tā ir oficiālā WordPress dokumentācija, ne kāda trešās puses vietne. Tur pat var redzēt, kurā WordPress versijā konkrētais hook parādījās.</p>
       <div class="callout tip">
@@ -1549,7 +1574,7 @@ GET /wp-json/wp/v2/produkts     → CPT ieraksti (ja show_in_rest: true)</code><
   </main>
 </div>
 
-<script src="../js/theme.js?v=76"></script>
-<script src="../js/main.js?v=76"></script>
+<script src="../js/theme.js?v=77"></script>
+<script src="../js/main.js?v=77"></script>
 </body>
 </html>

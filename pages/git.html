@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=76" />
+<link rel="stylesheet" href="../css/style.css?v=77" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -374,6 +374,35 @@ ssh -T git@github.com</code></pre>
     <section class="doc-section" id="cicd">
       <h2>CI/CD ar GitHub Actions</h2>
       <p><strong>CI</strong> (Continuous Integration) - katrs push/PR automātiski palaiž pārbaudes (testi, linter). <strong>CD</strong> (Continuous Deployment) - ja pārbaudes izietas, izmaiņas automātiski nonāk serverī, bez manuālas FTP/SSH kopēšanas. GitHub Actions ir GitHub iebūvēts rīks abām lietām - konfigurē ar vienu <code>.yml</code> failu repozitorijā.</p>
+      <div class="doc-diagram">
+        <svg viewBox="0 0 660 200" xmlns="http://www.w3.org/2000/svg">
+          <line x1="120" y1="97.5" x2="155" y2="97.5" class="dg-line"></line>
+          <polygon points="155,97.5 146,92.5 146,102.5" class="dg-arrowhead"></polygon>
+          <line x1="265" y1="97.5" x2="300" y2="97.5" class="dg-line"></line>
+          <polygon points="300,97.5 291,92.5 291,102.5" class="dg-arrowhead"></polygon>
+
+          <path d="M400,97.5 C 435,97.5 435,62.5 470,62.5" class="dg-line-success"></path>
+          <polygon points="470,62.5 461,58 461,67" class="dg-arrowhead-success"></polygon>
+          <path d="M400,97.5 C 435,97.5 435,147.5 470,147.5" class="dg-line dg-line-dashed"></path>
+          <polygon points="470,147.5 461,143 461,152" class="dg-arrowhead"></polygon>
+
+          <rect x="20" y="75" width="100" height="45" rx="9" class="dg-node"></rect>
+          <rect x="155" y="75" width="110" height="45" rx="9" class="dg-node"></rect>
+          <rect x="300" y="75" width="100" height="45" rx="9" class="dg-node-accent"></rect>
+          <rect x="470" y="40" width="140" height="45" rx="9" class="dg-node-success"></rect>
+          <rect x="470" y="125" width="140" height="45" rx="9" class="dg-node dg-node-dashed"></rect>
+
+          <text x="70" y="102" class="dg-label" text-anchor="middle">git push</text>
+          <text x="210" y="102" class="dg-label" text-anchor="middle">Checkout</text>
+          <text x="350" y="102" class="dg-label dg-label-accent" text-anchor="middle">Testi</text>
+          <text x="540" y="67" class="dg-label dg-label-success" text-anchor="middle">Deploy</text>
+          <text x="540" y="152" class="dg-label" text-anchor="middle">Apstājas</text>
+
+          <text x="435" y="52" class="dg-sublabel" text-anchor="middle">✓ iziet</text>
+          <text x="435" y="180" class="dg-sublabel" text-anchor="middle">✕ neiziet - deploy NENOTIEK</text>
+        </svg>
+        <p class="dg-caption">Deploy solis izpildās <strong>tikai</strong> tad, ja iepriekšējie soļi (testi/linter) beidzas veiksmīgi - salauzts kods apstājas šeit un nekad nesasniedz produkciju.</p>
+      </div>
       <pre class="code-block"><span class="lang">text</span><code><span class="tok-com"># .github/workflows/deploy.yml - fails jāizveido tieši šajā ceļā</span></code></pre>
       <pre class="code-block"><span class="lang">yaml</span><code><span class="tok-fn">name</span>: Deploy uz produkciju
 
@@ -531,7 +560,7 @@ git stash list</code></pre>
   </main>
 </div>
 
-<script src="../js/theme.js?v=76"></script>
-<script src="../js/main.js?v=76"></script>
+<script src="../js/theme.js?v=77"></script>
+<script src="../js/main.js?v=77"></script>
 </body>
 </html>

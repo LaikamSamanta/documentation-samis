@@ -1327,6 +1327,25 @@ pre.code-block code {
 .doc-diagram .dg-arrowhead-accent {
   fill: var(--page-accent);
 }
+/* Semantic (not category-colored) variants - for pass/fail branches where
+   the category's own accent color (e.g. Git's red) would send the wrong
+   signal regardless of which category page the diagram lives on. */
+.doc-diagram .dg-node-success {
+  fill: rgba(74, 222, 128, 0.12);
+  stroke: #4ade80;
+  stroke-width: 1.5;
+}
+.doc-diagram .dg-line-success {
+  stroke: #4ade80;
+  stroke-width: 1.5;
+  fill: none;
+}
+.doc-diagram .dg-arrowhead-success {
+  fill: #4ade80;
+}
+.doc-diagram .dg-label-success {
+  fill: var(--tag-easy);
+}
 
 .doc-pager {
   display: flex;
