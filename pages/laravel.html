@@ -1,0 +1,865 @@
+<!doctype html>
+<html lang="lv" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="manifest" href="../manifest.json" />
+<meta name="theme-color" content="#9d5cff" />
+<title>Laravel dokumentācija - Documentation Samis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css?v=78" />
+<script>
+  (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
+</script>
+</head>
+<body class="cat-laravel">
+<div class="bg-glow"></div>
+<div class="bg-grid"></div>
+
+<header class="topbar">
+  <a class="brand" href="../index.html">
+    <span class="mark"><svg viewBox="0 0 32 32" width="30" height="30"><defs><linearGradient id="logomarkG" x1="2" y1="1" x2="30" y2="31" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#6d28d9"/><stop offset="50%" stop-color="#9d5cff"/><stop offset="100%" stop-color="#f472b6"/></linearGradient><radialGradient id="logomarkGlow" cx="0.78" cy="0.18" r="0.65"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.4"/><stop offset="100%" stop-color="#ffffff" stop-opacity="0"/></radialGradient></defs><rect x="1" y="1" width="30" height="30" rx="15" fill="url(#logomarkG)"/><rect x="1" y="1" width="30" height="30" rx="15" fill="url(#logomarkGlow)"/><path d="M 12 9.5 L 6.5 16 L 12 22.5" fill="none" stroke="#000000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M 20 9.5 L 25.5 16 L 20 22.5" fill="none" stroke="#000000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M 17.6 7.5 L 14.4 24.5" fill="none" stroke="#000000" stroke-width="2.2" stroke-linecap="round" stroke-opacity="0.92"/></svg></span>
+    Documentation Samis
+  </a>
+  <div class="topbar-actions">
+    <a class="btn-back" href="cheatsheet-laravel.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-6-6z"/><path d="M13 2v6h6M9 13h6M9 17h6M9 9h1"/></svg>
+      <span class="btn-label">Cheatsheet</span>
+    </a>
+    <a class="btn-back" href="../index.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M5 12h14"/></svg>
+      <span class="btn-label">Kategorijas</span>
+    </a>
+    <a class="quick-link" href="riki.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      <span class="btn-label">Rīki</span>
+    </a>
+    <a class="quick-link" href="wordpress-snippets.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      <span class="btn-label">Ātrie risinājumi</span>
+    </a>
+    <a class="quick-link" href="vardnica.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+      <span class="btn-label">Vārdnīca</span>
+    </a>
+    <button class="icon-btn" id="theme-toggle" title="Pārslēgt tēmu" aria-label="Pārslēgt tēmu">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="doc-shell">
+  <aside class="doc-sidebar">
+    <div class="doc-sidebar-accordion open">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Pamati</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#ievads" class="active"><span class="bullet"></span>Kas ir Laravel?</a>
+        <a href="#instalacija"><span class="bullet"></span>Instalācija &amp; struktūra</a>
+        <a href="#routing"><span class="bullet"></span>Routing</a>
+        <a href="#controllers"><span class="bullet"></span>Controllers</a>
+        <a href="#blade"><span class="bullet"></span>Blade veidnes</a>
+      </div>
+    </div>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Datubāze &amp; Eloquent</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#migrations"><span class="bullet"></span>Migrations</a>
+        <a href="#eloquent-modeli"><span class="bullet"></span>Eloquent modeļi</a>
+        <a href="#attiecibas"><span class="bullet"></span>Attiecības (relationships)</a>
+        <a href="#query-builder"><span class="bullet"></span>Query Builder</a>
+        <a href="#seeders-factories"><span class="bullet"></span>Seeders &amp; Factories</a>
+      </div>
+    </div>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Pieprasījumu apstrāde</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#middleware"><span class="bullet"></span>Middleware</a>
+        <a href="#form-requests"><span class="bullet"></span>Form Requests &amp; validācija</a>
+        <a href="#request-response"><span class="bullet"></span>Request &amp; Response</a>
+        <a href="#sesijas-flash"><span class="bullet"></span>Sesijas &amp; Flash dati</a>
+      </div>
+    </div>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Praktiski &amp; uzlaboti</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#artisan"><span class="bullet"></span>Artisan CLI</a>
+        <a href="#autentifikacija"><span class="bullet"></span>Autentifikācija</a>
+        <a href="#api-resources"><span class="bullet"></span>API Resources</a>
+        <a href="#events-listeners"><span class="bullet"></span>Events &amp; Listeners</a>
+        <a href="#jobs-queues"><span class="bullet"></span>Jobs &amp; Queues</a>
+        <a href="#task-scheduling"><span class="bullet"></span>Task Scheduling</a>
+      </div>
+    </div>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Rīki &amp; produkcija</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#vides-mainigie"><span class="bullet"></span>Vides mainīgie &amp; config cache</a>
+        <a href="#testesana"><span class="bullet"></span>Testēšana (PHPUnit)</a>
+        <a href="#kludu-apstrade"><span class="bullet"></span>Kļūdu apstrāde &amp; logging</a>
+        <a href="#deploy"><span class="bullet"></span>Deploy pamatprakse</a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="doc-main">
+    <div class="doc-breadcrumb">
+      <a href="../index.html">Sākums</a>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span>Laravel</span>
+    </div>
+
+    <div class="doc-header">
+      <div class="icon" style="background: var(--c-laravel-soft); color: var(--c-laravel);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>
+      </div>
+      <h1 style="margin-bottom:0;">Laravel</h1>
+    </div>
+    <p class="doc-lead">Pilns iesācēja ceļvedis PHP framework Laravel - routing, Eloquent ORM, Blade veidnes, autentifikācija, queues un testēšana. Visi piemēri pārbaudīti pret reālu Laravel 13 projektu.</p>
+
+    <section class="doc-section" id="ievads">
+      <h2>Kas ir Laravel?</h2>
+      <p>Laravel ir PHP <strong>framework</strong> - gatavs, strukturēts pamats web lietotņu veidošanai, kas jau atrisina biežākās problēmas (routing, datubāzes pieslēgšana, autentifikācija, e-pasti, kešošana), lai programmētājam nav jāraksta tas viss no nulles katrā projektā. Salīdzinājumā ar "tīru" PHP vai WordPress - Laravel neuzspiež gatavu satura struktūru (ierakstus, lapas), bet dod arhitektūru <strong>jebkurai</strong> lietotnei (API, SaaS produkts, iekšējs rīks, e-komercija).</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>MVC arhitektūra</h4><p><strong>Model</strong> (dati, Eloquent) - <strong>View</strong> (Blade veidnes) - <strong>Controller</strong> (loģika starp tiem). Katrai daļai sava, paredzama vieta failu struktūrā.</p></div>
+        <div class="doc-mini-card"><h4>Kad izvēlēties Laravel</h4><p>Lietotnēm ar pielāgotu datu modeli, API, lietotāju kontiem, maksājumiem - kur WordPress satura struktūra būtu šķērslis, nevis palīdzība.</p></div>
+        <div class="doc-mini-card"><h4>Kad NEizvēlēties</h4><p>Vienkāršai satura vietnei/blogam - WordPress vai statisks ģenerators (skat. <a href="web-izveide.html">Tīkls</a>) būs ātrāk uzstādāms un vieglāk uzturams saturam.</p></div>
+      </div>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Šī dokumentācija izmanto vienu caurviju piemēru - emuāra <code>Post</code> (raksts) un <code>Comment</code> (komentārs) modeļus ar lietotāju - lai katras sadaļas kods dabiski savienotos ar iepriekšējo, tāpat kā reālā projektā.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="instalacija">
+      <h2>Instalācija &amp; projekta struktūra</h2>
+      <p>Laravel prasa PHP 8.2+ un <a href="git.html#instalacija">Composer</a> - jauns projekts vienmēr sākas ar <code>composer create-project</code>, nevis lejupielādējot ZIP failu.</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Izveido jaunu Laravel projektu mapē "mans-projekts"</span>
+composer create-project laravel/laravel mans-projekts
+
+<span class="tok-kw">cd</span> mans-projekts
+
+<span class="tok-com"># Iebūvētais dev serveris - der lokālai izstrādei, nevis produkcijai</span>
+php artisan serve
+<span class="tok-com"># → http://127.0.0.1:8000</span></code></pre>
+      <p>Svarīgākās mapes, ar kurām strādāsi ikdienā:</p>
+      <pre class="code-block"><span class="lang">text</span><code>app/Models/          - Eloquent modeļi (dati)
+app/Http/Controllers/ - Controllers (pieprasījumu loģika)
+app/Http/Middleware/  - Middleware
+app/Http/Requests/    - Form Request validācijas klases
+routes/web.php        - Maršruti pārlūkam (ar sesijām, CSRF)
+routes/api.php        - Maršruti API (bez sesijām, stateless)
+routes/console.php    - Artisan komandas + Task Scheduling
+database/migrations/  - Datubāzes shēmas izmaiņas
+database/factories/   - Testa datu ģeneratori
+resources/views/      - Blade veidnes
+bootstrap/app.php      - Vidusprogrammatūras, izņēmumu, routing konfigurācija</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Laravel 11+ (arī šeit aprakstītajā 13. versijā) vairs <strong>nav</strong> <code>app/Http/Kernel.php</code> vai <code>app/Providers/EventServiceProvider.php</code> - middleware, izņēmumu apstrāde un routing tagad konfigurēti tieši <code>bootstrap/app.php</code> failā. Ja redzi tutoriālu, kas piemin <code>Kernel.php</code>, tas raksta par veco (10. vai senāku) versiju - struktūra kopš tā laika mainījusies.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="routing">
+      <h2>Routing</h2>
+      <p>Maršruti savieno URL ar kodu, kas to apstrādā - definēti <code>routes/web.php</code> (parastām lapām) vai <code>routes/api.php</code> (JSON API).</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">use</span> Illuminate\Support\Facades\Route;
+
+<span class="tok-com">// Vienkāršs maršruts ar closure</span>
+<span class="tok-fn">Route::get</span>(<span class="tok-str">'/sveiciens/{vards}'</span>, <span class="tok-kw">function</span> (<span class="tok-kw">string</span> <span class="tok-fn">$vards</span>) {
+    <span class="tok-kw">return</span> <span class="tok-str">"Sveiki, {$vards}!"</span>;
+});
+
+<span class="tok-com">// Maršruts, kas ved uz controller metodi</span>
+<span class="tok-fn">Route::get</span>(<span class="tok-str">'/posts/{post}'</span>, [PostController::class, <span class="tok-str">'show'</span>]);
+
+<span class="tok-com">// Viens ieraksts reģistrē VISUS CRUD maršrutus uzreiz (index/store/show/update/destroy)</span>
+<span class="tok-fn">Route::resource</span>(<span class="tok-str">'posts'</span>, PostController::class);
+
+<span class="tok-com">// Tas pats, bet bez create/edit (JSON API neko nerāda formās)</span>
+<span class="tok-fn">Route::apiResource</span>(<span class="tok-str">'posts'</span>, PostController::class);
+
+<span class="tok-com">// Grupa - visiem iekšā esošajiem maršrutiem piemēro middleware uzreiz</span>
+<span class="tok-fn">Route::middleware</span>(<span class="tok-str">'auth'</span>)-&gt;group(<span class="tok-kw">function</span> () {
+    <span class="tok-fn">Route::resource</span>(<span class="tok-str">'posts'</span>, PostController::class)-&gt;except([<span class="tok-str">'index'</span>, <span class="tok-str">'show'</span>]);
+});</code></pre>
+      <p><code>{post}</code> parametrā notiek <strong>route model binding</strong> - Laravel pats atrod <code>Post</code> ierakstu pēc ID no URL un padod GATAVU modeli controller metodei (skat. <a href="#controllers">Controllers</a>), nevis tikai skaitli, ko pašam vēl jāmeklē datubāzē.</p>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Visus reģistrētos maršrutus (arī tos, ko pievieno spraudņi/paketes) redzi ar <code>php artisan route:list</code> - noder, ja "404" parādās negaidīti un jāpārbauda, vai maršruts vispār eksistē tādā formā, kā domāts.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="controllers">
+      <h2>Controllers</h2>
+      <p>Controller pieņem pieprasījumu, izsauc vajadzīgo loģiku (parasti caur modeli) un atgriež atbildi. <strong>Resource controller</strong> jau iepriekš sagatavo 7 standarta metodes pilnam CRUD.</p>
+      <pre class="code-block"><span class="lang">bash</span><code>php artisan make:controller PostController --resource</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">class</span> PostController <span class="tok-kw">extends</span> Controller
+{
+    <span class="tok-kw">public function</span> <span class="tok-fn">index</span>()
+    {
+        <span class="tok-fn">$posts</span> = Post::withCount(<span class="tok-str">'comments'</span>)-&gt;latest()-&gt;paginate(10);
+
+        <span class="tok-kw">return</span> <span class="tok-kw">new</span> PostResource::collection(<span class="tok-fn">$posts</span>);
+    }
+
+    <span class="tok-kw">public function</span> <span class="tok-fn">store</span>(StorePostRequest <span class="tok-fn">$request</span>)
+    {
+        <span class="tok-fn">$post</span> = <span class="tok-fn">$request</span>-&gt;user()-&gt;posts()-&gt;create(<span class="tok-fn">$request</span>-&gt;validated());
+
+        <span class="tok-kw">return new</span> PostResource(<span class="tok-fn">$post</span>);
+    }
+
+    <span class="tok-com">// {post} no maršruta URL automātiski pārvēršas par ŠO, jau ielādētu Post modeli</span>
+    <span class="tok-kw">public function</span> <span class="tok-fn">show</span>(Post <span class="tok-fn">$post</span>)
+    {
+        <span class="tok-kw">return new</span> PostResource(<span class="tok-fn">$post</span>-&gt;load(<span class="tok-str">'user'</span>)-&gt;loadCount(<span class="tok-str">'comments'</span>));
+    }
+
+    <span class="tok-kw">public function</span> <span class="tok-fn">destroy</span>(Post <span class="tok-fn">$post</span>)
+    {
+        <span class="tok-fn">$post</span>-&gt;delete();
+
+        <span class="tok-kw">return</span> response()-&gt;noContent();
+    }
+}</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>$request->user()->posts()->create(...)</code> ir droši pēc konstrukcijas - jaunais raksts VIENMĒR pieder pieteikušamies lietotājam, jo <code>user_id</code> aizpilda pati attiecība (skat. <a href="#attiecibas">Attiecības</a>), nevis kaut kas no pieprasījuma datiem, ko varētu viltot.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="blade">
+      <h2>Blade veidnes</h2>
+      <p>Blade ir Laravel veidņu dzinējs - parasts HTML ar īpašiem <code>{{ }}</code> (izvada, automātiski aizsargā pret XSS) un <code>@</code> direktīvām. Faili beidzas ar <code>.blade.php</code>.</p>
+      <p class="code-group-label">Layout (kopīgs karkass)</p>
+      <pre class="code-block"><span class="lang">html</span><code><span class="tok-com">&lt;!-- resources/views/layouts/app.blade.php --&gt;</span>
+&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;@yield(<span class="tok-str">'title'</span>, <span class="tok-str">'Mana vietne'</span>)&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+    &lt;main&gt;@yield(<span class="tok-str">'content'</span>)&lt;/main&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      <p class="code-group-label">Konkrēta lapa, kas izmanto layout</p>
+      <pre class="code-block"><span class="lang">html</span><code><span class="tok-com">&lt;!-- resources/views/posts/index.blade.php --&gt;</span>
+@extends(<span class="tok-str">'layouts.app'</span>)
+
+@section(<span class="tok-str">'title'</span>, <span class="tok-str">'Visi raksti'</span>)
+
+@section(<span class="tok-str">'content'</span>)
+    &lt;x-alert type=<span class="tok-str">"success"</span>&gt;Ielādēti {{ $posts-&gt;count() }} raksti.&lt;/x-alert&gt;
+
+    @forelse ($posts <span class="tok-kw">as</span> $post)
+        &lt;article&gt;
+            &lt;h2&gt;{{ $post-&gt;title }}&lt;/h2&gt;
+            @if ($post-&gt;published)
+                &lt;span&gt;Publicēts&lt;/span&gt;
+            @endif
+        &lt;/article&gt;
+    @empty
+        &lt;p&gt;Nav rakstu.&lt;/p&gt;
+    @endforelse
+@endsection</code></pre>
+      <p class="code-group-label">Pielāgots komponents ar slot</p>
+      <pre class="code-block"><span class="lang">html</span><code><span class="tok-com">&lt;!-- resources/views/components/alert.blade.php --&gt;
+     lieto kā &lt;x-alert type="success"&gt;...&lt;/x-alert&gt; --&gt;
+&lt;div class=<span class="tok-str">"alert alert-{{ $type ?? 'info' }}"</span>&gt;
+    {{ $slot }}
+&lt;/div&gt;</code></pre>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4><code>{{ }}</code> vs <code>{!! !!}</code></h4><p>Divkāršās figūriekavas automātiski "escapo" HTML (pasargā no XSS). <code>{!! !!}</code> izvada NEfiltrētu HTML - lieto tikai uzticamam saturam.</p></div>
+        <div class="doc-mini-card"><h4>@yield vs $slot</h4><p><code>@yield</code>/<code>@section</code> der VESELAI lapai, kas manto layout. <code>$slot</code> der mazam, atkārtoti lietojamam komponentam (poga, karte, brīdinājums).</p></div>
+        <div class="doc-mini-card"><h4>Automātiska komponentu atrašana</h4><p><code>&lt;x-alert&gt;</code> automātiski atrod <code>resources/views/components/alert.blade.php</code> - nekas papildus jāreģistrē.</p></div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="migrations">
+      <h2>Migrations</h2>
+      <p>Migration ir versionēts datubāzes shēmas izmaiņu apraksts kodā - komandas biedri palaiž to pašu migrāciju un iegūst identisku shēmu, bez manuālas SQL kopēšanas (skat. arī <a href="datubazes.html">Datubāzes / SQL</a> vispārīgam SQL pamatam).</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Izveido migrāciju UN modeli UN factory vienā komandā</span>
+php artisan make:model Post -mf</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// database/migrations/..._create_posts_table.php</span>
+<span class="tok-kw">return new class</span> <span class="tok-kw">extends</span> Migration
+{
+    <span class="tok-kw">public function</span> <span class="tok-fn">up</span>(): <span class="tok-kw">void</span>
+    {
+        Schema::create(<span class="tok-str">'posts'</span>, <span class="tok-kw">function</span> (Blueprint <span class="tok-fn">$table</span>) {
+            <span class="tok-fn">$table</span>-&gt;id();
+            <span class="tok-fn">$table</span>-&gt;foreignId(<span class="tok-str">'user_id'</span>)-&gt;constrained()-&gt;cascadeOnDelete();
+            <span class="tok-fn">$table</span>-&gt;string(<span class="tok-str">'title'</span>);
+            <span class="tok-fn">$table</span>-&gt;text(<span class="tok-str">'body'</span>);
+            <span class="tok-fn">$table</span>-&gt;boolean(<span class="tok-str">'published'</span>)-&gt;default(<span class="tok-kw">false</span>);
+            <span class="tok-fn">$table</span>-&gt;timestamps();
+        });
+    }
+
+    <span class="tok-kw">public function</span> <span class="tok-fn">down</span>(): <span class="tok-kw">void</span>
+    {
+        Schema::dropIfExists(<span class="tok-str">'posts'</span>);
+    }
+};</code></pre>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Palaiž visas vēl nepalaistās migrācijas</span>
+php artisan migrate
+
+<span class="tok-com"># Atceļ pēdējo migrāciju partiju UN palaiž no jauna - noder izstrādē</span>
+php artisan migrate:fresh</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>migrate:fresh</code> izdzēš <strong>VISAS</strong> tabulas un izveido no jauna - lieto tikai lokālai izstrādei, nekad produkcijā (tur dati tiešām pazūd, ne tikai shēma atiestatās).</p>
+      </div>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>foreignId('user_id')->constrained()</code> īsceļš pats uzmin, ka atsauce ved uz <code>users</code> tabulas <code>id</code> kolonnu - garā forma būtu <code>foreignId('user_id')->constrained('users', 'id')</code>. <code>cascadeOnDelete()</code> nozīmē - izdzēšot lietotāju, automātiski izdzēšas arī visi tā raksti.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="eloquent-modeli">
+      <h2>Eloquent modeļi</h2>
+      <p>Eloquent ir Laravel ORM (Object-Relational Mapping) - katra datubāzes tabula atbilst vienai PHP klasei, katra rinda vienam objektam. Nav jāraksta neviena SQL rinda pamata darbībām.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">class</span> Post <span class="tok-kw">extends</span> Model
+{
+    <span class="tok-kw">use</span> HasFactory;
+
+    <span class="tok-com">// Kuras kolonnas drīkst masveidā aizpildīt caur create()/fill() - aizsardzība
+    // pret "mass assignment" - lai kāds nepaslīdinātu iekšā kolonnu, kas nebija domāta</span>
+    <span class="tok-kw">protected</span> <span class="tok-fn">$fillable</span> = [<span class="tok-str">'title'</span>, <span class="tok-str">'body'</span>, <span class="tok-str">'published'</span>, <span class="tok-str">'user_id'</span>];
+
+    <span class="tok-com">// Automātiski pārvērš tipu, lasot/rakstot - šeit "0"/"1" no DB kļūst par īstu bool PHP pusē</span>
+    <span class="tok-kw">protected</span> <span class="tok-fn">$casts</span> = [
+        <span class="tok-str">'published'</span> =&gt; <span class="tok-str">'boolean'</span>,
+    ];
+}</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Pamata darbības - visas šīs ģenerē un izpilda SQL "aiz kadra"</span>
+Post::create([<span class="tok-str">'title'</span> =&gt; <span class="tok-str">'Jauns raksts'</span>, <span class="tok-str">'body'</span> =&gt; <span class="tok-str">'...'</span>, <span class="tok-str">'user_id'</span> =&gt; 1]);
+Post::find(1);                       <span class="tok-com">// atgriež null, ja neatrasts</span>
+Post::findOrFail(1);                 <span class="tok-com">// izmet 404, ja neatrasts - der controlleros</span>
+Post::all();
+<span class="tok-fn">$post</span>-&gt;update([<span class="tok-str">'title'</span> =&gt; <span class="tok-str">'Mainīts nosaukums'</span>]);
+<span class="tok-fn">$post</span>-&gt;delete();</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Laravel 13 arī pieļauj <code>$fillable</code>/<code>$hidden</code> deklarēt kā PHP atribūtus (<code>#[Fillable([...])]</code> virs klases) - tas ir jaunāks, alternatīvs sintakses veids tam pašam mērķim. Šī dokumentācija izmanto klasisko <code>protected $fillable</code> īpašību, jo tā strādā VISĀS Laravel versijās un ir biežāk sastopama esošā kodā.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="attiecibas">
+      <h2>Attiecības (relationships)</h2>
+      <p>Attiecības apraksta, kā modeļi savā starpā savienoti - definē vienreiz modelī, tad lieto kā parastu īpašību/metodi jebkur citur.</p>
+      <div class="doc-diagram">
+        <svg viewBox="0 0 640 180" xmlns="http://www.w3.org/2000/svg">
+          <line x1="160" y1="60" x2="230" y2="60" class="dg-line"></line>
+          <polygon points="230,60 221,55.5 221,64.5" class="dg-arrowhead"></polygon>
+          <line x1="160" y1="120" x2="230" y2="120" class="dg-line-accent"></line>
+          <polygon points="230,120 221,115.5 221,124.5" class="dg-arrowhead-accent"></polygon>
+          <line x1="410" y1="90" x2="480" y2="90" class="dg-line"></line>
+          <polygon points="480,90 471,85.5 471,94.5" class="dg-arrowhead"></polygon>
+
+          <rect x="20" y="40" width="140" height="40" rx="9" class="dg-node"></rect>
+          <rect x="20" y="100" width="140" height="40" rx="9" class="dg-node"></rect>
+          <rect x="230" y="70" width="180" height="40" rx="9" class="dg-node-accent"></rect>
+          <rect x="480" y="70" width="140" height="40" rx="9" class="dg-node"></rect>
+
+          <text x="90" y="65" class="dg-label" text-anchor="middle">User</text>
+          <text x="90" y="125" class="dg-sublabel" text-anchor="middle">hasMany posts()</text>
+          <text x="320" y="94" class="dg-label dg-label-accent" text-anchor="middle">Post</text>
+          <text x="550" y="94" class="dg-label" text-anchor="middle">Comment</text>
+
+          <text x="195" y="50" class="dg-sublabel" text-anchor="middle">belongsTo</text>
+          <text x="445" y="80" class="dg-sublabel" text-anchor="middle">hasMany</text>
+        </svg>
+        <p class="dg-caption">Katrai attiecībai ir sava "otra puse" - ja <code>Post belongsTo User</code>, tad <code>User hasMany Post</code>. Abas puses jāapraksta atsevišķi, katra savā modelī.</p>
+      </div>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">class</span> Post <span class="tok-kw">extends</span> Model
+{
+    <span class="tok-kw">public function</span> <span class="tok-fn">user</span>(): BelongsTo
+    {
+        <span class="tok-kw">return</span> <span class="tok-fn">$this</span>-&gt;belongsTo(User::class);
+    }
+
+    <span class="tok-kw">public function</span> <span class="tok-fn">comments</span>(): HasMany
+    {
+        <span class="tok-kw">return</span> <span class="tok-fn">$this</span>-&gt;hasMany(Comment::class);
+    }
+}
+
+<span class="tok-kw">class</span> User <span class="tok-kw">extends</span> Authenticatable
+{
+    <span class="tok-kw">public function</span> <span class="tok-fn">posts</span>(): HasMany
+    {
+        <span class="tok-kw">return</span> <span class="tok-fn">$this</span>-&gt;hasMany(Post::class);
+    }
+}</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">$post</span>-&gt;user;              <span class="tok-com">// -> User modelis (BEZ iekavām - "magic property")</span>
+<span class="tok-fn">$post</span>-&gt;comments;          <span class="tok-com">// -> Collection ar visiem komentāriem</span>
+<span class="tok-fn">$user</span>-&gt;posts()-&gt;count();  <span class="tok-com">// -> ar iekavām, jo šeit tālāk piebūvē vaicājumu (count/where/...)</span></code></pre>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>belongsToMany</h4><p>Daudzi-pret-daudziem (piem., raksti un birkas) - prasa starpposma tabulu, konvencijā nosauktu abu vārdu alfabētiskā secībā (<code>post_tag</code>).</p></div>
+        <div class="doc-mini-card"><h4>hasOne</h4><p>Kā <code>hasMany</code>, bet gaida tikai VIENU rezultātu (piem., <code>User hasOne Profile</code>).</p></div>
+        <div class="doc-mini-card"><h4>N+1 problēma</h4><p>Cikls pār 50 rakstiem, katram lasot <code>$post->user</code>, izpilda 51 vaicājumu. Skat. <code>with()</code>/<code>load()</code> zemāk - viens no biežākajiem veiktspējas kļūdu avotiem.</p></div>
+      </div>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>Post::with('user')->get()</code> ielādē VISU rakstu autorus VIENĀ papildu vaicājumā (nevis pa vienam katram rakstam) - tas ir risinājums N+1 problēmai. <code>$post->load('user')</code> dara to pašu jau ielādētam, atsevišķam modelim.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="query-builder">
+      <h2>Query Builder</h2>
+      <p>Kad Eloquent modeļa metodes nepietiek (sarežģītāki filtri, agregācijas) - Query Builder ļauj sacerēt vaicājumu soli pa solim, ķēdes stilā, joprojām bez tiešas SQL rakstīšanas.</p>
+      <pre class="code-block"><span class="lang">php</span><code>Post::where(<span class="tok-str">'published'</span>, <span class="tok-kw">true</span>)
+    -&gt;where(<span class="tok-str">'created_at'</span>, <span class="tok-str">'&gt;='</span>, <span class="tok-fn">now</span>()-&gt;subDays(7))
+    -&gt;orderBy(<span class="tok-str">'created_at'</span>, <span class="tok-str">'desc'</span>)
+    -&gt;withCount(<span class="tok-str">'comments'</span>)
+    -&gt;paginate(10);
+
+<span class="tok-com">// orWhere, whereIn, whereBetween - tāpat ķēdē</span>
+Post::whereIn(<span class="tok-str">'id'</span>, [1, 2, 3])-&gt;get();
+
+<span class="tok-com">// Agregācijas bez visu rindu ielādēšanas atmiņā</span>
+Post::where(<span class="tok-str">'published'</span>, <span class="tok-kw">true</span>)-&gt;count();
+Post::max(<span class="tok-str">'views'</span>);</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>paginate(10)</code> ne tikai ierobežo rezultātu skaitu - tā arī automātiski nolasa <code>?page=</code> no URL un atgriež gatavu lapošanas metadatus (kopējais skaits, nākamā/iepriekšējā lapa), ko var tieši izvadīt Blade veidnē vai JSON API atbildē (skat. <a href="#api-resources">API Resources</a>).</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="seeders-factories">
+      <h2>Seeders &amp; Factories</h2>
+      <p><strong>Factory</strong> apraksta, kā ģenerēt VIENU reālistisku testa ierakstu. <strong>Seeder</strong> izmanto factory, lai piepildītu datubāzi ar daudziem ierakstiem uzreiz - abi der izstrādei un testiem, nevis reāliem lietotāja datiem.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// database/factories/PostFactory.php</span>
+<span class="tok-kw">class</span> PostFactory <span class="tok-kw">extends</span> Factory
+{
+    <span class="tok-kw">public function</span> <span class="tok-fn">definition</span>(): <span class="tok-kw">array</span>
+    {
+        <span class="tok-kw">return</span> [
+            <span class="tok-str">'user_id'</span> =&gt; User::factory(),
+            <span class="tok-str">'title'</span> =&gt; <span class="tok-fn">$this</span>-&gt;faker-&gt;sentence(),
+            <span class="tok-str">'body'</span> =&gt; <span class="tok-fn">$this</span>-&gt;faker-&gt;paragraphs(3, <span class="tok-kw">true</span>),
+            <span class="tok-str">'published'</span> =&gt; <span class="tok-fn">$this</span>-&gt;faker-&gt;boolean(70), <span class="tok-com">// 70% ticamība, ka true</span>
+        ];
+    }
+
+    <span class="tok-com">// Nosaukts "state" - piemēro tikai vajadzīgo pārrakstījumu virs pamata definition()</span>
+    <span class="tok-kw">public function</span> <span class="tok-fn">published</span>(): <span class="tok-kw">static</span>
+    {
+        <span class="tok-kw">return</span> <span class="tok-fn">$this</span>-&gt;state(<span class="tok-kw">fn</span> () =&gt; [<span class="tok-str">'published'</span> =&gt; <span class="tok-kw">true</span>]);
+    }
+}</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Tinker vai seeder iekšā:</span>
+User::factory()-&gt;create();                          <span class="tok-com">// 1 lietotājs</span>
+Post::factory()-&gt;count(20)-&gt;create();                <span class="tok-com">// 20 raksti, katram SAVS jauns lietotājs</span>
+Post::factory()-&gt;for(<span class="tok-fn">$user</span>)-&gt;published()-&gt;create();  <span class="tok-com">// 1 raksts KONKRĒTAM lietotājam, ar "published" state</span></code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Factories un seeders NEKAD nedrīkst palaist pret produkcijas datubāzi - tie ģenerē izdomātus (Faker) datus, kas sajauktos ar reāliem lietotāju ierakstiem. Der tikai lokālai izstrādei un CI testu videi.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="middleware">
+      <h2>Middleware</h2>
+      <p>Middleware pārtver pieprasījumu PIRMS tas sasniedz controlleru - der piekļuves pārbaudēm, kas atkārtojas vairākos maršrutos (autentifikācija, abonementa statuss, API atslēgas pārbaude).</p>
+      <pre class="code-block"><span class="lang">bash</span><code>php artisan make:middleware EnsureUserIsSubscribed</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">class</span> EnsureUserIsSubscribed
+{
+    <span class="tok-kw">public function</span> <span class="tok-fn">handle</span>(Request <span class="tok-fn">$request</span>, Closure <span class="tok-fn">$next</span>): Response
+    {
+        <span class="tok-kw">if</span> (!<span class="tok-fn">$request</span>-&gt;user() || !<span class="tok-fn">$request</span>-&gt;user()-&gt;subscribed) {
+            <span class="tok-kw">return</span> response()-&gt;json([<span class="tok-str">'message'</span> =&gt; <span class="tok-str">'Nepieciešams aktīvs abonements.'</span>], 403);
+        }
+
+        <span class="tok-kw">return</span> <span class="tok-fn">$next</span>(<span class="tok-fn">$request</span>); <span class="tok-com">// laiž tālāk - uz nākamo middleware vai controlleru</span>
+    }
+}</code></pre>
+      <p>Reģistrē alias <code>bootstrap/app.php</code> failā, lai maršrutos varētu norādīt to ar īsu nosaukumu:</p>
+      <pre class="code-block"><span class="lang">php</span><code>-&gt;withMiddleware(<span class="tok-kw">function</span> (Middleware <span class="tok-fn">$middleware</span>): <span class="tok-kw">void</span> {
+    <span class="tok-fn">$middleware</span>-&gt;alias([
+        <span class="tok-str">'subscribed'</span> =&gt; \App\Http\Middleware\EnsureUserIsSubscribed::class,
+    ]);
+})</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code>Route::middleware(<span class="tok-str">'subscribed'</span>)-&gt;get(<span class="tok-str">'/premium'</span>, <span class="tok-kw">fn</span> () =&gt; <span class="tok-str">'Premium saturs'</span>);</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Ja <code>handle()</code> atgriež atbildi PIRMS <code>$next($request)</code> izsaukuma - pieprasījums apstājas tur, un controller vispār nekad neizpildās. Tieši tā šis piemērs nobloķē pieprasījumu ar 403, ja lietotājs nav abonējis (pārbaudīts reāli - atgriež precīzi šo statusu un ziņojumu).</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="form-requests">
+      <h2>Form Requests &amp; validācija</h2>
+      <p>Form Request ir sava klase validācijas noteikumiem - notur controlleru tīru no validācijas loģikas un ļauj to atkārtoti lietot.</p>
+      <pre class="code-block"><span class="lang">bash</span><code>php artisan make:request StorePostRequest</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">class</span> StorePostRequest <span class="tok-kw">extends</span> FormRequest
+{
+    <span class="tok-kw">public function</span> <span class="tok-fn">authorize</span>(): <span class="tok-kw">bool</span>
+    {
+        <span class="tok-kw">return</span> <span class="tok-kw">true</span>; <span class="tok-com">// vai pielāgota atļauju pārbaude, piem. $this->user()->can(...)</span>
+    }
+
+    <span class="tok-kw">public function</span> <span class="tok-fn">rules</span>(): <span class="tok-kw">array</span>
+    {
+        <span class="tok-kw">return</span> [
+            <span class="tok-str">'title'</span> =&gt; [<span class="tok-str">'required'</span>, <span class="tok-str">'string'</span>, <span class="tok-str">'max:255'</span>],
+            <span class="tok-str">'body'</span> =&gt; [<span class="tok-str">'required'</span>, <span class="tok-str">'string'</span>, <span class="tok-str">'min:10'</span>],
+            <span class="tok-str">'published'</span> =&gt; [<span class="tok-str">'sometimes'</span>, <span class="tok-str">'boolean'</span>],
+        ];
+    }
+}</code></pre>
+      <p>Controller metodē tips <code>StorePostRequest $request</code> vietā <code>Request</code> automātiski palaiž validāciju PIRMS metodes koda:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">public function</span> <span class="tok-fn">store</span>(StorePostRequest <span class="tok-fn">$request</span>)
+{
+    <span class="tok-com">// Šeit koda jau NEKAD nesasniedz, ja validācija neizietu -
+    // Laravel pats atgriež 422 ar kļūdu sarakstu, pirms šī rinda paspēj izpildīties</span>
+    <span class="tok-fn">$post</span> = <span class="tok-fn">$request</span>-&gt;user()-&gt;posts()-&gt;create(<span class="tok-fn">$request</span>-&gt;validated());
+}</code></pre>
+      <pre class="code-block"><span class="lang">json</span><code><span class="tok-com">// Reāla 422 atbilde, ja "title" un "body" trūkst (pārbaudīts):</span>
+{
+  <span class="tok-str">"message"</span>: <span class="tok-str">"The title field is required. (and 1 more error)"</span>,
+  <span class="tok-str">"errors"</span>: {
+    <span class="tok-str">"title"</span>: [<span class="tok-str">"The title field is required."</span>],
+    <span class="tok-str">"body"</span>: [<span class="tok-str">"The body field is required."</span>]
+  }
+}</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>$request->validated()</code> atgriež TIKAI datus, kas aprakstīti <code>rules()</code> - ja pieprasījumā nāk papildu, neaprakstīts lauks (piem., mēģinājums uzspiest <code>is_admin</code>), tas šeit vienkārši netiks iekļauts, pat ja tas ir pieprasījuma "body" daļā.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="request-response">
+      <h2>Request &amp; Response</h2>
+      <p><code>Illuminate\Http\Request</code> ietver visu par ienākošo pieprasījumu - ievades datus, faila augšupielādes, galvenes, autentificēto lietotāju.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">$request</span>-&gt;input(<span class="tok-str">'title'</span>);          <span class="tok-com">// viena vērtība no formas/JSON</span>
+<span class="tok-fn">$request</span>-&gt;title;                    <span class="tok-com">// tas pats, "magic property" veidā</span>
+<span class="tok-fn">$request</span>-&gt;all();                     <span class="tok-com">// viss kā masīvs</span>
+<span class="tok-fn">$request</span>-&gt;only([<span class="tok-str">'title'</span>, <span class="tok-str">'body'</span>]);   <span class="tok-com">// tikai norādītie lauki</span>
+<span class="tok-fn">$request</span>-&gt;has(<span class="tok-str">'title'</span>);            <span class="tok-com">// vai lauks vispār eksistē</span>
+<span class="tok-fn">$request</span>-&gt;user();                    <span class="tok-com">// pieteikušais lietotājs (vai null)</span>
+<span class="tok-fn">$request</span>-&gt;file(<span class="tok-str">'attēls'</span>);          <span class="tok-com">// augšupielādēts fails</span></code></pre>
+      <p>Atbildes (Response) var atgriezt vairākos veidos - Laravel pats izvēlas pareizo Content-Type:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">return</span> <span class="tok-str">'Vienkāršs teksts'</span>;                       <span class="tok-com">// text/html</span>
+<span class="tok-kw">return</span> view(<span class="tok-str">'posts.index'</span>, [<span class="tok-str">'posts'</span> =&gt; <span class="tok-fn">$posts</span>]);   <span class="tok-com">// Blade veidne</span>
+<span class="tok-kw">return</span> response()-&gt;json([<span class="tok-str">'ok'</span> =&gt; <span class="tok-kw">true</span>]);          <span class="tok-com">// application/json</span>
+<span class="tok-kw">return</span> response()-&gt;json([<span class="tok-str">'error'</span> =&gt; <span class="tok-str">'...'</span>], 404);  <span class="tok-com">// ar pielāgotu statusa kodu</span>
+<span class="tok-kw">return</span> redirect(<span class="tok-str">'/posts'</span>);                     <span class="tok-com">// 302 pāradresācija</span>
+<span class="tok-kw">return</span> redirect()-&gt;route(<span class="tok-str">'posts.index'</span>);         <span class="tok-com">// pāradresācija pēc maršruta VĀRDA, ne URL</span></code></pre>
+    </section>
+
+    <section class="doc-section" id="sesijas-flash">
+      <h2>Sesijas &amp; Flash dati</h2>
+      <p>Sesija saglabā datus starp vairākiem pieprasījumiem no TĀ PAŠA apmeklētāja (parasti caur sīkdatni). <strong>Flash</strong> dati ir īpaši - pieejami TIKAI nākamajā pieprasījumā, tad automātiski pazūd - ideāli īslaicīgiem paziņojumiem pēc pāradresācijas.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Parasta sesija - paliek, kamēr pats neizdzēš vai sesija nebeidzas</span>
+session([<span class="tok-str">'grozs_id'</span> =&gt; 42]);
+session(<span class="tok-str">'grozs_id'</span>);
+
+<span class="tok-com">// Flash - pieejams TIKAI vienu pieprasījumu uz priekšu</span>
+session()-&gt;flash(<span class="tok-str">'status'</span>, <span class="tok-str">'Saglabāts veiksmīgi!'</span>);
+<span class="tok-kw">return</span> redirect(<span class="tok-str">'/posts'</span>);
+
+<span class="tok-com">// Nākamajā lapā (piem., Blade veidnē pēc pāradresācijas):</span>
+@if (session(<span class="tok-str">'status'</span>))
+    &lt;div class=<span class="tok-str">"alert"</span>&gt;{{ session(<span class="tok-str">'status'</span>) }}&lt;/div&gt;
+@endif</code></pre>
+      <p>Ļoti bieži lietots kopā ar validāciju - ja forma neizietu, lietotājs redz atpakaļ savus ievadītos datus, nevis tukšu formu:</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">return</span> redirect(<span class="tok-str">'/posts/create'</span>)-&gt;withInput(); <span class="tok-com">// saglabā visu, ko lietotājs bija ierakstījis</span>
+
+<span class="tok-com">// Blade veidnē - aizpilda lauku ar VECO vērtību, ja tāda ir (pēc neveiksmīgas validācijas)</span>
+&lt;input name=<span class="tok-str">"email"</span> value=<span class="tok-str">"{{ old('email') }}"</span>&gt;</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Ja validācija <code>rules()</code> Form Request klasē (skat. <a href="#form-requests">augstāk</a>) neizietu <strong>parastā</strong> (nevis API) maršrutā, Laravel AUTOMĀTISKI izdara tieši šo - pāradresē atpakaļ ar <code>withInput()</code> un flash kļūdām, bez papildu koda rakstīšanas.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="artisan">
+      <h2>Artisan CLI</h2>
+      <p>Artisan ir Laravel iebūvētais komandrindas rīks - <code>php artisan list</code> parāda visas pieejamās komandas. Pielāgotas komandas noder atkārtotiem administratīviem uzdevumiem.</p>
+      <pre class="code-block"><span class="lang">bash</span><code>php artisan make:command PublishScheduledPosts</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">#[Signature</span>(<span class="tok-str">'app:publish-scheduled-posts'</span>)]
+<span class="tok-fn">#[Description</span>(<span class="tok-str">'Nosūta iknedēļas kopsavilkumu visiem lietotājiem'</span>)]
+<span class="tok-kw">class</span> PublishScheduledPosts <span class="tok-kw">extends</span> Command
+{
+    <span class="tok-kw">public function</span> <span class="tok-fn">handle</span>(): <span class="tok-kw">void</span>
+    {
+        User::query()-&gt;each(<span class="tok-kw">function</span> (User <span class="tok-fn">$user</span>) {
+            SendWeeklyDigest::dispatch(<span class="tok-fn">$user</span>);
+        });
+
+        <span class="tok-fn">$this</span>-&gt;info(<span class="tok-str">'Kopsavilkumi nosūtīti rindā.'</span>);
+    }
+}</code></pre>
+      <pre class="code-block"><span class="lang">bash</span><code>php artisan app:publish-scheduled-posts
+<span class="tok-com"># → Kopsavilkumi nosūtīti rindā.</span></code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Laravel 13 <code>make:command</code> pēc noklusējuma ģenerē tieši šo, atribūtu balstīto sintaksi (<code>#[Signature]</code>/<code>#[Description]</code>) - vecāki tutoriāli rādīs <code>protected $signature</code>/<code>protected $description</code> īpašības. Abi veidi strādā, bet atribūtu forma tagad ir jaunā komanda ģenerēta pēc noklusējuma.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="autentifikacija">
+      <h2>Autentifikācija</h2>
+      <p>Laravel pats nesatur gatavu pieteikšanās/reģistrācijas UI - to pievieno kā oficiālu, atsevišķu paketi, atkarībā no projekta vajadzības.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>Laravel Breeze</h4><p>Minimāla, "redzi visu kodu" pieteikšanās/reģistrācijas/paroles atjaunošanas sistēma - der, ja gribi pats kontrolēt un mainīt UI. Uzstāda ar <code>laravel new --breeze</code> vai <code>composer require laravel/breeze</code> + <code>artisan breeze:install</code>.</p></div>
+        <div class="doc-mini-card"><h4>Laravel Sanctum</h4><p>Vienkārši API tokeni (nevis pilna OAuth sistēma) - der, kad frontend (piem., <a href="react.html">React</a> lietotne) sazinās ar Laravel backend caur API, nevis Blade veidnēm.</p></div>
+        <div class="doc-mini-card"><h4>Laravel Jetstream</h4><p>Pilnīgāks risinājums - komandas, profila pārvaldība, divfaktoru autentifikācija - der lielākiem, no paša sākuma "produktu" tipa projektiem.</p></div>
+      </div>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Pēc autentifikācijas pakotnes uzstādīšanas - pārbaude jebkurā vietā:</span>
+<span class="tok-kw">if</span> (Auth::check()) { ... }        <span class="tok-com">// vai auth()->check()</span>
+<span class="tok-fn">$lietotajs</span> = Auth::user();      <span class="tok-com">// vai auth()->user()</span>
+
+<span class="tok-com">// Maršrutā - piespiež pieteikšanos, ja lietotājs nav autentificēts</span>
+Route::middleware(<span class="tok-str">'auth'</span>)-&gt;group(<span class="tok-kw">function</span> () {
+    Route::get(<span class="tok-str">'/dashboard'</span>, DashboardController::class);
+});</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Nekad neveido pieteikšanās/paroles hash loģiku pašrocīgi "vienkāršības labad" - Breeze/Sanctum/Jetstream jau pareizi apstrādā paroļu hash (bcrypt), rate limiting pret bruteforce un CSRF aizsardzību. Pašrocīgi rakstīta versija gandrīz vienmēr izlaiž kādu no šiem.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="api-resources">
+      <h2>API Resources</h2>
+      <p>API Resource kontrolē, kā Eloquent modelis pārvēršas par JSON - atdala datubāzes kolonnu nosaukumus no tā, ko tiešām grib rādīt API patērētājam (frontend, mobilā app).</p>
+      <pre class="code-block"><span class="lang">bash</span><code>php artisan make:resource PostResource</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">class</span> PostResource <span class="tok-kw">extends</span> JsonResource
+{
+    <span class="tok-kw">public function</span> <span class="tok-fn">toArray</span>(Request <span class="tok-fn">$request</span>): <span class="tok-kw">array</span>
+    {
+        <span class="tok-kw">return</span> [
+            <span class="tok-str">'id'</span> =&gt; <span class="tok-fn">$this</span>-&gt;id,
+            <span class="tok-str">'title'</span> =&gt; <span class="tok-fn">$this</span>-&gt;title,
+            <span class="tok-str">'body'</span> =&gt; <span class="tok-fn">$this</span>-&gt;body,
+            <span class="tok-str">'published'</span> =&gt; <span class="tok-fn">$this</span>-&gt;published,
+            <span class="tok-com">// Rāda "author" TIKAI, ja user attiecība jau ielādēta ar with()/load() -
+            // pretējā gadījumā klusē izlaiž lauku, nevis izmet papildu vaicājumu (N+1)</span>
+            <span class="tok-str">'author'</span> =&gt; <span class="tok-fn">$this</span>-&gt;whenLoaded(<span class="tok-str">'user'</span>, <span class="tok-kw">fn</span> () =&gt; <span class="tok-fn">$this</span>-&gt;user-&gt;name),
+            <span class="tok-str">'comments_count'</span> =&gt; <span class="tok-fn">$this</span>-&gt;whenCounted(<span class="tok-str">'comments'</span>),
+            <span class="tok-str">'created_at'</span> =&gt; <span class="tok-fn">$this</span>-&gt;created_at-&gt;toIso8601String(),
+        ];
+    }
+}</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">return new</span> PostResource(<span class="tok-fn">$post</span>);                 <span class="tok-com">// viens ieraksts</span>
+<span class="tok-kw">return</span> PostResource::collection(<span class="tok-fn">$posts</span>);       <span class="tok-com">// vairāki, ar automātisku lapošanu, ja $posts nāk no paginate()</span></code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Bez Resource, atgriežot modeli tieši (<code>return $post;</code>), API atklāj VISAS datubāzes kolonnas, ieskaitot iekšējas (piem., nākotnē pievienotu <code>internal_notes</code>). Resource ir apzināts "atļauto sarakstu" filtrs - jaunas kolonnas datubāzē automātiski NEparādās API, kamēr apzināti nepievieno tās <code>toArray()</code>.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="events-listeners">
+      <h2>Events &amp; Listeners</h2>
+      <p>Event/Listener atdala "kas notika" no "ko tāpēc darīt" - noder, kad viena darbība (raksta publicēšana) izraisa VAIRĀKAS neatkarīgas sekas (e-pasts, žurnāls, statistika), kuras nevajag sabāzt vienā controller metodē.</p>
+      <pre class="code-block"><span class="lang">bash</span><code>php artisan make:event PostPublished
+php artisan make:listener SendPostPublishedNotification --event=PostPublished</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">class</span> PostPublished
+{
+    <span class="tok-kw">use</span> Dispatchable, SerializesModels;
+
+    <span class="tok-kw">public function</span> <span class="tok-fn">__construct</span>(<span class="tok-kw">public</span> Post <span class="tok-fn">$post</span>) {}
+}
+
+<span class="tok-kw">class</span> SendPostPublishedNotification <span class="tok-kw">implements</span> ShouldQueue
+{
+    <span class="tok-kw">public function</span> <span class="tok-fn">handle</span>(PostPublished <span class="tok-fn">$event</span>): <span class="tok-kw">void</span>
+    {
+        Log::info(<span class="tok-str">"Jauns raksts publicēts: {$event->post->title}"</span>);
+    }
+}</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">event</span>(<span class="tok-kw">new</span> PostPublished(<span class="tok-fn">$post</span>));</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Laravel 11+ AUTOMĀTISKI atklāj listeneru savienojumus ar eventiem, balstoties uz to <code>handle()</code> metodes tipa deklarāciju (šeit <code>PostPublished $event</code>) - nekas nav manuāli jāreģistrē <code>EventServiceProvider</code> failā, jo tāda faila projektā pēc noklusējuma vairs nav (pārbaudīts: <code>event()</code> izsaukums uzreiz izpilda listeneru bez papildu konfigurācijas).</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="jobs-queues">
+      <h2>Jobs &amp; Queues</h2>
+      <p>Job ir viens, atkārtoti izpildāms uzdevums, ko var nolikt <strong>rindā</strong> (queue) - tas izpildās FONĀ, atsevišķi no lietotāja pieprasījuma, lai lēns darbs (e-pasta sūtīšana, PDF ģenerēšana) nepiespiestu lietotāju gaidīt.</p>
+      <pre class="code-block"><span class="lang">bash</span><code>php artisan make:job SendWeeklyDigest</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">class</span> SendWeeklyDigest <span class="tok-kw">implements</span> ShouldQueue
+{
+    <span class="tok-kw">use</span> Queueable;
+
+    <span class="tok-kw">public function</span> <span class="tok-fn">__construct</span>(<span class="tok-kw">public</span> User <span class="tok-fn">$user</span>) {}
+
+    <span class="tok-kw">public function</span> <span class="tok-fn">handle</span>(): <span class="tok-kw">void</span>
+    {
+        <span class="tok-fn">$postsCount</span> = <span class="tok-fn">$this</span>-&gt;user-&gt;posts()-&gt;count();
+        Log::info(<span class="tok-str">"Iknedēļas kopsavilkums lietotājam {$this->user->name}: {$postsCount} raksti"</span>);
+    }
+}</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code>SendWeeklyDigest::dispatch(<span class="tok-fn">$user</span>);                    <span class="tok-com">// noliek rindā, atgriežas UZREIZ</span>
+SendWeeklyDigest::dispatch(<span class="tok-fn">$user</span>)-&gt;delay(<span class="tok-fn">now</span>()-&gt;addMinutes(10)); <span class="tok-com">// izpildīsies pēc 10 min</span></code></pre>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Procesa, kas tiešām izpilda rindā gaidošos darbus - jāpalaiž atsevišķi (produkcijā ar Supervisor)</span>
+php artisan queue:work</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Pēc noklusējuma jauns Laravel projekts izmanto <code>QUEUE_CONNECTION=database</code> vai <code>sync</code> (<code>.env</code> failā) - <code>sync</code> izpilda job'us UZREIZ, tajā pašā pieprasījumā (labi lokālai izstrādei/testiem, bet zaudē visu queue jēgu). Produkcijā vajag īstu queue driveri (database, Redis) UN palaistu <code>queue:work</code> procesu - bez tā rindā noliktie darbi vienkārši sakrājas un nekad neizpildās.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="task-scheduling">
+      <h2>Task Scheduling</h2>
+      <p>Laravel iebūvētais plānotājs aizstāj vairāku atsevišķu cron ierakstu rakstīšanu serverī - visi plānotie uzdevumi definēti VIENĀ vietā, kodā, versiju kontrolē.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// routes/console.php</span>
+<span class="tok-kw">use</span> Illuminate\Support\Facades\Schedule;
+
+Schedule::command(<span class="tok-str">'app:publish-scheduled-posts'</span>)-&gt;weeklyOn(1, <span class="tok-str">'08:00'</span>); <span class="tok-com">// katru pirmdienu 8:00</span>
+Schedule::command(<span class="tok-str">'model:prune'</span>)-&gt;daily();</code></pre>
+      <p>Serverim jāiestata TIKAI VIENS reāls cron ieraksts, kas palaiž Laravel plānotāju katru minūti - tas pats izlemj, kurš no augstāk aprakstītajiem uzdevumiem tobrīd tiešām jāizpilda:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Servera crontab (viens ieraksts der VISIEM Laravel plānotajiem uzdevumiem)</span>
+* * * * * cd /ceļš/uz/projektu &amp;&amp; php artisan schedule:run &gt;&gt; /dev/null 2&gt;&amp;1</code></pre>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Pārbauda, kas ieplānots un kad nākamā izpilde (pārbaudīts - rāda pareizu cron izteiksmi)</span>
+php artisan schedule:list</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Šis ir pilnībā atšķirīgs mehānisms no <a href="wordpress.html#wp-cron">WordPress WP-Cron</a>, kas darbojas TIKAI, kad kāds apmeklē vietni. Laravel plānotājs balstās uz reālu servera cron ierakstu, tāpēc uzdevumi izpildās precīzi ieplānotajā laikā, pat ja vietni nekas neapmeklē.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="vides-mainigie">
+      <h2>Vides mainīgie &amp; config cache</h2>
+      <p><code>.env</code> fails glabā videi specifiskus iestatījumus (datubāzes paroli, API atslēgas) - ĀRPUS Git repozitorija (skat. arī <a href="php.html#env-mainigie">.env PHP kategorijā</a> vispārīgam PHP skaidrojumam).</p>
+      <pre class="code-block"><span class="lang">text</span><code><span class="tok-com"># .env</span>
+APP_ENV=production
+APP_DEBUG=<span class="tok-kw">false</span>
+DB_CONNECTION=mysql
+DB_DATABASE=mana_datubaze
+QUEUE_CONNECTION=database</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Lasa .env vērtību TIKAI konfigurācijas failos (config/*.php), nekad tieši kodā</span>
+<span class="tok-com">// config/app.php:</span>
+<span class="tok-str">'env'</span> =&gt; env(<span class="tok-str">'APP_ENV'</span>, <span class="tok-str">'production'</span>),
+
+<span class="tok-com">// Pārējā kodā vienmēr lasi caur config(), ne env() tieši:</span>
+config(<span class="tok-str">'app.env'</span>);</code></pre>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Produkcijā PĒC katras .env izmaiņas:</span>
+php artisan config:cache   <span class="tok-com"># apkopo visu konfigurāciju vienā failā - ātrāk ielādējas</span>
+php artisan config:clear   <span class="tok-com"># noņem kešu (der, ja izmaiņas negribīgi neparādās)</span></code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Pēc <code>config:cache</code> izsaukuma <code>env()</code> vairs NESTRĀDĀ ārpus <code>config/*.php</code> failiem - tas atgriezīs <code>null</code> jebkur citur kodā. Tieši tāpēc noteikums "lasi <code>env()</code> tikai config failos, pārējā kodā <code>config()</code>" nav tikai stila ieteikums - kešotā produkcijā tiešs <code>env()</code> izsaukums klusi salūzt.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="testesana">
+      <h2>Testēšana (PHPUnit)</h2>
+      <p>Jauns Laravel projekts pēc noklusējuma nāk ar PHPUnit uzstādītu un konfigurētu - testi dalās <strong>Feature</strong> (pilna pieprasījuma plūsma, ar HTTP un datubāzi) un <strong>Unit</strong> (izolēta klase/metode, bez Laravel konteksta).</p>
+      <pre class="code-block"><span class="lang">bash</span><code>php artisan make:test PostApiTest</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">class</span> PostApiTest <span class="tok-kw">extends</span> TestCase
+{
+    <span class="tok-kw">use</span> RefreshDatabase; <span class="tok-com">// katram testam TĪRA, jauna testa datubāze</span>
+
+    <span class="tok-kw">public function</span> <span class="tok-fn">test_guest_can_list_published_posts</span>(): <span class="tok-kw">void</span>
+    {
+        Post::factory()-&gt;count(3)-&gt;published()-&gt;create();
+
+        <span class="tok-fn">$response</span> = <span class="tok-fn">$this</span>-&gt;getJson(<span class="tok-str">'/api/posts'</span>);
+
+        <span class="tok-fn">$response</span>-&gt;assertOk()-&gt;assertJsonCount(3, <span class="tok-str">'data'</span>);
+    }
+
+    <span class="tok-kw">public function</span> <span class="tok-fn">test_creating_post_requires_title</span>(): <span class="tok-kw">void</span>
+    {
+        <span class="tok-fn">$user</span> = User::factory()-&gt;create();
+
+        <span class="tok-fn">$response</span> = <span class="tok-fn">$this</span>-&gt;actingAs(<span class="tok-fn">$user</span>)-&gt;postJson(<span class="tok-str">'/api/posts'</span>, [
+            <span class="tok-str">'body'</span> =&gt; <span class="tok-str">'Saturs bez virsraksta.'</span>,
+        ]);
+
+        <span class="tok-fn">$response</span>-&gt;assertStatus(422)-&gt;assertJsonValidationErrors(<span class="tok-str">'title'</span>);
+    }
+}</code></pre>
+      <pre class="code-block"><span class="lang">bash</span><code>php artisan test --filter=PostApiTest
+<span class="tok-com"># → PASS  Tests\Feature\PostApiTest (2 testi, 5 apgalvojumi) - pārbaudīts reāli</span></code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>RefreshDatabase</code> pirms KATRA testa migrē tīru datubāzi no nulles - testi nekad neietekmē cits citu ar palikušiem datiem no iepriekšējā testa, pat ja testi izpildās neparedzamā secībā.</p>
+      </div>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Daudzi Laravel projekti izmanto <strong>Pest</strong> - alternatīvu, kodolīgāku sintaksi virs tā paša PHPUnit dzinēja (nevis pilnīgi cita testēšanas sistēma). Šeit izmantota klasiskā PHPUnit sintakse, jo tā ir tas, ko <code>composer create-project laravel/laravel</code> uzstāda pēc noklusējuma.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="kludu-apstrade">
+      <h2>Kļūdu apstrāde &amp; logging</h2>
+      <p>Pielāgotas izņēmumu klases ļauj katrai kļūdai piešķirt savu HTTP atbildi un žurnalēšanas uzvedību - bez <code>if/else</code> virknes controlleros.</p>
+      <pre class="code-block"><span class="lang">bash</span><code>php artisan make:exception PostLimitExceededException</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">class</span> PostLimitExceededException <span class="tok-kw">extends</span> Exception
+{
+    <span class="tok-kw">public function</span> <span class="tok-fn">render</span>(): JsonResponse
+    {
+        <span class="tok-kw">return</span> response()-&gt;json([<span class="tok-str">'message'</span> =&gt; <span class="tok-str">'Sasniegts maksimālais rakstu skaits.'</span>], 429);
+    }
+}</code></pre>
+      <p>Papildu žurnalēšana (bez atbildes maiņas) reģistrē <code>bootstrap/app.php</code>:</p>
+      <pre class="code-block"><span class="lang">php</span><code>-&gt;withExceptions(<span class="tok-kw">function</span> (Exceptions <span class="tok-fn">$exceptions</span>): <span class="tok-kw">void</span> {
+    <span class="tok-fn">$exceptions</span>-&gt;report(<span class="tok-kw">function</span> (PostLimitExceededException <span class="tok-fn">$e</span>) {
+        Log::warning(<span class="tok-str">'Rakstu limits pārsniegts: '</span>.<span class="tok-fn">$e</span>-&gt;getMessage());
+    });
+})</code></pre>
+      <p>Kad kods to izmet, atbilde un žurnāla ieraksts notiek automātiski (pārbaudīts - atgriež tieši šo statusu un ziņojumu):</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">throw new</span> PostLimitExceededException(<span class="tok-str">'limit sasniegts'</span>);
+<span class="tok-com">// → HTTP 429, {"message": "Sasniegts maksimālais rakstu skaits."}
+// → storage/logs/laravel.log: "Rakstu limits pārsniegts: limit sasniegts"</span></code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Jauns projekts pēc noklusējuma jau satur <code>$exceptions->shouldRenderJsonWhen(...)</code> - tas nosaka, vai kļūdas jārāda kā JSON (API pieprasījumiem) vai kā HTML kļūdas lapa (parastiem pārlūka pieprasījumiem). Parasti to nevajag mainīt, ja vien projektam nav neparasta API/web sadalījuma.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="deploy">
+      <h2>Deploy pamatprakse</h2>
+      <p>Laravel projekta izvietošana atšķiras no WordPress (skat. <a href="wordpress-problemas.html">WordPress problēmas</a> salīdzinājumam) - nav vienkārši failu kopēšana, jo projekts prasa Composer atkarības, konfigurācijas kešu un pareizas mapes tiesības.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>Composer produkcijas režīmā</h4><p><code>composer install --optimize-autoloader --no-dev</code> - izlaiž izstrādes rīkus (PHPUnit, Pail) un paātrina klašu ielādi.</p></div>
+        <div class="doc-mini-card"><h4>Kešu apkopošana</h4><p><code>artisan config:cache</code>, <code>route:cache</code>, <code>view:cache</code> - katru reizi PĒC koda izvietošanas, ne tikai reizi.</p></div>
+        <div class="doc-mini-card"><h4>Migrācijas</h4><p><code>artisan migrate --force</code> - <code>--force</code> nepieciešams, jo Laravel pēc noklusējuma atsakās palaist migrācijas <code>APP_ENV=production</code> bez apstiprinājuma.</p></div>
+        <div class="doc-mini-card"><h4>Document root</h4><p>Servera konfigurācijai jārāda uz <code>public/</code> apakšmapi, NEVIS projekta sakni - pretējā gadījumā <code>.env</code> un pārējais projekta kods kļūst tieši lejupielādējams.</p></div>
+      </div>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Tipiska deploy soļu secība pēc koda izvietošanas serverī</span>
+composer install --optimize-autoloader --no-dev
+php artisan migrate --force
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+php artisan queue:restart  <span class="tok-com"># liek queue:work procesiem pārlasīt JAUNO kodu</span></code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>queue:restart</code> ir viegli aizmirst - jau strādājošie <code>queue:work</code> procesi PALIEK ar VECO koda versiju atmiņā, kamēr netiek piespiesti pārstartēties. Bez šī soļa nesen izvietotas izmaiņas jobos var klusi nestrādāt, kaut arī pārējais kods jau atjaunināts.</p>
+      </div>
+    </section>
+
+    <div class="doc-pager">
+      <a href="php.html"><span class="lbl">← Iepriekšējais</span>PHP</a>
+      <a class="to-next" href="web-izveide.html"><span class="lbl">Tālāk →</span>Tīkls</a>
+    </div>
+  </main>
+</div>
+
+<script src="../js/theme.js?v=78"></script>
+<script src="../js/main.js?v=78"></script>
+</body>
+</html>

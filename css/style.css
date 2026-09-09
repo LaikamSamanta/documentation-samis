@@ -49,6 +49,10 @@
   --c-docker-soft: rgba(36, 150, 237, 0.15);
   --c-vardnica: #84cc16;
   --c-vardnica-soft: rgba(132, 204, 22, 0.15);
+  --c-laravel: #ff2d20;
+  --c-laravel-soft: rgba(255, 45, 32, 0.15);
+  --c-react: #61dafb;
+  --c-react-soft: rgba(97, 218, 251, 0.15);
 
   /* page-scoped accent - falls back to the brand purple; category pages
      override these (see .cat-* below) so navigation/headings pick up the
@@ -115,6 +119,8 @@
   --c-riki-2: color-mix(in srgb, var(--c-riki), white 10%);
   --c-docker-2: color-mix(in srgb, var(--c-docker), white 15%);
   --c-vardnica-2: color-mix(in srgb, var(--c-vardnica), white 15%);
+  --c-laravel-2: color-mix(in srgb, var(--c-laravel), white 15%);
+  --c-react-2: color-mix(in srgb, var(--c-react), white 10%);
 
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 20px 40px -20px rgba(0, 0, 0, 0.6);
   --shadow-pop: 0 30px 60px -25px rgba(120, 60, 255, 0.35);
@@ -179,6 +185,8 @@
   --c-riki-2: color-mix(in srgb, var(--c-riki), black 45%);
   --c-docker-2: color-mix(in srgb, var(--c-docker), black 25%);
   --c-vardnica-2: color-mix(in srgb, var(--c-vardnica), black 40%);
+  --c-laravel-2: color-mix(in srgb, var(--c-laravel), black 15%);
+  --c-react-2: color-mix(in srgb, var(--c-react), black 45%);
 
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 20px 40px -24px rgba(80, 60, 140, 0.25);
   --shadow-pop: 0 30px 60px -25px rgba(124, 58, 237, 0.25);
@@ -204,6 +212,8 @@ body.cat-python        { --page-accent: var(--c-python);       --page-accent-2: 
 body.cat-riki          { --page-accent: var(--c-riki);         --page-accent-2: var(--c-riki-2);         --page-accent-soft: var(--c-riki-soft); }
 body.cat-docker        { --page-accent: var(--c-docker);       --page-accent-2: var(--c-docker-2);       --page-accent-soft: var(--c-docker-soft); }
 body.cat-vardnica      { --page-accent: var(--c-vardnica);     --page-accent-2: var(--c-vardnica-2);     --page-accent-soft: var(--c-vardnica-soft); }
+body.cat-laravel       { --page-accent: var(--c-laravel);      --page-accent-2: var(--c-laravel-2);      --page-accent-soft: var(--c-laravel-soft); }
+body.cat-react         { --page-accent: var(--c-react);        --page-accent-2: var(--c-react-2);        --page-accent-soft: var(--c-react-soft); }
 
 * {
   box-sizing: border-box;
@@ -821,6 +831,8 @@ code {
 .card.riki      { --card-color: var(--c-riki);      --card-color-2: var(--c-riki-2);      --card-soft: var(--c-riki-soft); }
 .card.docker    { --card-color: var(--c-docker);    --card-color-2: var(--c-docker-2);    --card-soft: var(--c-docker-soft); }
 .card.vardnica  { --card-color: var(--c-vardnica);  --card-color-2: var(--c-vardnica-2);  --card-soft: var(--c-vardnica-soft); }
+.card.laravel   { --card-color: var(--c-laravel);   --card-color-2: var(--c-laravel-2);   --card-soft: var(--c-laravel-soft); }
+.card.react     { --card-color: var(--c-react);     --card-color-2: var(--c-react-2);     --card-soft: var(--c-react-soft); }
 
 /* ---------- Stats strip ---------- */
 .stats {
