@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="lv" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="manifest" href="../manifest.json" />
+<meta name="theme-color" content="#9d5cff" />
+<title>React dokumentācija - Documentation Samis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css?v=79" />
+<script>
+  (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
+</script>
+</head>
+<body class="cat-react">
+<div class="bg-glow"></div>
+<div class="bg-grid"></div>
+
+<header class="topbar">
+  <a class="brand" href="../index.html">
+    <span class="mark"><svg viewBox="0 0 32 32" width="30" height="30"><defs><linearGradient id="logomarkG" x1="2" y1="1" x2="30" y2="31" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#6d28d9"/><stop offset="50%" stop-color="#9d5cff"/><stop offset="100%" stop-color="#f472b6"/></linearGradient><radialGradient id="logomarkGlow" cx="0.78" cy="0.18" r="0.65"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.4"/><stop offset="100%" stop-color="#ffffff" stop-opacity="0"/></radialGradient></defs><rect x="1" y="1" width="30" height="30" rx="15" fill="url(#logomarkG)"/><rect x="1" y="1" width="30" height="30" rx="15" fill="url(#logomarkGlow)"/><path d="M 12 9.5 L 6.5 16 L 12 22.5" fill="none" stroke="#000000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M 20 9.5 L 25.5 16 L 20 22.5" fill="none" stroke="#000000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M 17.6 7.5 L 14.4 24.5" fill="none" stroke="#000000" stroke-width="2.2" stroke-linecap="round" stroke-opacity="0.92"/></svg></span>
+    Documentation Samis
+  </a>
+  <div class="topbar-actions">
+    <a class="btn-back" href="cheatsheet-react.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-6-6z"/><path d="M13 2v6h6M9 13h6M9 17h6M9 9h1"/></svg>
+      <span class="btn-label">Cheatsheet</span>
+    </a>
+    <a class="btn-back" href="../index.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7M5 12h14"/></svg>
+      <span class="btn-label">Kategorijas</span>
+    </a>
+    <a class="quick-link" href="riki.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      <span class="btn-label">Rīki</span>
+    </a>
+    <a class="quick-link" href="wordpress-snippets.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      <span class="btn-label">Ātrie risinājumi</span>
+    </a>
+    <a class="quick-link" href="vardnica.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+      <span class="btn-label">Vārdnīca</span>
+    </a>
+    <button class="icon-btn" id="theme-toggle" title="Pārslēgt tēmu" aria-label="Pārslēgt tēmu">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="doc-shell">
+  <aside class="doc-sidebar">
+    <div class="doc-sidebar-accordion open">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Pamati</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#ievads-react" class="active"><span class="bullet"></span>Kas ir React?</a>
+        <a href="#instalacija-vite"><span class="bullet"></span>Projekta uzstādīšana (Vite)</a>
+        <a href="#komponenti-jsx"><span class="bullet"></span>Komponenti &amp; JSX</a>
+        <a href="#props"><span class="bullet"></span>Props</a>
+        <a href="#state-usestate"><span class="bullet"></span>State (useState)</a>
+      </div>
+    </div>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Hooks</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#hook-useeffect"><span class="bullet"></span>useEffect</a>
+        <a href="#hook-useref"><span class="bullet"></span>useRef</a>
+        <a href="#hook-usememo-usecallback"><span class="bullet"></span>useMemo &amp; useCallback</a>
+        <a href="#custom-hooks"><span class="bullet"></span>Pielāgoti hooks</a>
+        <a href="#hook-usecontext"><span class="bullet"></span>useContext</a>
+      </div>
+    </div>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Praktiski raksti</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#conditional-rendering"><span class="bullet"></span>Nosacīta renderēšana</a>
+        <a href="#lists-keys"><span class="bullet"></span>Saraksti &amp; keys</a>
+        <a href="#forms"><span class="bullet"></span>Formas &amp; controlled inputs</a>
+        <a href="#event-handling"><span class="bullet"></span>Notikumu apstrāde</a>
+        <a href="#composition"><span class="bullet"></span>Komponentu kompozīcija</a>
+      </div>
+    </div>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Dati &amp; maršrutēšana</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#data-fetching"><span class="bullet"></span>Fetch/API izsaukumi</a>
+        <a href="#react-router"><span class="bullet"></span>React Router</a>
+        <a href="#error-boundaries"><span class="bullet"></span>Error Boundaries</a>
+        <a href="#lazy-loading"><span class="bullet"></span>Lazy loading &amp; code splitting</a>
+      </div>
+    </div>
+    <div class="doc-sidebar-accordion">
+      <button class="doc-accordion-toggle" type="button">
+        <span>Uzlaboti &amp; rīki</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="doc-accordion-body">
+        <a href="#typescript-react"><span class="bullet"></span>TypeScript ar React</a>
+        <a href="#testing-rtl"><span class="bullet"></span>Testēšana (RTL)</a>
+        <a href="#state-management"><span class="bullet"></span>State pārvaldība lielām lietotnēm</a>
+        <a href="#build-deploy"><span class="bullet"></span>Būvēšana &amp; izvietošana</a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="doc-main">
+    <div class="doc-breadcrumb">
+      <a href="../index.html">Sākums</a>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span>React</span>
+    </div>
+
+    <div class="doc-header">
+      <div class="icon" style="background: var(--c-react-soft); color: var(--c-react);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1.8" fill="currentColor" stroke="none"></circle><ellipse cx="12" cy="12" rx="10" ry="4.5"></ellipse><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(60 12 12)"></ellipse><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(120 12 12)"></ellipse></svg>
+      </div>
+      <h1 style="margin-bottom:0;">React</h1>
+    </div>
+    <p class="doc-lead">Pilns iesācēja ceļvedis React bibliotēkai - komponenti, hooks, formas, maršrutēšana, testēšana un veiktspēja. Visi piemēri pārbaudīti reālā Vite + React 19 projektā, pārlūkā, ar reālu API izsaukumu.</p>
+
+    <section class="doc-section" id="ievads-react">
+      <h2>Kas ir React?</h2>
+      <p>React ir JavaScript bibliotēka lietotāja saskarnes (UI) veidošanai no atkārtoti lietojamiem <strong>komponentiem</strong>. Ja jau redzēji īsu ievadu <a href="javascript.html#react-parskats">JavaScript kategorijā</a> - šeit turpinām krietni dziļāk: hooks, maršrutēšana, formas, testēšana un veiktspēja.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>Deklaratīvs stils</h4><p>Apraksti, KĀ UI izskatās PIE KONKRĒTA stāvokļa - React pats izlemj, kā efektīvi atjaunināt reālo DOM, nevis manuāli katru soli (<code>appendChild</code>, <code>classList.add</code>...).</p></div>
+        <div class="doc-mini-card"><h4>Komponenti kā funkcijas</h4><p>Katrs komponents ir parasta JavaScript funkcija, kas atgriež JSX - var to izsaukt, padot tam parametrus (props), veidot no tā jaunus komponentus.</p></div>
+        <div class="doc-mini-card"><h4>Kad izvēlēties React</h4><p>Lietotnēm ar daudz mainīga, savstarpēji saistīta stāvokļa (dashboard, formas ar validāciju, reāllaika atjauninājumi) - vienkāršai statiskai lapai bieži pietiek ar <a href="javascript.html">tīru JavaScript</a>.</p></div>
+      </div>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Šī dokumentācija balstās uz React <strong>19</strong> un funkciju komponentiem ar hooks - vecāki tutoriāli (pirms 2019) bieži rāda klases un <code>this.setState</code>. Klases komponenti joprojām strādā, bet jaunam kodam gandrīz vienmēr izmanto funkciju komponentus.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="instalacija-vite">
+      <h2>Projekta uzstādīšana (Vite)</h2>
+      <p>Vite ir šobrīd ātrākais un vienkāršākais veids, kā sākt jaunu React projektu - ātrs dev serveris ar tūlītēju atjaunināšanos (HMR), skat. arī <a href="javascript.html#build-rīki">Vite JavaScript kategorijā</a>.</p>
+      <pre class="code-block"><span class="lang">bash</span><code>npm create vite@latest mans-projekts -- --template react
+<span class="tok-kw">cd</span> mans-projekts
+npm install
+npm run dev
+<span class="tok-com"># → http://localhost:5173</span></code></pre>
+      <p>Svarīgākās mapes/faili jaunā projektā:</p>
+      <pre class="code-block"><span class="lang">text</span><code>src/main.jsx     - ieejas punkts, montē &lt;App /&gt; DOM kokā
+src/App.jsx      - galvenais komponents
+src/components/  - pārējie komponenti (pats jāizveido)
+index.html       - vienīgā HTML lapa (SPA - Single Page Application)
+vite.config.js   - Vite konfigurācija</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Ja projektam vajag arī serveri (API, datubāzi), skat. <a href="laravel.html">Laravel</a> kā backend - React tad kļūst par frontend, kas sazinās ar Laravel API caur <a href="#data-fetching">fetch</a>, nevis renderē Blade veidnes.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="komponenti-jsx">
+      <h2>Komponenti &amp; JSX</h2>
+      <p>JSX ir HTML izskatoša sintakse tieši JavaScript kodā - pārlūks to neizprot tieši, tāpēc Vite/build process to pārvērš parastā <code>React.createElement()</code> izsaukumā.</p>
+      <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-kw">function</span> <span class="tok-fn">Sveiciens</span>() {
+    <span class="tok-kw">return</span> (
+        &lt;div&gt;
+            &lt;h1&gt;Sveiki, pasaule!&lt;/h1&gt;
+            &lt;p&gt;Šis ir mans pirmais komponents.&lt;/p&gt;
+        &lt;/div&gt;
+    );
+}
+
+<span class="tok-kw">export default</span> Sveiciens;</code></pre>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>Viena saknes elements</h4><p>JSX jāatgriež TIKAI viens elements - vairākus "ietin" <code>&lt;div&gt;</code> vai tukšā <code>&lt;&gt;...&lt;/&gt;</code> (Fragment), kas neveido papildu DOM mezglu.</p></div>
+        <div class="doc-mini-card"><h4>{ } iekavas</h4><p>Jebkurš JavaScript izteiksme JSX iekšā jāliek figūriekavās - <code>{1 + 1}</code> izvadīs "2".</p></div>
+        <div class="doc-mini-card"><h4>className, ne class</h4><p><code>class</code> ir rezervēts JavaScript vārds - JSX izmanto <code>className</code> tam pašam CSS klases atribūtam.</p></div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="props">
+      <h2>Props</h2>
+      <p>Props ir dati, ko vecāka komponents padod bērna komponentam - kā funkcijas argumenti, bet HTML atribūtu sintaksē. Komponents props NEDRĪKST mainīt pats - tie ir "read-only" no bērna puses.</p>
+      <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-kw">function</span> <span class="tok-fn">Lietotajs</span>({ vards, <span class="tok-fn">vecums</span> }) {
+    <span class="tok-kw">return</span> &lt;p&gt;{vards} ({vecums} gadi)&lt;/p&gt;;
+}
+
+<span class="tok-com">// Lietošana:</span>
+&lt;Lietotajs vards=<span class="tok-str">"Anna"</span> vecums={28} /&gt;</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>{ '{ vards, vecums }' }</code> parametros ir "destructuring" - īsceļš, kas izņem konkrētus laukus tieši no props objekta. Bez tā rakstītu <code>function Lietotajs(props) { return &lt;p&gt;{props.vards}&lt;/p&gt;; }</code> - abi varianti strādā identiski.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="state-usestate">
+      <h2>State (useState)</h2>
+      <p>State ir dati, kas komponentam "pieder" un var mainīties laika gaitā - atšķirībā no props, komponents PATS kontrolē savu state.</p>
+      <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-kw">import</span> { useState } <span class="tok-kw">from</span> <span class="tok-str">'react'</span>;
+
+<span class="tok-kw">function</span> <span class="tok-fn">Counter</span>() {
+    <span class="tok-kw">const</span> [skaits, setSkaits] = <span class="tok-fn">useState</span>(0); <span class="tok-com">// [vērtība, funkcija to mainīt]</span>
+
+    <span class="tok-kw">return</span> (
+        &lt;div&gt;
+            &lt;p&gt;Skaits: {skaits}&lt;/p&gt;
+            &lt;button onClick={() =&gt; setSkaits(skaits + 1)}&gt;Pieskaitīt&lt;/button&gt;
+        &lt;/div&gt;
+    );
+}</code></pre>
+      <div class="doc-diagram">
+        <svg viewBox="0 0 640 130" xmlns="http://www.w3.org/2000/svg">
+          <line x1="150" y1="55" x2="200" y2="55" class="dg-line"></line>
+          <polygon points="200,55 191,50.5 191,59.5" class="dg-arrowhead"></polygon>
+          <line x1="370" y1="55" x2="420" y2="55" class="dg-line"></line>
+          <polygon points="420,55 411,50.5 411,59.5" class="dg-arrowhead"></polygon>
+
+          <rect x="20" y="35" width="130" height="40" rx="9" class="dg-node-accent"></rect>
+          <rect x="200" y="35" width="170" height="40" rx="9" class="dg-node"></rect>
+          <rect x="420" y="35" width="200" height="40" rx="9" class="dg-node"></rect>
+
+          <text x="85" y="59" class="dg-label dg-label-accent" text-anchor="middle">setSkaits(...)</text>
+          <text x="285" y="59" class="dg-label" text-anchor="middle">Funkcija renderējas</text>
+          <text x="520" y="59" class="dg-label" text-anchor="middle">React atjaunina DOM</text>
+        </svg>
+        <p class="dg-caption">Komponents ir tikai funkcija, kas atgriež "kā UI izskatās TAGAD" - <code>setSkaits</code> neizmaina mainīgo klasiskā nozīmē, tā liek React ATKĀRTOTI izsaukt visu funkciju ar jauno vērtību.</p>
+      </div>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Nekad nemaini state tieši (<code>skaits++</code> vai masīva <code>.push()</code> uz state masīvu) - React nepamana šādas izmaiņas un komponents NEpārrenderējas. Vienmēr izmanto <code>set</code> funkciju ar JAUNU vērtību/objektu/masīvu.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="hook-useeffect">
+      <h2>useEffect</h2>
+      <p><code>useEffect</code> palaiž kodu PĒC renderēšanas - der "blakusparādībām" (side effects), kas nav pati renderēšana: API izsaukumi, event listeneri, taimeri, manuāla DOM piekļuve.</p>
+      <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-kw">import</span> { useEffect, useState } <span class="tok-kw">from</span> <span class="tok-str">'react'</span>;
+
+<span class="tok-kw">function</span> <span class="tok-fn">LogaPlatums</span>() {
+    <span class="tok-kw">const</span> [platums, setPlatums] = <span class="tok-fn">useState</span>(window.innerWidth);
+
+    <span class="tok-fn">useEffect</span>(() =&gt; {
+        <span class="tok-kw">function</span> <span class="tok-fn">handleResize</span>() {
+            <span class="tok-fn">setPlatums</span>(window.innerWidth);
+        }
+        window.addEventListener(<span class="tok-str">'resize'</span>, handleResize);
+
+        <span class="tok-com">// "Cleanup" funkcija - izpildās PIRMS nākamā efekta UN komponenta izņemšanas</span>
+        <span class="tok-kw">return</span> () =&gt; window.removeEventListener(<span class="tok-str">'resize'</span>, handleResize);
+    }, []); <span class="tok-com">// tukšs masīvs = izpildās TIKAI vienreiz, pēc pirmās renderēšanas</span>
+
+    <span class="tok-kw">return</span> &lt;p&gt;Loga platums: {platums}px&lt;/p&gt;;
+}</code></pre>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>Atkarību masīvs <code>[]</code></h4><p>Tukšs = izpildās vienreiz. Ar mainīgajiem <code>[id]</code> = izpildās katru reizi, kad <code>id</code> mainās. Bez masīva vispār = izpildās PĒC KATRAS renderēšanas.</p></div>
+        <div class="doc-mini-card"><h4>Cleanup funkcija</h4><p>Atgrieztā funkcija no <code>useEffect</code> - noņem event listenerus/taimerus PIRMS efekts palaižas no jauna, lai neuzkrātos vairāki vienlaicīgi listeneri.</p></div>
+        <div class="doc-mini-card"><h4>Biežākā kļūda</h4><p>Aizmirsts atkarību masīvs izraisa BEZGALĪGU ciklu, ja efekts pats maina savu atkarību - <code>useEffect(() =&gt; setSkaits(skaits + 1))</code> bez <code>[]</code> renderē bezgalīgi.</p></div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="hook-useref">
+      <h2>useRef</h2>
+      <p><code>useRef</code> saglabā vērtību starp renderēšanām, BEZ atkārtotas renderēšanas, kad tā mainās - der DOM elementu tiešai piekļuvei vai vērtībām, kam nav jāietekmē UI.</p>
+      <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-kw">import</span> { useRef } <span class="tok-kw">from</span> <span class="tok-str">'react'</span>;
+
+<span class="tok-kw">function</span> <span class="tok-fn">FokussInput</span>() {
+    <span class="tok-kw">const</span> inputRef = <span class="tok-fn">useRef</span>(<span class="tok-kw">null</span>);
+
+    <span class="tok-kw">function</span> <span class="tok-fn">focusInput</span>() {
+        inputRef.current.focus(); <span class="tok-com">// tiešs piekļuve reālajam DOM &lt;input&gt; elementam</span>
+    }
+
+    <span class="tok-kw">return</span> (
+        &lt;&gt;
+            &lt;input ref={inputRef} type=<span class="tok-str">"text"</span> /&gt;
+            &lt;button onClick={focusInput}&gt;Fokusēt lauku&lt;/button&gt;
+        &lt;/&gt;
+    );
+}</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>useState</code> vs <code>useRef</code>: mainot <code>useState</code> vērtību, komponents PĀRRENDERĒJAS. Mainot <code>useRef.current</code>, NEKAS neatjauninās ekrānā automātiski - tas ir tieši šī hook mērķis (skaitītāji, taimeru ID, iepriekšējā vērtība), nevis dati, kas jārāda UI.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="hook-usememo-usecallback">
+      <h2>useMemo &amp; useCallback</h2>
+      <p>Abi der veiktspējas optimizācijai - izvairās no dārgu aprēķinu/funkciju pārveidošanas KATRĀ renderēšanā, ja tam nav iemesla.</p>
+      <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-kw">import</span> { useCallback, useMemo, useState } <span class="tok-kw">from</span> <span class="tok-str">'react'</span>;
+
+<span class="tok-kw">function</span> <span class="tok-fn">AugluSaraksts</span>() {
+    <span class="tok-kw">const</span> [query, setQuery] = <span class="tok-fn">useState</span>(<span class="tok-str">''</span>);
+    <span class="tok-kw">const</span> [count, setCount] = <span class="tok-fn">useState</span>(0); <span class="tok-com">// nesaistīts stāvoklis</span>
+    <span class="tok-kw">const</span> items = [<span class="tok-str">'Ābols'</span>, <span class="tok-str">'Banāns'</span>, <span class="tok-str">'Ķirsis'</span>];
+
+    <span class="tok-com">// Pārrēķina TIKAI, kad query mainās - NEVIS pie katras count izmaiņas</span>
+    <span class="tok-kw">const</span> filtered = <span class="tok-fn">useMemo</span>(
+        () =&gt; items.filter(<span class="tok-fn">i</span> =&gt; i.toLowerCase().includes(query.toLowerCase())),
+        [query]
+    );
+
+    <span class="tok-com">// Tā pati funkcijas REFERENCE saglabājas starp renderēšanām - der, ja padod bērna komponentam ar React.memo</span>
+    <span class="tok-kw">const</span> handleChange = <span class="tok-fn">useCallback</span>(<span class="tok-fn">e</span> =&gt; setQuery(e.target.value), []);
+
+    <span class="tok-kw">return</span> (
+        &lt;&gt;
+            &lt;input value={query} onChange={handleChange} /&gt;
+            &lt;button onClick={() =&gt; setCount(c =&gt; c + 1)}&gt;Nesaistīts: {count}&lt;/button&gt;
+            &lt;ul&gt;{filtered.map(<span class="tok-fn">i</span> =&gt; &lt;li key={i}&gt;{i}&lt;/li&gt;)}&lt;/ul&gt;
+        &lt;/&gt;
+    );
+}</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Pārbaudīts reāli - klikšķinot "Nesaistīts" pogu (maina <code>count</code>, ne <code>query</code>), filtrēšanas funkcija NETIEK izsaukta atkārtoti. <code>useMemo</code>/<code>useCallback</code> nav vajadzīgi VISUR - der tikai, kad aprēķins tiešām dārgs vai funkcija iet uz bērna komponentu, kas pats optimizēts ar <code>React.memo</code>. Pārmērīga lietošana pievieno sarežģītību bez reālas priekšrocības.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="custom-hooks">
+      <h2>Pielāgoti hooks</h2>
+      <p>Pielāgots hook ir parasta funkcija, kuras nosaukums sākas ar <code>use</code> un kura iekšā izmanto citus hooks - ļauj atkārtoti lietot loģiku (nevis UI) starp komponentiem.</p>
+      <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-com">// hooks/useLocalStorage.js</span>
+<span class="tok-kw">import</span> { useEffect, useState } <span class="tok-kw">from</span> <span class="tok-str">'react'</span>;
+
+<span class="tok-kw">function</span> <span class="tok-fn">useLocalStorage</span>(key, defaultValue) {
+    <span class="tok-kw">const</span> [value, setValue] = <span class="tok-fn">useState</span>(() =&gt; {
+        <span class="tok-kw">const</span> saved = localStorage.getItem(key);
+        <span class="tok-kw">return</span> saved !== <span class="tok-kw">null</span> ? JSON.parse(saved) : defaultValue;
+    });
+
+    <span class="tok-fn">useEffect</span>(() =&gt; {
+        localStorage.setItem(key, JSON.stringify(value));
+    }, [key, value]);
+
+    <span class="tok-kw">return</span> [value, setValue]; <span class="tok-com">// tieši tāda pati "forma" kā useState</span>
+}
+
+<span class="tok-kw">export default</span> useLocalStorage;</code></pre>
+      <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-com">// Lietošana - identiski kā useState, bet ar automātisku saglabāšanu</span>
+<span class="tok-kw">const</span> [vards, setVards] = <span class="tok-fn">useLocalStorage</span>(<span class="tok-str">'lietotaja-vards'</span>, <span class="tok-str">''</span>);</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Pārbaudīts reāli - vērtība saglabājas <code>localStorage</code> UN paliek pēc pilnas lapas pārlādes, jo <code>useState</code> sākotnējā vērtība nolasa to atpakaļ no <code>localStorage</code>. "use" prefikss nav tikai konvencija - React ar to atpazīst, ka funkcija DRĪKST izsaukt citus hooks iekšā.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="hook-usecontext">
+      <h2>useContext</h2>
+      <p>Context ļauj padot datus TIEŠI jebkuram pēcnācēja komponentam, neejot cauri katrai starpposma komponentei ar props ("prop drilling").</p>
+      <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-kw">import</span> { createContext, useContext, useState } <span class="tok-kw">from</span> <span class="tok-str">'react'</span>;
+
+<span class="tok-kw">const</span> ThemeContext = <span class="tok-fn">createContext</span>(<span class="tok-kw">null</span>);
+
+<span class="tok-kw">export function</span> <span class="tok-fn">ThemeProvider</span>({ children }) {
+    <span class="tok-kw">const</span> [theme, setTheme] = <span class="tok-fn">useState</span>(<span class="tok-str">'light'</span>);
+    <span class="tok-kw">const</span> toggle = () =&gt; <span class="tok-fn">setTheme</span>(<span class="tok-fn">t</span> =&gt; (t === <span class="tok-str">'light'</span> ? <span class="tok-str">'dark'</span> : <span class="tok-str">'light'</span>));
+
+    <span class="tok-kw">return</span> (
+        &lt;ThemeContext.Provider value={{ theme, toggle }}&gt;
+            {children}
+        &lt;/ThemeContext.Provider&gt;
+    );
+}
+
+<span class="tok-kw">export function</span> <span class="tok-fn">useTheme</span>() {
+    <span class="tok-kw">return</span> <span class="tok-fn">useContext</span>(ThemeContext);
+}</code></pre>
+      <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-com">// Jebkurā, patvaļīgi dziļā bērna komponentā - BEZ props cauri visai ķēdei:</span>
+<span class="tok-kw">function</span> <span class="tok-fn">ThemedButton</span>() {
+    <span class="tok-kw">const</span> { theme, toggle } = <span class="tok-fn">useTheme</span>();
+    <span class="tok-kw">return</span> &lt;button onClick={toggle}&gt;Tēma: {theme}&lt;/button&gt;;
+}</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>ThemedButton</code> STRĀDĀ TIKAI, ja tas atrodas kaut kur iekš <code>&lt;ThemeProvider&gt;</code> - ārpus tā <code>useContext</code> atgriež <code>null</code>. Reālā kodā <code>useTheme</code> parasti pārbauda šo un izmet skaidru kļūdu, nevis klusi salūzt vēlāk.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="conditional-rendering">
+      <h2>Nosacīta renderēšana</h2>
+      <p>JSX nav speciālas <code>@if</code> direktīvas (atšķirībā no <a href="laravel.html#blade">Blade</a>) - lieto tīru JavaScript loģiku tieši figūriekavu iekšā.</p>
+      <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-com">// Ternārais operators - der, kad ir DIVAS alternatīvas</span>
+{items.length &gt; 0 ? &lt;p&gt;Ir {items.length} preces&lt;/p&gt; : &lt;p&gt;Saraksts tukšs&lt;/p&gt;}
+
+<span class="tok-com">// && - der, kad rāda TIKAI, ja nosacījums patiess (nav "citādi" gadījuma)</span>
+{errors.length &gt; 0 && &lt;div className=<span class="tok-str">"error"</span>&gt;Ir kļūdas!&lt;/div&gt;}
+
+<span class="tok-com">// Agrīna atgriešanās - der, kad viens stāvoklis aizstāj VISU komponentu</span>
+<span class="tok-kw">if</span> (loading) <span class="tok-kw">return</span> &lt;p&gt;Ielādē...&lt;/p&gt;;</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>{count && &lt;p&gt;...&lt;/p&gt;}</code> ar <code>count = 0</code> izvada uz ekrāna burtisko <strong>"0"</strong>, nevis neko - <code>&&</code> atgriež pirmo "falsy" vērtību, un <code>0</code> ir derīgs JSX bērns. Drošāk: <code>{count &gt; 0 && &lt;p&gt;...&lt;/p&gt;}</code>.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="lists-keys">
+      <h2>Saraksti &amp; keys</h2>
+      <p>Masīvu renderē ar <code>.map()</code> - katram elementam OBLIGĀTI jāpiešķir unikāls <code>key</code>, lai React zinātu, kurš elements ir kurš starp renderēšanām.</p>
+      <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-kw">const</span> preces = [<span class="tok-str">'Piens'</span>, <span class="tok-str">'Maize'</span>, <span class="tok-str">'Olas'</span>];
+
+&lt;ul&gt;
+    {preces.map(<span class="tok-fn">prece</span> =&gt; &lt;li key={prece}&gt;{prece}&lt;/li&gt;)}
+&lt;/ul&gt;
+
+<span class="tok-com">// Ar objektiem - key parasti unikāls ID no datubāzes, NE indekss</span>
+{lietotaji.map(<span class="tok-fn">l</span> =&gt; &lt;LietotajaKarte key={l.id} lietotajs={l} /&gt;)}</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>key={index}</code> (masīva pozīcija) šķiet vienkāršākais risinājums, bet salūzt, ja saraksts var mainīt secību/izdzēst vidū - React tad var sajaukt, kurš state pieder kuram elementam. Lieto masīva indeksu kā key TIKAI, ja saraksts nekad nemainās (statisks, tikai pievieno beigās).</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="forms">
+      <h2>Formas &amp; controlled inputs</h2>
+      <p>"Controlled" input nozīmē - lauka vērtība VIENMĒR nāk no React state, ne no paša DOM elementa - React ir "vienīgais patiesības avots".</p>
+      <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-kw">function</span> <span class="tok-fn">PieteiksanasForma</span>() {
+    <span class="tok-kw">const</span> [epasts, setEpasts] = <span class="tok-fn">useState</span>(<span class="tok-str">''</span>);
+
+    <span class="tok-kw">function</span> <span class="tok-fn">handleSubmit</span>(e) {
+        e.preventDefault(); <span class="tok-com">// aptur pārlūka noklusējuma pilnu lapas pārlādi</span>
+        <span class="tok-fn">console.log</span>(<span class="tok-str">'Nosūtīts:'</span>, epasts);
+    }
+
+    <span class="tok-kw">return</span> (
+        &lt;form onSubmit={handleSubmit}&gt;
+            &lt;input
+                type=<span class="tok-str">"email"</span>
+                value={epasts}
+                onChange={<span class="tok-fn">e</span> =&gt; setEpasts(e.target.value)}
+                required
+            /&gt;
+            &lt;button type=<span class="tok-str">"submit"</span>&gt;Pieteikties&lt;/button&gt;
+        &lt;/form&gt;
+    );
+}</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Ja <code>value={epasts}</code> ir norādīts BEZ <code>onChange</code>, lauks kļūst "read-only" un lietotājs vispār nevar rakstīt - pārlūks pat parāda brīdinājumu konsolē. Vienmēr abi kopā: <code>value</code> (kas rādāms) UN <code>onChange</code> (kā tas mainās).</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="event-handling">
+      <h2>Notikumu apstrāde</h2>
+      <p>React notikumu nosaukumi ir camelCase (<code>onClick</code>, ne <code>onclick</code>) un pieņem FUNKCIJU, nevis string, kā parastā HTML atribūtā.</p>
+      <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-com">// Pareizi - padod funkcijas REFERENCI, izpildīsies TIKAI pie klikšķa</span>
+&lt;button onClick={handleClick}&gt;Klikšķini&lt;/button&gt;
+
+<span class="tok-com">// Pareizi - inline arrow funkcija, der, ja jāpadod parametrs</span>
+&lt;button onClick={() =&gt; dzestPreci(prece.id)}&gt;Dzēst&lt;/button&gt;
+
+<span class="tok-com">// NEPAREIZI - izpildās UZREIZ renderēšanas laikā, ne pie klikšķa!</span>
+&lt;button onClick={handleClick()}&gt;Klikšķini&lt;/button&gt;</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>onClick={handleClick()}</code> (ar iekavām) izsauc funkciju UZREIZ, kad JSX renderējas, un padod TĀS REZULTĀTU kā onClick vērtību - gandrīz vienmēr tas nav gribētais. Iekavas pievieno tikai, ja apzināti veido jaunu funkciju (<code>() =&gt; ...</code>), kas izsauks oriģinālo VĒLĀK.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="composition">
+      <h2>Komponentu kompozīcija</h2>
+      <p><code>children</code> ir īpašs prop - viss, kas ierakstīts starp komponenta atverošo un aizverošo tagu, nonāk tur automātiski.</p>
+      <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-kw">function</span> <span class="tok-fn">Card</span>({ title, children }) {
+    <span class="tok-kw">return</span> (
+        &lt;div className=<span class="tok-str">"card"</span>&gt;
+            &lt;h3&gt;{title}&lt;/h3&gt;
+            &lt;div&gt;{children}&lt;/div&gt;
+        &lt;/div&gt;
+    );
+}
+
+<span class="tok-com">// Lietošana - Card pats nezina, KAS tieši būs iekšā:</span>
+&lt;Card title=<span class="tok-str">"Piemēra karte"</span>&gt;
+    &lt;p&gt;Šis ir children saturs.&lt;/p&gt;
+    &lt;button&gt;Poga arī der&lt;/button&gt;
+&lt;/Card&gt;</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Kompozīcija (mazi, apvienojami komponenti caur <code>children</code>) parasti der labāk nekā milzīgs komponents ar desmit props, kas kontrolē katru iespējamo variantu - <code>Card</code> šeit nav "jāzin" par pogām, tekstiem vai attēliem, kas tajā var parādīties.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="data-fetching">
+      <h2>Fetch/API izsaukumi</h2>
+      <p>Datu ielāde no API notiek <code>useEffect</code> iekšā - ar trim stāvokļiem, kas jāapstrādā: ielādē, kļūda, veiksmīgi dati.</p>
+      <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-kw">function</span> <span class="tok-fn">PostList</span>() {
+    <span class="tok-kw">const</span> [posts, setPosts] = <span class="tok-fn">useState</span>([]);
+    <span class="tok-kw">const</span> [loading, setLoading] = <span class="tok-fn">useState</span>(<span class="tok-kw">true</span>);
+    <span class="tok-kw">const</span> [error, setError] = <span class="tok-fn">useState</span>(<span class="tok-kw">null</span>);
+
+    <span class="tok-fn">useEffect</span>(() =&gt; {
+        <span class="tok-kw">let</span> cancelled = <span class="tok-kw">false</span>;
+
+        <span class="tok-fn">fetch</span>(<span class="tok-str">'https://api.example.com/posts'</span>)
+            .then(<span class="tok-fn">res</span> =&gt; {
+                <span class="tok-kw">if</span> (!res.ok) <span class="tok-kw">throw new</span> Error(<span class="tok-str">'Servera kļūda'</span>);
+                <span class="tok-kw">return</span> res.json();
+            })
+            .then(<span class="tok-fn">data</span> =&gt; { <span class="tok-kw">if</span> (!cancelled) <span class="tok-fn">setPosts</span>(data); })
+            .catch(<span class="tok-fn">err</span> =&gt; { <span class="tok-kw">if</span> (!cancelled) <span class="tok-fn">setError</span>(err.message); })
+            .finally(() =&gt; { <span class="tok-kw">if</span> (!cancelled) <span class="tok-fn">setLoading</span>(<span class="tok-kw">false</span>); });
+
+        <span class="tok-kw">return</span> () =&gt; { cancelled = <span class="tok-kw">true</span>; }; <span class="tok-com">// pasargā no state maiņas UZ JAU IZŅEMTA komponenta</span>
+    }, []);
+
+    <span class="tok-kw">if</span> (loading) <span class="tok-kw">return</span> &lt;p&gt;Ielādē...&lt;/p&gt;;
+    <span class="tok-kw">if</span> (error) <span class="tok-kw">return</span> &lt;p&gt;Kļūda: {error}&lt;/p&gt;;
+
+    <span class="tok-kw">return</span> &lt;ul&gt;{posts.map(<span class="tok-fn">p</span> =&gt; &lt;li key={p.id}&gt;{p.title}&lt;/li&gt;)}&lt;/ul&gt;;
+}</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Pārbaudīts reāli ar īstu API izsaukumu (jsonplaceholder.typicode.com) - <code>cancelled</code> mainīgais pasargā no biežas kļūdas: ja komponents tiek izņemts no ekrāna PIRMS <code>fetch</code> paspēj atbildēt, <code>setPosts</code> izsaukums uz jau neeksistējošu komponentu izmestu React brīdinājumu par "memory leak".</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="react-router">
+      <h2>React Router</h2>
+      <p>React pats nesatur maršrutēšanu - <strong>react-router-dom</strong> ir oficiālā, visbiežāk lietotā bibliotēka vairāku "lapu" SPA lietotnēm.</p>
+      <pre class="code-block"><span class="lang">bash</span><code>npm install react-router-dom</code></pre>
+      <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-kw">import</span> { BrowserRouter, Routes, Route, Link, useParams } <span class="tok-kw">from</span> <span class="tok-str">'react-router-dom'</span>;
+
+<span class="tok-kw">function</span> <span class="tok-fn">PostPage</span>() {
+    <span class="tok-kw">const</span> { id } = <span class="tok-fn">useParams</span>(); <span class="tok-com">// nolasa :id no URL</span>
+    <span class="tok-kw">return</span> &lt;h2&gt;Raksts #{id}&lt;/h2&gt;;
+}
+
+<span class="tok-kw">function</span> <span class="tok-fn">App</span>() {
+    <span class="tok-kw">return</span> (
+        &lt;BrowserRouter&gt;
+            &lt;nav&gt;
+                &lt;Link to=<span class="tok-str">"/"</span>&gt;Sākums&lt;/Link&gt;
+                &lt;Link to=<span class="tok-str">"/posts/5"</span>&gt;Raksts 5&lt;/Link&gt;
+            &lt;/nav&gt;
+            &lt;Routes&gt;
+                &lt;Route path=<span class="tok-str">"/"</span> element={&lt;Home /&gt;} /&gt;
+                &lt;Route path=<span class="tok-str">"/posts/:id"</span> element={&lt;PostPage /&gt;} /&gt;
+            &lt;/Routes&gt;
+        &lt;/BrowserRouter&gt;
+    );
+}</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Pārbaudīts reāli - <code>&lt;Link&gt;</code> maina URL BEZ pilnas lapas pārlādes (pretstatā parastam <code>&lt;a href&gt;</code>), tāpēc React state (piem., <a href="#hook-usecontext">context</a> vērtības) saglabājas pārejot starp "lapām". Servera pusē (produkcijā) jākonfigurē, lai VISI ceļi atgriež to pašu <code>index.html</code> - pretējā gadījumā tiešs URL atvēršana (nevis klikšķis) dod 404.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="error-boundaries">
+      <h2>Error Boundaries</h2>
+      <p>Error Boundary noķer JavaScript kļūdas jebkur bērnu komponentu kokā un rāda rezerves UI, nevis sabojā VISU lietotni baltā ekrānā.</p>
+      <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-kw">import</span> { Component } <span class="tok-kw">from</span> <span class="tok-str">'react'</span>;
+
+<span class="tok-kw">class</span> ErrorBoundary <span class="tok-kw">extends</span> Component {
+    state = { hasError: <span class="tok-kw">false</span> };
+
+    <span class="tok-kw">static</span> <span class="tok-fn">getDerivedStateFromError</span>() {
+        <span class="tok-kw">return</span> { hasError: <span class="tok-kw">true</span> };
+    }
+
+    <span class="tok-fn">componentDidCatch</span>(error, info) {
+        console.error(<span class="tok-str">'Noķerta kļūda:'</span>, error, info);
+    }
+
+    <span class="tok-fn">render</span>() {
+        <span class="tok-kw">if</span> (<span class="tok-fn">this</span>.state.hasError) {
+            <span class="tok-kw">return</span> &lt;p&gt;Kaut kas nogāja greizi šajā daļā.&lt;/p&gt;;
+        }
+        <span class="tok-kw">return</span> <span class="tok-fn">this</span>.props.children;
+    }
+}
+
+<span class="tok-com">// Lietošana - ietin RISKANTO daļu, ne visu lietotni uzreiz:</span>
+&lt;ErrorBoundary&gt;
+    &lt;RiskantaisKomponents /&gt;
+&lt;/ErrorBoundary&gt;</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Error Boundary DRĪKST rakstīt tikai kā klases komponentu - hooks (funkciju komponenti) šobrīd nesatur ekvivalentu <code>componentDidCatch</code>/<code>getDerivedStateFromError</code>. Tas arī NEnoķer kļūdas event handleros (piem., <code>onClick</code> iekšā) - tur joprojām vajag parastu <code>try/catch</code>.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="lazy-loading">
+      <h2>Lazy loading &amp; code splitting</h2>
+      <p><code>React.lazy</code> ielādē komponenta kodu TIKAI TAD, kad tas tiešām vajadzīgs - samazina sākotnējo JS pakotnes izmēru lielām lietotnēm ar retāk lietotām lapām/paneļiem.</p>
+      <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-kw">import</span> { lazy, Suspense, useState } <span class="tok-kw">from</span> <span class="tok-str">'react'</span>;
+
+<span class="tok-com">// Šis import() NENOTIEK uzreiz - tikai tad, kad komponents tiešām renderēsies</span>
+<span class="tok-kw">const</span> AdminPanelis = <span class="tok-fn">lazy</span>(() =&gt; <span class="tok-fn">import</span>(<span class="tok-str">'./AdminPanelis'</span>));
+
+<span class="tok-kw">function</span> <span class="tok-fn">App</span>() {
+    <span class="tok-kw">const</span> [rada, setRada] = <span class="tok-fn">useState</span>(<span class="tok-kw">false</span>);
+
+    <span class="tok-kw">return</span> (
+        &lt;&gt;
+            &lt;button onClick={() =&gt; setRada(<span class="tok-kw">true</span>)}&gt;Atvērt admin paneli&lt;/button&gt;
+            {rada && (
+                &lt;Suspense fallback={&lt;p&gt;Ielādē...&lt;/p&gt;}&gt;
+                    &lt;AdminPanelis /&gt;
+                &lt;/Suspense&gt;
+            )}
+        &lt;/&gt;
+    );
+}</code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Pārbaudīts reāli (dev servera tīkla pieprasījumos) - komponenta fails tiek pieprasīts TIEŠI tajā brīdī, kad poga tiek nospiesta, nevis lapas ielādes laikā. Produkcijas build (<code>npm run build</code>) šo automātiski pārvērš par atsevišķu, mazāku JS failu (chunk), ko pārlūks lejupielādē pēc pieprasījuma.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="typescript-react">
+      <h2>TypeScript ar React</h2>
+      <p>TypeScript pievieno tipu pārbaudi React komponentiem - īpaši noderīgi props definēšanai, lai kļūda ("aizmirsu obligātu prop") parādās uzreiz IDE, nevis tikai izpildot kodu (skat. arī <a href="javascript.html#typescript">TypeScript JS kategorijā</a> vispārīgam pamatam).</p>
+      <pre class="code-block"><span class="lang">bash</span><code>npm create vite@latest mans-projekts -- --template react-ts</code></pre>
+      <pre class="code-block"><span class="lang">tsx</span><code><span class="tok-kw">type</span> LietotajaProps = {
+    vards: <span class="tok-kw">string</span>;
+    vecums: <span class="tok-kw">number</span>;
+    aktivs?: <span class="tok-kw">boolean</span>; <span class="tok-com">// jautājuma zīme = neobligāts prop</span>
+};
+
+<span class="tok-kw">function</span> <span class="tok-fn">Lietotajs</span>({ vards, vecums, aktivs = <span class="tok-kw">false</span> }: LietotajaProps) {
+    <span class="tok-kw">return</span> &lt;p&gt;{vards} ({vecums}) - {aktivs ? <span class="tok-str">'aktīvs'</span> : <span class="tok-str">'neaktīvs'</span>}&lt;/p&gt;;
+}
+
+<span class="tok-com">// Kļūda parādās UZREIZ IDE, ja aizmirsti "vecums" vai padod string skaitļa vietā:</span>
+<span class="tok-com">// &lt;Lietotajs vards="Anna" /&gt;  ← trūkst "vecums"</span></code></pre>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p><code>useState&lt;string&gt;('')</code> - hooks pieņem tipa parametru leņķiekavās, ja sākotnējā vērtība neļauj TypeScript pašam pareizi "uzminēt" tipu (piem., <code>useState(null)</code> bez tipa uzskatītu vērtību par vienmēr <code>null</code>, kaut arī vēlāk tur nāks objekts).</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="testing-rtl">
+      <h2>Testēšana (React Testing Library)</h2>
+      <p>React Testing Library (RTL) testē komponentus TĀ, KĀ lietotājs tos redz un lieto (teksts, pogas) - nevis iekšējo implementāciju (state mainīgo nosaukumus).</p>
+      <pre class="code-block"><span class="lang">bash</span><code>npm install -D vitest @testing-library/react @testing-library/jest-dom jsdom</code></pre>
+      <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-com">// Counter.test.jsx</span>
+<span class="tok-kw">import</span> { render, screen, fireEvent } <span class="tok-kw">from</span> <span class="tok-str">'@testing-library/react'</span>;
+<span class="tok-kw">import</span> { describe, expect, test } <span class="tok-kw">from</span> <span class="tok-str">'vitest'</span>;
+<span class="tok-kw">import</span> Counter <span class="tok-kw">from</span> <span class="tok-str">'./Counter'</span>;
+
+<span class="tok-fn">describe</span>(<span class="tok-str">'Counter'</span>, () =&gt; {
+    <span class="tok-fn">test</span>(<span class="tok-str">'sāk no 0 un pieaug par klikšķi'</span>, () =&gt; {
+        <span class="tok-fn">render</span>(&lt;Counter /&gt;);
+
+        <span class="tok-fn">expect</span>(screen.getByText(<span class="tok-str">'Skaits: 0'</span>)).toBeInTheDocument();
+
+        <span class="tok-fn">fireEvent</span>.click(screen.getByText(<span class="tok-str">'Pieskaitīt'</span>));
+        <span class="tok-fn">fireEvent</span>.click(screen.getByText(<span class="tok-str">'Pieskaitīt'</span>));
+
+        <span class="tok-fn">expect</span>(screen.getByText(<span class="tok-str">'Skaits: 2'</span>)).toBeInTheDocument();
+    });
+});</code></pre>
+      <pre class="code-block"><span class="lang">bash</span><code>npx vitest run
+<span class="tok-com"># → 1 passed (1) - pārbaudīts reāli</span></code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>toBeInTheDocument()</code> un citi <code>@testing-library/jest-dom</code> matcheri NESTRĀDĀ pēc noklusējuma - jāizveido <code>src/setupTests.js</code> ar <code>import '@testing-library/jest-dom';</code> un jānorāda <code>vite.config.js</code> failā (<code>test: { setupFiles: ['./src/setupTests.js'] }</code>). Bez šī soļa Vitest izmet "Invalid Chai property" kļūdu - pārbaudīts reāli, tieši šī kļūda parādās, ja solis izlaists.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="state-management">
+      <h2>State pārvaldība lielām lietotnēm</h2>
+      <p>Iebūvētais <code>useState</code>/<code>useContext</code> pietiek lielākajai daļai projektu - specializētas bibliotēkas der TIKAI, kad state kļūst tiešām sarežģīts un koplietots daudzviet.</p>
+      <div class="doc-cards">
+        <div class="doc-mini-card"><h4>useState + useContext</h4><p>Noklusējuma izvēle. Der lielākajai daļai lietotņu - papildu bibliotēka bieži nozīmē sarežģītību bez reālas priekšrocības.</p></div>
+        <div class="doc-mini-card"><h4>Zustand</h4><p>Minimālistiska, populāra alternatīva - state veikals bez konteksta providera "iesaiņošanas", maz koda.</p></div>
+        <div class="doc-mini-card"><h4>Redux Toolkit</h4><p>Struktūrētāks, ar stingrākiem noteikumiem (immutable updates, actions) - der lielām komandām/lietotnēm, kur paredzamība svarīgāka par mazu koda apjomu.</p></div>
+      </div>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Bieža pazīme, ka <code>useContext</code> vairs nepietiek: Provider komponents pats kļūst par simtiem rindu garu "dievu objektu", vai katra maza state izmaiņa pārrenderē pusi lietotnes. Tad der apsvērt Zustand/Redux - nevis sākt ar tiem "gadījumā, ja vajadzēs".</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="build-deploy">
+      <h2>Būvēšana &amp; izvietošana</h2>
+      <p>React SPA lietotne pēc būvēšanas kļūst par statiskiem failiem (HTML/CSS/JS) - der jebkuram statisko failu hostingam, bez PHP/Node servera vajadzības (atšķirībā no <a href="laravel.html#deploy">Laravel deploy</a>).</p>
+      <pre class="code-block"><span class="lang">bash</span><code>npm run build
+<span class="tok-com"># → izveido dist/ mapi ar gataviem, optimizētiem failiem</span>
+npm run preview
+<span class="tok-com"># → lokāli pārbauda produkcijas build, pirms izvieto</span></code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Ja lietotne izmanto <a href="#react-router">React Router</a>, servera konfigurācijai jānorāda "fallback" uz <code>index.html</code> VISIEM ceļiem, kas nav reāls fails - pretējā gadījumā tiešā URL atvēršana (nevis klikšķis lietotnē) dod servera 404, kaut arī tas pats ceļš klikšķinot strādā.</p>
+      </div>
+    </section>
+
+    <div class="doc-pager">
+      <a href="javascript.html"><span class="lbl">← Iepriekšējais</span>JavaScript</a>
+      <a class="to-next" href="php.html"><span class="lbl">Tālāk →</span>PHP</a>
+    </div>
+  </main>
+</div>
+
+<script src="../js/theme.js?v=79"></script>
+<script src="../js/main.js?v=79"></script>
+</body>
+</html>

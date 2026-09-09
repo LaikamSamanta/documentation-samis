@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "pages/api.html", "pages/css-advanced.html", "pages/datubazes.html",
     "pages/drosiba.html", "pages/gdpr.html", "pages/git.html",
     "pages/integracijas.html", "pages/javascript.html", "pages/php.html",
-    "pages/laravel.html",
+    "pages/laravel.html", "pages/react.html",
     "pages/sagataves.html", "pages/seo.html", "pages/ssh.html",
     "pages/web-izveide.html", "pages/web-problemas.html",
     "pages/wordpress-problemas.html", "pages/wordpress-snippets.html",
@@ -62,12 +62,12 @@ document.addEventListener("DOMContentLoaded", function () {
     "pages/cheatsheet-api.html", "pages/cheatsheet-docker.html",
     "pages/cheatsheet-git.html",
     "pages/cheatsheet-javascript.html", "pages/cheatsheet-php.html",
-    "pages/cheatsheet-laravel.html",
+    "pages/cheatsheet-laravel.html", "pages/cheatsheet-react.html",
     "pages/cheatsheet-ssh.html", "pages/cheatsheet-web.html",
     "pages/cheatsheet-wordpress.html", "pages/docker.html",
     "pages/vardnica.html"
   ];
-  var SEARCH_INDEX_VERSION = "78"; // bump together with the ?v= cache-bust number
+  var SEARCH_INDEX_VERSION = "79"; // bump together with the ?v= cache-bust number
   var searchIndex = null;
   var searchIndexPromise = null;
 
