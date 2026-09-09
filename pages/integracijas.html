@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=75" />
+<link rel="stylesheet" href="../css/style.css?v=76" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -1213,6 +1213,41 @@ document.querySelectorAll(<span class="tok-str">'.pirkt-poga[data-produkts]'</sp
     <section class="doc-section" id="stripe-webhooks-why">
       <h2>5. Kāpēc vajadzīgi webhooks</h2>
       <p>Pēc apmaksas Stripe pāradresē apmeklētāju atpakaļ uz <code>success_url</code> - bet <strong>paļauties tikai uz to nedrīkst</strong>, vairāku iemeslu dēļ:</p>
+      <div class="doc-diagram">
+        <svg viewBox="0 0 640 330" xmlns="http://www.w3.org/2000/svg">
+          <rect x="30" y="15" width="140" height="32" rx="8" class="dg-node"></rect>
+          <rect x="260" y="15" width="140" height="32" rx="8" class="dg-node"></rect>
+          <rect x="490" y="15" width="140" height="32" rx="8" class="dg-node"></rect>
+          <text x="100" y="35" class="dg-label" text-anchor="middle">Pārlūks</text>
+          <text x="330" y="35" class="dg-label" text-anchor="middle">Tavs serveris</text>
+          <text x="560" y="35" class="dg-label" text-anchor="middle">Stripe</text>
+
+          <line x1="100" y1="70" x2="330" y2="70" class="dg-line"></line>
+          <polygon points="330,70 321,65 321,75" class="dg-arrowhead"></polygon>
+          <text x="215" y="62" class="dg-sublabel" text-anchor="middle">1. Sāk pasūtījumu</text>
+
+          <line x1="330" y1="115" x2="560" y2="115" class="dg-line"></line>
+          <polygon points="560,115 551,110 551,120" class="dg-arrowhead"></polygon>
+          <text x="445" y="107" class="dg-sublabel" text-anchor="middle">2. Izveido Checkout Session (API)</text>
+
+          <line x1="560" y1="160" x2="100" y2="160" class="dg-line"></line>
+          <polygon points="100,160 109,155 109,165" class="dg-arrowhead"></polygon>
+          <text x="330" y="152" class="dg-sublabel" text-anchor="middle">3. Redirect uz Stripe apmaksas lapu</text>
+
+          <text x="330" y="205" class="dg-sublabel" text-anchor="middle">Lietotājs ievada kartes datus un apmaksā (Stripe lapā)</text>
+
+          <line x1="560" y1="248" x2="100" y2="248" class="dg-line"></line>
+          <polygon points="100,248 109,243 109,253" class="dg-arrowhead"></polygon>
+          <text x="330" y="240" class="dg-sublabel" text-anchor="middle">4. Redirect atpakaļ (success_url) - NAV uzticams</text>
+
+          <line x1="560" y1="285" x2="330" y2="285" class="dg-line-accent dg-line-dashed"></line>
+          <polygon points="330,285 339,280 339,290" class="dg-arrowhead-accent"></polygon>
+          <text x="445" y="277" class="dg-sublabel" text-anchor="middle">5. Webhook - servera-uz-servera</text>
+
+          <text x="330" y="318" class="dg-sublabel" text-anchor="middle">6. Pārbauda parakstu → piešķir piekļuvi</text>
+        </svg>
+        <p class="dg-caption">Redirect (3-4) iet caur apmeklētāja pārlūku - to var pārtraukt vai apiet. Webhook (5) iet <strong>tieši</strong> no Stripe servera uz tavu serveri, neatkarīgi no pārlūka - tāpēc tas vienīgais ir uzticams apstiprinājums.</p>
+      </div>
       <div class="doc-cards">
         <div class="doc-mini-card"><h4>🔌 Pārlūks var aizvērties</h4><p>Apmeklētājs samaksā, tad aizver cilni pirms pāradresācija paspēj notikt - tava vietne par apmaksu neuzzinātu nekad.</p></div>
         <div class="doc-mini-card"><h4>🔗 URL var apmeklēt bez maksāšanas</h4><p>"Success" lapas adrese nav noslēpums - jebkurš var to atvērt tieši, neveicot nekādu maksājumu, un izlikties par pircēju.</p></div>
@@ -2608,7 +2643,7 @@ gtag('set', 'user_data', {
   </main>
 </div>
 
-<script src="../js/theme.js?v=75"></script>
-<script src="../js/main.js?v=75"></script>
+<script src="../js/theme.js?v=76"></script>
+<script src="../js/main.js?v=76"></script>
 </body>
 </html>

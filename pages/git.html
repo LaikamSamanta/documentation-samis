@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=75" />
+<link rel="stylesheet" href="../css/style.css?v=76" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -220,6 +220,27 @@ git diff --staged</code></pre>
     <section class="doc-section" id="zari">
       <h2>Zari (branches)</h2>
       <p><strong>Zars</strong> ir neatkarīga izstrādes līnija - ļauj strādāt pie jaunas funkcijas vai labojuma, neietekmējot galveno (<code>main</code> vai <code>master</code>) zaru, kamēr darbs nav pabeigts un pārbaudīts.</p>
+      <div class="doc-diagram">
+        <svg viewBox="0 0 640 210" xmlns="http://www.w3.org/2000/svg">
+          <line x1="30" y1="170" x2="600" y2="170" class="dg-line"></line>
+          <path d="M190,170 C 230,170 230,80 270,80" class="dg-line-accent"></path>
+          <line x1="270" y1="80" x2="410" y2="80" class="dg-line-accent"></line>
+          <path d="M410,80 C 450,80 450,170 480,170" class="dg-line-accent"></path>
+
+          <circle cx="70" cy="170" r="7" class="dg-node"></circle>
+          <circle cx="190" cy="170" r="7" class="dg-node"></circle>
+          <circle cx="320" cy="80" r="7" class="dg-node-accent"></circle>
+          <circle cx="400" cy="80" r="7" class="dg-node-accent"></circle>
+          <circle cx="480" cy="170" r="9" class="dg-node-accent"></circle>
+          <circle cx="580" cy="170" r="7" class="dg-node"></circle>
+
+          <text x="30" y="150" class="dg-label">main</text>
+          <text x="270" y="55" class="dg-label dg-label-accent">feature/pieteiksanas-forma</text>
+          <text x="190" y="196" class="dg-sublabel" text-anchor="middle">git checkout -b</text>
+          <text x="480" y="196" class="dg-sublabel" text-anchor="middle">merge commit</text>
+        </svg>
+        <p class="dg-caption"><code>main</code> turpina virzīties uz priekšu, kamēr <code>feature/pieteiksanas-forma</code> attīstās paralēli - merge commit apvieno abas vēstures līnijas atpakaļ vienā (skat. arī <a href="#apvienosana">Apvienošana</a> zemāk).</p>
+      </div>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># Parāda visus zarus, zvaigznīte pie pašreizējā</span>
 git branch
 
@@ -510,7 +531,7 @@ git stash list</code></pre>
   </main>
 </div>
 
-<script src="../js/theme.js?v=75"></script>
-<script src="../js/main.js?v=75"></script>
+<script src="../js/theme.js?v=76"></script>
+<script src="../js/main.js?v=76"></script>
 </body>
 </html>

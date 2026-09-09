@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=75" />
+<link rel="stylesheet" href="../css/style.css?v=76" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -118,6 +118,28 @@ docker compose version</code></pre>
 
     <section class="doc-section" id="pamatjedzieni">
       <h2>Pamatjēdzieni</h2>
+      <div class="doc-diagram">
+        <svg viewBox="0 0 640 265" xmlns="http://www.w3.org/2000/svg">
+          <line x1="182" y1="132" x2="253" y2="132" class="dg-line"></line>
+          <line x1="370" y1="170" x2="370" y2="203" class="dg-line-accent"></line>
+
+          <rect x="30" y="100" width="150" height="65" rx="10" class="dg-node"></rect>
+          <rect x="275" y="85" width="150" height="65" rx="10" class="dg-node dg-node-dashed" opacity="0.45"></rect>
+          <rect x="295" y="105" width="150" height="65" rx="10" class="dg-node-accent"></rect>
+          <rect x="295" y="205" width="150" height="50" rx="10" class="dg-node"></rect>
+
+          <text x="105" y="126" class="dg-label" text-anchor="middle">Image</text>
+          <text x="105" y="146" class="dg-sublabel" text-anchor="middle">veidnes fails</text>
+
+          <text x="350" y="68" class="dg-sublabel" text-anchor="middle">1 image → vairāki konteineri</text>
+          <text x="370" y="132" class="dg-label dg-label-accent" text-anchor="middle">Konteiners</text>
+          <text x="370" y="152" class="dg-sublabel" text-anchor="middle">izpildīta kopija</text>
+
+          <text x="370" y="226" class="dg-label" text-anchor="middle">Volume</text>
+          <text x="370" y="244" class="dg-sublabel" text-anchor="middle">dati - paliek pēc dzēšanas</text>
+        </svg>
+        <p class="dg-caption">Vienu <strong>image</strong> var palaist vairākos neatkarīgos <strong>konteineros</strong> vienlaicīgi - bet konteiners pats ir "vienreiz lietojams": dati, kam jāizdzīvo pēc dzēšanas/pārstartēšanas, jāglabā atsevišķā <strong>volume</strong>.</p>
+      </div>
       <div class="doc-cards">
         <div class="doc-mini-card"><h4>Dockerfile</h4><p>Teksta fails ar soli-pa-solim instrukcijām, kā uzbūvēt savu image - sākot no bāzes image (piem., "php:8.2-apache") un pievienojot savu kodu/konfigurāciju.</p></div>
         <div class="doc-mini-card"><h4>docker-compose.yml</h4><p>Apraksta VAIRĀKUS konteinerus, kas strādā kopā (piem., PHP + MySQL + phpMyAdmin), ar vienu komandu tos visus palaižot un savienojot vienā tīklā.</p></div>
@@ -250,7 +272,7 @@ docker system prune</code></pre>
   </main>
 </div>
 
-<script src="../js/theme.js?v=75"></script>
-<script src="../js/main.js?v=75"></script>
+<script src="../js/theme.js?v=76"></script>
+<script src="../js/main.js?v=76"></script>
 </body>
 </html>

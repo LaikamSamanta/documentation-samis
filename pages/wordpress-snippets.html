@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=75" />
+<link rel="stylesheet" href="../css/style.css?v=76" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -214,7 +214,7 @@
       </div>
       <h1 style="margin-bottom:0;">Ātrie risinājumi</h1>
     </div>
-    <p class="doc-lead">Populāri, patstāvīgi <code>functions.php</code> trikizi - katru var iekopēt tieši tādu, kāds tas ir, tēmas <code>functions.php</code> failā (vai izceltā failā, ko no turienes ielādē ar <code>require_once</code>). Meklē pilnas dziļās sadaļas? Skaties <a href="wordpress.html">pilnajā WordPress dokumentācijā</a>.</p>
+    <p class="doc-lead">Populāri, patstāvīgi <code>functions.php</code> trikizi - katru var iekopēt tieši tādu, kāds tas ir, tēmas <code>functions.php</code> failā (vai izceltā failā, ko no turienes ielādē ar <code>require_once</code>). Pēdējā grupā arī pāris nekoda ceļveži (Google Workspace, Gmail) - praktiski konta iestatījumi, kas bieži vajadzīgi tam pašam projektam. Meklē pilnas dziļās sadaļas? Skaties <a href="wordpress.html">pilnajā WordPress dokumentācijā</a>.</p>
 
     <section class="doc-section" id="snip-svg">
       <h2>SVG augšupielāžu atbalsts</h2>
@@ -1349,7 +1349,43 @@ Vērtība:   smtp.google.com</code></pre>
 
     <section class="doc-section" id="gws-alias">
       <h2>E-pasta alias iestatīšana (Directory)</h2>
-      <p>"Alias" Google Workspace kontekstā nozīmē - viena un tā pati pastkastīte saņem pastu uz <strong>vairākām</strong> adresēm (piem., <code>info@</code> un <code>janis@</code> abas nonāk tajā pašā iesūtnē), bez atsevišķa lietotāja konta veidošanas katrai adresei.</p>
+      <p>"Alias" Google Workspace kontekstā nozīmē - viena un tā pati pastkastīte saņem pastu uz <strong>vairākām</strong> adresēm (piem., <code>info@</code> un <code>janis@</code> abas nonāk tajā pašā iesūtnē), bez atsevišķa lietotāja konta veidošanas katrai adresei. Trīs līdzīgi izskatošies mehānismi bieži tiek sajaukti - katram cits mērķis:</p>
+      <div class="doc-diagram">
+        <svg viewBox="0 0 640 310" xmlns="http://www.w3.org/2000/svg">
+          <text x="40" y="18" class="dg-label dg-label-accent">ALIAS</text>
+          <line x1="210" y1="45.5" x2="275" y2="45.5" class="dg-line"></line>
+          <rect x="40" y="28" width="170" height="35" rx="8" class="dg-node"></rect>
+          <rect x="275" y="28" width="190" height="35" rx="8" class="dg-node"></rect>
+          <text x="125" y="50" class="dg-sublabel" text-anchor="middle">info@domain.lv</text>
+          <text x="370" y="50" class="dg-sublabel" text-anchor="middle">Jāņa iesūtne</text>
+          <text x="242" y="75" class="dg-sublabel" text-anchor="middle">→ tā pati pastkastīte</text>
+
+          <text x="40" y="98" class="dg-label dg-label-accent">FORWARD FILTRS</text>
+          <line x1="210" y1="125.5" x2="275" y2="125.5" class="dg-line"></line>
+          <rect x="40" y="108" width="170" height="35" rx="8" class="dg-node"></rect>
+          <rect x="275" y="108" width="190" height="35" rx="8" class="dg-node"></rect>
+          <text x="125" y="130" class="dg-sublabel" text-anchor="middle">paziņojumi@domain.lv</text>
+          <text x="370" y="130" class="dg-sublabel" text-anchor="middle">Cita adrese</text>
+          <text x="242" y="156" class="dg-sublabel" text-anchor="middle">→ kopija uz citu adresi</text>
+
+          <text x="40" y="178" class="dg-label dg-label-accent">GRUPA</text>
+          <rect x="40" y="188" width="170" height="35" rx="8" class="dg-node"></rect>
+          <text x="125" y="210" class="dg-sublabel" text-anchor="middle">atbalsts@domain.lv</text>
+
+          <path d="M210,205.5 C 240,205.5 240,177 275,177" class="dg-line-accent"></path>
+          <line x1="210" y1="205.5" x2="275" y2="217" class="dg-line-accent"></line>
+          <path d="M210,205.5 C 240,205.5 240,257 275,257" class="dg-line-accent"></path>
+
+          <rect x="275" y="163" width="150" height="28" rx="8" class="dg-node"></rect>
+          <rect x="275" y="203" width="150" height="28" rx="8" class="dg-node"></rect>
+          <rect x="275" y="243" width="150" height="28" rx="8" class="dg-node"></rect>
+          <text x="350" y="181" class="dg-sublabel" text-anchor="middle">Annas iesūtne</text>
+          <text x="350" y="221" class="dg-sublabel" text-anchor="middle">Jāņa iesūtne</text>
+          <text x="350" y="261" class="dg-sublabel" text-anchor="middle">Māra iesūtne</text>
+          <text x="350" y="295" class="dg-sublabel" text-anchor="middle">→ katrs dalībnieks saņem savu kopiju</text>
+        </svg>
+        <p class="dg-caption">Alias un forward filtrs abi ir 1:1 maršrutēšana - atšķirība ir GALAMĒRĶĪ (tā pati pastkastīte vs cita adrese). Grupa ir 1:vairāki - viena adrese sasniedz vairākus cilvēkus vienlaicīgi.</p>
+      </div>
       <div class="doc-cards">
         <div class="doc-mini-card"><h4>1. Atver lietotāju</h4><p>Admin console → <strong>Directory</strong> → <strong>Users</strong> → klikšķini uz konkrētā lietotāja vārda.</p></div>
         <div class="doc-mini-card"><h4>2. Pievieno alternatīvo e-pastu</h4><p>Zem lietotāja vārda kreisajā pusē → <strong>"Add alternate emails"</strong> → <strong>"Alternate email"</strong> → ievadi jauno adreses daļu pirms <code>@</code>.</p></div>
@@ -1599,7 +1635,7 @@ setTimeout(() =&gt; {
   </main>
 </div>
 
-<script src="../js/theme.js?v=75"></script>
-<script src="../js/main.js?v=75"></script>
+<script src="../js/theme.js?v=76"></script>
+<script src="../js/main.js?v=76"></script>
 </body>
 </html>
