@@ -21,25 +21,54 @@ document.addEventListener("DOMContentLoaded", function () {
   // cat: matches the --c-<cat> / --c-<cat>-soft variables in css/style.css,
   // used to tint each row's dot with its own category color instead of
   // every row looking the same neutral gray (see .global-nav-cat-link .dot)
+  // extras: satellite pages (cheatsheet / biežākās problēmas / snippets /
+  // WooCommerce) that share this category's body.cat-X class but aren't
+  // full NAV_DATA entries of their own - rendered as small links under the
+  // category so they're reachable straight from the sidebar instead of
+  // only via in-page body links or site search.
   var NAV_DATA = [
     {
       group: "Valodas & Frameworks",
       items: [
-        { name: "WordPress", href: "pages/wordpress.html", cat: "wordpress" },
-        { name: "JavaScript", href: "pages/javascript.html", cat: "js" },
-        { name: "React", href: "pages/react.html", cat: "react" },
-        { name: "PHP", href: "pages/php.html", cat: "php" },
-        { name: "Laravel", href: "pages/laravel.html", cat: "laravel" }
+        { name: "WordPress", href: "pages/wordpress.html", cat: "wordpress", extras: [
+          { name: "Cheatsheet", href: "pages/cheatsheet-wordpress.html" },
+          { name: "Biežākās problēmas", href: "pages/wordpress-problemas.html" },
+          { name: "Koda fragmenti (Snippets)", href: "pages/wordpress-snippets.html" },
+          { name: "WooCommerce", href: "pages/woocommerce.html" }
+        ] },
+        { name: "JavaScript", href: "pages/javascript.html", cat: "js", extras: [
+          { name: "Cheatsheet", href: "pages/cheatsheet-javascript.html" }
+        ] },
+        { name: "React", href: "pages/react.html", cat: "react", extras: [
+          { name: "Cheatsheet", href: "pages/cheatsheet-react.html" }
+        ] },
+        { name: "PHP", href: "pages/php.html", cat: "php", extras: [
+          { name: "Cheatsheet", href: "pages/cheatsheet-php.html" }
+        ] },
+        { name: "Laravel", href: "pages/laravel.html", cat: "laravel", extras: [
+          { name: "Cheatsheet", href: "pages/cheatsheet-laravel.html" }
+        ] }
       ]
     },
     {
       group: "Serveris & infrastruktūra",
       items: [
-        { name: "Tīkls", href: "pages/web-izveide.html", cat: "web" },
-        { name: "API", href: "pages/api.html", cat: "api" },
-        { name: "Git", href: "pages/git.html", cat: "git" },
-        { name: "SSH", href: "pages/ssh.html", cat: "ssh" },
-        { name: "Docker", href: "pages/docker.html", cat: "docker" },
+        { name: "Tīkls", href: "pages/web-izveide.html", cat: "web", extras: [
+          { name: "Cheatsheet", href: "pages/cheatsheet-web.html" },
+          { name: "Biežākās problēmas", href: "pages/web-problemas.html" }
+        ] },
+        { name: "API", href: "pages/api.html", cat: "api", extras: [
+          { name: "Cheatsheet", href: "pages/cheatsheet-api.html" }
+        ] },
+        { name: "Git", href: "pages/git.html", cat: "git", extras: [
+          { name: "Cheatsheet", href: "pages/cheatsheet-git.html" }
+        ] },
+        { name: "SSH", href: "pages/ssh.html", cat: "ssh", extras: [
+          { name: "Cheatsheet", href: "pages/cheatsheet-ssh.html" }
+        ] },
+        { name: "Docker", href: "pages/docker.html", cat: "docker", extras: [
+          { name: "Cheatsheet", href: "pages/cheatsheet-docker.html" }
+        ] },
         { name: "Datubāzes / SQL", href: "pages/datubazes.html", cat: "sql" }
       ]
     },
@@ -148,6 +177,14 @@ document.addEventListener("DOMContentLoaded", function () {
         html += '<div class="global-nav-category">';
         html += '<a class="global-nav-cat-link' + (isActive ? ' active' : '') + '" href="' + BASE + item.href + '">' +
           '<span class="dot" style="background: var(--c-' + item.cat + ')"></span>' + escapeHtml(item.name) + '</a>';
+        if (item.extras && item.extras.length) {
+          html += '<div class="global-nav-extras">';
+          item.extras.forEach(function (extra) {
+            var extraActive = extra.href === current;
+            html += '<a class="' + (extraActive ? 'active' : '') + '" href="' + BASE + extra.href + '">' + escapeHtml(extra.name) + '</a>';
+          });
+          html += '</div>';
+        }
         if (isActive && sections.length) {
           html += '<div class="global-nav-sections">';
           sections.forEach(function (sec) {

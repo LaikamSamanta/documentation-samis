@@ -2418,6 +2418,30 @@ body.has-global-nav {
 .global-nav-sections a:hover { color: var(--text); background: var(--bg-elevated); }
 .global-nav-sections a.active { color: var(--page-accent-2); font-weight: 600; }
 
+/* Cheatsheet / biežākās problēmas / snippets / WooCommerce - always visible
+   (not gated behind isActive like .global-nav-sections) so they're directly
+   reachable from the sidebar instead of only via in-page links or search. */
+.global-nav-extras {
+  display: flex;
+  flex-direction: column;
+  padding: 1px 0 4px 26px;
+}
+.global-nav-extras a {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 11.5px;
+  font-style: italic;
+  line-height: 1.5;
+}
+.global-nav-extras a::before { content: "»"; font-style: normal; opacity: 0.6; }
+.global-nav-extras a:hover { color: var(--text); background: var(--bg-elevated); }
+.global-nav-extras a.active { color: var(--page-accent-2); font-weight: 600; }
+
 .global-nav-toggle {
   display: none;
   position: fixed;
