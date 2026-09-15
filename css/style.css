@@ -79,8 +79,8 @@
   --border: #3a444a;
   --border-soft: #262c30;
   --text: #edf2f3;
-  --text-secondary: #a4b0b4;
-  --text-muted: #6b767a;
+  --text-secondary: #bcc6c9;
+  --text-muted: #8a9497;
 
   --accent: #6ee6a3;
   --accent-2: #97f4bf;
@@ -584,7 +584,7 @@ code {
 .dir-desc {
   display: -webkit-box;
   color: var(--text-secondary);
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.5;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -891,7 +891,7 @@ footer.site-footer a:hover {
 }
 .doc-lead {
   color: var(--text-secondary);
-  font-size: 16px;
+  font-size: 17px;
   line-height: 1.65;
   max-width: 760px;
   margin-bottom: 40px;
@@ -925,7 +925,7 @@ footer.site-footer a:hover {
 .doc-section > p {
   color: var(--text-secondary);
   line-height: 1.7;
-  font-size: 15px;
+  font-size: 16px;
   max-width: 760px;
 }
 
@@ -961,7 +961,7 @@ footer.site-footer a:hover {
 }
 .doc-mini-card p {
   margin: 0;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-muted);
   line-height: 1.55;
 }
@@ -983,7 +983,7 @@ pre.code-block {
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 0;
-  font-size: 13.5px;
+  font-size: 14.5px;
   line-height: 1.6;
   margin-top: 16px;
   position: relative;
@@ -1067,7 +1067,7 @@ pre.code-block code {
   max-width: 760px;
 }
 .callout svg { width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px; }
-.callout p { margin: 0; font-size: 14px; line-height: 1.6; color: var(--text-secondary); }
+.callout p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--text-secondary); }
 .callout.tip { border-color: rgba(74, 222, 128, 0.3); }
 .callout.tip svg { color: #4ade80; }
 .callout.warn { border-color: rgba(250, 204, 21, 0.3); }
@@ -1250,7 +1250,7 @@ pre.code-block code {
 }
 .cheat-card p {
   margin: 0 0 8px;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-muted);
   line-height: 1.45;
 }
@@ -1260,7 +1260,7 @@ pre.code-block code {
   background: var(--bg-elevated);
   border: 1px solid var(--border-soft);
   border-radius: 8px;
-  font-size: 11.5px;
+  font-size: 12.5px;
   line-height: 1.55;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
@@ -1271,7 +1271,7 @@ pre.code-block code {
   width: 100%;
   border-collapse: collapse;
   margin-top: 14px;
-  font-size: 12.5px;
+  font-size: 13.5px;
 }
 .cheat-table th, .cheat-table td {
   text-align: left;
@@ -2371,7 +2371,7 @@ body.has-global-nav {
 .global-nav-group h4 {
   margin: 0 0 6px;
   padding: 0 8px;
-  font-size: 10.5px;
+  font-size: 11.5px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -2386,7 +2386,7 @@ body.has-global-nav {
   border-radius: 8px;
   color: var(--text-secondary);
   text-decoration: none;
-  font-size: 13.5px;
+  font-size: 14.5px;
   font-weight: 600;
 }
 .global-nav-cat-link:hover { background: var(--bg-elevated); color: var(--text); }
@@ -2412,7 +2412,7 @@ body.has-global-nav {
   border-radius: 6px;
   color: var(--text-muted);
   text-decoration: none;
-  font-size: 12.5px;
+  font-size: 13.5px;
   line-height: 1.5;
 }
 .global-nav-sections a:hover { color: var(--text); background: var(--bg-elevated); }
@@ -2434,7 +2434,7 @@ body.has-global-nav {
   border-radius: 6px;
   color: var(--text-muted);
   text-decoration: none;
-  font-size: 11.5px;
+  font-size: 12.5px;
   font-style: italic;
   line-height: 1.5;
 }
