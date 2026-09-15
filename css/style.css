@@ -2395,10 +2395,12 @@ body.has-global-nav {
   color: var(--page-accent-2);
 }
 .global-nav-cat-link .dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--page-accent);
+  width: 8px; height: 8px; border-radius: 50%;
+  /* background comes from an inline style per-item (shell.js), one color
+     per category (--c-wordpress, --c-js, ...) so the list is scannable at
+     a glance instead of every row showing the same neutral dot */
   flex-shrink: 0;
-  opacity: 0.7;
+  opacity: 1;
 }
 .global-nav-sections {
   display: flex;

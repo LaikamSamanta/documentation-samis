@@ -18,44 +18,47 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // { group label -> category entries }. href is root-relative (as used
   // from index.html); BASE is prepended at render time for subpages.
+  // cat: matches the --c-<cat> / --c-<cat>-soft variables in css/style.css,
+  // used to tint each row's dot with its own category color instead of
+  // every row looking the same neutral gray (see .global-nav-cat-link .dot)
   var NAV_DATA = [
     {
       group: "Valodas & Frameworks",
       items: [
-        { name: "WordPress", href: "pages/wordpress.html" },
-        { name: "JavaScript", href: "pages/javascript.html" },
-        { name: "React", href: "pages/react.html" },
-        { name: "PHP", href: "pages/php.html" },
-        { name: "Laravel", href: "pages/laravel.html" }
+        { name: "WordPress", href: "pages/wordpress.html", cat: "wordpress" },
+        { name: "JavaScript", href: "pages/javascript.html", cat: "js" },
+        { name: "React", href: "pages/react.html", cat: "react" },
+        { name: "PHP", href: "pages/php.html", cat: "php" },
+        { name: "Laravel", href: "pages/laravel.html", cat: "laravel" }
       ]
     },
     {
       group: "Serveris & infrastruktūra",
       items: [
-        { name: "Tīkls", href: "pages/web-izveide.html" },
-        { name: "API", href: "pages/api.html" },
-        { name: "Git", href: "pages/git.html" },
-        { name: "SSH", href: "pages/ssh.html" },
-        { name: "Docker", href: "pages/docker.html" },
-        { name: "Datubāzes / SQL", href: "pages/datubazes.html" }
+        { name: "Tīkls", href: "pages/web-izveide.html", cat: "web" },
+        { name: "API", href: "pages/api.html", cat: "api" },
+        { name: "Git", href: "pages/git.html", cat: "git" },
+        { name: "SSH", href: "pages/ssh.html", cat: "ssh" },
+        { name: "Docker", href: "pages/docker.html", cat: "docker" },
+        { name: "Datubāzes / SQL", href: "pages/datubazes.html", cat: "sql" }
       ]
     },
     {
       group: "Prakse & drošība",
       items: [
-        { name: "SEO", href: "pages/seo.html" },
-        { name: "Drošība", href: "pages/drosiba.html" },
-        { name: "GDPR / Sīkdatnes", href: "pages/gdpr.html" },
-        { name: "HTML & CSS Advanced", href: "pages/css-advanced.html" }
+        { name: "SEO", href: "pages/seo.html", cat: "seo" },
+        { name: "Drošība", href: "pages/drosiba.html", cat: "security" },
+        { name: "GDPR / Sīkdatnes", href: "pages/gdpr.html", cat: "gdpr" },
+        { name: "HTML & CSS Advanced", href: "pages/css-advanced.html", cat: "css-adv" }
       ]
     },
     {
       group: "Uzziņas & rīki",
       items: [
-        { name: "Sagataves", href: "pages/sagataves.html" },
-        { name: "Rīki", href: "pages/riki.html" },
-        { name: "Python rīki", href: "pages/python-riki.html" },
-        { name: "Vārdnīca", href: "pages/vardnica.html" }
+        { name: "Sagataves", href: "pages/sagataves.html", cat: "templates" },
+        { name: "Rīki", href: "pages/riki.html", cat: "riki" },
+        { name: "Python rīki", href: "pages/python-riki.html", cat: "python" },
+        { name: "Vārdnīca", href: "pages/vardnica.html", cat: "vardnica" }
       ]
     }
   ];
@@ -144,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var isActive = item.href === current || (categoryHref !== null && item.href === categoryHref);
         html += '<div class="global-nav-category">';
         html += '<a class="global-nav-cat-link' + (isActive ? ' active' : '') + '" href="' + BASE + item.href + '">' +
-          '<span class="dot"></span>' + escapeHtml(item.name) + '</a>';
+          '<span class="dot" style="background: var(--c-' + item.cat + ')"></span>' + escapeHtml(item.name) + '</a>';
         if (isActive && sections.length) {
           html += '<div class="global-nav-sections">';
           sections.forEach(function (sec) {
