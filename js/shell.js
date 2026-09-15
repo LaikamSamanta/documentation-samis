@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var html = '<div class="global-nav-brand">' +
       '<a href="' + BASE + 'index.html" style="display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none;flex:1;min-width:0;">' +
-      '<span class="mark"><svg viewBox="0 0 32 32" width="26" height="26"><defs><linearGradient id="gnLogoG" x1="2" y1="1" x2="30" y2="31" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#6d28d9"/><stop offset="50%" stop-color="#9d5cff"/><stop offset="100%" stop-color="#f472b6"/></linearGradient></defs><rect x="1" y="1" width="30" height="30" rx="15" fill="url(#gnLogoG)"/><path d="M 12 9.5 L 6.5 16 L 12 22.5" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M 20 9.5 L 25.5 16 L 20 22.5" fill="none" stroke="#000" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M 17.6 7.5 L 14.4 24.5" fill="none" stroke="#000" stroke-width="2.2" stroke-linecap="round" stroke-opacity=".92"/></svg></span>' +
+      '<span class="mark"><svg viewBox="0 0 32 32" width="26" height="26"><rect x="1" y="1" width="30" height="30" rx="4" fill="#6ee6a3"/><path d="M 12 9.5 L 6.5 16 L 12 22.5" fill="none" stroke="#0a0d10" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M 20 9.5 L 25.5 16 L 20 22.5" fill="none" stroke="#0a0d10" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M 17.6 7.5 L 14.4 24.5" fill="none" stroke="#0a0d10" stroke-width="2.2" stroke-linecap="round" stroke-opacity=".92"/></svg></span>' +
       '<span>Documentation Samis</span>' +
       '</a>' +
       '<button class="icon-btn" id="theme-toggle" title="Pārslēgt tēmu" aria-label="Pārslēgt tēmu">' +
@@ -223,7 +223,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "pages/cheatsheet-wordpress.html", "pages/docker.html",
     "pages/vardnica.html"
   ];
-  var SEARCH_INDEX_VERSION = "80";
+  var SEARCH_INDEX_VERSION = "81";
   var searchIndex = null;
   var searchIndexPromise = null;
 

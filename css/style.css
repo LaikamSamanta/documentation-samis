@@ -3,12 +3,17 @@
    ========================================================================== */
 
 :root {
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: "SF Mono", "Cascadia Code", Consolas, "Courier New", monospace;
+  /* v81 - shadow-docs terminal redesign: flat monospace look everywhere,
+     replacing the old dark-purple glassy design. Because nearly every
+     component below is already built on these tokens (--bg/--border/
+     --text/--accent/--radius/--shadow-*), redefining them here re-skins
+     the whole site without needing to touch each component's own rules. */
+  --font-sans: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
 
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 22px;
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
 
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 
@@ -67,35 +72,34 @@
 /* ---------- Dark theme (default) ---------- */
 :root,
 :root[data-theme="dark"] {
-  --bg: #0a0a10;
-  --bg-elevated: #121219;
-  --bg-card: #15151f;
-  --bg-card-hover: #1b1b28;
-  --border: #26263a;
-  --border-soft: #1c1c29;
-  --text: #f3f1fb;
-  --text-secondary: #a6a3c4;
-  --text-muted: #8885ab;
+  --bg: #12161a;
+  --bg-elevated: #1a2024;
+  --bg-card: #1a2024;
+  --bg-card-hover: #262e33;
+  --border: #3a444a;
+  --border-soft: #262c30;
+  --text: #edf2f3;
+  --text-secondary: #a4b0b4;
+  --text-muted: #6b767a;
 
-  --accent: #9d5cff;
-  --accent-2: #c084fc;
-  --accent-soft: rgba(157, 92, 255, 0.16);
-  --accent-glow: rgba(157, 92, 255, 0.45);
+  --accent: #6ee6a3;
+  --accent-2: #97f4bf;
+  --accent-soft: rgba(110, 230, 163, 0.14);
+  --accent-glow: transparent;
 
-  /* code-block specific surface/text - own variables (not --bg-elevated /
-     --text-secondary) so this can be tuned for readability independently
-     of cards, callouts, and other elevated surfaces */
-  --code-bg: #121219;
-  --code-text: #a6a3c4;
+  /* code blocks intentionally stay dark in BOTH themes (terminal-window
+     look), so --code-bg/--code-text/--tok-*/--tag-* are the SAME in the
+     dark and light blocks below - not theme-dependent - otherwise light
+     mode ends up with dark text on a dark block (unreadable, this exact
+     bug already happened once on shadow-docs and was fixed the same way). */
+  --code-bg: #0c0f11;
+  --code-text: #edf2f3;
 
-  /* code syntax highlight colors - bright/saturated so they read well
-     against the dark code-block background */
   --tok-kw: #c084fc;
   --tok-str: #4ade80;
   --tok-com: #8885ab;
   --tok-fn: #60a5fa;
 
-  /* difficulty-tag colors - same bright/dark-background split as --tok-* */
   --tag-easy: #4ade80;
   --tag-mid: #facc15;
   --tag-hard: #f87171;
@@ -122,47 +126,41 @@
   --c-laravel-2: color-mix(in srgb, var(--c-laravel), white 15%);
   --c-react-2: color-mix(in srgb, var(--c-react), white 10%);
 
-  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 20px 40px -20px rgba(0, 0, 0, 0.6);
-  --shadow-pop: 0 30px 60px -25px rgba(120, 60, 255, 0.35);
-  --scrollbar: #2a2a3d;
+  --shadow-card: none;
+  --shadow-pop: none;
+  --scrollbar: #3a444a;
 }
 
 /* ---------- Light theme ---------- */
 :root[data-theme="light"] {
-  --bg: #f6f5fb;
+  --bg: #f7f7f5;
   --bg-elevated: #ffffff;
   --bg-card: #ffffff;
-  --bg-card-hover: #fbfaff;
-  --border: #e4e2f1;
-  --border-soft: #ece9f7;
-  --text: #17141f;
-  --text-secondary: #55506e;
-  --text-muted: #605c7a;
+  --bg-card-hover: #eeeeea;
+  --border: #dcdcd6;
+  --border-soft: #e8e8e3;
+  --text: #1b1f1d;
+  --text-secondary: #45504a;
+  --text-muted: #5c655f;
 
-  --accent: #7c3aed;
-  --accent-2: #a855f7;
-  --accent-soft: rgba(124, 58, 237, 0.09);
-  --accent-glow: rgba(124, 58, 237, 0.25);
+  --accent: #0f8a4d;
+  --accent-2: #0b6b3b;
+  --accent-soft: rgba(15, 138, 77, 0.08);
+  --accent-glow: transparent;
 
-  /* code-block specific surface/text - a plain white block with medium-gray
-     text read as harsh/washed-out, so this uses a soft off-white background
-     (visibly distinct from pure-white cards) and near-black text instead of
-     the lighter --text-secondary used for regular prose */
-  --code-bg: #f4f3fa;
-  --code-text: #2b2740;
+  /* same dark code-bg + light code-text as the dark theme above - see the
+     comment there for why these five are NOT theme-dependent */
+  --code-bg: #0c0f11;
+  --code-text: #edf2f3;
 
-  /* code syntax highlight colors - the dark-theme values are too light/washed
-     out against a white code-block background, so darken each while keeping
-     the same hue family (verified >=4.5:1 contrast against --code-bg) */
-  --tok-kw: #6d28d9;
-  --tok-str: #166534;
-  --tok-com: #605c7a;
-  --tok-fn: #1d4ed8;
+  --tok-kw: #c084fc;
+  --tok-str: #4ade80;
+  --tok-com: #8885ab;
+  --tok-fn: #60a5fa;
 
-  /* difficulty-tag colors - darkened same as --tok-* (verified >=4.5:1 vs white) */
-  --tag-easy: #15803d;
-  --tag-mid: #a16207;
-  --tag-hard: #b91c1c;
+  --tag-easy: #4ade80;
+  --tag-mid: #facc15;
+  --tag-hard: #f87171;
 
   /* darker tints of each category color, for adequate contrast on light backgrounds
      (percentages tuned so each hits at least ~4.5:1 against the light page background,
@@ -188,9 +186,9 @@
   --c-laravel-2: color-mix(in srgb, var(--c-laravel), black 15%);
   --c-react-2: color-mix(in srgb, var(--c-react), black 45%);
 
-  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 20px 40px -24px rgba(80, 60, 140, 0.25);
-  --shadow-pop: 0 30px 60px -25px rgba(124, 58, 237, 0.25);
-  --scrollbar: #d8d5ea;
+  --shadow-card: none;
+  --shadow-pop: none;
+  --scrollbar: #dcdcd6;
 }
 
 /* ---------- Per-category page accent (see --page-accent above) ---------- */
@@ -236,8 +234,8 @@ body {
 }
 
 ::selection {
-  background: var(--accent-glow);
-  color: #fff;
+  background: var(--accent);
+  color: var(--bg);
 }
 
 ::-webkit-scrollbar {
@@ -478,176 +476,50 @@ code {
   box-shadow: 0 0 0 3px var(--page-accent-soft);
 }
 
-/* ---------- Hero ---------- */
+/* ---------- Hero ----------
+   Full-width, left-aligned (not centered in a boxed column) - a centered
+   max-width hero left empty gutters on wide screens next to the fixed
+   .global-nav sidebar, which read as "boxed", not full-bleed. */
 .hero {
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 84px 24px 40px;
-  text-align: center;
+  padding: 56px 40px 20px;
 }
-
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--accent-soft);
-  color: var(--accent);
-  font-size: 12.5px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  margin-bottom: 22px;
+.hero-kicker {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
 }
-.eyebrow .dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-soft);
-}
+.hero-kicker::before { content: "> "; color: var(--accent); }
 
 .hero h1 {
-  font-size: clamp(34px, 5.5vw, 58px);
-  line-height: 1.08;
-  letter-spacing: -0.03em;
-  margin: 0 0 18px;
-  font-weight: 800;
-}
-.hero h1 span {
-  background: linear-gradient(120deg, var(--accent), var(--accent-2) 60%, var(--c-web));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  font-size: clamp(28px, 4vw, 42px);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin: 0 0 14px;
+  font-weight: 700;
+  max-width: 34ch;
 }
 
 .hero p {
   color: var(--text-secondary);
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.6;
-  max-width: 620px;
-  margin: 0 auto;
+  max-width: 680px;
+  margin: 0;
 }
 
-/* ---------- Search ---------- */
-.search-wrap {
-  max-width: 560px;
-  margin: 36px auto 0;
-  position: relative;
-}
-.search-wrap svg {
-  position: absolute;
-  left: 18px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 18px;
-  height: 18px;
-  color: var(--text-muted);
-}
-.search-wrap input {
-  width: 100%;
-  padding: 15px 18px 15px 48px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border);
-  background: var(--bg-card);
-  color: var(--text);
-  font-size: 15px;
-  font-family: inherit;
-  outline: none;
-  box-shadow: var(--shadow-card);
-  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
-}
-.search-wrap input::placeholder {
-  color: var(--text-muted);
-}
-.search-wrap input:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 4px var(--accent-soft);
-}
-.search-kbd {
-  position: absolute;
-  right: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 11.5px;
-  font-family: var(--font-mono);
-  color: var(--text-muted);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 3px 7px;
-  background: var(--bg-elevated);
-}
-.search-results {
-  display: none;
-  position: absolute;
-  top: calc(100% + 10px);
-  left: 0;
-  right: 0;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-pop);
-  max-height: 420px;
-  overflow-y: auto;
-  z-index: 50;
-  text-align: left;
-}
-.search-results.open { display: block; }
-.search-results a {
-  display: block;
-  padding: 12px 18px;
-  border-bottom: 1px solid var(--border-soft);
-  text-decoration: none;
-  color: inherit;
-  transition: background 0.15s var(--ease);
-}
-.search-results a:last-child { border-bottom: none; }
-.search-results a:hover { background: var(--bg-card-hover); }
-.search-results .result-page {
-  font-size: 10.5px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--accent);
-  font-weight: 700;
-}
-.search-results .result-title {
-  font-size: 14.5px;
-  font-weight: 600;
-  color: var(--text);
-  margin-top: 2px;
-}
-.search-results .result-snippet {
-  font-size: 12.5px;
-  color: var(--text-muted);
-  margin-top: 3px;
-  line-height: 1.45;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-.search-results .search-loading,
-.search-results .search-no-results {
-  padding: 16px 18px;
-  font-size: 13px;
-  color: var(--text-muted);
-}
+/* legacy eyebrow/search-wrap/search-results rules removed - the homepage
+   hero no longer has its own search box (the global-nav sidebar has one)
+   and no longer uses the gradient "eyebrow" pill */
 
-/* ---------- Category grid ---------- */
+/* ---------- Category directory list (replaces the old card grid) ---------- */
 .section-label {
-  max-width: 1120px;
-  margin: 64px auto 20px;
-  padding: 0 24px;
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
+  padding: 40px 40px 0;
 }
 .section-label h2 {
   font-size: 13px;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   color: var(--text-muted);
   font-weight: 700;
   margin: 0;
@@ -657,212 +529,143 @@ code {
   color: var(--text-muted);
 }
 
-.grid {
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: 0 24px 40px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 14px;
+.dir-list {
+  margin: 12px 40px 40px;
+  border-top: 1px solid var(--border);
 }
-
-.card {
-  --card-color: var(--accent);
-  --card-color-2: var(--accent-2);
-  --card-soft: var(--accent-soft);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 18px;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border);
-  background: var(--bg-card);
-  box-shadow: var(--shadow-card);
-  overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.35s var(--ease), border-color 0.35s var(--ease), box-shadow 0.35s var(--ease), background 0.35s var(--ease);
-}
-
-.card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 0%), var(--card-soft), transparent 60%);
-  opacity: 0;
-  transition: opacity 0.4s var(--ease);
-  pointer-events: none;
-}
-
-.card:hover {
-  transform: translateY(-6px);
-  border-color: color-mix(in srgb, var(--card-color) 55%, var(--border));
-  background: var(--bg-card-hover);
-  box-shadow: var(--shadow-pop);
-}
-.card:hover::before {
-  opacity: 1;
-}
-.card:focus-visible {
-  outline: none;
-  border-color: var(--card-color);
-  box-shadow: 0 0 0 4px var(--card-soft);
-}
-
-.card-top {
+.dir-row {
+  --dir-color: var(--accent);
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 4px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+.dir-row:hover { background: var(--bg-card-hover); }
+.dir-row:hover .dir-title { color: var(--dir-color); }
+.dir-row:hover .dir-arrow { transform: translateX(3px); color: var(--dir-color); }
+.dir-row:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--dir-color);
 }
 
-.card-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  display: grid;
-  place-items: center;
-  background: var(--card-soft);
-  color: var(--card-color);
-  transition: transform 0.35s var(--ease);
-}
-.card-icon svg {
-  width: 20px;
-  height: 20px;
-}
-.card:hover .card-icon {
-  transform: scale(1.08) rotate(-4deg);
-}
-
-.card-arrow {
-  width: 28px;
-  height: 28px;
-  border-radius: 9px;
-  display: grid;
-  place-items: center;
+.dir-index {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
   color: var(--text-muted);
-  border: 1px solid var(--border);
-  transition: all 0.3s var(--ease);
+  width: 44px;
+  flex-shrink: 0;
+  padding-top: 2px;
 }
-.card-arrow svg {
-  width: 13px;
-  height: 13px;
-  transition: transform 0.3s var(--ease);
+.dir-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--dir-color) 15%, transparent);
+  color: var(--dir-color);
+  flex-shrink: 0;
 }
-.card:hover .card-arrow {
-  color: #fff;
-  background: var(--card-color);
-  border-color: var(--card-color);
-}
-.card:hover .card-arrow svg {
-  transform: translate(2px, -2px);
-}
+.dir-icon svg { width: 17px; height: 17px; }
 
-.card h3 {
-  margin: 0;
-  font-size: 17px;
+.dir-body { flex: 1; min-width: 0; }
+.dir-title {
+  display: block;
   font-weight: 700;
-  letter-spacing: -0.01em;
+  font-size: 15px;
+  color: var(--text);
+  margin-bottom: 3px;
+  transition: color 0.15s var(--ease);
 }
-
-.card p {
-  margin: 0;
+.dir-desc {
+  display: -webkit-box;
   color: var(--text-secondary);
   font-size: 13px;
   line-height: 1.5;
-  flex: 1;
-  display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-
-.card-tags {
+.dir-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
+  margin-top: 8px;
 }
-.card-tags span {
-  font-size: 11px;
-  font-weight: 600;
-  padding: 3px 8px;
-  border-radius: 999px;
-  background: var(--bg-elevated);
+.dir-tags span {
+  font-size: 10.5px;
+  font-family: var(--font-mono);
+  padding: 2px 7px;
   border: 1px solid var(--border);
+  border-radius: 999px;
   color: var(--text-muted);
-  white-space: nowrap;
 }
-.card-tags span:nth-child(n+3) {
-  display: none;
-}
-
-.card-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 10px;
-  border-top: 1px solid var(--border-soft);
+.dir-meta {
+  flex-shrink: 0;
+  text-align: right;
   font-size: 12px;
   color: var(--text-muted);
+  padding-top: 2px;
+  white-space: nowrap;
 }
-.card-footer b {
-  color: var(--card-color-2);
-  font-weight: 700;
+.dir-arrow {
+  color: var(--text-muted);
+  flex-shrink: 0;
+  padding-top: 4px;
+  transition: transform 0.15s var(--ease), color 0.15s var(--ease);
 }
+.dir-arrow svg { width: 15px; height: 15px; }
 
-/* card color bindings - each also binds --card-color-2, a contrast-safe
-   variant (darkened per-theme, same as --page-accent-2) used specifically
-   for small text like the "Sākt →" label, since several raw category
-   colors don't reach 4.5:1 against the card background on their own */
-.card.wordpress { --card-color: var(--c-wordpress); --card-color-2: var(--c-wordpress-2); --card-soft: var(--c-wordpress-soft); }
-.card.js        { --card-color: var(--c-js);        --card-color-2: var(--c-js-2);        --card-soft: var(--c-js-soft); }
-.card.php       { --card-color: var(--c-php);       --card-color-2: var(--c-php-2);       --card-soft: var(--c-php-soft); }
-.card.web       { --card-color: var(--c-web);       --card-color-2: var(--c-web-2);        --card-soft: var(--c-web-soft); }
-.card.integrations { --card-color: var(--c-integrations); --card-color-2: var(--c-integrations-2); --card-soft: var(--c-integrations-soft); }
-.card.api       { --card-color: var(--c-api);       --card-color-2: var(--c-api-2);       --card-soft: var(--c-api-soft); }
-.card.git       { --card-color: var(--c-git);       --card-color-2: var(--c-git-2);       --card-soft: var(--c-git-soft); }
-.card.ssh       { --card-color: var(--c-ssh);       --card-color-2: var(--c-ssh-2);       --card-soft: var(--c-ssh-soft); }
-.card.seo       { --card-color: var(--c-seo);       --card-color-2: var(--c-seo-2);       --card-soft: var(--c-seo-soft); }
-.card.templates { --card-color: var(--c-templates); --card-color-2: var(--c-templates-2); --card-soft: var(--c-templates-soft); }
-.card.security  { --card-color: var(--c-security);  --card-color-2: var(--c-security-2);  --card-soft: var(--c-security-soft); }
-.card.sql       { --card-color: var(--c-sql);       --card-color-2: var(--c-sql-2);       --card-soft: var(--c-sql-soft); }
-.card.css-adv   { --card-color: var(--c-css-adv);   --card-color-2: var(--c-css-adv-2);   --card-soft: var(--c-css-adv-soft); }
-.card.gdpr      { --card-color: var(--c-gdpr);      --card-color-2: var(--c-gdpr-2);      --card-soft: var(--c-gdpr-soft); }
-.card.python    { --card-color: var(--c-python);    --card-color-2: var(--c-python-2);    --card-soft: var(--c-python-soft); }
-.card.riki      { --card-color: var(--c-riki);      --card-color-2: var(--c-riki-2);      --card-soft: var(--c-riki-soft); }
-.card.docker    { --card-color: var(--c-docker);    --card-color-2: var(--c-docker-2);    --card-soft: var(--c-docker-soft); }
-.card.vardnica  { --card-color: var(--c-vardnica);  --card-color-2: var(--c-vardnica-2);  --card-soft: var(--c-vardnica-soft); }
-.card.laravel   { --card-color: var(--c-laravel);   --card-color-2: var(--c-laravel-2);   --card-soft: var(--c-laravel-soft); }
-.card.react     { --card-color: var(--c-react);     --card-color-2: var(--c-react-2);     --card-soft: var(--c-react-soft); }
+.dir-row.wordpress { --dir-color: var(--c-wordpress); }
+.dir-row.js        { --dir-color: var(--c-js); }
+.dir-row.php       { --dir-color: var(--c-php); }
+.dir-row.web       { --dir-color: var(--c-web); }
+.dir-row.integrations { --dir-color: var(--c-integrations); }
+.dir-row.api       { --dir-color: var(--c-api); }
+.dir-row.git       { --dir-color: var(--c-git); }
+.dir-row.ssh       { --dir-color: var(--c-ssh); }
+.dir-row.seo       { --dir-color: var(--c-seo); }
+.dir-row.templates { --dir-color: var(--c-templates); }
+.dir-row.security  { --dir-color: var(--c-security); }
+.dir-row.sql       { --dir-color: var(--c-sql); }
+.dir-row.css-adv   { --dir-color: var(--c-css-adv); }
+.dir-row.gdpr      { --dir-color: var(--c-gdpr); }
+.dir-row.python    { --dir-color: var(--c-python); }
+.dir-row.riki      { --dir-color: var(--c-riki); }
+.dir-row.docker    { --dir-color: var(--c-docker); }
+.dir-row.vardnica  { --dir-color: var(--c-vardnica); }
+.dir-row.laravel   { --dir-color: var(--c-laravel); }
+.dir-row.react     { --dir-color: var(--c-react); }
 
 /* ---------- Stats strip ---------- */
 .stats {
-  max-width: 1120px;
-  margin: 8px auto 0;
-  padding: 0 24px 90px;
+  margin: 0 40px 56px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
 }
 .stat {
-  padding: 20px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-soft);
+  padding: 18px 20px;
   background: var(--bg-elevated);
-  text-align: center;
 }
 .stat b {
   display: block;
-  font-size: 26px;
-  font-weight: 800;
-  background: linear-gradient(120deg, var(--accent), var(--accent-2));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+  font-family: var(--font-mono);
 }
 .stat span {
-  font-size: 12.5px;
+  font-size: 11.5px;
   color: var(--text-muted);
   font-weight: 600;
+  letter-spacing: 0.03em;
 }
 
 footer.site-footer {
@@ -882,8 +685,10 @@ footer.site-footer a:hover {
 
 @media (max-width: 720px) {
   .topbar { padding: 14px 18px; }
-  .hero { padding: 56px 18px 24px; }
-  .stats { grid-template-columns: repeat(2, 1fr); }
+  .hero { padding: 32px 18px 16px; }
+  .section-label { padding: 24px 18px 0; }
+  .dir-list { margin: 12px 18px 32px; }
+  .stats { grid-template-columns: repeat(2, 1fr); margin: 0 18px 32px; }
   footer.site-footer { padding: 20px 18px; justify-content: center; text-align: center; }
 }
 
@@ -1185,7 +990,7 @@ pre.code-block {
 }
 .code-block-toolbar {
   position: sticky;
-  top: calc(var(--topbar-h, 70px) + 10px);
+  top: 10px;
   z-index: 5;
   display: flex;
   align-items: center;
