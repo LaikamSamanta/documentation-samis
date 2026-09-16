@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=86" />
+<link rel="stylesheet" href="../css/style.css?v=87" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -65,6 +65,31 @@ vite.config.js   - Vite konfigurācija</code></pre>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
         <p>Ja projektam vajag arī serveri (API, datubāzi), skat. <a href="laravel.html">Laravel</a> kā backend - React tad kļūst par frontend, kas sazinās ar Laravel API caur <a href="#data-fetching">fetch</a>, nevis renderē Blade veidnes.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="tailwind-daisyui">
+      <h2>Tailwind CSS &amp; DaisyUI</h2>
+      <p>Tailwind CSS 4 ienāk kā Vite spraudnis, nevis PostCSS konfigurācijas fails kā vecākajās versijās - uzstādīšana ir tikai trīs soļi. DaisyUI virs tā pievieno gatavas komponentu klases (pogas, kartītes, modāļi), kas joprojām ir tīrs Tailwind zem virsmas.</p>
+      <p><strong>1. solis</strong> - uzinstalē Vite Tailwind spraudni un DaisyUI:</p>
+      <pre class="code-block"><span class="lang">bash</span><code>npm install -D @tailwindcss/vite daisyui</code></pre>
+      <p><strong>2. solis</strong> - failā <code>vite.config.js</code> pievieno <code>@tailwindcss/vite</code>:</p>
+      <pre class="code-block"><span class="lang">js</span><code><span class="tok-kw">import</span> { defineConfig } <span class="tok-kw">from</span> <span class="tok-str">'vite'</span>
+<span class="tok-kw">import</span> react <span class="tok-kw">from</span> <span class="tok-str">'@vitejs/plugin-react'</span>
+<span class="tok-kw">import</span> tailwindcss <span class="tok-kw">from</span> <span class="tok-str">'@tailwindcss/vite'</span>
+
+<span class="tok-kw">export default</span> <span class="tok-fn">defineConfig</span>({
+    plugins: [
+        <span class="tok-fn">react</span>(),
+        <span class="tok-fn">tailwindcss</span>(),
+    ],
+})</code></pre>
+      <p><strong>3. solis</strong> - failā <code>src/index.css</code> atstāj tikai:</p>
+      <pre class="code-block"><span class="lang">css</span><code><span class="tok-kw">@import</span> <span class="tok-str">"tailwindcss"</span>;
+<span class="tok-kw">@plugin</span> <span class="tok-str">"daisyui"</span>;</code></pre>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Šī ir Tailwind v4 sintakse - viena <code>@import "tailwindcss";</code> rinda aizstāj vecās trīs <code>@tailwind base/components/utilities;</code> direktīvas. Ja kādā pamācībā redzi tās vecās trīs rindas vai <code>tailwind.config.js</code> failu, tā ir v3 instrukcija un ar v4 Vite spraudni nav vajadzīga.</p>
       </div>
     </section>
 
@@ -600,8 +625,8 @@ npm run preview
     </div>
   </main>
 
-<script src="../js/shell.js?v=86"></script>
-<script src="../js/theme.js?v=86"></script>
-<script src="../js/main.js?v=86"></script>
+<script src="../js/shell.js?v=87"></script>
+<script src="../js/theme.js?v=87"></script>
+<script src="../js/main.js?v=87"></script>
 </body>
 </html>
