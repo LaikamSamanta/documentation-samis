@@ -169,34 +169,10 @@ document.addEventListener("DOMContentLoaded", function () {
       '<div class="global-nav-search-results" id="global-search-results"></div>' +
       '</div>';
 
-    html += '<nav class="global-nav-groups">';
-    NAV_DATA.forEach(function (group) {
-      html += '<div class="global-nav-group"><h4>' + escapeHtml(group.group) + '</h4>';
-      group.items.forEach(function (item) {
-        var isActive = item.href === current || (categoryHref !== null && item.href === categoryHref);
-        html += '<div class="global-nav-category">';
-        html += '<a class="global-nav-cat-link' + (isActive ? ' active' : '') + '" href="' + BASE + item.href + '">' +
-          '<span class="dot" style="background: var(--c-' + item.cat + ')"></span>' + escapeHtml(item.name) + '</a>';
-        if (item.extras && item.extras.length) {
-          html += '<div class="global-nav-extras">';
-          item.extras.forEach(function (extra) {
-            var extraActive = extra.href === current;
-            html += '<a class="' + (extraActive ? 'active' : '') + '" href="' + BASE + extra.href + '">' + escapeHtml(extra.name) + '</a>';
-          });
-          html += '</div>';
-        }
-        if (isActive && sections.length) {
-          html += '<div class="global-nav-sections">';
-          sections.forEach(function (sec) {
-            html += '<a href="#' + sec.id + '">' + escapeHtml(sec.title) + '</a>';
-          });
-          html += '</div>';
-        }
-        html += '</div>';
-      });
-      html += '</div>';
-    });
-    html += '</nav>';
+    // category groups / links / cheatsheet extras intentionally not
+    // rendered - sidebar is brand + search only for now (per request);
+    // NAV_DATA and the render loop that used it are kept below (unused)
+    // so the full nav can come back with one revert instead of a rewrite.
 
     root.innerHTML = html;
     root.className = "global-nav";
