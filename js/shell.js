@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var sections = readCurrentPageSections();
 
     var html = '<div class="global-nav-brand">' +
-      '<span class="term-dots" aria-hidden="true"></span>' +
+      '<div class="term-titlebar"><span class="term-dots" aria-hidden="true"></span></div>' +
       '<a href="' + BASE + 'index.html" style="display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none;flex:1;min-width:0;">' +
       '<span class="mark"><svg viewBox="0 0 32 32" width="26" height="26"><rect x="1" y="1" width="30" height="30" rx="4" fill="#6ee6a3"/><path d="M 12 9.5 L 6.5 16 L 12 22.5" fill="none" stroke="#0a0d10" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M 20 9.5 L 25.5 16 L 20 22.5" fill="none" stroke="#0a0d10" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M 17.6 7.5 L 14.4 24.5" fill="none" stroke="#0a0d10" stroke-width="2.2" stroke-linecap="round" stroke-opacity=".92"/></svg></span>' +
       '<span>Documentation Samis</span>' +

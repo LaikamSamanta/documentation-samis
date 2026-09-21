@@ -2331,26 +2331,43 @@ body.has-global-nav {
 .global-nav-brand {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 10px;
-  padding: 18px 18px 14px;
+  padding: 14px 18px;
   font-weight: 800;
   font-size: 14.5px;
   color: var(--text);
   text-decoration: none;
   flex-shrink: 0;
 }
+.global-nav-brand > a {
+  min-width: 0;
+}
+.global-nav-brand > a span:not(.mark) {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
 
-/* macOS-style terminal window traffic lights - one dot + two faked via
-   box-shadow, so the sidebar reads as a terminal window's title bar */
+/* macOS-style terminal window traffic lights - own full-width row above
+   the title (flex-basis:100% on the wrapper forces everything else onto
+   the next line), same as a real terminal window's title bar, and it
+   never competes with "Documentation Samis" for horizontal space this
+   way. The dot itself must stay a plain block with a fixed width - flex
+   sizing must live on the wrapper, not the dot, or the background fills
+   the whole row instead of looking like a single small circle. */
+.term-titlebar {
+  flex: 0 0 100%;
+  margin-bottom: 6px;
+}
 .term-dots {
-  display: inline-block;
+  display: block;
   width: 9px;
   height: 9px;
   border-radius: 50%;
   background: #ff5f57;
   box-shadow: 15px 0 0 #febc2e, 30px 0 0 #28c840;
-  margin-right: 34px;
-  flex-shrink: 0;
 }
 .global-nav-brand .mark svg { width: 26px; height: 26px; display: block; }
 
