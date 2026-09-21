@@ -139,6 +139,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
   renderNav();
 
+  // Sidebar collapse - clicking the terminal window dots "closes" the
+  // sidebar down to a thin rail (like minimizing a terminal window),
+  // click again to reopen. Desktop-only convenience (mobile already has
+  // its own open/closed toggle below); state persists across pages.
+  var COLLAPSE_KEY = "docsamis-sidebar-collapsed";
+  var dots = document.querySelector(".term-dots");
+  if (dots) {
+    if (localStorage.getItem(COLLAPSE_KEY) === "1") {
+      document.body.classList.add("sidebar-collapsed");
+    }
+    dots.style.cursor = "pointer";
+    dots.title = "Aizvērt/atvērt sānjoslu";
+    dots.addEventListener("click", function () {
+      var collapsed = document.body.classList.toggle("sidebar-collapsed");
+      localStorage.setItem(COLLAPSE_KEY, collapsed ? "1" : "0");
+    });
+  }
+
   // mobile toggle
   var toggle = document.createElement("button");
   toggle.className = "global-nav-toggle";

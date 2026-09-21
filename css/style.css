@@ -1039,6 +1039,18 @@ pre.code-block {
   border-bottom: 1px solid var(--border);
   border-radius: var(--radius-md) var(--radius-md) 0 0;
 }
+/* same window-chrome dots as the sidebar - every code block reads as its
+   own little terminal window, not just monospace text in a gray box */
+.code-block-toolbar::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff5f57;
+  box-shadow: 13px 0 0 #febc2e, 26px 0 0 #28c840;
+  margin-right: auto;
+}
 pre.code-block .lang {
   font-size: 10.5px;
   color: var(--text-muted);
@@ -2528,9 +2540,32 @@ body.has-global-nav {
 
 .global-main {
   margin-left: 272px;
+  transition: margin-left 0.2s var(--ease);
 }
 
+/* collapsed sidebar - click the terminal dots to toggle. Shrinks to a
+   thin rail showing only the dots, content reclaims the freed width. */
+.global-nav { transition: width 0.2s var(--ease); }
+body.sidebar-collapsed .global-nav { width: 44px; overflow: hidden; }
+body.sidebar-collapsed .global-main { margin-left: 44px; }
+/* the brand link has display:flex set inline (shell.js), which beats any
+   plain class rule here, so this one needs !important to actually hide it */
+body.sidebar-collapsed .global-nav-brand > a { display: none !important; }
+body.sidebar-collapsed .global-nav-brand button,
+body.sidebar-collapsed .global-nav-search,
+body.sidebar-collapsed .global-nav-groups {
+  display: none;
+}
+body.sidebar-collapsed .term-titlebar { margin-bottom: 0; }
+
 @media (max-width: 900px) {
+  body.sidebar-collapsed .global-nav { width: 272px; overflow: visible; }
+  body.sidebar-collapsed .global-nav-brand > a { display: flex !important; }
+  body.sidebar-collapsed .global-nav-brand button { display: grid; }
+  body.sidebar-collapsed .global-nav-search,
+  body.sidebar-collapsed .global-nav-groups {
+    display: block;
+  }
   .global-nav {
     transform: translateX(-100%);
     box-shadow: var(--shadow-pop);
