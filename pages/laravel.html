@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=91" />
+<link rel="stylesheet" href="../css/style.css?v=92" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -83,10 +83,42 @@
       <h2>Factory vs Seeder</h2>
       <p><code>factory</code> definē <strong>veidni</strong> - kā izskatās viens fake ieraksts. <code>seeder</code> <strong>izpilda</strong> to veidni - izsauc to un faktiski ieraksta datus datubāzē, kad palaid <code>php artisan db:seed</code>.</p>
     </section>
+
+    <section class="doc-section" id="jaunas-funkcijas-secība">
+      <h2>Standarta secība, veidojot jaunu funkciju</h2>
+      <p>Ikreiz, kad service-platform vajag jaunu admin sadaļu (piem. "Products" - redzams sidebar), šie pieci soļi vienmēr notiek šādā secībā. Iemesls, kāpēc secība ir svarīga: kontrolieris izmanto modeli (<code>Product::all()</code>, <code>Product::create()</code>), un modelim jāzina, kādai tabulai/kolonnām tas atbilst - tāpēc migrācija un modelis vienmēr ir pirms kontroliera, ne otrādi.</p>
+
+      <h3>1. Migrācija - tabulas struktūra</h3>
+      <pre class="code-block"><span class="lang">bash</span><code>php artisan make:migration create_products_table
+<span class="tok-com"># rediģē database/migrations/..._create_products_table.php</span>
+php artisan migrate</code></pre>
+
+      <h3>2. Modelis - PHP klase, kas savieno ar tabulu</h3>
+      <pre class="code-block"><span class="lang">bash</span><code>php artisan make:model Product</code></pre>
+
+      <h3>3. Kontrolieris - loģika, kas apstrādā pieprasījumus</h3>
+      <pre class="code-block"><span class="lang">bash</span><code>php artisan make:controller Admin/ProductController --resource</code></pre>
+      <p><code>--resource</code> uzreiz uzģenerē visas CRUD metodes: <code>index</code>, <code>create</code>, <code>store</code>, <code>edit</code>, <code>update</code>, <code>destroy</code>.</p>
+
+      <h3>4. Maršruti</h3>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-fn">Route::resource</span>(<span class="tok-str">'admin/products'</span>, Admin\ProductController::<span class="tok-kw">class</span>);</code></pre>
+      <div class="callout note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16v-4M12 8h.01M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"/></svg>
+        <p>Kurā failā šo raksta ir atkarīgs no projekta autentifikācijas veida (sk. <a href="#sanctum-vs-session">Sanctum vs sesiju autentifikācija</a> augstāk). Sanctum/API projektos publiskie/lapu maršruti iet <code>web.php</code> (sesijas, CSRF), bet token-autentificētie API maršruti iet <code>api.php</code> (bez sesijām, ar <code>/api</code> prefiksu) - tā <code>api</code> grupa ir domāta tikai token autentifikācijai, ne sesiju autentifikācijai. Sesiju/Inertia projektos (tavs gadījums) viss paliek <code>web.php</code>, jo visam vajag sesijas/CSRF, ko <code>api.php</code> grupa pēc noklusējuma nesniedz.</p>
+      </div>
+
+      <h3>5. Frontend (Inertia lapa)</h3>
+      <p><code>resources/js/components/admin/Products.jsx</code> (+ <code>pages/admin/Products.jsx</code> re-export). Kontroliera <code>index()</code> metode atgriež <code>inertia('admin/Products', ['products' => Product::all()])</code>.</p>
+
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Paātrinājums - Migrāciju + Modeli + Kontrolieri var izveidot vienā komandā: <code>php artisan make:model Product -mcr</code> (<code>-m</code> = migration, <code>-c</code> = controller, <code>-r</code> = resource metodes).</p>
+      </div>
+    </section>
 </main>
 
-<script src="../js/shell.js?v=91"></script>
-<script src="../js/theme.js?v=91"></script>
-<script src="../js/main.js?v=91"></script>
+<script src="../js/shell.js?v=92"></script>
+<script src="../js/theme.js?v=92"></script>
+<script src="../js/main.js?v=92"></script>
 </body>
 </html>

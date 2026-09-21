@@ -901,6 +901,13 @@ footer.site-footer a:hover {
   margin-bottom: 44px;
   scroll-margin-top: 90px;
 }
+/* thin divider between sections, tinted with the page's own category
+   color (--page-accent) - a visual "new topic starts here" break so
+   scrolling past several notes doesn't read as one continuous wall */
+.doc-section + .doc-section {
+  padding-top: 40px;
+  border-top: 1px solid color-mix(in srgb, var(--page-accent) 35%, transparent);
+}
 /* sub-heading anchors (e.g. CPT sidebar sub-links) - land inside the
    band the scroll-spy observer tracks, so the highlight sticks after
    the jump settles, not just at the instant of the click */
