@@ -50,24 +50,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // own HTML, so results always match real content without a separate index
   // file to keep in sync manually. Cached in sessionStorage per cache-bust version.
   var SEARCH_PAGES = [
-    "pages/api.html", "pages/css-advanced.html", "pages/datubazes.html",
-    "pages/drosiba.html", "pages/gdpr.html", "pages/git.html",
-    "pages/integracijas.html", "pages/javascript.html", "pages/php.html",
-    "pages/laravel.html", "pages/react.html",
-    "pages/sagataves.html", "pages/seo.html", "pages/ssh.html",
-    "pages/web-izveide.html", "pages/web-problemas.html",
-    "pages/wordpress-problemas.html", "pages/wordpress-snippets.html",
-    "pages/wordpress.html", "pages/python-riki.html", "pages/riki.html",
-    "pages/woocommerce.html",
-    "pages/cheatsheet-api.html", "pages/cheatsheet-docker.html",
-    "pages/cheatsheet-git.html",
-    "pages/cheatsheet-javascript.html", "pages/cheatsheet-php.html",
-    "pages/cheatsheet-laravel.html", "pages/cheatsheet-react.html",
-    "pages/cheatsheet-ssh.html", "pages/cheatsheet-web.html",
-    "pages/cheatsheet-wordpress.html", "pages/docker.html",
-    "pages/vardnica.html"
+    "pages/laravel.html", "pages/riki.html"
   ];
-  var SEARCH_INDEX_VERSION = "88"; // bump together with the ?v= cache-bust number
+  var SEARCH_INDEX_VERSION = "91"; // bump together with the ?v= cache-bust number
   var searchIndex = null;
   var searchIndexPromise = null;
 

@@ -26,68 +26,17 @@ document.addEventListener("DOMContentLoaded", function () {
   // full NAV_DATA entries of their own - rendered as small links under the
   // category so they're reachable straight from the sidebar instead of
   // only via in-page body links or site search.
+  // Rebuilt from scratch after the full content wipe - only categories that
+  // actually have real content go here now. Add a new { name, href, cat }
+  // entry (and a --c-<cat> pair in css/style.css if it's a new color) each
+  // time a new topic gets its first real notes, instead of pre-listing
+  // everything up front like the old 19-category version did.
   var NAV_DATA = [
     {
-      group: "Valodas & Frameworks",
+      group: "Dokumentācija",
       items: [
-        { name: "WordPress", href: "pages/wordpress.html", cat: "wordpress", extras: [
-          { name: "Cheatsheet", href: "pages/cheatsheet-wordpress.html" },
-          { name: "Biežākās problēmas", href: "pages/wordpress-problemas.html" },
-          { name: "Koda fragmenti (Snippets)", href: "pages/wordpress-snippets.html" },
-          { name: "WooCommerce", href: "pages/woocommerce.html" }
-        ] },
-        { name: "JavaScript", href: "pages/javascript.html", cat: "js", extras: [
-          { name: "Cheatsheet", href: "pages/cheatsheet-javascript.html" }
-        ] },
-        { name: "React", href: "pages/react.html", cat: "react", extras: [
-          { name: "Cheatsheet", href: "pages/cheatsheet-react.html" }
-        ] },
-        { name: "PHP", href: "pages/php.html", cat: "php", extras: [
-          { name: "Cheatsheet", href: "pages/cheatsheet-php.html" }
-        ] },
-        { name: "Laravel", href: "pages/laravel.html", cat: "laravel", extras: [
-          { name: "Cheatsheet", href: "pages/cheatsheet-laravel.html" }
-        ] }
-      ]
-    },
-    {
-      group: "Serveris & infrastruktūra",
-      items: [
-        { name: "Tīkls", href: "pages/web-izveide.html", cat: "web", extras: [
-          { name: "Cheatsheet", href: "pages/cheatsheet-web.html" },
-          { name: "Biežākās problēmas", href: "pages/web-problemas.html" }
-        ] },
-        { name: "API", href: "pages/api.html", cat: "api", extras: [
-          { name: "Cheatsheet", href: "pages/cheatsheet-api.html" }
-        ] },
-        { name: "Git", href: "pages/git.html", cat: "git", extras: [
-          { name: "Cheatsheet", href: "pages/cheatsheet-git.html" }
-        ] },
-        { name: "SSH", href: "pages/ssh.html", cat: "ssh", extras: [
-          { name: "Cheatsheet", href: "pages/cheatsheet-ssh.html" }
-        ] },
-        { name: "Docker", href: "pages/docker.html", cat: "docker", extras: [
-          { name: "Cheatsheet", href: "pages/cheatsheet-docker.html" }
-        ] },
-        { name: "Datubāzes / SQL", href: "pages/datubazes.html", cat: "sql" }
-      ]
-    },
-    {
-      group: "Prakse & drošība",
-      items: [
-        { name: "SEO", href: "pages/seo.html", cat: "seo" },
-        { name: "Drošība", href: "pages/drosiba.html", cat: "security" },
-        { name: "GDPR / Sīkdatnes", href: "pages/gdpr.html", cat: "gdpr" },
-        { name: "HTML & CSS Advanced", href: "pages/css-advanced.html", cat: "css-adv" }
-      ]
-    },
-    {
-      group: "Uzziņas & rīki",
-      items: [
-        { name: "Sagataves", href: "pages/sagataves.html", cat: "templates" },
-        { name: "Rīki", href: "pages/riki.html", cat: "riki" },
-        { name: "Python rīki", href: "pages/python-riki.html", cat: "python" },
-        { name: "Vārdnīca", href: "pages/vardnica.html", cat: "vardnica" }
+        { name: "Laravel", href: "pages/laravel.html", cat: "laravel" },
+        { name: "Rīki", href: "pages/riki.html", cat: "riki" }
       ]
     }
   ];
@@ -104,24 +53,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // themselves NAV_DATA entries. Map cat-X -> the parent's href so the nav
   // still highlights the right category when browsing those pages.
   var CATEGORY_SLUG_MAP = {
-    "cat-api": "pages/api.html",
-    "cat-docker": "pages/docker.html",
-    "cat-git": "pages/git.html",
-    "cat-js": "pages/javascript.html",
     "cat-laravel": "pages/laravel.html",
-    "cat-php": "pages/php.html",
-    "cat-react": "pages/react.html",
-    "cat-ssh": "pages/ssh.html",
-    "cat-web": "pages/web-izveide.html",
-    "cat-wordpress": "pages/wordpress.html",
-    "cat-css-adv": "pages/css-advanced.html",
-    "cat-sql": "pages/datubazes.html",
-    "cat-security": "pages/drosiba.html",
-    "cat-gdpr": "pages/gdpr.html",
-    "cat-python": "pages/python-riki.html",
-    "cat-riki": "pages/riki.html",
-    "cat-templates": "pages/sagataves.html",
-    "cat-vardnica": "pages/vardnica.html"
+    "cat-riki": "pages/riki.html"
   };
 
   function currentCategoryHref() {
@@ -169,10 +102,34 @@ document.addEventListener("DOMContentLoaded", function () {
       '<div class="global-nav-search-results" id="global-search-results"></div>' +
       '</div>';
 
-    // category groups / links / cheatsheet extras intentionally not
-    // rendered - sidebar is brand + search only for now (per request);
-    // NAV_DATA and the render loop that used it are kept below (unused)
-    // so the full nav can come back with one revert instead of a rewrite.
+    html += '<nav class="global-nav-groups">';
+    NAV_DATA.forEach(function (group) {
+      html += '<div class="global-nav-group"><h4>' + escapeHtml(group.group) + '</h4>';
+      group.items.forEach(function (item) {
+        var isActive = item.href === current || (categoryHref !== null && item.href === categoryHref);
+        html += '<div class="global-nav-category">';
+        html += '<a class="global-nav-cat-link' + (isActive ? ' active' : '') + '" href="' + BASE + item.href + '">' +
+          '<span class="dot" style="background: var(--c-' + item.cat + ')"></span>' + escapeHtml(item.name) + '</a>';
+        if (item.extras && item.extras.length) {
+          html += '<div class="global-nav-extras">';
+          item.extras.forEach(function (extra) {
+            var extraActive = extra.href === current;
+            html += '<a class="' + (extraActive ? 'active' : '') + '" href="' + BASE + extra.href + '">' + escapeHtml(extra.name) + '</a>';
+          });
+          html += '</div>';
+        }
+        if (isActive && sections.length) {
+          html += '<div class="global-nav-sections">';
+          sections.forEach(function (sec) {
+            html += '<a href="#' + sec.id + '">' + escapeHtml(sec.title) + '</a>';
+          });
+          html += '</div>';
+        }
+        html += '</div>';
+      });
+      html += '</div>';
+    });
+    html += '</nav>';
 
     root.innerHTML = html;
     root.className = "global-nav";
@@ -222,24 +179,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // ---- search (self-contained copy of main.js's engine, same cache key,
   // so the two never double-fetch pages the other already indexed) ----
   var SEARCH_PAGES = [
-    "pages/api.html", "pages/css-advanced.html", "pages/datubazes.html",
-    "pages/drosiba.html", "pages/gdpr.html", "pages/git.html",
-    "pages/integracijas.html", "pages/javascript.html", "pages/php.html",
-    "pages/laravel.html", "pages/react.html",
-    "pages/sagataves.html", "pages/seo.html", "pages/ssh.html",
-    "pages/web-izveide.html", "pages/web-problemas.html",
-    "pages/wordpress-problemas.html", "pages/wordpress-snippets.html",
-    "pages/wordpress.html", "pages/python-riki.html", "pages/riki.html",
-    "pages/woocommerce.html",
-    "pages/cheatsheet-api.html", "pages/cheatsheet-docker.html",
-    "pages/cheatsheet-git.html",
-    "pages/cheatsheet-javascript.html", "pages/cheatsheet-php.html",
-    "pages/cheatsheet-laravel.html", "pages/cheatsheet-react.html",
-    "pages/cheatsheet-ssh.html", "pages/cheatsheet-web.html",
-    "pages/cheatsheet-wordpress.html", "pages/docker.html",
-    "pages/vardnica.html"
+    "pages/laravel.html", "pages/riki.html"
   ];
-  var SEARCH_INDEX_VERSION = "88";
+  var SEARCH_INDEX_VERSION = "91";
   var searchIndex = null;
   var searchIndexPromise = null;
 
