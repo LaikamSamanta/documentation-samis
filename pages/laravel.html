@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=100" />
+<link rel="stylesheet" href="../css/style.css?v=101" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -36,46 +36,62 @@
 
     <section class="doc-section" id="sanctum-vs-session">
       <h2>Sanctum vs sesiju autentifikācija (Inertia)</h2>
-      <p>Reāla arhitektūras izšķiršanās no <code>service-platform</code> projekta - kāpēc tas šobrīd ir divi atsevišķi projekti ar Sanctum tokeniem, nevis viens Inertia + Fortify monolīts, un kad tas otrs variants būtu bijis vienkāršāk.</p>
+      <p>Kāpēc <code>service-platform</code> ir divi atsevišķi projekti ar Sanctum tokeniem, nevis viens Inertia + Fortify monolīts.</p>
 
       <div class="doc-cards">
         <div class="doc-mini-card">
           <h4>Inertia + Fortify (nav izmantots)</h4>
           <ul>
-            <li>Viens Laravel projekts, viens deploy - backend un frontend kopā.</li>
-            <li>Autentifikācija caur sesijām, bez tokenu pārvaldības.</li>
-            <li>Admin panelis jāraksta pašam ar React/Inertia lapām (nav Filament gatavo tabulu/formu).</li>
-            <li>Vienkāršāk uzturēt, mazāk kustīgu daļu, ātrāk attīstīt.</li>
+            <li>Viens projekts, viens deploy, sesiju auth.</li>
+            <li>Admin panelis jāraksta pašam (nav Filament).</li>
+            <li>Vienkāršāk, mazāk kustīgu daļu.</li>
           </ul>
-          <p><strong>Trūkums:</strong> ja kādreiz tomēr gribēsies mobilo app vai atsevišķu izvietošanu - jāpārtaisa arhitektūra no nulles.</p>
+          <p><strong>Trūkums:</strong> mobile app vai atsevišķa izvietošana = pārtaisīt no nulles.</p>
         </div>
         <div class="doc-mini-card">
-          <h4>Sanctum + React Router (tā ir tagad)</h4>
+          <h4>Sanctum + React Router (tagad)</h4>
           <ul>
-            <li>Divi atsevišķi projekti - Laravel API (<code>service-platform</code>) + React Router frontend (<code>service-platform-public</code>), katrs ar savu deploy.</li>
-            <li>Autentifikācija caur Sanctum tokeniem.</li>
-            <li>Admin panelis caur Filament - gatavas tabulas/formas bez pašrakstīšanas.</li>
-            <li>Elastīgāk - API gatavs jauniem klientiem (mobile, trešā puse) bez pārtaisīšanas.</li>
+            <li>API (<code>service-platform</code>) + frontend (<code>service-platform-public</code>), katrs savs deploy.</li>
+            <li>Admin panelis caur Filament - bez pašrakstīšanas.</li>
+            <li>API gatavs jauniem klientiem (mobile, trešā puse).</li>
           </ul>
-          <p><strong>Trūkums:</strong> vairāk sarežģītības (CORS, tokeni, divi deploy procesi) - attaisnojas tikai tad, ja tas elastīgums tiešām tiek izmantots.</p>
+          <p><strong>Trūkums:</strong> CORS, tokeni, divi deploy procesi - attaisnojas tikai izmantojot elastīgumu.</p>
         </div>
       </div>
 
-      <p><strong>Kopsavilkums:</strong> ar Filament un iespējamu nākotnes API patērētāju Sanctum izvēle ir pamatota. Bez tiem diviem iemesliem Inertia + Fortify būtu bijusi vienkāršāka, tikpat laba izvēle.</p>
-
       <h3>Kāpēc tieši tokens, nevis sesijas cookie</h3>
-      <p><strong>Viss kopā (Inertia)</strong> - frontend un backend ir viena aplikācija, viens domēns. Pārlūks automātiski glabā un sūta sesijas cookie, tāpēc backend katrā pieprasījumā jau zina, kurš tu esi - tokens būtu lieks.</p>
-      <p><strong>Sanctum gadījumā (atsevišķi)</strong> - frontend un backend ir divas atšķirīgas programmas, varbūt pat citi domēni. Cookie automātiski nesūtīsies pāri uz backend, tāpēc vajag citu veidu, kā backend zina, kurš pieprasījumu sūta - tas ir tokens, ko frontend pats glabā un pievieno katram pieprasījumam.</p>
+      <div class="doc-diagram">
+        <svg viewBox="0 0 620 210" xmlns="http://www.w3.org/2000/svg">
+          <text x="10" y="16" class="dg-label">Inertia - viens domēns</text>
+          <rect x="10" y="26" width="130" height="46" rx="8" class="dg-node"/>
+          <text x="75" y="54" text-anchor="middle" class="dg-label">Pārlūks</text>
+          <path d="M140 49 H316" class="dg-line-accent"/>
+          <path d="M316 49 L306 44 L306 54 Z" class="dg-arrowhead-accent"/>
+          <text x="228" y="40" text-anchor="middle" class="dg-sublabel">cookie - automātiski</text>
+          <rect x="326" y="26" width="180" height="46" rx="8" class="dg-node-accent"/>
+          <text x="416" y="54" text-anchor="middle" class="dg-label-accent">Laravel backend</text>
+
+          <text x="10" y="106" class="dg-label">Sanctum - atsevišķi domēni</text>
+          <rect x="10" y="116" width="150" height="46" rx="8" class="dg-node"/>
+          <text x="85" y="144" text-anchor="middle" class="dg-label">React app</text>
+          <path d="M160 139 H336" class="dg-line-accent"/>
+          <path d="M336 139 L326 134 L326 144 Z" class="dg-arrowhead-accent"/>
+          <text x="248" y="130" text-anchor="middle" class="dg-sublabel">Bearer token - manuāli</text>
+          <rect x="346" y="116" width="150" height="46" rx="8" class="dg-node-accent"/>
+          <text x="421" y="144" text-anchor="middle" class="dg-label-accent">Laravel API</text>
+        </svg>
+        <p class="dg-caption">Vienā domēnā pārlūks pievieno cookie pats; atsevišķos domēnos backend to nesaņem, tāpēc frontend katram pieprasījumam manuāli pievieno tokenu.</p>
+      </div>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Tātad Sanctum vajag, ja: (1) ir vairāk kā viena frontend/klienta aplikācija (web + mobile, vai tava app + trešā puse), VAI (2) frontend ir pilnīgi atsevišķs projekts uz cita domēna, kur cookie sesijas automātiski nedarbotos. Ja tavu projektu kādreiz sadalītu divās daļās (piem., backend paliek Laravel, bet frontend pārtaisītu par atsevišķu React app citā portā/domēnā) - tad pēkšņi vajadzētu Sanctum, jo cookie vairs automātiski nestrādātu pāri šai robežai.</p>
+        <p>Sanctum vajag, ja: (1) vairāk kā viens klients (web + mobile, trešā puse), VAI (2) frontend ir atsevišķs projekts uz cita domēna.</p>
       </div>
 
       <h3>Postman + CSRF: <code>419</code> kļūda</h3>
-      <p>Laravel <code>web</code> maršrutiem pēc noklusējuma ir CSRF aizsardzība - ja Postman sūta <code>POST</code> bez derīga CSRF tokena, dabū <code>419</code> kļūdu, nevis savu loģiku. Lai to apietu testēšanai:</p>
+      <p><code>web</code> maršrutiem ir CSRF aizsardzība - <code>POST</code> bez derīga tokena dod <code>419</code>. Risinājums:</p>
       <ul>
-        <li>vispirms izsauc <code>GET</code> uz kādu lapu, lai dabūtu <code>XSRF-TOKEN</code> cookie, un pievieno to kā <code>X-XSRF-TOKEN</code> galveni <code>POST</code> pieprasījumam, vai</li>
-        <li>Postman kolekcijas iestatījumos ieslēdz cookie pārvaldību un izmanto pareizo secību (<code>GET</code> → paņem token → <code>POST</code> ar to).</li>
+        <li><code>GET</code> lapu → dabū <code>XSRF-TOKEN</code> cookie → pievieno kā <code>X-XSRF-TOKEN</code> galveni <code>POST</code>, vai</li>
+        <li>Postman: ieslēdz cookie pārvaldību, tad <code>GET</code> → <code>POST</code>.</li>
       </ul>
     </section>
 
@@ -86,7 +102,7 @@
 
     <section class="doc-section" id="jaunas-funkcijas-secība">
       <h2>Standarta secība, veidojot jaunu funkciju</h2>
-      <p>Ikreiz, kad service-platform vajag jaunu admin sadaļu (piem. "Products" - redzams sidebar), šie pieci soļi vienmēr notiek šādā secībā. Iemesls, kāpēc secība ir svarīga: kontrolieris izmanto modeli (<code>Product::all()</code>, <code>Product::create()</code>), un modelim jāzina, kādai tabulai/kolonnām tas atbilst - tāpēc migrācija un modelis vienmēr ir pirms kontroliera, ne otrādi.</p>
+      <p>Jaunai admin sadaļai (piem. "Products") - vienmēr šī secība, jo kontrolieris izmanto modeli (<code>Product::all()</code>), un modelim jāzina sava tabula/kolonnas:</p>
 
       <h3>1. Migrācija - tabulas struktūra</h3>
       <pre class="code-block"><span class="lang">bash</span><code>php artisan make:migration create_products_table
@@ -117,8 +133,8 @@ php artisan migrate</code></pre>
     </section>
 </main>
 
-<script src="../js/shell.js?v=100"></script>
-<script src="../js/theme.js?v=100"></script>
-<script src="../js/main.js?v=100"></script>
+<script src="../js/shell.js?v=101"></script>
+<script src="../js/theme.js?v=101"></script>
+<script src="../js/main.js?v=101"></script>
 </body>
 </html>
