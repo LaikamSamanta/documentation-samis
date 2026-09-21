@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "pages/cheatsheet-wordpress.html", "pages/docker.html",
     "pages/vardnica.html"
   ];
-  var SEARCH_INDEX_VERSION = "81"; // bump together with the ?v= cache-bust number
+  var SEARCH_INDEX_VERSION = "88"; // bump together with the ?v= cache-bust number
   var searchIndex = null;
   var searchIndexPromise = null;
 

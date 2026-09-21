@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=87" />
+<link rel="stylesheet" href="../css/style.css?v=88" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -35,80 +35,10 @@
     </div>
     <h1 style="margin-bottom:0;">React Cheatsheet</h1>
   </div>
-
-  <nav class="cheat-jump">
-    <a href="#ct-hooks">Hooks</a>
-    <a href="#ct-jsx">JSX &amp; Props</a>
-    <a href="#ct-lists">Saraksti &amp; formas</a>
-    <a href="#ct-router">Router</a>
-    <a href="#ct-testing">Testēšana</a>
-  </nav>
-
-  <section class="cheat-section" id="ct-hooks">
-    <h2>Hooks</h2>
-    <div class="cheat-grid">
-      <div class="cheat-card"><h4>useState</h4><p>State + funkcija to mainīt.</p><pre><code>const [n, setN] = useState(0);</code></pre></div>
-      <div class="cheat-card"><h4>useEffect</h4><p>Kods pēc renderēšanas, ar cleanup.</p><pre><code>useEffect(() => {
-  const id = setInterval(tick, 1000);
-  return () => clearInterval(id);
-}, []);</code></pre></div>
-      <div class="cheat-card"><h4>useRef</h4><p>DOM piekļuve vai vērtība bez re-renderēšanas.</p><pre><code>const ref = useRef(null);
-ref.current.focus();</code></pre></div>
-      <div class="cheat-card"><h4>useMemo</h4><p>Pārrēķina TIKAI, kad atkarības mainās.</p><pre><code>const filtered = useMemo(() => filter(items, q), [q]);</code></pre></div>
-      <div class="cheat-card"><h4>useContext</h4><p>Dati bez props cauri katrai starpkomponentei.</p><pre><code>const { theme } = useContext(ThemeContext);</code></pre></div>
-    </div>
-  </section>
-
-  <section class="cheat-section" id="ct-jsx">
-    <h2>JSX &amp; Props</h2>
-    <div class="cheat-grid">
-      <div class="cheat-card"><h4>Props destructuring</h4><p>Izņem konkrētus laukus tieši parametros.</p><pre><code>function User({ name, age }) { ... }</code></pre></div>
-      <div class="cheat-card"><h4>Fragment</h4><p>Vairāki elementi bez papildu DOM mezgla.</p><pre><code>&lt;&gt;&lt;h1&gt;A&lt;/h1&gt;&lt;p&gt;B&lt;/p&gt;&lt;/&gt;</code></pre></div>
-      <div class="cheat-card"><h4>className</h4><p>class ir rezervēts vārds JS - JSX izmanto className.</p><pre><code>&lt;div className="card"&gt;</code></pre></div>
-      <div class="cheat-card"><h4>children</h4><p>Automātisks prop starp atverošo/aizverošo tagu.</p><pre><code>function Card({ children }) { return &lt;div&gt;{children}&lt;/div&gt;; }</code></pre></div>
-    </div>
-  </section>
-
-  <section class="cheat-section" id="ct-lists">
-    <h2>Saraksti &amp; formas</h2>
-    <div class="cheat-grid">
-      <div class="cheat-card"><h4>.map() + key</h4><p>Unikāls key katram elementam, ne indekss.</p><pre><code>{items.map(i => &lt;li key={i.id}&gt;{i.name}&lt;/li&gt;)}</code></pre></div>
-      <div class="cheat-card"><h4>Controlled input</h4><p>value + onChange vienmēr kopā.</p><pre><code>&lt;input value={v} onChange={e => setV(e.target.value)} /&gt;</code></pre></div>
-      <div class="cheat-card"><h4>Ternārais</h4><p>Divas alternatīvas vienā izteiksmē.</p><pre><code>{loading ? &lt;Spinner /&gt; : &lt;Content /&gt;}</code></pre></div>
-      <div class="cheat-card"><h4>preventDefault</h4><p>Aptur pārlūka noklusējuma formas pārlādi.</p><pre><code>function onSubmit(e) { e.preventDefault(); }</code></pre></div>
-    </div>
-  </section>
-
-  <section class="cheat-section" id="ct-router">
-    <h2>Router</h2>
-    <div class="cheat-grid">
-      <div class="cheat-card"><h4>Instalācija</h4><p>Oficiālā maršrutēšanas bibliotēka.</p><pre><code>npm install react-router-dom</code></pre></div>
-      <div class="cheat-card"><h4>Routes</h4><p>Ceļa-uz-komponentu piesaiste.</p><pre><code>&lt;Route path="/posts/:id" element={&lt;Post /&gt;} /&gt;</code></pre></div>
-      <div class="cheat-card"><h4>useParams</h4><p>Nolasa URL parametrus.</p><pre><code>const { id } = useParams();</code></pre></div>
-      <div class="cheat-card"><h4>Link</h4><p>Navigācija BEZ pilnas lapas pārlādes.</p><pre><code>&lt;Link to="/posts/5"&gt;Raksts&lt;/Link&gt;</code></pre></div>
-    </div>
-  </section>
-
-  <section class="cheat-section" id="ct-testing">
-    <h2>Testēšana</h2>
-    <div class="cheat-grid">
-      <div class="cheat-card"><h4>render + screen</h4><p>Renderē komponentu testa vidē.</p><pre><code>render(&lt;Counter /&gt;);
-screen.getByText('Skaits: 0');</code></pre></div>
-      <div class="cheat-card"><h4>fireEvent</h4><p>Simulē lietotāja darbību.</p><pre><code>fireEvent.click(screen.getByText('+'));</code></pre></div>
-      <div class="cheat-card"><h4>jest-dom setup</h4><p>Nepieciešams toBeInTheDocument() u.c.</p><pre><code>// src/setupTests.js
-import '@testing-library/jest-dom';</code></pre></div>
-      <div class="cheat-card"><h4>Palaišana</h4><p>Izpilda visu testu komplektu.</p><pre><code>npx vitest run</code></pre></div>
-    </div>
-  </section>
-
-  <div class="doc-pager">
-    <a href="react.html"><span class="lbl">← Atpakaļ</span>Pilnā React dokumentācija</a>
-    <a class="to-next" href="../index.html"><span class="lbl">Atpakaļ →</span>Visas kategorijas</a>
-  </div>
 </main>
 
-<script src="../js/shell.js?v=87"></script>
-<script src="../js/theme.js?v=87"></script>
-<script src="../js/main.js?v=87"></script>
+<script src="../js/shell.js?v=88"></script>
+<script src="../js/theme.js?v=88"></script>
+<script src="../js/main.js?v=88"></script>
 </body>
 </html>

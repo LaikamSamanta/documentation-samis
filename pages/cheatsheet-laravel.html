@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=87" />
+<link rel="stylesheet" href="../css/style.css?v=88" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -35,96 +35,10 @@
     </div>
     <h1 style="margin-bottom:0;">Laravel Cheatsheet</h1>
   </div>
-
-  <nav class="cheat-jump">
-    <a href="#ct-artisan">Artisan</a>
-    <a href="#ct-routing">Routing</a>
-    <a href="#ct-eloquent">Eloquent</a>
-    <a href="#ct-migrations">Migrations</a>
-    <a href="#ct-blade">Blade</a>
-    <a href="#ct-testing">Testēšana</a>
-  </nav>
-
-  <section class="cheat-section" id="ct-artisan">
-    <h2>Artisan</h2>
-    <div class="cheat-grid">
-      <div class="cheat-card"><h4>make:model -mf</h4><p>Modelis + migrācija + factory vienā komandā.</p><pre><code>php artisan make:model Post -mf</code></pre></div>
-      <div class="cheat-card"><h4>make:controller --resource</h4><p>Controller ar visām 7 CRUD metodēm.</p><pre><code>php artisan make:controller PostController --resource</code></pre></div>
-      <div class="cheat-card"><h4>make:request</h4><p>Form Request validācijas klase.</p><pre><code>php artisan make:request StorePostRequest</code></pre></div>
-      <div class="cheat-card"><h4>tinker</h4><p>Interaktīva PHP konsole ar ielādētu Laravel kontekstu.</p><pre><code>php artisan tinker</code></pre></div>
-      <div class="cheat-card"><h4>route:list</h4><p>Visi reģistrētie maršruti.</p><pre><code>php artisan route:list</code></pre></div>
-      <div class="cheat-card"><h4>serve</h4><p>Iebūvēts dev serveris - der lokālai izstrādei.</p><pre><code>php artisan serve</code></pre></div>
-    </div>
-  </section>
-
-  <section class="cheat-section" id="ct-routing">
-    <h2>Routing</h2>
-    <div class="cheat-grid">
-      <div class="cheat-card"><h4>Route::get</h4><p>Pamata GET maršruts ar closure.</p><pre><code>Route::get('/x', fn () => 'Sveiki');</code></pre></div>
-      <div class="cheat-card"><h4>Route model binding</h4><p>{post} automātiski atrod Post ierakstu.</p><pre><code>Route::get('/posts/{post}', [PostController::class, 'show']);</code></pre></div>
-      <div class="cheat-card"><h4>Route::resource</h4><p>Visi 7 CRUD maršruti vienā rindā.</p><pre><code>Route::resource('posts', PostController::class);</code></pre></div>
-      <div class="cheat-card"><h4>Middleware grupa</h4><p>Piemēro middleware vairākiem maršrutiem uzreiz.</p><pre><code>Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', DashboardController::class);
-});</code></pre></div>
-    </div>
-  </section>
-
-  <section class="cheat-section" id="ct-eloquent">
-    <h2>Eloquent</h2>
-    <div class="cheat-grid">
-      <div class="cheat-card"><h4>Pamata CRUD</h4><p>Create/read/update/delete bez SQL.</p><pre><code>Post::create([...]);
-Post::findOrFail(1);
-$post->update([...]);
-$post->delete();</code></pre></div>
-      <div class="cheat-card"><h4>belongsTo / hasMany</h4><p>Attiecību abas puses.</p><pre><code>public function user(): BelongsTo {
-    return $this->belongsTo(User::class);
-}</code></pre></div>
-      <div class="cheat-card"><h4>Novērš N+1</h4><p>Ielādē attiecību VIENĀ papildu vaicājumā.</p><pre><code>Post::with('user')->get();</code></pre></div>
-      <div class="cheat-card"><h4>where + paginate</h4><p>Filtrēts, lapots saraksts.</p><pre><code>Post::where('published', true)->paginate(10);</code></pre></div>
-    </div>
-  </section>
-
-  <section class="cheat-section" id="ct-migrations">
-    <h2>Migrations</h2>
-    <div class="cheat-grid">
-      <div class="cheat-card"><h4>migrate</h4><p>Palaiž visas jaunās migrācijas.</p><pre><code>php artisan migrate</code></pre></div>
-      <div class="cheat-card"><h4>migrate:fresh</h4><p>Izdzēš VISU un veido no jauna - tikai izstrādei.</p><pre><code>php artisan migrate:fresh</code></pre></div>
-      <div class="cheat-card"><h4>foreignId + constrained</h4><p>Ārējā atslēga ar automātisku tabulas noteikšanu.</p><pre><code>$table->foreignId('user_id')->constrained()->cascadeOnDelete();</code></pre></div>
-    </div>
-  </section>
-
-  <section class="cheat-section" id="ct-blade">
-    <h2>Blade</h2>
-    <div class="cheat-grid">
-      <div class="cheat-card"><h4>@extends / @section</h4><p>Layout mantošana.</p><pre><code>@extends('layouts.app')
-@section('content') ... @endsection</code></pre></div>
-      <div class="cheat-card"><h4>@forelse</h4><p>Cikls ar iebūvētu "tukšs saraksts" gadījumu.</p><pre><code>@forelse ($posts as $post)
-    {{ $post->title }}
-@empty
-    Nav rakstu.
-@endforelse</code></pre></div>
-      <div class="cheat-card"><h4>Komponents ar slot</h4><p>x-alert automātiski atrod components/alert.blade.php.</p><pre><code>&lt;x-alert type="success"&gt;Teksts&lt;/x-alert&gt;</code></pre></div>
-    </div>
-  </section>
-
-  <section class="cheat-section" id="ct-testing">
-    <h2>Testēšana</h2>
-    <div class="cheat-grid">
-      <div class="cheat-card"><h4>RefreshDatabase</h4><p>Tīra datubāze katram testam.</p><pre><code>use RefreshDatabase;</code></pre></div>
-      <div class="cheat-card"><h4>Feature tests pieprasījums</h4><p>Reāls HTTP pieprasījums pret lietotni testā.</p><pre><code>$this->getJson('/api/posts')->assertOk();</code></pre></div>
-      <div class="cheat-card"><h4>actingAs</h4><p>Simulē pieteikušos lietotāju testā.</p><pre><code>$this->actingAs($user)->postJson('/api/posts', [...]);</code></pre></div>
-      <div class="cheat-card"><h4>artisan test</h4><p>Palaiž visu testu komplektu.</p><pre><code>php artisan test</code></pre></div>
-    </div>
-  </section>
-
-  <div class="doc-pager">
-    <a href="laravel.html"><span class="lbl">← Atpakaļ</span>Pilnā Laravel dokumentācija</a>
-    <a class="to-next" href="../index.html"><span class="lbl">Atpakaļ →</span>Visas kategorijas</a>
-  </div>
 </main>
 
-<script src="../js/shell.js?v=87"></script>
-<script src="../js/theme.js?v=87"></script>
-<script src="../js/main.js?v=87"></script>
+<script src="../js/shell.js?v=88"></script>
+<script src="../js/theme.js?v=88"></script>
+<script src="../js/main.js?v=88"></script>
 </body>
 </html>

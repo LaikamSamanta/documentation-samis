@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=87" />
+<link rel="stylesheet" href="../css/style.css?v=88" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -35,92 +35,10 @@
     </div>
     <h1 style="margin-bottom:0;">Docker Cheatsheet</h1>
   </div>
-
-  <nav class="cheat-jump">
-    <a href="#ct-images">Attēli (images)</a>
-    <a href="#ct-containers">Konteineri</a>
-    <a href="#ct-compose">Compose</a>
-    <a href="#ct-volumes">Volumes &amp; tīkli</a>
-    <a href="#ct-logs">Žurnāli &amp; atkļūdošana</a>
-    <a href="#ct-cleanup">Tīrīšana</a>
-  </nav>
-
-  <section class="cheat-section" id="ct-images">
-    <h2>Attēli (images)</h2>
-    <div class="cheat-grid">
-      <div class="cheat-card"><h4>docker build</h4><p>Uzbūvē image no Dockerfile pašreizējā mapē.</p><pre><code>docker build -t mans-app .</code></pre></div>
-      <div class="cheat-card"><h4>docker images</h4><p>Rāda visus lokāli lejupielādētos/uzbūvētos images.</p><pre><code>docker images</code></pre></div>
-      <div class="cheat-card"><h4>docker pull</h4><p>Lejupielādē gatavu image no Docker Hub.</p><pre><code>docker pull nginx:latest</code></pre></div>
-      <div class="cheat-card"><h4>docker rmi</h4><p>Izdzēš vienu image (jābūt bez aktīviem konteineriem, kas to lieto).</p><pre><code>docker rmi mans-app</code></pre></div>
-      <div class="cheat-card"><h4>docker tag</h4><p>Piešķir image papildu nosaukumu/versiju, piem. pirms push uz reģistru.</p><pre><code>docker tag mans-app mans-app:v2</code></pre></div>
-    </div>
-  </section>
-
-  <section class="cheat-section" id="ct-containers">
-    <h2>Konteineri</h2>
-    <div class="cheat-grid">
-      <div class="cheat-card"><h4>docker run</h4><p>Palaiž jaunu konteineru no image, fonā, ar porta piesaisti.</p><pre><code>docker run -d -p 8080:80 nginx</code></pre></div>
-      <div class="cheat-card"><h4>docker ps</h4><p>Palaistie konteineri / arī apturētie ar <code>-a</code>.</p><pre><code>docker ps
-docker ps -a</code></pre></div>
-      <div class="cheat-card"><h4>docker stop / start</h4><p>Aptur vai atsāk konteineru, nedzēšot to.</p><pre><code>docker stop konteiners
-docker start konteiners</code></pre></div>
-      <div class="cheat-card"><h4>docker restart</h4><p>Pārstartē konteineru - noder pēc konfigurācijas maiņas.</p><pre><code>docker restart konteiners</code></pre></div>
-      <div class="cheat-card"><h4>docker rm</h4><p>Izdzēš apturētu konteineru (pievieno <code>-f</code>, lai piespiestu, ja vēl darbojas).</p><pre><code>docker rm konteiners</code></pre></div>
-      <div class="cheat-card"><h4>docker exec</h4><p>Atver termināli KONTEINERA iekšienē - failu vai datubāzes pārbaudei.</p><pre><code>docker exec -it konteiners bash</code></pre></div>
-    </div>
-  </section>
-
-  <section class="cheat-section" id="ct-compose">
-    <h2>Docker Compose</h2>
-    <div class="cheat-grid">
-      <div class="cheat-card"><h4>docker compose up</h4><p>Palaiž visus servisus no docker-compose.yml fonā.</p><pre><code>docker compose up -d</code></pre></div>
-      <div class="cheat-card"><h4>docker compose down</h4><p>Aptur un izdzēš visus servisus (volumes paliek droši).</p><pre><code>docker compose down</code></pre></div>
-      <div class="cheat-card"><h4>docker compose build</h4><p>Pārbūvē images pēc Dockerfile vai atkarību izmaiņām.</p><pre><code>docker compose build</code></pre></div>
-      <div class="cheat-card"><h4>docker compose restart</h4><p>Pārstartē VIENU konkrētu servisu, neietekmējot pārējos.</p><pre><code>docker compose restart wordpress</code></pre></div>
-      <div class="cheat-card"><h4>docker compose exec</h4><p>Termināls konkrētā compose servisā.</p><pre><code>docker compose exec wordpress bash</code></pre></div>
-      <div class="cheat-card"><h4>docker compose ps</h4><p>Rāda visu compose projekta servisu statusu.</p><pre><code>docker compose ps</code></pre></div>
-    </div>
-  </section>
-
-  <section class="cheat-section" id="ct-volumes">
-    <h2>Volumes &amp; tīkli</h2>
-    <div class="cheat-grid">
-      <div class="cheat-card"><h4>docker volume ls</h4><p>Rāda visus Docker pārvaldītos volumes (pastāvīgos datus).</p><pre><code>docker volume ls</code></pre></div>
-      <div class="cheat-card"><h4>docker volume rm</h4><p>Izdzēš volume - <strong>neatgriezeniski</strong> dzēš tajā glabātos datus.</p><pre><code>docker volume rm db_dati</code></pre></div>
-      <div class="cheat-card"><h4>docker network ls</h4><p>Rāda visus Docker tīklus, kas savieno konteinerus savā starpā.</p><pre><code>docker network ls</code></pre></div>
-      <div class="cheat-card"><h4>docker network inspect</h4><p>Rāda, kuri konteineri pievienoti konkrētam tīklam.</p><pre><code>docker network inspect tikls</code></pre></div>
-    </div>
-  </section>
-
-  <section class="cheat-section" id="ct-logs">
-    <h2>Žurnāli &amp; atkļūdošana</h2>
-    <div class="cheat-grid">
-      <div class="cheat-card"><h4>docker logs</h4><p>Konteinera izvades žurnāls, <code>-f</code> seko tiešraidē.</p><pre><code>docker logs -f konteiners</code></pre></div>
-      <div class="cheat-card"><h4>docker compose logs</h4><p>Tas pats, bet konkrētam compose servisam.</p><pre><code>docker compose logs -f wordpress</code></pre></div>
-      <div class="cheat-card"><h4>docker inspect</h4><p>Pilna konteinera/image konfigurācija JSON formātā (porti, volumes, env).</p><pre><code>docker inspect konteiners</code></pre></div>
-      <div class="cheat-card"><h4>docker stats</h4><p>CPU/RAM/tīkla lietojums visiem palaistajiem konteineriem, tiešraidē.</p><pre><code>docker stats</code></pre></div>
-      <div class="cheat-card"><h4>docker top</h4><p>Rāda procesus, kas darbojas konteinera iekšienē.</p><pre><code>docker top konteiners</code></pre></div>
-    </div>
-  </section>
-
-  <section class="cheat-section" id="ct-cleanup">
-    <h2>Tīrīšana</h2>
-    <div class="cheat-grid">
-      <div class="cheat-card"><h4>docker system prune</h4><p>Noņem NEIZMANTOTUS images/konteinerus/build kešu - volumes paliek droši.</p><pre><code>docker system prune</code></pre></div>
-      <div class="cheat-card"><h4>docker container prune</h4><p>Izdzēš tikai apturētos konteinerus.</p><pre><code>docker container prune</code></pre></div>
-      <div class="cheat-card"><h4>docker image prune</h4><p>Izdzēš tikai neizmantotos (dangling) images.</p><pre><code>docker image prune</code></pre></div>
-      <div class="cheat-card"><h4>docker system prune -a --volumes</h4><p><strong>Bīstami</strong> - izdzēš arī VISUS neizmantotos volumes (dati zūd neatgriezeniski). Lieto tikai, ja tiešām jāatbrīvo maksimāli daudz vietas.</p><pre><code>docker system prune -a --volumes</code></pre></div>
-    </div>
-  </section>
-
-  <div class="doc-pager">
-    <a href="docker.html"><span class="lbl">← Atpakaļ</span>Pilnā Docker dokumentācija</a>
-    <a class="to-next" href="../index.html"><span class="lbl">Atpakaļ →</span>Visas kategorijas</a>
-  </div>
 </main>
 
-<script src="../js/shell.js?v=87"></script>
-<script src="../js/theme.js?v=87"></script>
-<script src="../js/main.js?v=87"></script>
+<script src="../js/shell.js?v=88"></script>
+<script src="../js/theme.js?v=88"></script>
+<script src="../js/main.js?v=88"></script>
 </body>
 </html>
