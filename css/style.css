@@ -2538,6 +2538,41 @@ body.has-global-nav {
   justify-content: center;
 }
 
+/* always-visible sidebar collapse handle - a small chevron tab poking
+   out from the sidebar's right edge (same idea as VS Code's sidebar
+   collapse arrow), so closing it doesn't rely on discovering that the
+   terminal dots are clickable. */
+.global-nav-collapse-handle {
+  position: fixed;
+  top: 50%;
+  left: 272px;
+  transform: translate(-50%, -50%);
+  z-index: 41;
+  width: 20px;
+  height: 40px;
+  padding: 0;
+  border-radius: 0 6px 6px 0;
+  border: 1px solid var(--border);
+  border-left: none;
+  background: var(--bg-card);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: left 0.2s var(--ease), color 0.15s var(--ease), background 0.15s var(--ease);
+}
+.global-nav-collapse-handle:hover {
+  color: var(--accent);
+  background: var(--bg-card-hover);
+}
+body.sidebar-collapsed .global-nav-collapse-handle {
+  left: 44px;
+}
+@media (max-width: 900px) {
+  .global-nav-collapse-handle { display: none; }
+}
+
 .global-main {
   margin-left: 272px;
   transition: margin-left 0.2s var(--ease);

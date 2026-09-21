@@ -139,23 +139,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
   renderNav();
 
-  // Sidebar collapse - clicking the terminal window dots "closes" the
-  // sidebar down to a thin rail (like minimizing a terminal window),
-  // click again to reopen. Desktop-only convenience (mobile already has
-  // its own open/closed toggle below); state persists across pages.
+  // Sidebar collapse - shrinks the sidebar down to a thin rail (like
+  // minimizing a terminal window), click again to reopen. Desktop-only
+  // convenience (mobile already has its own open/closed toggle below);
+  // state persists across pages. Two ways to trigger it: the terminal
+  // dots (nice easter egg, but easy to miss) and an always-visible
+  // chevron handle on the sidebar's edge (the actual discoverable one).
   var COLLAPSE_KEY = "docsamis-sidebar-collapsed";
+  if (localStorage.getItem(COLLAPSE_KEY) === "1") {
+    document.body.classList.add("sidebar-collapsed");
+  }
+  function toggleSidebar() {
+    var collapsed = document.body.classList.toggle("sidebar-collapsed");
+    localStorage.setItem(COLLAPSE_KEY, collapsed ? "1" : "0");
+    updateCollapseHandle();
+  }
   var dots = document.querySelector(".term-dots");
   if (dots) {
-    if (localStorage.getItem(COLLAPSE_KEY) === "1") {
-      document.body.classList.add("sidebar-collapsed");
-    }
     dots.style.cursor = "pointer";
     dots.title = "Aizvērt/atvērt sānjoslu";
-    dots.addEventListener("click", function () {
-      var collapsed = document.body.classList.toggle("sidebar-collapsed");
-      localStorage.setItem(COLLAPSE_KEY, collapsed ? "1" : "0");
-    });
+    dots.addEventListener("click", toggleSidebar);
   }
+  var collapseHandle = document.createElement("button");
+  collapseHandle.className = "global-nav-collapse-handle";
+  collapseHandle.setAttribute("aria-label", "Aizvērt/atvērt sānjoslu");
+  function updateCollapseHandle() {
+    var isCollapsed = document.body.classList.contains("sidebar-collapsed");
+    collapseHandle.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="' + (isCollapsed ? "m10 6 6 6-6 6" : "m14 6-6 6 6 6") + '"/></svg>';
+    collapseHandle.title = isCollapsed ? "Atvērt sānjoslu" : "Aizvērt sānjoslu";
+  }
+  updateCollapseHandle();
+  collapseHandle.addEventListener("click", toggleSidebar);
+  root.parentNode.insertBefore(collapseHandle, root.nextSibling);
 
   // mobile toggle
   var toggle = document.createElement("button");
