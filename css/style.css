@@ -10,6 +10,12 @@
      the whole site without needing to touch each component's own rules. */
   --font-sans: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
   --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+  /* Body prose (paragraphs/lists) reads as one uniform gray block in pure
+     monospace at any real length - every character the same width kills
+     the rhythm that makes text easy to scan. Headings, code, nav and
+     labels all stay --font-mono for the terminal look; only running text
+     switches to the OS UI font, which is what it's actually optimized for. */
+  --font-prose: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
   --radius-sm: 3px;
   --radius-md: 4px;
@@ -286,6 +292,11 @@ button:focus-visible {
 
 code {
   font-family: var(--font-mono);
+}
+
+/* running prose (not headings/code/nav/buttons/labels) - see --font-prose above */
+p, li {
+  font-family: var(--font-prose);
 }
 
 /* ---------- Background ambience ---------- */
