@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=113" />
+<link rel="stylesheet" href="../css/style.css?v=114" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -140,7 +140,7 @@
             <div class="doc-step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
             <div class="doc-step">
               <div class="doc-step-num">2</div>
-              <div class="doc-step-body"><p>Noskaidro, kur pārvaldīta DNS zona - pie manis (Plesk) vai jau tur, kur domēns reģistrēts/pie jaunā hostinga. Tas nosaka, kurš no zemāk esošajiem soļiem attiecas uz mani.</p></div>
+              <div class="doc-step-body"><p>Kur jāmaina DNS ieraksti, nosaka nevis tas, kur domēns reģistrēts, bet domēna <strong>nameserveri (NS)</strong> - pārbaudi ar <code>nslookup -type=ns domēns.lv</code> (vai WHOIS). Ja tie norāda uz Plesk servera nameserveriem - DNS zonu pārvaldu es; ja uz reģistratora vai trešās puses (piem. Cloudflare) nameserveriem - DNS jāmaina tur.</p></div>
             </div>
             <div class="doc-step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
             <div class="doc-step">
@@ -150,7 +150,7 @@
             <div class="doc-step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
             <div class="doc-step">
               <div class="doc-step-num">4</div>
-              <div class="doc-step-body"><p>Ja domēns/nameserveri pāriet uz jauno hostingu - ierakstus tur, kur domēns reģistrēts (reģistratora panelī), no šī brīža maina viņi paši; man ierakstos vairs nekas nav jāmaina.</p></div>
+              <div class="doc-step-body"><p>Ja nameserveri pāriet uz jauno hostingu (vai citu, kur DNS pārvaldīts) - ierakstus no šī brīža maina viņi paši, savā DNS panelī; man ierakstos vairs nekas nav jāmaina.</p></div>
             </div>
           </div>
           </div>
@@ -159,8 +159,8 @@
     </section>
 </main>
 
-<script src="../js/shell.js?v=113"></script>
-<script src="../js/theme.js?v=113"></script>
-<script src="../js/main.js?v=113"></script>
+<script src="../js/shell.js?v=114"></script>
+<script src="../js/theme.js?v=114"></script>
+<script src="../js/main.js?v=114"></script>
 </body>
 </html>
