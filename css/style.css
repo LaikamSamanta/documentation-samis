@@ -1093,7 +1093,12 @@ footer.site-footer a:hover {
   line-height: 1.6;
   color: var(--text-secondary);
 }
-.doc-step-body code { font-size: 12px; }
+.doc-step-body code {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--page-accent-2);
+}
+.doc-step-body strong { color: var(--text); }
 .doc-step-arrow {
   display: flex;
   justify-content: center;
