@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=112" />
+<link rel="stylesheet" href="../css/style.css?v=113" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -140,12 +140,17 @@
             <div class="doc-step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
             <div class="doc-step">
               <div class="doc-step-num">2</div>
-              <div class="doc-step-body"><p>Pirms pārslēgšanas samazini DNS ierakstu <strong>TTL</strong> (piem. uz 300 sekundēm), lai izmaiņas izplatās ātrāk.</p></div>
+              <div class="doc-step-body"><p>Noskaidro, kur pārvaldīta DNS zona - pie manis (Plesk) vai jau tur, kur domēns reģistrēts/pie jaunā hostinga. Tas nosaka, kurš no zemāk esošajiem soļiem attiecas uz mani.</p></div>
             </div>
             <div class="doc-step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
             <div class="doc-step">
               <div class="doc-step-num">3</div>
-              <div class="doc-step-body"><p>Ja DNS zonu turpinu pārvaldīt es - maini <code>A</code>/<code>AAAA</code> un <code>MX</code> uz vērtībām, ko iedod klients/jaunais hostings. Ja nameserveri pāriet uz jauno hostingu - to visu no šī brīža dara viņi, man ierakstos vairs nekas nav jāmaina.</p></div>
+              <div class="doc-step-body"><p>Ja DNS zonu turpinu pārvaldīt es - pirms pārslēgšanas samazini ierakstu <strong>TTL</strong> (piem. uz 300 sekundēm), lai izmaiņas izplatās ātrāk, tad nomaini <code>A</code>/<code>AAAA</code> un <code>MX</code> uz IP/serveriem, ko iedod jaunais hostings.</p></div>
+            </div>
+            <div class="doc-step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
+            <div class="doc-step">
+              <div class="doc-step-num">4</div>
+              <div class="doc-step-body"><p>Ja domēns/nameserveri pāriet uz jauno hostingu - ierakstus tur, kur domēns reģistrēts (reģistratora panelī), no šī brīža maina viņi paši; man ierakstos vairs nekas nav jāmaina.</p></div>
             </div>
           </div>
           </div>
@@ -154,8 +159,8 @@
     </section>
 </main>
 
-<script src="../js/shell.js?v=112"></script>
-<script src="../js/theme.js?v=112"></script>
-<script src="../js/main.js?v=112"></script>
+<script src="../js/shell.js?v=113"></script>
+<script src="../js/theme.js?v=113"></script>
+<script src="../js/main.js?v=113"></script>
 </body>
 </html>
