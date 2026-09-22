@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=103" />
+<link rel="stylesheet" href="../css/style.css?v=104" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -87,32 +87,19 @@
 
       <p>MX un citi DNS ieraksti, kas šeit pieminēti, paskaidroti sadaļā <a href="#dns-ieraksti">DNS ieraksti - kas jāzina</a> augstāk.</p>
 
-      <h3>Migrācijas scenāriji - kas jādara katrā gadījumā</h3>
+      <h3>Kad pasts pāriet citur - kas man jādara</h3>
 
-      <div class="doc-cards">
-        <div class="doc-mini-card">
-          <h4>A) Tikai pastkaste pāriet citur (hosting paliek)</h4>
-          <p>Mājaslapa paliek uz Plesk, pasts pāriet uz citu pakalpojumu (piem. Google Workspace).</p>
-          <ul>
-            <li>Plesk: <code>Not configured</code> (vai <code>Disabled for incoming mail</code>, ja izejošais <code>mail()</code>/<code>wp_mail()</code> vēl jāpatur caur Sendmail).</li>
-            <li>DNS: <code>MX</code> ieraksts jāmaina uz jaunā pakalpojuma serveriem. <code>A</code> ieraksts paliek nemainīgs - mājaslapa neko nejūt.</li>
-            <li>Ja jaunais pakalpojums prasa SPF/DKIM (gandrīz vienmēr prasa) - jāpievieno/jāatjauno attiecīgie <code>TXT</code> ieraksti, citādi jaunā pasta vēstules var iekrist spamā.</li>
-          </ul>
-        </div>
-        <div class="doc-mini-card">
-          <h4>B) Gan hosting, gan pastkaste pāriet citur</h4>
-          <p>Pilna pāreja uz jaunu serveri/hostingu - mainās viss.</p>
-          <ul>
-            <li>DNS: <code>A</code> (un <code>AAAA</code>, ja lieto) uz jaunā hostinga IP, <code>MX</code> uz jaunā pasta servera, <code>TXT</code>/SPF jāatjauno ar jaunā servera atļauju.</li>
-            <li>Pirms migrācijas samazini DNS ierakstu <strong>TTL</strong> (piem. uz 300 sekundēm) - izmaiņas izplatīsies ātrāk, kad pienāks brīdis pārslēgt.</li>
-            <li>Ja mainās arī reģistrators/nameserveri (kur DNS zona pārvaldīta) - tas ir papildu solis reģistratora panelī, atsevišķi no pašiem ierakstiem.</li>
-          </ul>
-        </div>
+      <div class="doc-mini-card">
+        <p>Mājaslapa paliek uz Plesk, pasts pāriet uz citu pakalpojumu (piem. Google Workspace).</p>
+        <ul>
+          <li>Plesk: <code>Not configured</code> (vai <code>Disabled for incoming mail</code>, ja izejošais <code>mail()</code>/<code>wp_mail()</code> vēl jāpatur caur Sendmail).</li>
+          <li>DNS: <code>MX</code> ieraksts jāmaina uz jaunā pakalpojuma serveriem. <code>A</code> ieraksts paliek nemainīgs - mājaslapa neko nejūt.</li>
+        </ul>
       </div>
 
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Abos gadījumos - vispirms pārliecinies, ka jaunais pasts <em>saņem</em> vēstules (MX pārslēgts un darbojas), un tikai tad Plesk pusē pārslēdz uz <strong>Not configured</strong>. Citādi īslaicīgi divi serveri var "strīdēties" par to pašu pastu, vai daļa vēstuļu var pazust pārslēgšanās brīdī.</p>
+        <p>Vispirms nomaini <code>MX</code> ierakstu un pagaidi, kamēr tas nostrādā, un tikai tad Plesk pusē pārslēdz uz <strong>Not configured</strong> - citādi var pazust vēstules pārslēgšanās brīdī.</p>
       </div>
 
       <div class="callout note">
@@ -122,8 +109,8 @@
     </section>
 </main>
 
-<script src="../js/shell.js?v=103"></script>
-<script src="../js/theme.js?v=103"></script>
-<script src="../js/main.js?v=103"></script>
+<script src="../js/shell.js?v=104"></script>
+<script src="../js/theme.js?v=104"></script>
+<script src="../js/main.js?v=104"></script>
 </body>
 </html>
