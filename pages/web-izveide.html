@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=114" />
+<link rel="stylesheet" href="../css/style.css?v=115" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -140,7 +140,7 @@
             <div class="doc-step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
             <div class="doc-step">
               <div class="doc-step-num">2</div>
-              <div class="doc-step-body"><p>Kur jāmaina DNS ieraksti, nosaka nevis tas, kur domēns reģistrēts, bet domēna <strong>nameserveri (NS)</strong> - pārbaudi ar <code>nslookup -type=ns domēns.lv</code> (vai WHOIS). Ja tie norāda uz Plesk servera nameserveriem - DNS zonu pārvaldu es; ja uz reģistratora vai trešās puses (piem. Cloudflare) nameserveriem - DNS jāmaina tur.</p></div>
+              <div class="doc-step-body"><p>Kur jāmaina DNS ieraksti, nosaka domēna <strong>nameserveri (NS)</strong>, ne tas, kur domēns reģistrēts. Piem. .lv domēniem nic.lv panelī ir redzams/maināms tikai deleģējums - "šim domēnam jautā ŠIEM nameserveriem". Kamēr tur ir norādīti Plesk nameserveri, DNS zonu pārvaldu es (Plesk); ja kāds tos nomaina uz cita hostinga vai Cloudflare nameserveriem, DNS pārvaldība pāriet turp. Pārbaudi ar <code>nslookup -type=ns domēns.lv</code> (vai WHOIS).</p></div>
             </div>
             <div class="doc-step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
             <div class="doc-step">
@@ -159,8 +159,8 @@
     </section>
 </main>
 
-<script src="../js/shell.js?v=114"></script>
-<script src="../js/theme.js?v=114"></script>
-<script src="../js/main.js?v=114"></script>
+<script src="../js/shell.js?v=115"></script>
+<script src="../js/theme.js?v=115"></script>
+<script src="../js/main.js?v=115"></script>
 </body>
 </html>
