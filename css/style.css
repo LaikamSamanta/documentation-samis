@@ -1093,6 +1093,7 @@ footer.site-footer a:hover {
   line-height: 1.6;
   color: var(--text-secondary);
 }
+.doc-step-body p + p { margin-top: 8px; }
 .doc-step-body code {
   font-size: 12px;
   font-weight: 700;
