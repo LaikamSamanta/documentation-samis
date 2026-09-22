@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=110" />
+<link rel="stylesheet" href="../css/style.css?v=111" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -90,7 +90,12 @@
       <h3>Migrācijas gadījumi - kas man jādara, solis pa solim</h3>
 
       <div class="doc-steps-cols">
-        <div class="doc-steps-col">
+        <div class="term-window">
+          <div class="term-window-header">
+            <span class="term-window-dots"></span>
+            <span class="term-window-title">migracija-a.sh</span>
+          </div>
+          <div class="term-window-body">
           <h4>A) Tikai pasts pāriet citur (hosting paliek pie manis)</h4>
           <div class="doc-steps">
             <div class="doc-step">
@@ -113,8 +118,14 @@
               <div class="doc-step-body"><p>Ja gribi, lai WordPress izejošais pasts iet caur jauno hostingu - pārslēdz SMTP turp. Ja paliek uz Plesk Sendmail, domēna SPF to vairs neatļaus un vēstules nonāks spamā vai netiks pieņemtas.</p></div>
             </div>
           </div>
+          </div>
         </div>
-        <div class="doc-steps-col">
+        <div class="term-window">
+          <div class="term-window-header">
+            <span class="term-window-dots"></span>
+            <span class="term-window-title">migracija-b.sh</span>
+          </div>
+          <div class="term-window-body">
           <h4>B) Viss (hosting un pasts) pāriet prom no manis</h4>
           <div class="doc-steps">
             <div class="doc-step">
@@ -132,13 +143,14 @@
               <div class="doc-step-body"><p>Ja DNS zonu turpinu pārvaldīt es - maini <code>A</code>/<code>AAAA</code> un <code>MX</code> uz vērtībām, ko iedod klients/jaunais hostings. Ja nameserveri pāriet uz jauno hostingu - to visu no šī brīža dara viņi, man ierakstos vairs nekas nav jāmaina.</p></div>
             </div>
           </div>
+          </div>
         </div>
       </div>
     </section>
 </main>
 
-<script src="../js/shell.js?v=110"></script>
-<script src="../js/theme.js?v=110"></script>
-<script src="../js/main.js?v=110"></script>
+<script src="../js/shell.js?v=111"></script>
+<script src="../js/theme.js?v=111"></script>
+<script src="../js/main.js?v=111"></script>
 </body>
 </html>
