@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=107" />
+<link rel="stylesheet" href="../css/style.css?v=108" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -113,13 +113,13 @@
 
       <div class="callout note">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16v-4M12 8h.01M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"/></svg>
-        <p>Ja pasts paliek uz Plesk (<code>Enabled</code>) - par SMTP spraudni WordPress var neuztraukties, <code>wp_mail()</code>/<code>mail()</code> strādā tieši caur Sendmail, un tas sakrīt ar domēna SPF. Bet A) gadījumā (pasts pāriet citur, lapa paliek uz Plesk) izejošais pasts SMTP <strong>ir jāpārslēdz</strong> uz jaunā hostinga serveri - Sendmail sūtīs no Plesk, kuru domēna SPF vairs neatļauj, tāpēc vēstules nonāks spamā vai netiks pieņemtas vispār.</p>
+        <p>Ja pasts paliek uz Plesk (<code>Enabled</code>) - par SMTP spraudni WordPress var neuztraukties, <code>wp_mail()</code>/<code>mail()</code> strādā tieši caur Sendmail. Bet A) gadījumā (pasts pāriet citur, lapa paliek uz Plesk) - ja gribi, lai izejošais pasts nonāk (piegādājas) caur jauno hostingu, WordPress SMTP <strong>jāpārslēdz</strong> uz jaunā hostinga serveri; ja paliek uz Plesk Sendmail, tas sūtīs no domēna, kuru vairs neatļauj tā SPF, un vēstules nonāks spamā vai netiks pieņemtas vispār.</p>
       </div>
     </section>
 </main>
 
-<script src="../js/shell.js?v=107"></script>
-<script src="../js/theme.js?v=107"></script>
-<script src="../js/main.js?v=107"></script>
+<script src="../js/shell.js?v=108"></script>
+<script src="../js/theme.js?v=108"></script>
+<script src="../js/main.js?v=108"></script>
 </body>
 </html>
