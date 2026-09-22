@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=111" />
+<link rel="stylesheet" href="../css/style.css?v=112" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -100,21 +100,26 @@
           <div class="doc-steps">
             <div class="doc-step">
               <div class="doc-step-num">1</div>
-              <div class="doc-step-body"><p>Ja grib paturēt veco pastu - pārkopē to caur IMAP (piem. <code>imapsync</code> vai pakalpojuma "import from IMAP"), kamēr abas pastkastes vēl pastāv paralēli.</p></div>
+              <div class="doc-step-body"><p>DNS: nomaini <code>MX</code> ierakstu uz jaunā pakalpojuma serveriem (<code>A</code> paliek nemainīgs).</p></div>
             </div>
             <div class="doc-step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
             <div class="doc-step">
               <div class="doc-step-num">2</div>
-              <div class="doc-step-body"><p>DNS: nomaini <code>MX</code> ierakstu uz jaunā pakalpojuma serveriem (<code>A</code> paliek nemainīgs) un pagaidi, kamēr izmaiņas nostrādā.</p></div>
+              <div class="doc-step-body"><p>Plesk: pārslēdz uz <code>Disabled for incoming mail</code> (ne uzreiz <code>Not configured</code>). Kamēr paliek <code>Enabled</code>, lokālā pastkaste var neļaut jaunajam hostingam reāli sākt saņemt jaunos e-pastus, pat ja <code>MX</code> jau pārslēgts. Šis iestatījums neko neizdzēš - vecās vēstules paliek pastkastē, tās tikai tehniski vairs nesaņem jaunas.</p></div>
             </div>
             <div class="doc-step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
             <div class="doc-step">
               <div class="doc-step-num">3</div>
-              <div class="doc-step-body"><p>Plesk: pārslēdz uz <code>Not configured</code> (vai <code>Disabled for incoming mail</code>, ja izejošais <code>mail()</code>/<code>wp_mail()</code> vēl jāpatur caur Sendmail). <strong>Not configured pastāvīgi izdzēš pastkastes</strong> - tāpēc 1. solis ir pirms šī.</p></div>
+              <div class="doc-step-body"><p>Ja vecās vēstules jāpārceļ - tās var importēt caur IMAP; ja jaunajam hostingam iedod pastkastes e-pastu un paroli, viņi to var izdarīt paši, nav obligāti jādara pašam.</p></div>
             </div>
             <div class="doc-step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
             <div class="doc-step">
               <div class="doc-step-num">4</div>
+              <div class="doc-step-body"><p>Kad vecā pastkaste vairs nav vajadzīga - vari pāriet uz <code>Not configured</code>, kas pastāvīgi izdzēš pastkasti.</p></div>
+            </div>
+            <div class="doc-step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
+            <div class="doc-step">
+              <div class="doc-step-num">5</div>
               <div class="doc-step-body"><p>Ja gribi, lai WordPress izejošais pasts iet caur jauno hostingu - pārslēdz SMTP turp. Ja paliek uz Plesk Sendmail, domēna SPF to vairs neatļaus un vēstules nonāks spamā vai netiks pieņemtas.</p></div>
             </div>
           </div>
@@ -130,7 +135,7 @@
           <div class="doc-steps">
             <div class="doc-step">
               <div class="doc-step-num">1</div>
-              <div class="doc-step-body"><p>Ja grib paturēt veco pastu - pārkopē to caur IMAP pirms pārslēgšanas.</p></div>
+              <div class="doc-step-body"><p>Ja grib paturēt veco pastu - to var importēt caur IMAP; ja jaunajam hostingam iedod pastkastes e-pastu un paroli, viņi to var izdarīt paši.</p></div>
             </div>
             <div class="doc-step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
             <div class="doc-step">
@@ -149,8 +154,8 @@
     </section>
 </main>
 
-<script src="../js/shell.js?v=111"></script>
-<script src="../js/theme.js?v=111"></script>
-<script src="../js/main.js?v=111"></script>
+<script src="../js/shell.js?v=112"></script>
+<script src="../js/theme.js?v=112"></script>
+<script src="../js/main.js?v=112"></script>
 </body>
 </html>
