@@ -1122,6 +1122,8 @@ pre.code-block code {
 .callout.tip svg { color: #4ade80; }
 .callout.warn { border-color: rgba(250, 204, 21, 0.3); }
 .callout.warn svg { color: #facc15; }
+.callout.note { border-color: rgba(96, 165, 250, 0.3); }
+.callout.note svg { color: #60a5fa; }
 
 /* ---------- Concept diagrams - hand-authored inline SVG, themed via
    the same CSS vars as the rest of the page (incl. --page-accent, so

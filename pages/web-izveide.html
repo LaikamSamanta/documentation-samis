@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=102" />
+<link rel="stylesheet" href="../css/style.css?v=103" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -33,6 +33,31 @@
       </div>
       <h1 style="margin-bottom:0;">Tīkls</h1>
     </div>
+
+    <section class="doc-section" id="dns-ieraksti">
+      <h2>DNS ieraksti - kas jāzina</h2>
+      <p>DNS ir domēna "tālruņu grāmata" - katrs ieraksta veids atbild uz savu jautājumu par domēnu. Zemāk ir tie, kas visbiežāk vajadzīgi, pārvaldot mājaslapu un pastu.</p>
+
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Ieraksts</th><th>Ko dara</th><th>Piemērs</th></tr></thead>
+          <tbody>
+            <tr><td><code>A</code></td><td>Domēna IPv4 adrese - uz kuru serveri iet mājaslapa.</td><td><code>a26.lv → 91.203.x.x</code></td></tr>
+            <tr><td><code>AAAA</code></td><td>Tas pats, kas <code>A</code>, bet IPv6 adresei.</td><td><code>a26.lv → 2a01:...</code></td></tr>
+            <tr><td><code>CNAME</code></td><td>Aizstāj vienu vārdu ar citu (alias) - pats nesatur IP.</td><td><code>www.a26.lv → a26.lv</code></td></tr>
+            <tr><td><code>MX</code></td><td>Kurš serveris apstrādā <strong>ienākošo</strong> e-pastu šim domēnam. Skaitlis = prioritāte (mazāks = pirmais mēģinājums).</td><td><code>10 mail.a26.lv</code></td></tr>
+            <tr><td><code>TXT</code> (SPF)</td><td>Saraksts serveru, kuriem <strong>atļauts sūtīt pastu šī domēna vārdā</strong>. Saņēmēja serveris to pārbauda, lai atpazītu viltotu sūtītāju.</td><td><code>v=spf1 include:_spf.google.com ~all</code></td></tr>
+            <tr><td><code>TXT</code> (DKIM)</td><td>Digitāls paraksts katrai izejošai vēstulei - apliecina, ka saturs nav mainīts ceļā uz saņēmēju.</td><td><code>selector._domainkey</code></td></tr>
+            <tr><td><code>TXT</code> (DMARC)</td><td>Politika, ko darīt, ja SPF vai DKIM pārbaude neizdodas - noraidīt, karantīnā vai neko.</td><td><code>v=DMARC1; p=quarantine</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16v-4M12 8h.01M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"/></svg>
+        <p><code>A</code> ieraksts un <code>MX</code> ieraksts ir <strong>pilnīgi neatkarīgi</strong> viens no otra - mājaslapa un pasts drīkst dzīvot uz pavisam dažādiem serveriem. Tieši tāpēc iespējams paturēt mājaslapu vienā hostingā, bet pastu pārcelt uz citu (sk. zemāk).</p>
+      </div>
+    </section>
 
     <section class="doc-section" id="plesk-mail-settings">
       <h2>Plesk Mail Settings - kad ļaut citam hostingam pārņemt pastu</h2>
@@ -60,22 +85,45 @@
         <p><strong>Not configured pastāvīgi izdzēš visas šī domēna pastkastes</strong> ar visiem saņemtajiem un nosūtītajiem e-pastiem (Plesk to pats raksta zem opcijas). Pirms izvēles - izveido pastkastu dublējumu, ja saturs vēl vajadzīgs.</p>
       </div>
 
-      <h3>Kas ir MX un kā tas saistīts</h3>
-      <p><strong>MX (Mail Exchange)</strong> ir DNS ieraksts, kas domēnam pasaka, <strong>kurš serveris īstenībā apstrādā e-pastu</strong> - pilnīgi neatkarīgi no Plesk iestatījumiem. Kad kāds sūta vēstuli uz <code>vards@tavsdomens.lv</code>, sūtītāja serveris meklē domēna MX ierakstu DNS, lai uzzinātu, kurp to piegādāt.</p>
-      <p>Tāpēc Plesk Mail Settings un MX ieraksti ir <strong>divas dažādas, bet saistītas lietas</strong>:</p>
-      <ul>
-        <li>Plesk iestatījums nosaka, vai <em>šis serveris</em> ir gatavs apstrādāt pastu.</li>
-        <li>MX ieraksts DNS nosaka, <em>uz kuru serveri</em> pasts vispār tiek sūtīts.</li>
-      </ul>
+      <p>MX un citi DNS ieraksti, kas šeit pieminēti, paskaidroti sadaļā <a href="#dns-ieraksti">DNS ieraksti - kas jāzina</a> augstāk.</p>
+
+      <h3>Migrācijas scenāriji - kas jādara katrā gadījumā</h3>
+
+      <div class="doc-cards">
+        <div class="doc-mini-card">
+          <h4>A) Tikai pastkaste pāriet citur (hosting paliek)</h4>
+          <p>Mājaslapa paliek uz Plesk, pasts pāriet uz citu pakalpojumu (piem. Google Workspace).</p>
+          <ul>
+            <li>Plesk: <code>Not configured</code> (vai <code>Disabled for incoming mail</code>, ja izejošais <code>mail()</code>/<code>wp_mail()</code> vēl jāpatur caur Sendmail).</li>
+            <li>DNS: <code>MX</code> ieraksts jāmaina uz jaunā pakalpojuma serveriem. <code>A</code> ieraksts paliek nemainīgs - mājaslapa neko nejūt.</li>
+            <li>Ja jaunais pakalpojums prasa SPF/DKIM (gandrīz vienmēr prasa) - jāpievieno/jāatjauno attiecīgie <code>TXT</code> ieraksti, citādi jaunā pasta vēstules var iekrist spamā.</li>
+          </ul>
+        </div>
+        <div class="doc-mini-card">
+          <h4>B) Gan hosting, gan pastkaste pāriet citur</h4>
+          <p>Pilna pāreja uz jaunu serveri/hostingu - mainās viss.</p>
+          <ul>
+            <li>DNS: <code>A</code> (un <code>AAAA</code>, ja lieto) uz jaunā hostinga IP, <code>MX</code> uz jaunā pasta servera, <code>TXT</code>/SPF jāatjauno ar jaunā servera atļauju.</li>
+            <li>Pirms migrācijas samazini DNS ierakstu <strong>TTL</strong> (piem. uz 300 sekundēm) - izmaiņas izplatīsies ātrāk, kad pienāks brīdis pārslēgt.</li>
+            <li>Ja mainās arī reģistrators/nameserveri (kur DNS zona pārvaldīta) - tas ir papildu solis reģistratora panelī, atsevišķi no pašiem ierakstiem.</li>
+          </ul>
+        </div>
+      </div>
+
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Pārejot uz citu e-pasta hostingu: vispirms pārliecinies, ka jaunais pakalpojums saņem pastu (MX ieraksti pārslēgti un darbojas), un tikai tad Plesk pusē pārslēdz uz <strong>Not configured</strong> - citādi īslaicīgi divi serveri var "strīdēties" par to pašu pastu vai daļa vēstuļu var pazust starp pārslēgšanos.</p>
+        <p>Abos gadījumos - vispirms pārliecinies, ka jaunais pasts <em>saņem</em> vēstules (MX pārslēgts un darbojas), un tikai tad Plesk pusē pārslēdz uz <strong>Not configured</strong>. Citādi īslaicīgi divi serveri var "strīdēties" par to pašu pastu, vai daļa vēstuļu var pazust pārslēgšanās brīdī.</p>
+      </div>
+
+      <div class="callout note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16v-4M12 8h.01M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"/></svg>
+        <p>Ja WordPress vai citai mājaslapai izejošais pasts jau strādā caur serveri (gan <code>Enabled</code>, gan <code>Disabled for incoming mail</code> to ļauj caur Sendmail) - par SMTP spraudņa uzstādīšanu var neuztraukties. <code>wp_mail()</code>/<code>mail()</code> strādā arī bez tā; SMTP spraudnis (ar pareizi iestatītu SPF/DKIM) galvenokārt uzlabo piegādes drošumu (mazāk trāpa spamā), nevis ir obligāts priekšnoteikums, lai vēstules vispār aizietu.</p>
       </div>
     </section>
 </main>
 
-<script src="../js/shell.js?v=102"></script>
-<script src="../js/theme.js?v=102"></script>
-<script src="../js/main.js?v=102"></script>
+<script src="../js/shell.js?v=103"></script>
+<script src="../js/theme.js?v=103"></script>
+<script src="../js/main.js?v=103"></script>
 </body>
 </html>
