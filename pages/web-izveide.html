@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=116" />
+<link rel="stylesheet" href="../css/style.css?v=117" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -100,7 +100,7 @@
           <div class="doc-steps">
             <div class="doc-step">
               <div class="doc-step-num">1</div>
-              <div class="doc-step-body"><p>DNS: nomaini <code>MX</code> ierakstu uz jaunā pakalpojuma serveriem (<code>A</code> paliek nemainīgs). Parasti jāatjauno arī <code>SPF</code> (un, ja pakalpojums to prasa, <code>DKIM</code>) <code>TXT</code> ieraksts, lai jaunā pakalpojuma serveri drīkst sūtīt pastu šī domēna vārdā - citādi vēstules var iekrist spamā vai netikt pieņemtas.</p></div>
+              <div class="doc-step-body"><p>DNS: nomaini <code>MX</code> uz jaunā pakalpojuma serveriem, pēc vajadzības arī <code>SPF</code>/<code>DKIM</code>. <code>A</code> paliek nemainīgs.</p></div>
             </div>
             <div class="doc-step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
             <div class="doc-step">
@@ -159,8 +159,8 @@
     </section>
 </main>
 
-<script src="../js/shell.js?v=116"></script>
-<script src="../js/theme.js?v=116"></script>
-<script src="../js/main.js?v=116"></script>
+<script src="../js/shell.js?v=117"></script>
+<script src="../js/theme.js?v=117"></script>
+<script src="../js/main.js?v=117"></script>
 </body>
 </html>
