@@ -217,7 +217,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var SEARCH_PAGES = [
     "pages/laravel.html", "pages/web-izveide.html", "pages/riki.html"
   ];
-  var SEARCH_INDEX_VERSION = "102";
+  var SEARCH_INDEX_VERSION = "103";
   var searchIndex = null;
   var searchIndexPromise = null;
 
