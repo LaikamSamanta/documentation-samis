@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=132" />
+<link rel="stylesheet" href="../css/style.css?v=133" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -44,7 +44,7 @@
           <ul>
             <li>Viens projekts, viens deploy, sesiju auth.</li>
             <li>Vienkāršāk, mazāk kustīgu daļu.</li>
-            <li>Filament strādā arī šeit - uz sava route (piem. <code>/admin</code>), ne atsevišķā portā.</li>
+            <li>Filament strādā arī šeit - bet tikai kā cits route (piem. <code>/admin</code>) tajā pašā vienā appā/portā, ne atsevišķi.</li>
           </ul>
           <p><strong>Trūkums:</strong> mobile app vai atsevišķa izvietošana = pārtaisīt no nulles.</p>
         </div>
@@ -53,7 +53,7 @@
           <ul>
             <li>API (<code>service-platform</code>) + frontend (<code>service-platform-public</code>), katrs savs deploy.</li>
             <li>API gatavs jauniem klientiem (mobile, trešā puse).</li>
-            <li>Filament strādā arī šeit - uz sava route (piem. <code>/admin</code>), ne atsevišķā portā.</li>
+            <li>Filament dzīvo <code>service-platform</code> (API) pusē - tas jau ir atsevišķs deploy/ports no <code>service-platform-public</code>, kur klienti ielogojas.</li>
           </ul>
           <p><strong>Trūkums:</strong> CORS, tokeni, divi deploy procesi - attaisnojas tikai izmantojot elastīgumu.</p>
         </div>
@@ -133,8 +133,8 @@ php artisan migrate</code></pre>
     </section>
 </main>
 
-<script src="../js/shell.js?v=132"></script>
-<script src="../js/theme.js?v=132"></script>
-<script src="../js/main.js?v=132"></script>
+<script src="../js/shell.js?v=133"></script>
+<script src="../js/theme.js?v=133"></script>
+<script src="../js/main.js?v=133"></script>
 </body>
 </html>
