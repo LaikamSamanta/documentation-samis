@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=135" />
+<link rel="stylesheet" href="../css/style.css?v=136" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -130,10 +130,43 @@ php artisan migrate</code></pre>
         <p>Paātrinājums - Migrāciju + Modeli + Kontrolieri var izveidot vienā komandā: <code>php artisan make:model Product -mcr</code> (<code>-m</code> = migration, <code>-c</code> = controller, <code>-r</code> = resource metodes).</p>
       </div>
     </section>
+
+    <section class="doc-section" id="fetch-get-post">
+      <h2>fetch() - GET vs POST</h2>
+      <p><code>fetch()</code> pēc noklusējuma vienmēr izmanto <code>GET</code> metodi, ja <code>method</code> nav norādīts.</p>
+
+      <h3>GET (noklusējums - method nav norādīts)</h3>
+      <pre class="code-block"><span class="lang">js</span><code>const res = await fetch(`${apiUrl}/categories/list`);
+const result = await res.json();
+
+if (result.status == 200) {
+  setCategories(result.data);
+}</code></pre>
+
+      <h3>POST (method jānorāda skaidri)</h3>
+      <pre class="code-block"><span class="lang">js</span><code>const res = await fetch(`${apiUrl}/categories`, {
+  method: <span class="tok-str">"POST"</span>,
+  headers: { <span class="tok-str">"Content-type"</span>: <span class="tok-str">"application/json"</span> },
+  body: JSON.stringify(data),
+});
+const result = await res.json();</code></pre>
+
+      <h3>Kas vēl jāzina par <code>fetch()</code></h3>
+      <ul>
+        <li><code>GET</code> pieprasījumam nedrīkst sūtīt <code>body</code> - dati jāliek URL/query parametros, ne pieprasījuma ķermenī.</li>
+        <li>Atbilde jāparsē ar <code>.json()</code> - arī tas ir <code>Promise</code>, tāpēc parasti ir divi <code>await</code>: viens <code>fetch()</code>, otrs <code>.json()</code>.</li>
+        <li><code>POST</code>/<code>PUT</code>/<code>PATCH</code> ar JSON datiem vienmēr vajag <code>headers: {"Content-type": "application/json"}</code> un <code>body: JSON.stringify(...)</code> - bez tā serveris datus pareizi nesapratīs.</li>
+      </ul>
+
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>fetch()</code> <strong>nemet kļūdu HTTP kļūdas gadījumā</strong> (piem. <code>404</code>, <code>500</code>) - <code>Promise</code> noraidās tikai tad, ja pieprasījums vispār neaizsniedz serveri (tīkla kļūda). Lai noķertu HTTP kļūdas, pirms <code>.json()</code> pašam jāpārbauda <code>res.ok</code> vai <code>res.status</code>.</p>
+      </div>
+    </section>
 </main>
 
-<script src="../js/shell.js?v=135"></script>
-<script src="../js/theme.js?v=135"></script>
-<script src="../js/main.js?v=135"></script>
+<script src="../js/shell.js?v=136"></script>
+<script src="../js/theme.js?v=136"></script>
+<script src="../js/main.js?v=136"></script>
 </body>
 </html>
