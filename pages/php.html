@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=152" />
+<link rel="stylesheet" href="../css/style.css?v=153" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -74,6 +74,13 @@ php -i | grep -i memory_limit
 php --ini</code></pre>
 
       <h3>Kalkulators - ieliec nomērītās vērtības</h3>
+      <p>Ērtāk kopēt - šīs komandas uzreiz izdod tikai skaitli, ko ielikt attiecīgajā laukā:</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># → "Kopējais servera RAM (MB)"</span>
+free -m | awk '/Mem:/{print $2}'
+
+<span class="tok-com"># → "Vidējais RAM uz vienu worker'i (MB)" (nomaini php-fpm8.1 uz savu versiju)</span>
+ps --no-headers -o rss -C php-fpm8.1 | awk '{s+=$1; n++} END {print s/n/1024}'</code></pre>
+
       <div class="term-window" style="max-width:560px;">
         <div class="term-window-header">
           <span class="term-window-dots"></span>
@@ -127,6 +134,10 @@ php --ini</code></pre>
 
       <h3>Kalkulators - max_execution_time</h3>
       <p><code>max_execution_time</code> nevar likt "ar rezervi" pēc jūtas - pārāk augsts, un iestrēdzis/lēns skripts uz ilgu laiku aizņem PHP-FPM worker'i, kas pie noslogota servera var novest pie worker'u izsīkuma (502/503 citiem apmeklētājiem).</p>
+
+      <p>Ērtāk kopēt - <code>time</code> parāda, cik sekundes komanda reāli aizņēma (nomaini uz savu smago darbību):</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># → "Vislēnākā zināmā leģitīmā darbība (sekundes)"</span>
+time wp import lielais-fails.xml <span class="tok-com"># vai jebkura cita smaga komanda/skripts</span></code></pre>
 
       <div class="term-window" style="max-width:560px;">
         <div class="term-window-header">
@@ -203,8 +214,8 @@ systemctl status <span class="tok-str">'plesk-php*-fpm'</span> 2>/dev/null | gre
     </section>
 </main>
 
-<script src="../js/shell.js?v=152"></script>
-<script src="../js/theme.js?v=152"></script>
-<script src="../js/main.js?v=152"></script>
+<script src="../js/shell.js?v=153"></script>
+<script src="../js/theme.js?v=153"></script>
+<script src="../js/main.js?v=153"></script>
 </body>
 </html>
