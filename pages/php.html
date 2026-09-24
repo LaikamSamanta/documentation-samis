@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=148" />
+<link rel="stylesheet" href="../css/style.css?v=149" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -73,6 +73,27 @@ php -i | grep -i memory_limit
 <span class="tok-com"># kurš php.ini/pool fails faktiski ielādēts</span>
 php --ini</code></pre>
 
+      <h3>Kuri faili konkrēti (Plesk)</h3>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Fails</th><th>Ko satur</th></tr></thead>
+          <tbody>
+            <tr><td><code>/var/www/vhosts/system/&lt;domēns&gt;/etc/php.ini</code></td><td>Konkrētā domēna <code>memory_limit</code>, <code>max_execution_time</code> u.c. - šo failu Plesk ģenerē, kad maini PHP Settings UI.</td></tr>
+            <tr><td><code>/opt/plesk/php/&lt;versija&gt;/etc/php.ini</code></td><td>Globālais/noklusējuma php.ini konkrētai PHP versijai (piem. <code>8.1</code>) - izmanto tikai tad, ja domēnam nav sava override.</td></tr>
+            <tr><td>FPM pool fails (<code>pm.max_children</code>)</td><td>Ceļš atšķiras pēc Plesk/PHP versijas - neuzmini, atrodi to dinamiski (sk. komandas zemāk).</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># atrod konkrētā domēna FPM pool failu (nomaini domēnu)</span>
+grep -rl <span class="tok-str">"tavsdomens.lv"</span> /opt/plesk/php/*/etc/php-fpm.d/ 2>/dev/null
+
+<span class="tok-com"># ja neatrod - meklē plašāk visā sistēmā</span>
+find / -iname <span class="tok-str">"*.conf"</span> -path <span class="tok-str">"*fpm*"</span> 2>/dev/null | xargs grep -l <span class="tok-str">"tavsdomens.lv"</span> 2>/dev/null
+
+<span class="tok-com"># redzi, kuru konfigurāciju php-fpm serviss faktiski palaiž (servisa nosaukums no iepriekšējās komandas)</span>
+systemctl status <span class="tok-str">'plesk-php*-fpm'</span> 2>/dev/null | grep -i conf</code></pre>
+
       <div class="callout note">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16v-4M12 8h.01M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"/></svg>
         <p>Plesk katram domēnam/PHP versijai parasti taisa savu FPM pool'u - <code>pm.max_children</code> maini caur <strong>Websites & Domains → domēns → PHP Settings</strong> (ja tur nav lauka - "Additional configuration directives"), nevis rediģē pool failus tieši, jo Plesk tos var pārrakstīt. Ja tomēr rediģē failu pašrocīgi, pēc izmaiņām jārestartē attiecīgais php-fpm serviss (<code>systemctl restart</code> ar to servisa nosaukumu, kas redzams <code>systemctl list-units | grep php-fpm</code>).</p>
@@ -82,8 +103,8 @@ php --ini</code></pre>
     </section>
 </main>
 
-<script src="../js/shell.js?v=148"></script>
-<script src="../js/theme.js?v=148"></script>
-<script src="../js/main.js?v=148"></script>
+<script src="../js/shell.js?v=149"></script>
+<script src="../js/theme.js?v=149"></script>
+<script src="../js/main.js?v=149"></script>
 </body>
 </html>
