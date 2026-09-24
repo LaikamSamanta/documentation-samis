@@ -2693,12 +2693,20 @@ body.sidebar-collapsed .global-nav-collapse-handle {
   margin-left: 272px;
   transition: margin-left 0.2s var(--ease);
 }
+/* footer.site-footer sits outside <main> (sibling, not child), so it needs
+   the same sidebar offset repeated here or it renders underneath the fixed
+   .global-nav instead of alongside .global-main's content. */
+body.has-global-nav footer.site-footer {
+  margin-left: 272px;
+  transition: margin-left 0.2s var(--ease);
+}
 
 /* collapsed sidebar - click the terminal dots to toggle. Shrinks to a
    thin rail showing only the dots, content reclaims the freed width. */
 .global-nav { transition: width 0.2s var(--ease); }
 body.sidebar-collapsed .global-nav { width: 44px; overflow: hidden; }
 body.sidebar-collapsed .global-main { margin-left: 44px; }
+body.sidebar-collapsed.has-global-nav footer.site-footer { margin-left: 44px; }
 /* the brand link has display:flex set inline (shell.js), which beats any
    plain class rule here, so this one needs !important to actually hide it */
 body.sidebar-collapsed .global-nav-brand > a { display: none !important; }
@@ -2724,4 +2732,5 @@ body.sidebar-collapsed .term-titlebar { margin-bottom: 0; }
   .global-nav.open { transform: translateX(0); }
   .global-nav-toggle { display: flex; }
   .global-main { margin-left: 0; padding-top: 56px; }
+  body.has-global-nav footer.site-footer { margin-left: 0; }
 }
