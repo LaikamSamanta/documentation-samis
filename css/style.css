@@ -1051,7 +1051,6 @@ footer.site-footer a:hover {
    command + the term-window form) - keeps each one visually separate
    instead of running together with the surrounding page prose. */
 .calc-section {
-  margin-top: 32px;
   padding: 24px;
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
@@ -1059,6 +1058,16 @@ footer.site-footer a:hover {
 }
 .calc-section > h3:first-child { margin-top: 0; }
 .calc-section .term-window { background: var(--bg); }
+
+/* Side by side on wide screens, stacked on narrow ones - same
+   auto-fit pattern as .doc-steps-cols. */
+.calc-section-cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+  align-items: start;
+  margin-top: 32px;
+}
 .term-window-body > h4 {
   margin: 0 0 14px;
   font-size: 14px;
