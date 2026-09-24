@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=153" />
+<link rel="stylesheet" href="../css/style.css?v=154" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -73,6 +73,7 @@ php -i | grep -i memory_limit
 <span class="tok-com"># kurš php.ini/pool fails faktiski ielādēts</span>
 php --ini</code></pre>
 
+      <div class="calc-section">
       <h3>Kalkulators - ieliec nomērītās vērtības</h3>
       <p>Ērtāk kopēt - šīs komandas uzreiz izdod tikai skaitli, ko ielikt attiecīgajā laukā:</p>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># → "Kopējais servera RAM (MB)"</span>
@@ -131,7 +132,9 @@ ps --no-headers -o rss -C php-fpm8.1 | awk '{s+=$1; n++} END {print s/n/1024}'</
           });
         })();
       </script>
+      </div>
 
+      <div class="calc-section">
       <h3>Kalkulators - max_execution_time</h3>
       <p><code>max_execution_time</code> nevar likt "ar rezervi" pēc jūtas - pārāk augsts, un iestrēdzis/lēns skripts uz ilgu laiku aizņem PHP-FPM worker'i, kas pie noslogota servera var novest pie worker'u izsīkuma (502/503 citiem apmeklētājiem).</p>
 
@@ -183,6 +186,7 @@ time wp import lielais-fails.xml <span class="tok-com"># vai jebkura cita smaga 
           });
         })();
       </script>
+      </div>
 
       <h3>Kuri faili konkrēti (Plesk)</h3>
       <div class="cheat-table-wrap">
@@ -214,8 +218,8 @@ systemctl status <span class="tok-str">'plesk-php*-fpm'</span> 2>/dev/null | gre
     </section>
 </main>
 
-<script src="../js/shell.js?v=153"></script>
-<script src="../js/theme.js?v=153"></script>
-<script src="../js/main.js?v=153"></script>
+<script src="../js/shell.js?v=154"></script>
+<script src="../js/theme.js?v=154"></script>
+<script src="../js/main.js?v=154"></script>
 </body>
 </html>

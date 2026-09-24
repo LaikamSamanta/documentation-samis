@@ -1046,6 +1046,19 @@ footer.site-footer a:hover {
   color: var(--text-muted);
 }
 .term-window-body { padding: 18px; }
+
+/* Card wrapper for a self-contained calculator (heading + intro + copy
+   command + the term-window form) - keeps each one visually separate
+   instead of running together with the surrounding page prose. */
+.calc-section {
+  margin-top: 32px;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+}
+.calc-section > h3:first-child { margin-top: 0; }
+.calc-section .term-window { background: var(--bg); }
 .term-window-body > h4 {
   margin: 0 0 14px;
   font-size: 14px;
