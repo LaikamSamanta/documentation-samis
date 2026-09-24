@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=149" />
+<link rel="stylesheet" href="../css/style.css?v=150" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -73,6 +73,58 @@ php -i | grep -i memory_limit
 <span class="tok-com"># kurš php.ini/pool fails faktiski ielādēts</span>
 php --ini</code></pre>
 
+      <h3>Kalkulators - ieliec nomērītās vērtības</h3>
+      <div class="term-window" style="max-width:560px;">
+        <div class="term-window-header">
+          <span class="term-window-dots"></span>
+          <span class="term-window-title">pm-max-children-calc</span>
+        </div>
+        <div class="term-window-body">
+          <div style="display:grid; gap:14px; font-family:var(--font-mono); font-size:13px;">
+            <label style="display:grid; gap:6px;">
+              Kopējais servera RAM (MB) - no <code>free -h</code>
+              <input id="calc-total" type="number" placeholder="piem. 4096" style="background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-sm, 6px); color:var(--text); font-family:var(--font-mono); font-size:14px; padding:8px 10px;">
+            </label>
+            <label style="display:grid; gap:6px;">
+              Rezervēts OS/MySQL/Plesk/Nginx u.c. (MB)
+              <input id="calc-reserved" type="number" placeholder="piem. 1500" style="background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-sm, 6px); color:var(--text); font-family:var(--font-mono); font-size:14px; padding:8px 10px;">
+            </label>
+            <label style="display:grid; gap:6px;">
+              Vidējais RAM uz vienu php-fpm worker'i (MB) - no <code>ps</code> komandas augstāk
+              <input id="calc-worker" type="number" placeholder="piem. 70" style="background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-sm, 6px); color:var(--text); font-family:var(--font-mono); font-size:14px; padding:8px 10px;">
+            </label>
+          </div>
+          <button id="calc-btn" style="margin-top:16px; padding:9px 16px; background:var(--page-accent); color:var(--bg); border:none; border-radius:var(--radius-sm, 6px); font-family:var(--font-mono); font-size:13px; font-weight:700; cursor:pointer;">Aprēķināt pm.max_children</button>
+          <div id="calc-result" style="margin-top:14px; font-family:var(--font-mono); font-size:13px; color:var(--text-secondary); line-height:1.7;"></div>
+        </div>
+      </div>
+      <script>
+        (function () {
+          var btn = document.getElementById("calc-btn");
+          if (!btn) return;
+          btn.addEventListener("click", function () {
+            var total = parseFloat(document.getElementById("calc-total").value);
+            var reserved = parseFloat(document.getElementById("calc-reserved").value);
+            var worker = parseFloat(document.getElementById("calc-worker").value);
+            var out = document.getElementById("calc-result");
+            if (!total || !reserved || !worker || worker <= 0) {
+              out.innerHTML = '<span style="color:var(--tag-hard);">Aizpildi visus trīs laukus ar derīgām vērtībām.</span>';
+              return;
+            }
+            var available = total - reserved;
+            if (available <= 0) {
+              out.innerHTML = '<span style="color:var(--tag-hard);">Rezervētais apjoms ir lielāks vai vienāds ar kopējo RAM - priekš PHP-FPM nekas nepaliek pāri.</span>';
+              return;
+            }
+            var maxChildren = Math.floor(available / worker);
+            out.innerHTML =
+              'Pieejams PHP-FPM: <strong>' + available + ' MB</strong> (' + total + ' − ' + reserved + ')<br>' +
+              'Ieteicamais <code>pm.max_children</code> = <strong style="color:var(--page-accent-2, var(--accent));">' + maxChildren + '</strong> (' + available + ' ÷ ' + worker + ', noapaļots uz leju)<br>' +
+              '<span style="color:var(--text-muted);">Atstāj nelielu rezervi (piem. rēķini ar 80-90% no pieejamā), lai īslaicīgi smagāki pieprasījumi neizsmeltu visu RAM.</span>';
+          });
+        })();
+      </script>
+
       <h3>Kuri faili konkrēti (Plesk)</h3>
       <div class="cheat-table-wrap">
         <table class="cheat-table">
@@ -103,8 +155,8 @@ systemctl status <span class="tok-str">'plesk-php*-fpm'</span> 2>/dev/null | gre
     </section>
 </main>
 
-<script src="../js/shell.js?v=149"></script>
-<script src="../js/theme.js?v=149"></script>
-<script src="../js/main.js?v=149"></script>
+<script src="../js/shell.js?v=150"></script>
+<script src="../js/theme.js?v=150"></script>
+<script src="../js/main.js?v=150"></script>
 </body>
 </html>
