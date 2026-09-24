@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=168" />
+<link rel="stylesheet" href="../css/style.css?v=169" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -95,7 +95,7 @@ const order = await res.json();</code></pre>
         </div>
         <div>
           <h4>Sanctum - Bearer tokens (manuāli)</h4>
-          <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// resources/js/pages/Login.jsx - 1) login, tokens nāk atbildes body</span>
+          <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// service-platform-public: src/pages/Login.jsx - 1) login, tokens nāk atbildes body</span>
 const { token } = await (await fetch(`${apiUrl}/login`, {
   method: <span class="tok-str">"POST"</span>,
   headers: { <span class="tok-str">"Content-type"</span>: <span class="tok-str">"application/json"</span> },
@@ -103,7 +103,7 @@ const { token } = await (await fetch(`${apiUrl}/login`, {
 })).json();
 localStorage.setItem(<span class="tok-str">"token"</span>, token);
 
-<span class="tok-com">// resources/js/lib/api.js - 2) šeit headeri saņem tokenu visiem pieprasījumiem</span>
+<span class="tok-com">// service-platform-public: src/lib/api.js (jauns fails) - 2) šeit headeri saņem tokenu visiem pieprasījumiem</span>
 const res = await fetch(`${apiUrl}/user`, {
   headers: { Authorization: `Bearer ${token}` },
 });
@@ -210,8 +210,8 @@ const result = await res.json();</code></pre>
     </section>
 </main>
 
-<script src="../js/shell.js?v=168"></script>
-<script src="../js/theme.js?v=168"></script>
-<script src="../js/main.js?v=168"></script>
+<script src="../js/shell.js?v=169"></script>
+<script src="../js/theme.js?v=169"></script>
+<script src="../js/main.js?v=169"></script>
 </body>
 </html>
