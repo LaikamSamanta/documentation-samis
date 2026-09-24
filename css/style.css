@@ -1312,6 +1312,23 @@ pre.code-block code {
 .doc-diagram .dg-label-success {
   fill: var(--tag-easy);
 }
+.doc-diagram .dg-node-fail {
+  fill: rgba(248, 113, 113, 0.12);
+  stroke: #f87171;
+  stroke-width: 1.5;
+}
+.doc-diagram .dg-line-fail {
+  stroke: #f87171;
+  stroke-width: 1.5;
+  stroke-dasharray: 5 4;
+  fill: none;
+}
+.doc-diagram .dg-label-fail {
+  fill: var(--tag-hard);
+}
+.doc-diagram .dg-arrowhead-fail {
+  fill: #f87171;
+}
 
 .doc-pager {
   display: flex;
