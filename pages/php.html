@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=150" />
+<link rel="stylesheet" href="../css/style.css?v=152" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -125,6 +125,54 @@ php --ini</code></pre>
         })();
       </script>
 
+      <h3>Kalkulators - max_execution_time</h3>
+      <p><code>max_execution_time</code> nevar likt "ar rezervi" pēc jūtas - pārāk augsts, un iestrēdzis/lēns skripts uz ilgu laiku aizņem PHP-FPM worker'i, kas pie noslogota servera var novest pie worker'u izsīkuma (502/503 citiem apmeklētājiem).</p>
+
+      <div class="term-window" style="max-width:560px;">
+        <div class="term-window-header">
+          <span class="term-window-dots"></span>
+          <span class="term-window-title">max-execution-time-calc</span>
+        </div>
+        <div class="term-window-body">
+          <div style="display:grid; gap:14px; font-family:var(--font-mono); font-size:13px;">
+            <label style="display:grid; gap:6px;">
+              Vislēnākā zināmā leģitīmā darbība (sekundes) - piem. lielākais eksports/imports
+              <input id="calc-slowest" type="number" placeholder="piem. 25" style="background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-sm, 6px); color:var(--text); font-family:var(--font-mono); font-size:14px; padding:8px 10px;">
+            </label>
+            <label style="display:grid; gap:6px;">
+              Drošības rezerve (%)
+              <input id="calc-margin" type="number" placeholder="piem. 50" value="50" style="background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-sm, 6px); color:var(--text); font-family:var(--font-mono); font-size:14px; padding:8px 10px;">
+            </label>
+          </div>
+          <button id="calc-exec-btn" style="margin-top:16px; padding:9px 16px; background:var(--page-accent); color:var(--bg); border:none; border-radius:var(--radius-sm, 6px); font-family:var(--font-mono); font-size:13px; font-weight:700; cursor:pointer;">Aprēķināt max_execution_time</button>
+          <div id="calc-exec-result" style="margin-top:14px; font-family:var(--font-mono); font-size:13px; color:var(--text-secondary); line-height:1.7;"></div>
+        </div>
+      </div>
+      <script>
+        (function () {
+          var btn = document.getElementById("calc-exec-btn");
+          if (!btn) return;
+          btn.addEventListener("click", function () {
+            var slowest = parseFloat(document.getElementById("calc-slowest").value);
+            var margin = parseFloat(document.getElementById("calc-margin").value);
+            var out = document.getElementById("calc-exec-result");
+            if (!slowest || slowest <= 0 || isNaN(margin) || margin < 0) {
+              out.innerHTML = '<span style="color:var(--tag-hard);">Aizpildi abus laukus ar derīgām vērtībām.</span>';
+              return;
+            }
+            var recommended = Math.ceil(slowest * (1 + margin / 100));
+            var html =
+              'Ieteicamais <code>max_execution_time</code> = <strong style="color:var(--page-accent-2, var(--accent));">' + recommended + 's</strong> (' + slowest + 's + ' + margin + '% rezerve)<br>';
+            if (recommended > 120) {
+              html += '<span style="color:var(--tag-mid);">Tas ir diezgan augsts - apsver šo smago darbību pārcelt uz WP-Cron/WP-CLI/fona procesu, nevis celt globālo limitu visai lapai.</span>';
+            } else {
+              html += '<span style="color:var(--text-muted);">Vienlaicīgo lēno pieprasījumu drošā robeža ≈ tavs pm.max_children (sk. kalkulatoru augstāk) - ja vienlaicīgi var pieprasīt vairāk lēno skriptu, nekā tev ir pieejamo worker\'u, tie izsīks ātrāk, nekā šis laiks paiet.</span>';
+            }
+            out.innerHTML = html;
+          });
+        })();
+      </script>
+
       <h3>Kuri faili konkrēti (Plesk)</h3>
       <div class="cheat-table-wrap">
         <table class="cheat-table">
@@ -155,8 +203,8 @@ systemctl status <span class="tok-str">'plesk-php*-fpm'</span> 2>/dev/null | gre
     </section>
 </main>
 
-<script src="../js/shell.js?v=150"></script>
-<script src="../js/theme.js?v=150"></script>
-<script src="../js/main.js?v=150"></script>
+<script src="../js/shell.js?v=152"></script>
+<script src="../js/theme.js?v=152"></script>
+<script src="../js/main.js?v=152"></script>
 </body>
 </html>
