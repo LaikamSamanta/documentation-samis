@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=160" />
+<link rel="stylesheet" href="../css/style.css?v=161" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -36,7 +36,7 @@
 
     <section class="doc-section" id="php-fpm-tuning">
       <h2>memory_limit, execution time, max workeri - kā izvēlēties vērtības pēc RAM</h2>
-      <p>Šie trīs iestatījumi ir savstarpēji saistīti - visi kopā nedrīkst pārsniegt serverim faktiski pieejamo RAM, citādi risks ir OOM (out-of-memory), kas var nogalināt arī MySQL vai citus procesus, ne tikai PHP.</p>
+      <p>Visi trīs kopā nedrīkst pārsniegt servera reālo RAM - citādi OOM var nogalināt arī MySQL, ne tikai PHP.</p>
 
       <div class="cheat-table-wrap">
         <table class="cheat-table">
@@ -51,7 +51,7 @@
 
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p><code>pm.max_children</code> × <code>memory_limit</code> ir <strong>teorētiskais maksimums</strong>, ko PHP-FPM var izēst no RAM, ja visi worker'i vienlaicīgi strādā pie smagiem skriptiem. Ja šis reizinājums pārsniedz serverim faktiski atlikušo RAM (pēc MySQL, Plesk, Nginx/Apache u.c.) - serveris var sākt swapot vai OOM killer sāk nogalināt procesus, ieskaitot, iespējams, datubāzi.</p>
+        <p><code>pm.max_children</code> × <code>memory_limit</code> = max RAM patēriņš, ja visi worker'i strādā vienlaicīgi. Ja pārsniedz servera reāli atlikušo RAM - OOM var nogalināt arī MySQL.</p>
       </div>
 
       <h3>Kā fiziski izmērīt - SSH</h3>
@@ -76,7 +76,7 @@ php --ini</code></pre>
       <div class="calc-section-cols">
       <div class="calc-section">
       <h3>Kalkulators - ieliec nomērītās vērtības</h3>
-      <p>Ērtāk kopēt - šīs komandas uzreiz izdod tikai skaitli, ko ielikt attiecīgajā laukā:</p>
+      <p>Izdod tieši to skaitli, kas jāieliek laukā:</p>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># → "Kopējais servera RAM (MB)"</span>
 free -m | awk '/Mem:/{print $2}'
 
@@ -137,9 +137,9 @@ ps --no-headers -o rss -C php-fpm8.1 | awk '{s+=$1; n++} END {print s/n/1024}'</
 
       <div class="calc-section">
       <h3>Kalkulators - max_execution_time</h3>
-      <p><code>max_execution_time</code> nevar likt "ar rezervi" pēc jūtas - pārāk augsts, un iestrēdzis/lēns skripts uz ilgu laiku aizņem PHP-FPM worker'i, kas pie noslogota servera var novest pie worker'u izsīkuma (502/503 citiem apmeklētājiem).</p>
+      <p>Pārāk augsts <code>max_execution_time</code> = iestrēdzis skripts ilgi aizņem worker'i, var izsmelt visus (502/503 citiem).</p>
 
-      <p>Ērtāk kopēt - <code>time</code> parāda, cik sekundes komanda reāli aizņēma (nomaini uz savu smago darbību):</p>
+      <p><code>time</code> parāda reālo ilgumu (nomaini komandu):</p>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># → "Vislēnākā zināmā leģitīmā darbība (sekundes)"</span>
 time wp import lielais-fails.xml <span class="tok-com"># vai jebkura cita smaga komanda/skripts</span></code></pre>
 
@@ -155,7 +155,7 @@ time wp import lielais-fails.xml <span class="tok-com"># vai jebkura cita smaga 
               <input id="calc-slowest" type="number" placeholder="piem. 25" style="background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-sm, 6px); color:var(--text); font-family:var(--font-mono); font-size:14px; padding:8px 10px;">
             </label>
             <label style="display:grid; gap:6px;">
-              Drošības rezerve (%) - nav fiksēts standarts, tikai saprātīgs noklusējums; 20-30%, ja mērījums stabils, vairāk, ja ilgums svārstās
+              Drošības rezerve (%) - noklusējums, ne standarts
               <input id="calc-margin" type="number" placeholder="piem. 50" value="50" style="background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-sm, 6px); color:var(--text); font-family:var(--font-mono); font-size:14px; padding:8px 10px;">
             </label>
           </div>
@@ -213,18 +213,18 @@ systemctl status <span class="tok-str">'plesk-php*-fpm'</span> 2>/dev/null | gre
 
       <div class="callout note">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16v-4M12 8h.01M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"/></svg>
-        <p>Plesk katram domēnam/PHP versijai parasti taisa savu FPM pool'u - <code>pm.max_children</code> maini caur <strong>Websites & Domains → domēns → PHP Settings</strong> (ja tur nav lauka - "Additional configuration directives"), nevis rediģē pool failus tieši, jo Plesk tos var pārrakstīt. Ja tomēr rediģē failu pašrocīgi, pēc izmaiņām jārestartē attiecīgais php-fpm serviss (<code>systemctl restart</code> ar to servisa nosaukumu, kas redzams <code>systemctl list-units | grep php-fpm</code>).</p>
+        <p><code>pm.max_children</code> maini caur <strong>Websites & Domains → domēns → PHP Settings</strong>, nevis pool failu tieši - Plesk to var pārrakstīt. Ja tomēr rediģē pašrocīgi, pēc tam <code>systemctl restart</code> attiecīgajam servisam.</p>
       </div>
 
-      <p>Ja hostē <strong>vairākus domēnus</strong> uz viena servera - katram var būt savs FPM pool ar savu <code>pm.max_children</code>, tāpēc formulai jāskatās uz <strong>visu domēnu kopējo</strong> maksimālo patēriņu, ne tikai viena.</p>
+      <p>Vairāki domēni uz viena servera = katram savs FPM pool - rēķini ar <strong>visu domēnu kopējo</strong> patēriņu, ne tikai viena.</p>
     </section>
 
     <section class="doc-section" id="php-programmetajam-jazina">
       <h2>Kas reāli jāzina kā programmētājam (ne tikai hostinga administratoram)</h2>
-      <p>Ja pats pārvaldi arī hostingu - šīs ir lietas, kas reāli sagādā pārsteigumus, kad kaut kas "bez iemesla" nomirst vai neatbilst tam, ko liki <code>php.ini</code>.</p>
+      <p>Lietas, kas sagādā pārsteigumus, kad kaut kas "bez iemesla" nomirst vai neatbilst <code>php.ini</code>.</p>
 
       <h3>Trīs dažādi timeout limiti - ne tikai max_execution_time</h3>
-      <p>Pieprasījumu var pārtraukt trīs pavisam dažādos līmeņos. Ja paceļ tikai vienu, bet pārējie divi palikuši zemāki - pieprasījums tik un tā nomirst pēc mazākā no tiem.</p>
+      <p>Trīs līmeņi var pārtraukt pieprasījumu neatkarīgi - uzvar mazākais no tiem.</p>
       <div class="cheat-table-wrap">
         <table class="cheat-table">
           <thead><tr><th>Līmenis</th><th>Kur iestatīts</th><th>Ko rāda, kad nostrādā</th></tr></thead>
@@ -237,13 +237,13 @@ systemctl status <span class="tok-str">'plesk-php*-fpm'</span> 2>/dev/null | gre
       </div>
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Ja paceļ <code>max_execution_time</code> uz 300s, bet FPM/Nginx timeout paliek 60s - pieprasījums vienalga nomirst pēc 60s, un tā ir <strong>klasiska</strong> "kāpēc mans imports vienalga apstājas" kļūda. Visi trīs jāceļ kopā.</p>
+        <p>Piemērs: <code>max_execution_time</code>=300s, bet FPM/Nginx=60s → nomirst pēc 60s. Visi trīs jāceļ kopā.</p>
       </div>
 
       <div class="calc-section">
       <h3>Kalkulators - efektīvais timeout</h3>
-      <p><strong>Kāpēc tas vajadzīgs:</strong> pat ja FPM/Nginx pats neko neesi mainījis, tiem tik un tā ir savas noklusējuma vērtības (Nginx bieži ~60s) - tās var būt zemākas par to, ko liki <code>php.ini</code>, un tieši tās tevi ierobežo, ne tavs iestatījums. Ievadi visus trīs (ar noklusējumiem, ja neesi mainījis) - kalkulators pasaka, kurš no tiem <strong>faktiski</strong> nogriež pieprasījumu, lai zini, kuru tieši mainīt.</p>
-      <p>Kā uzzināt pašreizējo FPM vērtību (ja fails jau atrasts ar komandām augstāk):</p>
+      <p>FPM/Nginx noklusējumi (bieži ~60s) var ierobežot pat ja neesi tos mainījis. Ievadi visus trīs - parāda, kurš faktiski nogriež.</p>
+      <p>FPM pašreizējā vērtība:</p>
       <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># → "PHP-FPM request_terminate_timeout" (0, ja rindas nav - nozīmē bez limita)</span>
 grep request_terminate_timeout /opt/plesk/php/*/etc/php-fpm.d/*.conf 2>/dev/null</code></pre>
       <div class="term-window">
@@ -318,24 +318,24 @@ grep request_terminate_timeout /opt/plesk/php/*/etc/php-fpm.d/*.conf 2>/dev/null
       </div>
 
       <h3>CLI skripti (WP-CLI/artisan/cron) parasti šos limitus neredz</h3>
-      <p>PHP CLI (komandrindas) izmanto <strong>citu</strong> konfigurāciju no web/FPM - bieži ar <code>memory_limit</code>/<code>max_execution_time</code> vispār bez ierobežojuma (<code>-1</code>/<code>0</code>), neatkarīgi no tā, kas iestatīts domēna PHP Settings. Tāpēc smaga darbība (imports, migrācija) caur SSH/WP-CLI/<code>artisan</code> var strādāt bez problēmām, kamēr tā pati darbība, palaista caur pārlūku (wp-admin poga), nomirst pēc 30-60s. Praktisks padoms: smagas darbības labāk palaist caur CLI/cron, nevis caur pārlūku.</p>
+      <p>CLI izmanto citu php.ini - bieži bez limitiem (<code>-1</code>/<code>0</code>), neatkarīgi no web/FPM iestatījumiem. Tāpēc smagas darbības labāk palaist caur SSH/CLI/cron, ne pārlūku.</p>
 
       <h3>WordPress: WP_MEMORY_LIMIT / WP_MAX_MEMORY_LIMIT</h3>
-      <p>WordPress <strong>pats</strong> ierobežo atmiņu ar savām konstantēm <code>wp-config.php</code> - neatkarīgi no servera <code>memory_limit</code>. Ja serverī uzliec 512M, bet šīs konstantes paliek noklusējumā, WordPress joprojām apstāsies pie sava zemākā limita.</p>
+      <p>WordPress ierobežo atmiņu ar savām konstantēm <code>wp-config.php</code>, neatkarīgi no servera <code>memory_limit</code>.</p>
       <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// wp-config.php - parastām front-end/admin lapām</span>
 <span class="tok-fn">define</span>(<span class="tok-str">'WP_MEMORY_LIMIT'</span>, <span class="tok-str">'256M'</span>);
 
 <span class="tok-com">// smagām admin darbībām (WordPress šo izmanto wp-admin kontekstā)</span>
 <span class="tok-fn">define</span>(<span class="tok-str">'WP_MAX_MEMORY_LIMIT'</span>, <span class="tok-str">'512M'</span>);</code></pre>
-      <p>Noklusējuma vērtības, ja konstantes nav uzliktas: <code>WP_MEMORY_LIMIT</code> - <code>40M</code> (<code>64M</code> multisite), <code>WP_MAX_MEMORY_LIMIT</code> - <code>256M</code>.</p>
+      <p>Noklusējums: <code>WP_MEMORY_LIMIT</code> <code>40M</code> (<code>64M</code> multisite), <code>WP_MAX_MEMORY_LIMIT</code> <code>256M</code>.</p>
 
-      <h3>Kur skatīties, kurš limits konkrēti nostrādāja</h3>
-      <p>Domēna PHP error log Plesk parasti atrodas <code>/var/www/vhosts/system/&lt;domēns&gt;/logs/error_log</code> - tur redz, vai tā bija PHP kļūda (execution time/memory), vai jāskatās FPM/Nginx logs (ja pārlūkā ir 502/504, bet PHP error log klusē - problēma nav pašā PHP).</p>
+      <h3>Kur skatīties, kurš limits nostrādāja</h3>
+      <p>PHP error log: <code>/var/www/vhosts/system/&lt;domēns&gt;/logs/error_log</code>. Ja tukšs, bet pārlūkā 502/504 - vaino FPM/Nginx, ne PHP.</p>
     </section>
 </main>
 
-<script src="../js/shell.js?v=160"></script>
-<script src="../js/theme.js?v=160"></script>
-<script src="../js/main.js?v=160"></script>
+<script src="../js/shell.js?v=161"></script>
+<script src="../js/theme.js?v=161"></script>
+<script src="../js/main.js?v=161"></script>
 </body>
 </html>
