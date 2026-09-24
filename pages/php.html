@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=159" />
+<link rel="stylesheet" href="../css/style.css?v=160" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -300,10 +300,18 @@ grep request_terminate_timeout /opt/plesk/php/*/etc/php-fpm.d/*.conf 2>/dev/null
               if (limited[j].val < min.val) min = limited[j];
             }
             var bottleneck = limited.filter(function (v) { return v.val === min.val; }).map(function (v) { return v.name; }).join(" un ");
-            out.innerHTML =
-              'Efektīvais timeout = <strong style="color:var(--page-accent-2, var(--accent));">' + min.val + 's</strong><br>' +
-              'Ierobežo: <strong>' + bottleneck + '</strong><br>' +
-              '<span style="color:var(--text-muted);">Ja gribi ilgāku laiku - jāceļ tieši šis (šie), nevis lielākie no trim.</span>';
+            var phpEntry = values[0];
+            var isOk = phpEntry.val > 0 && phpEntry.val === min.val;
+            if (isOk) {
+              out.innerHTML =
+                '<span style="color:var(--tag-easy);">✓ Viss kārtībā.</span> Efektīvais timeout = <strong style="color:var(--page-accent-2, var(--accent));">' + min.val + 's</strong><br>' +
+                'To nosaka <strong>PHP max_execution_time</strong> pats - tieši tas, ko liec <code>php.ini</code>/Plesk PHP Settings, tiešām arī tiek piemērots. FPM/web serveris to negriež agrāk.';
+            } else {
+              out.innerHTML =
+                '<span style="color:var(--tag-hard);">⚠ PHP iestatījums netiek pilnībā izmantots.</span> Efektīvais timeout = <strong style="color:var(--page-accent-2, var(--accent));">' + min.val + 's</strong><br>' +
+                'Nogriež: <strong>' + bottleneck + '</strong> - zemāks nekā tavs PHP <code>max_execution_time</code>.<br>' +
+                '<span style="color:var(--text-muted);">Ja gribi, lai PHP vērtība tiešām nostrādātu, jāceļ tieši šis (šie), ne PHP iestatījums.</span>';
+            }
           });
         })();
       </script>
@@ -326,8 +334,8 @@ grep request_terminate_timeout /opt/plesk/php/*/etc/php-fpm.d/*.conf 2>/dev/null
     </section>
 </main>
 
-<script src="../js/shell.js?v=159"></script>
-<script src="../js/theme.js?v=159"></script>
-<script src="../js/main.js?v=159"></script>
+<script src="../js/shell.js?v=160"></script>
+<script src="../js/theme.js?v=160"></script>
+<script src="../js/main.js?v=160"></script>
 </body>
 </html>
