@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=157" />
+<link rel="stylesheet" href="../css/style.css?v=158" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -240,6 +240,72 @@ systemctl status <span class="tok-str">'plesk-php*-fpm'</span> 2>/dev/null | gre
         <p>Ja paceļ <code>max_execution_time</code> uz 300s, bet FPM/Nginx timeout paliek 60s - pieprasījums vienalga nomirst pēc 60s, un tā ir <strong>klasiska</strong> "kāpēc mans imports vienalga apstājas" kļūda. Visi trīs jāceļ kopā.</p>
       </div>
 
+      <div class="calc-section">
+      <h3>Kalkulators - efektīvais timeout</h3>
+      <p>Ievadi visus trīs - kalkulators parāda, kurš tieši ir <strong>faktiskais</strong> limits (mazākais no trim) un kuru vajag pacelt.</p>
+      <div class="term-window">
+        <div class="term-window-header">
+          <span class="term-window-dots"></span>
+          <span class="term-window-title">effective-timeout-calc</span>
+        </div>
+        <div class="term-window-body">
+          <div style="display:grid; gap:14px; font-family:var(--font-mono); font-size:13px;">
+            <label style="display:grid; gap:6px;">
+              PHP <code>max_execution_time</code> (s) - <code>0</code> = bez limita
+              <input id="calc-t-php" type="number" placeholder="piem. 300" style="background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-sm, 6px); color:var(--text); font-family:var(--font-mono); font-size:14px; padding:8px 10px;">
+            </label>
+            <label style="display:grid; gap:6px;">
+              PHP-FPM <code>request_terminate_timeout</code> (s) - <code>0</code> = bez limita
+              <input id="calc-t-fpm" type="number" placeholder="piem. 60" style="background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-sm, 6px); color:var(--text); font-family:var(--font-mono); font-size:14px; padding:8px 10px;">
+            </label>
+            <label style="display:grid; gap:6px;">
+              Web servera timeout (s) - Nginx <code>fastcgi_read_timeout</code> / Apache <code>ProxyTimeout</code>
+              <input id="calc-t-web" type="number" placeholder="piem. 60" style="background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-sm, 6px); color:var(--text); font-family:var(--font-mono); font-size:14px; padding:8px 10px;">
+            </label>
+          </div>
+          <button id="calc-t-btn" style="margin-top:16px; padding:9px 16px; background:var(--page-accent); color:var(--bg); border:none; border-radius:var(--radius-sm, 6px); font-family:var(--font-mono); font-size:13px; font-weight:700; cursor:pointer;">Aprēķināt efektīvo timeout</button>
+          <div id="calc-t-result" style="margin-top:14px; font-family:var(--font-mono); font-size:13px; color:var(--text-secondary); line-height:1.7;"></div>
+        </div>
+      </div>
+      <script>
+        (function () {
+          var btn = document.getElementById("calc-t-btn");
+          if (!btn) return;
+          btn.addEventListener("click", function () {
+            var fields = [
+              { id: "calc-t-php", name: "PHP max_execution_time" },
+              { id: "calc-t-fpm", name: "PHP-FPM request_terminate_timeout" },
+              { id: "calc-t-web", name: "Web servera timeout" }
+            ];
+            var out = document.getElementById("calc-t-result");
+            var values = [];
+            for (var i = 0; i < fields.length; i++) {
+              var raw = document.getElementById(fields[i].id).value;
+              if (raw === "") {
+                out.innerHTML = '<span style="color:var(--tag-hard);">Aizpildi visus trīs laukus (0, ja bez limita).</span>';
+                return;
+              }
+              values.push({ name: fields[i].name, val: parseFloat(raw) });
+            }
+            var limited = values.filter(function (v) { return v.val > 0; });
+            if (limited.length === 0) {
+              out.innerHTML = '<span style="color:var(--tag-mid);">Visiem trim ir 0 (bez limita) - pieprasījumi teorētiski var darboties bezgalīgi. Tas nav ieteicams pat uz iestrēgušu skriptu gadījumam.</span>';
+              return;
+            }
+            var min = limited[0];
+            for (var j = 1; j < limited.length; j++) {
+              if (limited[j].val < min.val) min = limited[j];
+            }
+            var bottleneck = limited.filter(function (v) { return v.val === min.val; }).map(function (v) { return v.name; }).join(" un ");
+            out.innerHTML =
+              'Efektīvais timeout = <strong style="color:var(--page-accent-2, var(--accent));">' + min.val + 's</strong><br>' +
+              'Ierobežo: <strong>' + bottleneck + '</strong><br>' +
+              '<span style="color:var(--text-muted);">Ja gribi ilgāku laiku - jāceļ tieši šis (šie), nevis lielākie no trim.</span>';
+          });
+        })();
+      </script>
+      </div>
+
       <h3>CLI skripti (WP-CLI/artisan/cron) parasti šos limitus neredz</h3>
       <p>PHP CLI (komandrindas) izmanto <strong>citu</strong> konfigurāciju no web/FPM - bieži ar <code>memory_limit</code>/<code>max_execution_time</code> vispār bez ierobežojuma (<code>-1</code>/<code>0</code>), neatkarīgi no tā, kas iestatīts domēna PHP Settings. Tāpēc smaga darbība (imports, migrācija) caur SSH/WP-CLI/<code>artisan</code> var strādāt bez problēmām, kamēr tā pati darbība, palaista caur pārlūku (wp-admin poga), nomirst pēc 30-60s. Praktisks padoms: smagas darbības labāk palaist caur CLI/cron, nevis caur pārlūku.</p>
 
@@ -257,8 +323,8 @@ systemctl status <span class="tok-str">'plesk-php*-fpm'</span> 2>/dev/null | gre
     </section>
 </main>
 
-<script src="../js/shell.js?v=157"></script>
-<script src="../js/theme.js?v=157"></script>
-<script src="../js/main.js?v=157"></script>
+<script src="../js/shell.js?v=158"></script>
+<script src="../js/theme.js?v=158"></script>
+<script src="../js/main.js?v=158"></script>
 </body>
 </html>
