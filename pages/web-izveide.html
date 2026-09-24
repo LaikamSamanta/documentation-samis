@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=161" />
+<link rel="stylesheet" href="../css/style.css?v=162" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -59,7 +59,7 @@
       </div>
 
       <h3>Delegācija - kā DNS ķēde strādā</h3>
-      <p><strong>Delegācija</strong> ir ieraksts .lv reģistrā (NIC), kas norāda, kuri nameserveri atbild par domēnu. DNS strādā kā ķēde - katrs solis jautā nākamajam:</p>
+      <p><strong>Delegācija</strong> = ieraksts .lv reģistrā (NIC), kas norāda domēna nameserverus. DNS ir ķēde - katrs solis jautā nākamajam:</p>
 
       <div class="doc-diagram">
         <svg viewBox="0 0 760 210" xmlns="http://www.w3.org/2000/svg">
@@ -101,7 +101,7 @@
           <rect x="480" y="132" width="120" height="56" rx="8" class="dg-node-fail dg-node-dashed"/>
           <text x="540" y="165" text-anchor="middle" class="dg-label-fail">✕</text>
         </svg>
-        <p class="dg-caption">Kad rēķins nav apmaksāts, NIC izņem tikai deleģēšanas soli - domēns joprojām pieder klientam, WHOIS <code>Nserver</code> laukā redzams <code>-</code>. Pēc apmaksas delegācija atjaunojas un ķēde atkal strādā visiem.</p>
+        <p class="dg-caption">Nesamaksāts rēķins = NIC izņem tikai deleģēšanas soli. Domēns paliek klienta īpašumā (WHOIS <code>Nserver</code>: <code>-</code>), pēc apmaksas ķēde atjaunojas.</p>
       </div>
 
       <h3>Komandas - kā praktiski pārbaudīt</h3>
@@ -121,34 +121,34 @@
 
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p><strong>Vai hosting un pastkaste ir turpat</strong> (uz viena servera)? Salīdzini <code>nslookup domēns.lv</code> (mājaslapas IP) ar <code>nslookup mail.domēns.lv</code> vai citu <code>MX</code> ierakstā redzamo servera nosaukumu izšķirtu uz IP - ja abi sakrīt (vai ir tajā pašā apakštīklā), hosting un pasts dzīvo kopā. Ja atšķiras, pasts ir citur (ārējs pakalpojums).</p>
+        <p><strong>Vai hosting un pastkaste ir turpat?</strong> Salīdzini <code>nslookup domēns.lv</code> ar <code>nslookup mail.domēns.lv</code> IP - sakrīt = dzīvo kopā, atšķiras = pasts ir citur.</p>
       </div>
     </section>
 
     <section class="doc-section" id="plesk-mail-settings">
       <h2>Plesk Mail Settings - kad ļaut citam hostingam pārņemt pastu</h2>
-      <p>Plesk panelī <strong>Mail → Mail Settings</strong> katram domēnam ir trīs izvēles, kas nosaka, vai Plesk pats apkalpo e-pastu šim domēnam:</p>
+      <p>Plesk <strong>Mail → Mail Settings</strong> - trīs izvēles, vai Plesk pats apkalpo e-pastu:</p>
 
       <img src="../assets/img/plesk-mail-settings.png" alt="Plesk Mail Settings for a26.lv - Enabled, Disabled for incoming mail, Not configured" style="display:block; width:100%; max-width:560px; border:1px solid var(--border); border-radius:var(--radius-md); margin:16px 0;">
 
       <div class="doc-cards">
         <div class="doc-mini-card">
           <h4>Enabled</h4>
-          <p>Noklusējums. Domēns sūta un saņem pastu tieši caur šo Plesk serveri - pastkastes, e-pasta adreses un viss cits pārvaldīts šeit.</p>
+          <p>Noklusējums - domēns sūta/saņem pastu caur šo Plesk serveri, viss pārvaldīts šeit.</p>
         </div>
         <div class="doc-mini-card">
           <h4>Disabled for incoming mail</h4>
-          <p>Domēns var tikai sūtīt pastu (caur Sendmail, piem. WordPress paziņojumus) - ienākošo pastu Plesk vairs neapstrādā. Noder, ja pastu jau saņem citur, bet lapai joprojām vajag <code>wp_mail()</code>/<code>mail()</code> darboties.</p>
+          <p>Var tikai sūtīt (Sendmail) - ienākošo Plesk vairs neapstrādā. Noder, ja pasts jau citur, bet <code>wp_mail()</code>/<code>mail()</code> jāpatur.</p>
         </div>
         <div class="doc-mini-card">
           <h4>Not configured</h4>
-          <p>Plesk pilnībā pārstāj sniegt pasta pakalpojumus šim domēnam - <strong>šī ir opcija, kas ļauj citam hostingam/e-pasta pakalpojumam (Google Workspace, cits serveris u.tml.) pārņemt pastkastes</strong>, jo Plesk vairs "necīnās" par to pastu.</p>
+          <p>Plesk pilnībā pārstāj apkalpot pastu - <strong>ļauj citam hostingam/pakalpojumam (Google Workspace u.c.) pārņemt pastkastes</strong>.</p>
         </div>
       </div>
 
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p><strong>Not configured pastāvīgi izdzēš visas šī domēna pastkastes</strong> ar visiem saņemtajiem un nosūtītajiem e-pastiem (Plesk to pats raksta zem opcijas). Pirms izvēles - izveido pastkastu dublējumu, ja saturs vēl vajadzīgs.</p>
+        <p><strong>Not configured pastāvīgi izdzēš visas pastkastes</strong> ar e-pastiem. Pirms izvēles - izveido dublējumu, ja saturs vēl vajadzīgs.</p>
       </div>
 
       <h3>Migrācijas gadījumi - kas man jādara, solis pa solim</h3>
@@ -165,31 +165,30 @@
             <div class="doc-step">
               <div class="doc-step-num">1</div>
               <div class="doc-step-body">
-                <p>DNS zonā tiek nomainīti jaunā pasta pakalpojuma norādītie ieraksti. <code>MX</code> jānorāda uz jaunā pasta pakalpojuma serveriem, un pēc vajadzības jāpievieno/jāmaina arī <code>SPF</code>, <code>DKIM</code>, <code>DMARC</code> u.c. ieraksti. Mājaslapas <code>A</code>/<code>AAAA</code> ieraksti paliek nemainīti.</p>
+                <p><code>MX</code> jānorāda uz jaunā pasta servera, pēc vajadzības arī <code>SPF</code>/<code>DKIM</code>/<code>DMARC</code>. <code>A</code>/<code>AAAA</code> paliek nemainīgi.</p>
               </div>
             </div>
             <div class="doc-step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
             <div class="doc-step">
               <div class="doc-step-num">2</div>
               <div class="doc-step-body">
-                <p>Plesk: <strong>pārslēdz uz <code>Disabled for incoming mail</code></strong> (ne uzreiz <code>Not configured</code>). Kamēr pasta serviss paliek <code>Enabled</code>, Plesk domēnu apkalpo kā lokālu pasta domēnu un var mēģināt piegādāt pastu lokālajām pastkastēm, pat ja <code>MX</code> jau norāda uz jauno pasta serveri.</p>
-                <p><code>Disabled for incoming mail</code> <strong>neizdzēš</strong> vecās pastkastes un tajās esošās vēstules - tas tikai atslēdz Plesk ienākošā pasta apstrādi.</p>
+                <p>Plesk: <strong>pārslēdz uz <code>Disabled for incoming mail</code></strong> (ne uzreiz <code>Not configured</code>) - kamēr <code>Enabled</code>, Plesk var mēģināt piegādāt pastu lokāli pat pēc <code>MX</code> maiņas. Šis solis pastkastes <strong>neizdzēš</strong>, tikai atslēdz ienākošo apstrādi.</p>
               </div>
             </div>
             <div class="doc-step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
             <div class="doc-step">
               <div class="doc-step-num">3</div>
-              <div class="doc-step-body"><p>Ja vecās vēstules jāpārceļ, tās var importēt caur <code>IMAP</code>. Ja jaunajam pasta pakalpojuma sniedzējam tiek nodrošināta piekļuve vecajām pastkastēm, <strong>viņi migrāciju var veikt paši</strong>.</p></div>
+              <div class="doc-step-body"><p>Vecās vēstules var importēt caur <code>IMAP</code> - ja jaunajam pakalpojumam iedod piekļuvi, <strong>viņi to var izdarīt paši</strong>.</p></div>
             </div>
             <div class="doc-step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
             <div class="doc-step">
               <div class="doc-step-num">4</div>
-              <div class="doc-step-body"><p>Kad vecās pastkastes vairs nav vajadzīgas, var pāriet uz <code>Not configured</code>, kas <strong>neatgriezeniski izdzēš</strong> Plesk pastkastes un tajās esošos e-pastus.</p></div>
+              <div class="doc-step-body"><p>Kad pastkastes vairs nav vajadzīgas - pāriet uz <code>Not configured</code> (<strong>neatgriezeniski izdzēš</strong>).</p></div>
             </div>
             <div class="doc-step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
             <div class="doc-step">
               <div class="doc-step-num">5</div>
-              <div class="doc-step-body"><p>WordPress SMTP konfigurācijā jāizmanto jaunā pasta pakalpojuma SMTP serveris, ports un autentifikācijas dati. Ja WordPress turpina sūtīt caur veco Plesk serveri, <strong>jānodrošina, ka tā sūtīšanas serveris ir atļauts <code>SPF</code> ierakstā</strong>; pretējā gadījumā SPF pārbaude var neizdoties un tas var ietekmēt piegādi.</p></div>
+              <div class="doc-step-body"><p>WordPress SMTP jāiestata uz jaunā pakalpojuma serveri. Ja paliek uz vecā - <strong>tam jābūt atļautam <code>SPF</code></strong>, citādi piegāde var neizdoties.</p></div>
             </div>
           </div>
           </div>
@@ -204,25 +203,24 @@
           <div class="doc-steps">
             <div class="doc-step">
               <div class="doc-step-num">1</div>
-              <div class="doc-step-body"><p>Ja grib paturēt veco pastu, to var importēt caur <code>IMAP</code>. Ja jaunajam pasta pakalpojuma sniedzējam tiek nodrošināta piekļuve vecajām pastkastēm, <strong>viņi migrāciju var veikt paši</strong>.</p></div>
+              <div class="doc-step-body"><p>Vecais pasts caur <code>IMAP</code> - ja jaunajam pakalpojumam iedod piekļuvi, <strong>viņi to var izdarīt paši</strong>.</p></div>
             </div>
             <div class="doc-step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
             <div class="doc-step">
               <div class="doc-step-num">2</div>
-              <div class="doc-step-body"><p>Kur jāmaina DNS ieraksti, nosaka domēna <strong>nameserveri (<code>NS</code>)</strong>, nevis tas, kur domēns ir reģistrēts. Piemēram, .lv domēnam reģistratūras panelī var būt norādīts, kuri nameserveri ir autoritatīvi. Kamēr tur ir norādīti mani/Plesk nameserveri, DNS zonu pārvaldu es; ja nameserveri tiek nomainīti uz cita hostinga vai Cloudflare nameserveriem, DNS pārvaldība pāriet tur. Pārbaudīt var ar <code>nslookup -type=ns domēns.lv</code> vai WHOIS.</p></div>
+              <div class="doc-step-body"><p>Kur mainīt DNS, nosaka <strong>nameserveri (<code>NS</code>)</strong>, ne reģistrācijas vieta. Kamēr norādīti mani/Plesk nameserveri - zonu pārvaldu es; citādi jaunais hostings. Pārbaude: <code>nslookup -type=ns domēns.lv</code>.</p></div>
             </div>
             <div class="doc-step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
             <div class="doc-step">
               <div class="doc-step-num">3</div>
               <div class="doc-step-body">
-                <p>Ja DNS zonu turpinu pārvaldīt es, pirms pārslēgšanas var samazināt DNS ierakstu <strong>TTL</strong> (piemēram, līdz 300 sekundēm), lai izmaiņas varētu atjaunoties ātrāk. Pēc tam <code>A</code>/<code>AAAA</code>, <code>MX</code> un citus nepieciešamos DNS ierakstus nomaina uz vērtībām, ko iedod jaunais hostings.</p>
-                <p>Ja nameserveri tiek pārcelti uz jauno hostingu, DNS ierakstus pēc tam <strong>pārvalda jaunais DNS pakalpojuma sniedzējs</strong>.</p>
+                <p>Ja zonu pārvaldu es - pirms pārslēgšanas samazini <strong>TTL</strong> (piem. 300s), tad maini <code>A</code>/<code>AAAA</code>/<code>MX</code> uz jaunā hostinga vērtībām. Ja nameserveri pārceļas - to dara <strong>jaunais sniedzējs</strong>.</p>
               </div>
             </div>
             <div class="doc-step-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
             <div class="doc-step">
               <div class="doc-step-num">4</div>
-              <div class="doc-step-body"><p>WordPress SMTP konfigurācijā jāizmanto jaunā hostinga/pasta pakalpojuma SMTP serveris, ports un autentifikācijas dati. Ja WordPress turpina sūtīt caur veco serveri, <strong>tā sūtīšanas serverim jābūt atļautam <code>SPF</code> ierakstā</strong>.</p></div>
+              <div class="doc-step-body"><p>WordPress SMTP jāiestata uz jauno serveri. Ja paliek uz veco - <strong>tam jābūt atļautam <code>SPF</code></strong>.</p></div>
             </div>
           </div>
           </div>
@@ -231,8 +229,8 @@
     </section>
 </main>
 
-<script src="../js/shell.js?v=161"></script>
-<script src="../js/theme.js?v=161"></script>
-<script src="../js/main.js?v=161"></script>
+<script src="../js/shell.js?v=162"></script>
+<script src="../js/theme.js?v=162"></script>
+<script src="../js/main.js?v=162"></script>
 </body>
 </html>
