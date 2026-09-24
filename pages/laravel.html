@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=171" />
+<link rel="stylesheet" href="../css/style.css?v=172" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -85,13 +85,23 @@
       <div class="doc-code-cols">
         <div>
           <h4>Inertia - sesijas cookie (automātiski)</h4>
-          <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// cookie pārlūks pievieno pats, papildu koda nav</span>
+          <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// POST - cookie pārlūks pievieno pats, papildu koda nav</span>
 const res = await fetch(<span class="tok-str">"/api/orders"</span>, {
   method: <span class="tok-str">"POST"</span>,
   headers: { <span class="tok-str">"Content-type"</span>: <span class="tok-str">"application/json"</span> },
   body: JSON.stringify({ product_id: 5 }),
 });
-const order = await res.json();</code></pre>
+const order = await res.json();
+
+<span class="tok-com">// PUT - tas pats, tikai body mainās</span>
+await fetch(`/api/orders/${order.id}`, {
+  method: <span class="tok-str">"PUT"</span>,
+  headers: { <span class="tok-str">"Content-type"</span>: <span class="tok-str">"application/json"</span> },
+  body: JSON.stringify({ qty: 2 }),
+});
+
+<span class="tok-com">// DELETE - body nav vajadzīgs, cookie vienalga automātisks</span>
+await fetch(`/api/orders/${order.id}`, { method: <span class="tok-str">"DELETE"</span> });</code></pre>
         </div>
         <div>
           <h4>Sanctum - Bearer tokens (manuāli)</h4>
@@ -109,7 +119,20 @@ const res2 = await fetch(`${apiUrl}/user`, {
   method: <span class="tok-str">"GET"</span>,
   headers: { Authorization: `Bearer ${token}` },
 });
-const user = await res2.json();</code></pre>
+const user = await res2.json();
+
+<span class="tok-com">// 3) PUT - header paliek tas pats, papildus nāk body</span>
+await fetch(`${apiUrl}/user/${user.id}`, {
+  method: <span class="tok-str">"PUT"</span>,
+  headers: { <span class="tok-str">"Content-type"</span>: <span class="tok-str">"application/json"</span>, Authorization: `Bearer ${token}` },
+  body: JSON.stringify({ name: <span class="tok-str">"Jauns vārds"</span> }),
+});
+
+<span class="tok-com">// 4) DELETE - header vienmēr jāpievieno, body nevajag</span>
+await fetch(`${apiUrl}/user/${user.id}`, {
+  method: <span class="tok-str">"DELETE"</span>,
+  headers: { Authorization: `Bearer ${token}` },
+});</code></pre>
         </div>
       </div>
       <div class="callout tip">
@@ -212,8 +235,8 @@ const result = await res.json();</code></pre>
     </section>
 </main>
 
-<script src="../js/shell.js?v=171"></script>
-<script src="../js/theme.js?v=171"></script>
-<script src="../js/main.js?v=171"></script>
+<script src="../js/shell.js?v=172"></script>
+<script src="../js/theme.js?v=172"></script>
+<script src="../js/main.js?v=172"></script>
 </body>
 </html>
