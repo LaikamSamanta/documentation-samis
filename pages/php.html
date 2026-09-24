@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=156" />
+<link rel="stylesheet" href="../css/style.css?v=157" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -218,10 +218,47 @@ systemctl status <span class="tok-str">'plesk-php*-fpm'</span> 2>/dev/null | gre
 
       <p>Ja hostē <strong>vairākus domēnus</strong> uz viena servera - katram var būt savs FPM pool ar savu <code>pm.max_children</code>, tāpēc formulai jāskatās uz <strong>visu domēnu kopējo</strong> maksimālo patēriņu, ne tikai viena.</p>
     </section>
+
+    <section class="doc-section" id="php-programmetajam-jazina">
+      <h2>Kas reāli jāzina kā programmētājam (ne tikai hostinga administratoram)</h2>
+      <p>Ja pats pārvaldi arī hostingu - šīs ir lietas, kas reāli sagādā pārsteigumus, kad kaut kas "bez iemesla" nomirst vai neatbilst tam, ko liki <code>php.ini</code>.</p>
+
+      <h3>Trīs dažādi timeout limiti - ne tikai max_execution_time</h3>
+      <p>Pieprasījumu var pārtraukt trīs pavisam dažādos līmeņos. Ja paceļ tikai vienu, bet pārējie divi palikuši zemāki - pieprasījums tik un tā nomirst pēc mazākā no tiem.</p>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Līmenis</th><th>Kur iestatīts</th><th>Ko rāda, kad nostrādā</th></tr></thead>
+          <tbody>
+            <tr><td>PHP pats (<code>max_execution_time</code>)</td><td>php.ini / Plesk PHP Settings</td><td>PHP error log: <code>Fatal error: Maximum execution time of Xs exceeded</code>. Baltā lapa vai 500.</td></tr>
+            <tr><td>PHP-FPM (<code>request_terminate_timeout</code>)</td><td>FPM pool fails (sk. augstāk, kur atrast)</td><td>PHP-FPM log: <code>child X, script '...' execution timed out</code>. Bieži 502/504.</td></tr>
+            <tr><td>Web serveris (Nginx <code>fastcgi_read_timeout</code> / Apache <code>ProxyTimeout</code>)</td><td>Nginx/Apache konfigurācija (Plesk: "Additional nginx directives")</td><td>Nginx log: <code>upstream timed out</code>. Pārlūkā <strong>504 Gateway Timeout</strong> - PHP pats var vēl turpināt strādāt fonā.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Ja paceļ <code>max_execution_time</code> uz 300s, bet FPM/Nginx timeout paliek 60s - pieprasījums vienalga nomirst pēc 60s, un tā ir <strong>klasiska</strong> "kāpēc mans imports vienalga apstājas" kļūda. Visi trīs jāceļ kopā.</p>
+      </div>
+
+      <h3>CLI skripti (WP-CLI/artisan/cron) parasti šos limitus neredz</h3>
+      <p>PHP CLI (komandrindas) izmanto <strong>citu</strong> konfigurāciju no web/FPM - bieži ar <code>memory_limit</code>/<code>max_execution_time</code> vispār bez ierobežojuma (<code>-1</code>/<code>0</code>), neatkarīgi no tā, kas iestatīts domēna PHP Settings. Tāpēc smaga darbība (imports, migrācija) caur SSH/WP-CLI/<code>artisan</code> var strādāt bez problēmām, kamēr tā pati darbība, palaista caur pārlūku (wp-admin poga), nomirst pēc 30-60s. Praktisks padoms: smagas darbības labāk palaist caur CLI/cron, nevis caur pārlūku.</p>
+
+      <h3>WordPress: WP_MEMORY_LIMIT / WP_MAX_MEMORY_LIMIT</h3>
+      <p>WordPress <strong>pats</strong> ierobežo atmiņu ar savām konstantēm <code>wp-config.php</code> - neatkarīgi no servera <code>memory_limit</code>. Ja serverī uzliec 512M, bet šīs konstantes paliek noklusējumā, WordPress joprojām apstāsies pie sava zemākā limita.</p>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// wp-config.php - parastām front-end/admin lapām</span>
+<span class="tok-fn">define</span>(<span class="tok-str">'WP_MEMORY_LIMIT'</span>, <span class="tok-str">'256M'</span>);
+
+<span class="tok-com">// smagām admin darbībām (WordPress šo izmanto wp-admin kontekstā)</span>
+<span class="tok-fn">define</span>(<span class="tok-str">'WP_MAX_MEMORY_LIMIT'</span>, <span class="tok-str">'512M'</span>);</code></pre>
+      <p>Noklusējuma vērtības, ja konstantes nav uzliktas: <code>WP_MEMORY_LIMIT</code> - <code>40M</code> (<code>64M</code> multisite), <code>WP_MAX_MEMORY_LIMIT</code> - <code>256M</code>.</p>
+
+      <h3>Kur skatīties, kurš limits konkrēti nostrādāja</h3>
+      <p>Domēna PHP error log Plesk parasti atrodas <code>/var/www/vhosts/system/&lt;domēns&gt;/logs/error_log</code> - tur redz, vai tā bija PHP kļūda (execution time/memory), vai jāskatās FPM/Nginx logs (ja pārlūkā ir 502/504, bet PHP error log klusē - problēma nav pašā PHP).</p>
+    </section>
 </main>
 
-<script src="../js/shell.js?v=156"></script>
-<script src="../js/theme.js?v=156"></script>
-<script src="../js/main.js?v=156"></script>
+<script src="../js/shell.js?v=157"></script>
+<script src="../js/theme.js?v=157"></script>
+<script src="../js/main.js?v=157"></script>
 </body>
 </html>
