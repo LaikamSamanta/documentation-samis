@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=164" />
+<link rel="stylesheet" href="../css/style.css?v=165" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -82,20 +82,28 @@
         <p class="dg-caption">Vienā domēnā pārlūks pievieno cookie pats; atsevišķos domēnos backend to nesaņem, tāpēc frontend katram pieprasījumam manuāli pievieno tokenu.</p>
       </div>
       <h3>Tokens: login <code>body</code> → turpmāk <code>header</code></h3>
-      <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// 1) login - tokens nāk atbildes BODY</span>
-const res = await fetch(`${apiUrl}/login`, {
+      <div class="doc-code-cols">
+        <div>
+          <h4>1) Login - tokens nāk atbildes <code>body</code></h4>
+          <pre class="code-block"><span class="lang">js</span><code>const res = await fetch(`${apiUrl}/login`, {
   method: <span class="tok-str">"POST"</span>,
   headers: { <span class="tok-str">"Content-type"</span>: <span class="tok-str">"application/json"</span> },
   body: JSON.stringify({ email, password }),
 });
-const { token } = await res.json(); <span class="tok-com">// { token: "1|abc123..." }</span>
-localStorage.setItem(<span class="tok-str">"token"</span>, token);
+const { token } = await res.json();
+<span class="tok-com">// { token: "1|abc123..." }</span>
+localStorage.setItem(<span class="tok-str">"token"</span>, token);</code></pre>
+        </div>
+        <div>
+          <h4>2) Turpmāk - tokens iet <code>header</code>, ne body</h4>
+          <pre class="code-block"><span class="lang">js</span><code>const token = localStorage.getItem(<span class="tok-str">"token"</span>);
 
-<span class="tok-com">// 2) katrs nākamais pieprasījums - tokens HEADER, ne body</span>
-const res2 = await fetch(`${apiUrl}/user`, {
+const res = await fetch(`${apiUrl}/user`, {
   headers: { Authorization: `Bearer ${token}` },
 });
-const user = await res2.json();</code></pre>
+const user = await res.json();</code></pre>
+        </div>
+      </div>
       <div class="callout tip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
         <p>Sanctum vajag, ja: (1) vairāk kā viens klients (web + mobile, trešā puse), VAI (2) frontend ir atsevišķs projekts uz cita domēna.</p>
@@ -161,21 +169,26 @@ php artisan migrate</code></pre>
         </div>
       </div>
 
-      <h3>GET (noklusējums - method nav norādīts)</h3>
-      <pre class="code-block"><span class="lang">js</span><code>const res = await fetch(`${apiUrl}/categories/list`);
+      <div class="doc-code-cols">
+        <div>
+          <h4>GET (noklusējums - method nav norādīts)</h4>
+          <pre class="code-block"><span class="lang">js</span><code>const res = await fetch(`${apiUrl}/categories/list`);
 const result = await res.json();
 
 if (result.status == 200) {
   setCategories(result.data);
 }</code></pre>
-
-      <h3>POST (method jānorāda skaidri)</h3>
-      <pre class="code-block"><span class="lang">js</span><code>const res = await fetch(`${apiUrl}/categories`, {
+        </div>
+        <div>
+          <h4>POST (method jānorāda skaidri)</h4>
+          <pre class="code-block"><span class="lang">js</span><code>const res = await fetch(`${apiUrl}/categories`, {
   method: <span class="tok-str">"POST"</span>,
   headers: { <span class="tok-str">"Content-type"</span>: <span class="tok-str">"application/json"</span> },
   body: JSON.stringify(data),
 });
 const result = await res.json();</code></pre>
+        </div>
+      </div>
 
       <h3>Kas vēl jāzina par <code>fetch()</code></h3>
       <ul>
@@ -191,8 +204,8 @@ const result = await res.json();</code></pre>
     </section>
 </main>
 
-<script src="../js/shell.js?v=164"></script>
-<script src="../js/theme.js?v=164"></script>
-<script src="../js/main.js?v=164"></script>
+<script src="../js/shell.js?v=165"></script>
+<script src="../js/theme.js?v=165"></script>
+<script src="../js/main.js?v=165"></script>
 </body>
 </html>
