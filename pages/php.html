@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=146" />
+<link rel="stylesheet" href="../css/style.css?v=148" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -33,10 +33,57 @@
       </div>
       <h1 style="margin-bottom:0;">PHP</h1>
     </div>
+
+    <section class="doc-section" id="php-fpm-tuning">
+      <h2>memory_limit, execution time, max workeri - kā izvēlēties vērtības pēc RAM</h2>
+      <p>Šie trīs iestatījumi ir savstarpēji saistīti - visi kopā nedrīkst pārsniegt serverim faktiski pieejamo RAM, citādi risks ir OOM (out-of-memory), kas var nogalināt arī MySQL vai citus procesus, ne tikai PHP.</p>
+
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Iestatījums</th><th>Ko dara</th><th>Kā izvēlēties</th></tr></thead>
+          <tbody>
+            <tr><td><code>memory_limit</code></td><td>Max RAM, ko drīkst izmantot <strong>viens</strong> PHP process/skripts.</td><td>WordPress min. 64M, ar spraudņiem/WooCommerce parasti 256M; smagiem importiem īslaicīgi 512M.</td></tr>
+            <tr><td><code>max_execution_time</code></td><td>Cik sekundes skripts drīkst darboties, pirms PHP to pārtrauc.</td><td>30-60s parastām lapām. Neceļ globāli augstu "drošībai" - iestrēdzis skripts tik ilgi tur aizņemtu worker'i.</td></tr>
+            <tr><td><code>pm.max_children</code></td><td>Cik PHP-FPM worker procesu drīkst darboties vienlaicīgi (max vienlaicīgi apstrādāto pieprasījumu skaits).</td><td><strong>Formula:</strong> pieejamā RAM priekš PHP-FPM (MB) ÷ vidējais RAM patēriņš uz vienu worker'i (MB) - sk. zemāk, kā izmērīt abus.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><code>pm.max_children</code> × <code>memory_limit</code> ir <strong>teorētiskais maksimums</strong>, ko PHP-FPM var izēst no RAM, ja visi worker'i vienlaicīgi strādā pie smagiem skriptiem. Ja šis reizinājums pārsniedz serverim faktiski atlikušo RAM (pēc MySQL, Plesk, Nginx/Apache u.c.) - serveris var sākt swapot vai OOM killer sāk nogalināt procesus, ieskaitot, iespējams, datubāzi.</p>
+      </div>
+
+      <h3>Kā fiziski izmērīt - SSH</h3>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># cik RAM serverim kopā un cik brīvs</span>
+free -h
+
+<span class="tok-com"># cik CPU kodolu (arī ierobežo, cik worker'us jēga likt)</span>
+nproc
+
+<span class="tok-com"># kādi php-fpm procesi vispār strādā (nosaukums atkarīgs no PHP versijas)</span>
+ps aux | grep php-fpm
+
+<span class="tok-com"># vidējais reālais RAM patēriņš uz vienu php-fpm worker'i (MB)</span>
+ps --no-headers -o rss,cmd -C php-fpm8.1 | awk '{sum+=$1; n++} END {print sum/n/1024" MB videji, "n" workeri"}'
+
+<span class="tok-com"># pašreizējais memory_limit (CLI php var atšķirties no web/FPM!)</span>
+php -i | grep -i memory_limit
+
+<span class="tok-com"># kurš php.ini/pool fails faktiski ielādēts</span>
+php --ini</code></pre>
+
+      <div class="callout note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16v-4M12 8h.01M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"/></svg>
+        <p>Plesk katram domēnam/PHP versijai parasti taisa savu FPM pool'u - <code>pm.max_children</code> maini caur <strong>Websites & Domains → domēns → PHP Settings</strong> (ja tur nav lauka - "Additional configuration directives"), nevis rediģē pool failus tieši, jo Plesk tos var pārrakstīt. Ja tomēr rediģē failu pašrocīgi, pēc izmaiņām jārestartē attiecīgais php-fpm serviss (<code>systemctl restart</code> ar to servisa nosaukumu, kas redzams <code>systemctl list-units | grep php-fpm</code>).</p>
+      </div>
+
+      <p>Ja hostē <strong>vairākus domēnus</strong> uz viena servera - katram var būt savs FPM pool ar savu <code>pm.max_children</code>, tāpēc formulai jāskatās uz <strong>visu domēnu kopējo</strong> maksimālo patēriņu, ne tikai viena.</p>
+    </section>
 </main>
 
-<script src="../js/shell.js?v=146"></script>
-<script src="../js/theme.js?v=146"></script>
-<script src="../js/main.js?v=146"></script>
+<script src="../js/shell.js?v=148"></script>
+<script src="../js/theme.js?v=148"></script>
+<script src="../js/main.js?v=148"></script>
 </body>
 </html>

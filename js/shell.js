@@ -38,7 +38,8 @@ document.addEventListener("DOMContentLoaded", function () {
         { name: "Laravel", href: "pages/laravel.html", cat: "laravel" },
         { name: "Tīkls", href: "pages/web-izveide.html", cat: "web" },
         { name: "Rīki", href: "pages/riki.html", cat: "riki" },
-        { name: "WooCommerce", href: "pages/woocommerce.html", cat: "wordpress" }
+        { name: "WooCommerce", href: "pages/woocommerce.html", cat: "wordpress" },
+        { name: "PHP", href: "pages/php.html", cat: "php" }
       ]
     }
   ];
@@ -58,7 +59,8 @@ document.addEventListener("DOMContentLoaded", function () {
     "cat-laravel": "pages/laravel.html",
     "cat-web": "pages/web-izveide.html",
     "cat-riki": "pages/riki.html",
-    "cat-wordpress": "pages/woocommerce.html"
+    "cat-wordpress": "pages/woocommerce.html",
+    "cat-php": "pages/php.html"
   };
 
   function currentCategoryHref() {
@@ -217,9 +219,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // ---- search (self-contained copy of main.js's engine, same cache key,
   // so the two never double-fetch pages the other already indexed) ----
   var SEARCH_PAGES = [
-    "pages/laravel.html", "pages/web-izveide.html", "pages/riki.html", "pages/woocommerce.html"
+    "pages/laravel.html", "pages/web-izveide.html", "pages/riki.html", "pages/woocommerce.html", "pages/php.html"
   ];
-  var SEARCH_INDEX_VERSION = "108";
+  var SEARCH_INDEX_VERSION = "109";
   var searchIndex = null;
   var searchIndexPromise = null;
 
