@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=158" />
+<link rel="stylesheet" href="../css/style.css?v=159" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -242,7 +242,10 @@ systemctl status <span class="tok-str">'plesk-php*-fpm'</span> 2>/dev/null | gre
 
       <div class="calc-section">
       <h3>Kalkulators - efektīvais timeout</h3>
-      <p>Ievadi visus trīs - kalkulators parāda, kurš tieši ir <strong>faktiskais</strong> limits (mazākais no trim) un kuru vajag pacelt.</p>
+      <p><strong>Kāpēc tas vajadzīgs:</strong> pat ja FPM/Nginx pats neko neesi mainījis, tiem tik un tā ir savas noklusējuma vērtības (Nginx bieži ~60s) - tās var būt zemākas par to, ko liki <code>php.ini</code>, un tieši tās tevi ierobežo, ne tavs iestatījums. Ievadi visus trīs (ar noklusējumiem, ja neesi mainījis) - kalkulators pasaka, kurš no tiem <strong>faktiski</strong> nogriež pieprasījumu, lai zini, kuru tieši mainīt.</p>
+      <p>Kā uzzināt pašreizējo FPM vērtību (ja fails jau atrasts ar komandām augstāk):</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># → "PHP-FPM request_terminate_timeout" (0, ja rindas nav - nozīmē bez limita)</span>
+grep request_terminate_timeout /opt/plesk/php/*/etc/php-fpm.d/*.conf 2>/dev/null</code></pre>
       <div class="term-window">
         <div class="term-window-header">
           <span class="term-window-dots"></span>
@@ -323,8 +326,8 @@ systemctl status <span class="tok-str">'plesk-php*-fpm'</span> 2>/dev/null | gre
     </section>
 </main>
 
-<script src="../js/shell.js?v=158"></script>
-<script src="../js/theme.js?v=158"></script>
-<script src="../js/main.js?v=158"></script>
+<script src="../js/shell.js?v=159"></script>
+<script src="../js/theme.js?v=159"></script>
+<script src="../js/main.js?v=159"></script>
 </body>
 </html>
