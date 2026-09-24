@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=141" />
+<link rel="stylesheet" href="../css/style.css?v=142" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -62,44 +62,44 @@
       <p><strong>Delegācija</strong> ir ieraksts .lv reģistrā (NIC), kas norāda, kuri nameserveri atbild par domēnu. DNS strādā kā ķēde - katrs solis jautā nākamajam:</p>
 
       <div class="doc-diagram">
-        <svg viewBox="0 0 760 230" xmlns="http://www.w3.org/2000/svg">
-          <text x="10" y="16" class="dg-label">Parasti - ķēde strādā</text>
-          <rect x="10" y="26" width="80" height="42" rx="8" class="dg-node"/>
-          <text x="50" y="52" text-anchor="middle" class="dg-label">Dators</text>
-          <path d="M90 47 H190" class="dg-line-accent"/>
-          <path d="M190 47 L180 42 L180 52 Z" class="dg-arrowhead-accent"/>
-          <text x="140" y="40" text-anchor="middle" class="dg-sublabel">jautā</text>
+        <svg viewBox="0 0 760 210" xmlns="http://www.w3.org/2000/svg">
+          <text x="10" y="18" class="dg-label">Parasti - ķēde strādā</text>
+          <rect x="10" y="30" width="80" height="56" rx="8" class="dg-node"/>
+          <text x="50" y="63" text-anchor="middle" class="dg-label">Dators</text>
+          <path d="M90 58 H190" class="dg-line-accent"/>
+          <path d="M190 58 L180 53 L180 63 Z" class="dg-arrowhead-accent"/>
+          <text x="140" y="50" text-anchor="middle" class="dg-sublabel">jautā</text>
 
-          <rect x="190" y="26" width="150" height="42" rx="8" class="dg-node-accent"/>
-          <text x="265" y="52" text-anchor="middle" class="dg-label-accent">.lv reģistrs (NIC)</text>
-          <path d="M340 47 H480" class="dg-line-accent"/>
-          <path d="M480 47 L470 42 L470 52 Z" class="dg-arrowhead-accent"/>
-          <text x="410" y="40" text-anchor="middle" class="dg-sublabel">delegācija</text>
+          <rect x="190" y="30" width="150" height="56" rx="8" class="dg-node-accent"/>
+          <text x="265" y="63" text-anchor="middle" class="dg-label-accent">.lv reģistrs (NIC)</text>
+          <path d="M340 58 H480" class="dg-line-accent"/>
+          <path d="M480 58 L470 53 L470 63 Z" class="dg-arrowhead-accent"/>
+          <text x="410" y="50" text-anchor="middle" class="dg-sublabel">delegācija</text>
 
-          <rect x="480" y="26" width="120" height="42" rx="8" class="dg-node"/>
-          <text x="540" y="52" text-anchor="middle" class="dg-label">Nameserveri</text>
-          <path d="M600 47 H680" class="dg-line-accent"/>
-          <path d="M680 47 L670 42 L670 52 Z" class="dg-arrowhead-accent"/>
-          <text x="640" y="40" text-anchor="middle" class="dg-sublabel">IP</text>
+          <rect x="480" y="30" width="120" height="56" rx="8" class="dg-node"/>
+          <text x="540" y="63" text-anchor="middle" class="dg-label">Nameserveri</text>
+          <path d="M600 58 H680" class="dg-line-accent"/>
+          <path d="M680 58 L670 53 L670 63 Z" class="dg-arrowhead-accent"/>
+          <text x="640" y="50" text-anchor="middle" class="dg-sublabel">IP</text>
 
-          <rect x="680" y="26" width="70" height="42" rx="8" class="dg-node-success"/>
-          <text x="715" y="52" text-anchor="middle" class="dg-label-success">Lapa</text>
+          <rect x="680" y="30" width="70" height="56" rx="8" class="dg-node-success"/>
+          <text x="715" y="63" text-anchor="middle" class="dg-label-success">Lapa</text>
 
           <text x="10" y="120" class="dg-label">Nesamaksāts rēķins - ķēde pārtrūkst</text>
-          <rect x="10" y="130" width="80" height="42" rx="8" class="dg-node"/>
-          <text x="50" y="156" text-anchor="middle" class="dg-label">Dators</text>
-          <path d="M90 151 H190" class="dg-line-accent"/>
-          <path d="M190 151 L180 146 L180 156 Z" class="dg-arrowhead-accent"/>
-          <text x="140" y="144" text-anchor="middle" class="dg-sublabel">jautā</text>
+          <rect x="10" y="132" width="80" height="56" rx="8" class="dg-node"/>
+          <text x="50" y="165" text-anchor="middle" class="dg-label">Dators</text>
+          <path d="M90 160 H190" class="dg-line-accent"/>
+          <path d="M190 160 L180 155 L180 165 Z" class="dg-arrowhead-accent"/>
+          <text x="140" y="152" text-anchor="middle" class="dg-sublabel">jautā</text>
 
-          <rect x="190" y="130" width="150" height="42" rx="8" class="dg-node"/>
-          <text x="265" y="156" text-anchor="middle" class="dg-label">.lv reģistrs (NIC)</text>
-          <path d="M340 151 H480" class="dg-line-fail"/>
-          <path d="M480 151 L470 146 L470 156 Z" class="dg-arrowhead-fail"/>
-          <text x="410" y="144" text-anchor="middle" class="dg-label-fail">delegācija noņemta</text>
+          <rect x="190" y="132" width="150" height="56" rx="8" class="dg-node"/>
+          <text x="265" y="165" text-anchor="middle" class="dg-label">.lv reģistrs (NIC)</text>
+          <path d="M340 160 H480" class="dg-line-fail"/>
+          <path d="M480 160 L470 155 L470 165 Z" class="dg-arrowhead-fail"/>
+          <text x="410" y="152" text-anchor="middle" class="dg-label-fail">delegācija noņemta</text>
 
-          <rect x="480" y="130" width="120" height="42" rx="8" class="dg-node-fail dg-node-dashed"/>
-          <text x="540" y="156" text-anchor="middle" class="dg-label-fail">✕</text>
+          <rect x="480" y="132" width="120" height="56" rx="8" class="dg-node-fail dg-node-dashed"/>
+          <text x="540" y="165" text-anchor="middle" class="dg-label-fail">✕</text>
         </svg>
         <p class="dg-caption">Kad rēķins nav apmaksāts, NIC izņem tikai deleģēšanas soli - domēns joprojām pieder klientam, WHOIS <code>Nserver</code> laukā redzams <code>-</code>. Pēc apmaksas delegācija atjaunojas un ķēde atkal strādā visiem.</p>
       </div>
@@ -231,8 +231,8 @@
     </section>
 </main>
 
-<script src="../js/shell.js?v=141"></script>
-<script src="../js/theme.js?v=141"></script>
-<script src="../js/main.js?v=141"></script>
+<script src="../js/shell.js?v=142"></script>
+<script src="../js/theme.js?v=142"></script>
+<script src="../js/main.js?v=142"></script>
 </body>
 </html>
