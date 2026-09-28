@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
         { name: "Laravel", href: "pages/laravel.html", cat: "laravel" },
         { name: "Tīkls", href: "pages/web-izveide.html", cat: "web" },
         { name: "Rīki", href: "pages/riki.html", cat: "riki" },
-        { name: "WooCommerce", href: "pages/woocommerce.html", cat: "wordpress" },
+        { name: "WordPress", href: "pages/woocommerce.html", cat: "wordpress" },
         { name: "PHP", href: "pages/php.html", cat: "php" }
       ]
     }
@@ -221,7 +221,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var SEARCH_PAGES = [
     "pages/laravel.html", "pages/web-izveide.html", "pages/riki.html", "pages/woocommerce.html", "pages/php.html"
   ];
-  var SEARCH_INDEX_VERSION = "127";
+  var SEARCH_INDEX_VERSION = "128";
   var searchIndex = null;
   var searchIndexPromise = null;
 
