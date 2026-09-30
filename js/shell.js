@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     {
       group: "Dokumentācija",
       items: [
-        { name: "Laravel", href: "pages/laravel.html", cat: "laravel" },
+        { name: "Laravel", href: "pages/laravel.html", cat: "laravel", extras: [{ name: "Inertia.js", href: "pages/inertia.html" }] },
         { name: "Tīkls", href: "pages/web-izveide.html", cat: "web" },
         { name: "Rīki", href: "pages/riki.html", cat: "riki" },
         { name: "WordPress", href: "pages/woocommerce.html", cat: "wordpress" },
