@@ -219,9 +219,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // ---- search (self-contained copy of main.js's engine, same cache key,
   // so the two never double-fetch pages the other already indexed) ----
   var SEARCH_PAGES = [
-    "pages/laravel.html", "pages/web-izveide.html", "pages/riki.html", "pages/woocommerce.html", "pages/php.html"
+    "pages/laravel.html", "pages/inertia.html", "pages/web-izveide.html", "pages/riki.html", "pages/woocommerce.html", "pages/php.html"
   ];
-  var SEARCH_INDEX_VERSION = "128";
+  var SEARCH_INDEX_VERSION = "129";
   var searchIndex = null;
   var searchIndexPromise = null;
 
