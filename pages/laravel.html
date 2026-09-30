@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=177" />
+<link rel="stylesheet" href="../css/style.css?v=178" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -233,437 +233,264 @@ const result = await res.json();</code></pre>
         <p><code>fetch()</code> <strong>nemet kļūdu HTTP kļūdas gadījumā</strong> (piem. <code>404</code>, <code>500</code>) - <code>Promise</code> noraidās tikai tad, ja pieprasījums vispār neaizsniedz serveri (tīkla kļūda). Lai noķertu HTTP kļūdas, pirms <code>.json()</code> pašam jāpārbauda <code>res.ok</code> vai <code>res.status</code>.</p>
       </div>
     </section>
-<section class="doc-section" id="inertia-ideja">
-      <h2>Inertia.js - kas tā ir un kāpēc</h2>
-      <p>Inertia ir "līme" starp Laravel (backend) un React/Vue/Svelte (frontend). Tā ļauj taisīt vienas lapas (SPA) sajūtu <strong>bez atsevišķa API</strong> un bez frontend maršrutētāja - maršruti, kontrolieri, validācija un autentifikācija paliek Laravel pusē. Šī lapa ir vispārīga: kā Inertia darbojas, kur kas atrodas projektā, kā reģistrēt middleware un kādas kļūdas gadās visbiežāk. Piemēri ņemti no reāla Laravel + React + Vite projekta.</p>
-
-      <div class="doc-cards">
-        <div class="doc-mini-card">
-          <h4>Klasisks Laravel (Blade)</h4>
-          <ul>
-            <li>Katrs klikšķis = pilna lapas pārlāde.</li>
-            <li>UI rakstīts Blade šablonos.</li>
-            <li>Nav "lietotnes" sajūtas, bet viss vienā vietā.</li>
-          </ul>
-        </div>
-        <div class="doc-mini-card">
-          <h4>Laravel API + atsevišķs React</h4>
-          <ul>
-            <li>Divi projekti, CORS, tokeni, divi deploy.</li>
-            <li>Frontend pats dara routing un auth.</li>
-            <li>Elastīgi, bet daudz kustīgu daļu.</li>
-          </ul>
-        </div>
-        <div class="doc-mini-card">
-          <h4>Inertia</h4>
-          <ul>
-            <li>Viens projekts, viens deploy, sesiju auth.</li>
-            <li>Kontrolieris atgriež <em>komponenti + datus</em>, nevis HTML vai JSON.</li>
-            <li>Klikšķi ir XHR pieprasījumi, lapa nepārlādējas.</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="callout note">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16v-4M12 8h.01M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"/></svg>
-        <p>Inertia <strong>nav</strong> framework un <strong>nav</strong> API bibliotēka. Tā ir tikai protokols (kā servera atbilde tiek pārvērsta par frontend lapu) + divi mazi pakotņu komplekti: <code>inertiajs/inertia-laravel</code> (PHP) un <code>@inertiajs/react</code> (JS).</p>
-      </div>
-    </section>
-
-    <section class="doc-section" id="inertia-cikls">
-      <h2>Kā tas darbojas - pieprasījuma cikls</h2>
+<section class="doc-section" id="inertia-cikls">
+      <h2>Inertia.js - kā tas strādā</h2>
+      <p>Laravel + React <strong>bez API un bez frontend router</strong>: kontrolieris atgriež <em>komponenti + datus</em>, Inertia klikšķus dara ar XHR.</p>
 
       <div class="doc-diagram">
-        <svg viewBox="0 0 640 220" xmlns="http://www.w3.org/2000/svg">
-          <text x="10" y="16" class="dg-label">1) Pirmais apmeklējums - parasts GET</text>
+        <svg viewBox="0 0 640 210" xmlns="http://www.w3.org/2000/svg">
+          <text x="10" y="16" class="dg-label">1) Pirmais apmeklējums</text>
           <rect x="10" y="26" width="120" height="44" rx="8" class="dg-node"/>
           <text x="70" y="53" text-anchor="middle" class="dg-label">Pārlūks</text>
           <path d="M130 48 H386" class="dg-line-accent"/>
           <path d="M386 48 L376 43 L376 53 Z" class="dg-arrowhead-accent"/>
           <text x="258" y="40" text-anchor="middle" class="dg-sublabel">GET /product/5</text>
           <rect x="396" y="26" width="230" height="44" rx="8" class="dg-node-accent"/>
-          <text x="511" y="53" text-anchor="middle" class="dg-label-accent">Laravel → pilns HTML (app.blade)</text>
+          <text x="511" y="53" text-anchor="middle" class="dg-label-accent">Laravel → pilns HTML</text>
 
-          <text x="10" y="116" class="dg-label">2) Visi nākamie klikšķi - XHR ar galveni X-Inertia</text>
-          <rect x="10" y="126" width="120" height="44" rx="8" class="dg-node"/>
-          <text x="70" y="153" text-anchor="middle" class="dg-label">Inertia klients</text>
-          <path d="M130 148 H386" class="dg-line-accent"/>
-          <path d="M386 148 L376 143 L376 153 Z" class="dg-arrowhead-accent"/>
-          <text x="258" y="140" text-anchor="middle" class="dg-sublabel">X-Inertia: true</text>
-          <rect x="396" y="126" width="230" height="44" rx="8" class="dg-node-accent"/>
-          <text x="511" y="153" text-anchor="middle" class="dg-label-accent">Laravel → tikai JSON (page objekts)</text>
-          <text x="10" y="200" class="dg-sublabel">Klients no JSON samaina komponenti un props - nekādas pārlādes.</text>
+          <text x="10" y="106" class="dg-label">2) Katrs nākamais klikšķis (&lt;Link&gt;)</text>
+          <rect x="10" y="116" width="120" height="44" rx="8" class="dg-node"/>
+          <text x="70" y="143" text-anchor="middle" class="dg-label">Inertia klients</text>
+          <path d="M130 138 H386" class="dg-line-accent"/>
+          <path d="M386 138 L376 133 L376 143 Z" class="dg-arrowhead-accent"/>
+          <text x="258" y="130" text-anchor="middle" class="dg-sublabel">XHR + X-Inertia: true</text>
+          <rect x="396" y="116" width="230" height="44" rx="8" class="dg-node-accent"/>
+          <text x="511" y="143" text-anchor="middle" class="dg-label-accent">Laravel → tikai JSON</text>
+          <text x="10" y="192" class="dg-sublabel">Klients samaina komponenti + props, lapa nepārlādējas.</text>
         </svg>
-        <p class="dg-caption">Pirmais pieprasījums atdod pilnu HTML ar sākuma datiem. Pēc tam Inertia visus <code>&lt;Link&gt;</code> klikšķus pārtver un dabū tikai JSON.</p>
+        <p class="dg-caption">Atbilde vienmēr ir viens "page objekts". Ja pēc deploy mainās assetu <code>version</code>, serveris atbild <code>409</code> un notiek vienreizēja pilna pārlāde.</p>
       </div>
 
-      <h3>"Page objekts" - viss, ko serveris atgriež</h3>
-      <p>Inertia atbilde (gan HTML iekšā, gan JSON) vienmēr ir viens un tas pats objekts:</p>
-      <pre class="code-block"><span class="lang">json</span><code>{
-  <span class="tok-str">"component"</span>: <span class="tok-str">"Product"</span>,          <span class="tok-com">// kuru lapas komponenti rādīt</span>
-  <span class="tok-str">"props"</span>: {                        <span class="tok-com">// dati komponentei (kontrolieris + shared data)</span>
-    <span class="tok-str">"product"</span>: { <span class="tok-str">"id"</span>: 5, <span class="tok-str">"title"</span>: <span class="tok-str">"..."</span> },
-    <span class="tok-str">"auth"</span>: { <span class="tok-str">"user"</span>: null },
-    <span class="tok-str">"errors"</span>: {}
-  },
-  <span class="tok-str">"url"</span>: <span class="tok-str">"/product/5"</span>,
-  <span class="tok-str">"version"</span>: <span class="tok-str">"c32b8e4965f418..."</span>  <span class="tok-com">// assetu versija (sk. zemāk)</span>
-}</code></pre>
-
-      <h3>Asset versijas pārbaude (409)</h3>
-      <p>Katrā pieprasījumā klients nosūta savu <code>version</code>. Ja pēc deploy tā vairs nesakrīt ar servera versiju (<code>version()</code> metode middleware), serveris atbild <code>409 Conflict</code> un Inertia veic <strong>pilnu pārlādi</strong>, lai lietotājs dabūtu jaunos JS/CSS failus. Tāpēc pēc deploy reizēm redzama viena "nepamatota" pārlāde - tā ir normāla.</p>
+      <pre class="code-block"><span class="lang">json</span><code>{ <span class="tok-str">"component"</span>: <span class="tok-str">"Product"</span>,            <span class="tok-com">// kuru lapu rādīt</span>
+  <span class="tok-str">"props"</span>: { <span class="tok-str">"product"</span>: {...}, <span class="tok-str">"auth"</span>: {...}, <span class="tok-str">"errors"</span>: {} },
+  <span class="tok-str">"url"</span>: <span class="tok-str">"/product/5"</span>, <span class="tok-str">"version"</span>: <span class="tok-str">"c32b8e..."</span> }</code></pre>
     </section>
 
     <section class="doc-section" id="inertia-struktura">
-      <h2>Kur kas atrodas projektā</h2>
+      <h2>Inertia - kur kas atrodas</h2>
+
+      <div class="doc-diagram">
+        <svg viewBox="0 0 700 150" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="20" width="150" height="56" rx="8" class="dg-node-accent"/>
+          <text x="85" y="43" text-anchor="middle" class="dg-label-accent">routes/web.php</text>
+          <text x="85" y="61" text-anchor="middle" class="dg-sublabel">inertia('Product')</text>
+          <path d="M160 48 H186" class="dg-line-accent"/>
+          <path d="M186 48 L176 43 L176 53 Z" class="dg-arrowhead-accent"/>
+
+          <rect x="190" y="20" width="150" height="56" rx="8" class="dg-node"/>
+          <text x="265" y="43" text-anchor="middle" class="dg-label">app.blade.php</text>
+          <text x="265" y="61" text-anchor="middle" class="dg-sublabel">root šablons + @vite</text>
+          <path d="M340 48 H366" class="dg-line-accent"/>
+          <path d="M366 48 L356 43 L356 53 Z" class="dg-arrowhead-accent"/>
+
+          <rect x="370" y="20" width="150" height="56" rx="8" class="dg-node"/>
+          <text x="445" y="43" text-anchor="middle" class="dg-label">app.jsx</text>
+          <text x="445" y="61" text-anchor="middle" class="dg-sublabel">resolve('Product')</text>
+          <path d="M520 48 H546" class="dg-line-accent"/>
+          <path d="M546 48 L536 43 L536 53 Z" class="dg-arrowhead-accent"/>
+
+          <rect x="550" y="20" width="140" height="56" rx="8" class="dg-node-accent"/>
+          <text x="620" y="43" text-anchor="middle" class="dg-label-accent">Product.jsx</text>
+          <text x="620" y="61" text-anchor="middle" class="dg-sublabel">({ product })</text>
+
+          <text x="85" y="100" text-anchor="middle" class="dg-sublabel">PHP</text>
+          <text x="265" y="100" text-anchor="middle" class="dg-sublabel">Blade</text>
+          <text x="445" y="100" text-anchor="middle" class="dg-sublabel">JS ieejas punkts</text>
+          <text x="620" y="100" text-anchor="middle" class="dg-sublabel">React lapa</text>
+          <text x="10" y="132" class="dg-sublabel">Nosaukums PHP pusē = faila ceļš zem resources/js/pages/ (admin/Login → pages/admin/Login.jsx).</text>
+        </svg>
+      </div>
+
       <div class="cheat-table-wrap">
         <table class="cheat-table">
-          <thead><tr><th>Ko meklē</th><th>Kur</th><th>Piezīme</th></tr></thead>
+          <thead><tr><th>Ko meklē</th><th>Kur</th></tr></thead>
           <tbody>
-            <tr><td>Inertia middleware</td><td><code>app/Http/Middleware/HandleInertiaRequests.php</code></td><td>Ģenerē <code>php artisan inertia:middleware</code>. Šeit: <code>rootView</code>, <code>version()</code>, <code>share()</code>.</td></tr>
-            <tr><td>Middleware reģistrācija</td><td><code>bootstrap/app.php</code></td><td><code>->withMiddleware(...)</code> - sk. nākamo sadaļu. Laravel 10 un vecākam: <code>app/Http/Kernel.php</code>.</td></tr>
-            <tr><td>Root šablons (viens Blade fails)</td><td><code>resources/views/app.blade.php</code></td><td>Vienīgais Blade, kas vajadzīgs. Ielādē Vite un ieliek Inertia saknes elementu.</td></tr>
-            <tr><td>Frontend ieejas punkts</td><td><code>resources/js/app.jsx</code></td><td>Šeit <code>createInertiaApp</code> - kā atrast lapas komponenti pēc nosaukuma.</td></tr>
-            <tr><td>Lapu komponentes</td><td><code>resources/js/pages/*.jsx</code></td><td>Failu ceļš = nosaukums, ko kontrolieris nodod <code>inertia('...')</code>.</td></tr>
-            <tr><td>Kopīgie UI gabali</td><td><code>resources/js/components/</code></td><td>Layout, Header, formas u.c. - tās <strong>nav</strong> lapas, Inertia tās tieši nezina.</td></tr>
-            <tr><td>Maršruti</td><td><code>routes/web.php</code></td><td>Inertia lapām <strong>vienmēr</strong> <code>web.php</code> (vajag sesijas + CSRF), ne <code>api.php</code>.</td></tr>
-            <tr><td>Inertia konfigurācija</td><td><code>config/inertia.php</code></td><td>SSR, lapu mapes/paplašinājumi, testu iestatījumi.</td></tr>
-            <tr><td>Vite konfigurācija</td><td><code>vite.config.js</code></td><td><code>laravel()</code>, <code>react()</code> un <code>inertia()</code> spraudņi, alias <code>@</code> → <code>resources/js</code>.</td></tr>
+            <tr><td>Inertia middleware</td><td><code>app/Http/Middleware/HandleInertiaRequests.php</code> (<code>php artisan inertia:middleware</code>)</td></tr>
+            <tr><td>Kur tas ieslēgts</td><td><code>bootstrap/app.php</code> (Laravel ≤10: <code>app/Http/Kernel.php</code>)</td></tr>
+            <tr><td>Lapu komponentes</td><td><code>resources/js/pages/</code> - tikai tas, ko var atgriezt no kontroliera</td></tr>
+            <tr><td>Kopīgie UI gabali</td><td><code>resources/js/components/</code> (Header, Layout, formas)</td></tr>
+            <tr><td>Maršruti</td><td><code>routes/web.php</code> (ne <code>api.php</code> - vajag sesijas + CSRF)</td></tr>
+            <tr><td>Konfigurācija</td><td><code>config/inertia.php</code> (SSR, lapu ceļi) · <code>vite.config.js</code></td></tr>
           </tbody>
         </table>
       </div>
     </section>
 
     <section class="doc-section" id="inertia-middleware">
-      <h2>Middleware: kur to atrast, kā reģistrēt (mapot)</h2>
+      <h2>Inertia middleware - atrašana, mapošana, share()</h2>
 
-      <h3>1. Pats middleware fails</h3>
-      <p>Inertia middleware ir parasta Laravel klase, kas paplašina <code>Inertia\Middleware</code>. To izveido ar:</p>
-      <pre class="code-block"><span class="lang">bash</span><code>php artisan inertia:middleware
-<span class="tok-com"># → app/Http/Middleware/HandleInertiaRequests.php</span></code></pre>
+      <div class="doc-diagram">
+        <svg viewBox="0 0 700 130" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="20" width="110" height="50" rx="8" class="dg-node"/>
+          <text x="65" y="50" text-anchor="middle" class="dg-label">Pieprasījums</text>
+          <path d="M120 45 H156" class="dg-line-accent"/>
+          <path d="M156 45 L146 40 L146 50 Z" class="dg-arrowhead-accent"/>
 
-      <h3>2. Reģistrācija - <code>bootstrap/app.php</code> (Laravel 11+)</h3>
-      <p>Middleware "mapošana" jeb pieslēgšana notiek tikai šeit. Inertia jāpievieno <code>web</code> grupas <strong>beigās</strong> (<code>append</code>), lai sesija un cookie jau būtu apstrādāti:</p>
-      <pre class="code-block"><span class="lang">php</span><code>->withMiddleware(function (Middleware $middleware): void {
-    <span class="tok-com">// globāli - visiem pieprasījumiem (piem. proxy uzticēšanās)</span>
-    $middleware->trustProxies(at: <span class="tok-str">'*'</span>);
+          <rect x="160" y="20" width="150" height="50" rx="8" class="dg-node"/>
+          <text x="235" y="42" text-anchor="middle" class="dg-label">Globāli</text>
+          <text x="235" y="58" text-anchor="middle" class="dg-sublabel">trustProxies, cookies</text>
+          <path d="M310 45 H346" class="dg-line-accent"/>
+          <path d="M346 45 L336 40 L336 50 Z" class="dg-arrowhead-accent"/>
 
-    <span class="tok-com">// sīkdatnes, kuras NEšifrē (frontend tās lasa pats)</span>
-    $middleware->encryptCookies(except: [<span class="tok-str">'appearance'</span>, <span class="tok-str">'sidebar_state'</span>]);
+          <rect x="350" y="20" width="180" height="50" rx="8" class="dg-node-accent"/>
+          <text x="440" y="42" text-anchor="middle" class="dg-label-accent">web grupa</text>
+          <text x="440" y="58" text-anchor="middle" class="dg-sublabel">HandleInertiaRequests</text>
+          <path d="M530 45 H566" class="dg-line-accent"/>
+          <path d="M566 45 L556 40 L556 50 Z" class="dg-arrowhead-accent"/>
 
-    <span class="tok-com">// web grupa - visi maršruti no routes/web.php</span>
-    $middleware->web(append: [
-        HandleAppearance::<span class="tok-kw">class</span>,
-        HandleInertiaRequests::<span class="tok-kw">class</span>,   <span class="tok-com">// ← Inertia</span>
-        AddLinkHeadersForPreloadedAssets::<span class="tok-kw">class</span>,
+          <rect x="570" y="20" width="120" height="50" rx="8" class="dg-node"/>
+          <text x="630" y="50" text-anchor="middle" class="dg-label">Kontrolieris</text>
+
+          <text x="440" y="95" text-anchor="middle" class="dg-sublabel">share() props + kontroliera props → page objekts</text>
+          <text x="440" y="115" text-anchor="middle" class="dg-sublabel">frontendā: usePage().props</text>
+        </svg>
+      </div>
+
+      <div class="doc-code-cols">
+        <div>
+          <h4>Reģistrācija - <code>bootstrap/app.php</code></h4>
+          <pre class="code-block"><span class="lang">php</span><code>->withMiddleware(<span class="tok-kw">function</span> (Middleware $m) {
+    $m->trustProxies(at: <span class="tok-str">'*'</span>);       <span class="tok-com">// globāli</span>
+    $m->web(append: [                <span class="tok-com">// web grupa</span>
+        HandleInertiaRequests::<span class="tok-kw">class</span>,
     ]);
 })</code></pre>
+        </div>
+        <div>
+          <h4>Datu dalīšana - <code>share()</code></h4>
+          <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">protected</span> $rootView = <span class="tok-str">'app'</span>;
 
-      <h3>Trīs veidi, kā piesaistīt middleware</h3>
+<span class="tok-kw">public function</span> share(Request $r): array
+{
+    <span class="tok-kw">return</span> [...parent::share($r),
+        <span class="tok-str">'auth'</span> => [<span class="tok-str">'user'</span> => $r->user()],
+        <span class="tok-str">'categories'</span> => fn () => Category::all(),
+    ];
+}</code></pre>
+        </div>
+      </div>
+
       <div class="cheat-table-wrap">
         <table class="cheat-table">
-          <thead><tr><th>Līmenis</th><th>Kā</th><th>Kad lietot</th></tr></thead>
+          <thead><tr><th>Līmenis</th><th>Kā piesaistīt</th><th>Kam</th></tr></thead>
           <tbody>
-            <tr><td>Globāli</td><td><code>$middleware->append(X::class)</code></td><td>Jādarbojas <em>visam</em>, arī API un <code>/up</code> health-check.</td></tr>
-            <tr><td>Grupai</td><td><code>$middleware->web(append: [...])</code> / <code>->api(...)</code></td><td>Jādarbojas visām web lapām. Inertia dzīvo šeit.</td></tr>
-            <tr><td>Konkrētam maršrutam</td><td><code>Route::get(...)->middleware('auth')</code> vai <code>Route::middleware('auth')->group(...)</code></td><td>Aizsargāt daļu lapu (piem. <code>/admin/*</code>).</td></tr>
+            <tr><td>Globāli</td><td><code>$m->append(X::class)</code></td><td>Visam, arī API un <code>/up</code></td></tr>
+            <tr><td>Grupai</td><td><code>$m->web(append: [..])</code> / <code>->api(..)</code></td><td>Visām web lapām (šeit dzīvo Inertia)</td></tr>
+            <tr><td>Maršrutam</td><td><code>Route::middleware('auth')->group(..)</code></td><td>Piem. <code>/admin/*</code></td></tr>
           </tbody>
         </table>
       </div>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// vairāki maršruti zem viena middleware - nav jāatkārto katram</span>
-Route::middleware([<span class="tok-str">'auth'</span>])->prefix(<span class="tok-str">'admin'</span>)->group(<span class="tok-kw">function</span> () {
-    Route::inertia(<span class="tok-str">'/dashboard'</span>, <span class="tok-str">'admin/Dashboard'</span>)->name(<span class="tok-str">'admin.dashboard'</span>);
-});</code></pre>
 
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p>Ja Inertia middleware <strong>nav reģistrēts</strong>, <code>inertia(...)</code> joprojām atgriež lapu, bet <code>share()</code> dati (<code>auth</code>, <code>errors</code>...) nenonāk frontendā un XHR navigācija/versijas pārbaude nestrādā pareizi.</p>
-      </div>
-
-      <h3>3. Ko var iestatīt pašā <code>HandleInertiaRequests</code></h3>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">class</span> HandleInertiaRequests <span class="tok-kw">extends</span> Middleware
-{
-    <span class="tok-com">// Blade fails, kas tiek ielādēts pirmajā apmeklējumā</span>
-    <span class="tok-kw">protected</span> $rootView = <span class="tok-str">'app'</span>;
-
-    <span class="tok-com">// assetu versija - mainās pēc build → 409 → pilna pārlāde</span>
-    <span class="tok-kw">public function</span> version(Request $request): ?string
-    {
-        <span class="tok-kw">return</span> parent::version($request);
-    }
-
-    <span class="tok-com">// props, kas nonāk KATRĀ lapā</span>
-    <span class="tok-kw">public function</span> share(Request $request): array
-    {
-        <span class="tok-kw">return</span> [
-            ...parent::share($request),
-            <span class="tok-str">'name'</span> => config(<span class="tok-str">'app.name'</span>),
-            <span class="tok-str">'auth'</span> => [<span class="tok-str">'user'</span> => $request->user()],
-            <span class="tok-str">'categories'</span> => fn () => Category::where(<span class="tok-str">'status'</span>, 1)->get(),
-        ];
-    }
-}</code></pre>
-
-      <h3>4. Shared data lasīšana frontendā</h3>
-      <pre class="code-block"><span class="lang">jsx</span><code>import { usePage } from <span class="tok-str">"@inertiajs/react"</span>;
-
-export default function Header() {
-  <span class="tok-com">// viss, kas atgriezts no share() vai kontroliera, ir usePage().props</span>
-  const { categories, auth } = usePage().props;
-  ...
-}</code></pre>
-
-      <div class="callout tip">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
-        <p>Ja vērtība ir <strong>closure</strong> (<code>fn () =&gt; ...</code>), tā tiek izpildīta tikai tad, kad tiešām vajadzīga - un partial reload gadījumā to var izlaist. Ja tā ir tieša vērtība, DB vaicājums notiek <em>katrā</em> pieprasījumā.</p>
-      </div>
-
-      <div class="callout warn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p><strong>Visi props ir redzami pārlūkā</strong> (View Source / Network). <code>$request->user()</code> nodod visus modeļa laukus, ja tie nav slēpti (<code>$hidden</code>). Nekad neliec shared data parolēm, tokeniem vai iekšējiem laukiem - atlasi tikai to, ko UI tiešām vajag.</p>
+        <p>Visi props ir redzami pārlūkā - neliec parolēm/tokeniem. Closure (<code>fn () =&gt; ..</code>) izpildās tikai vajadzības brīdī, tieša vērtība - katrā pieprasījumā. Bez reģistrēta middleware nestrādā <code>auth</code>/<code>errors</code> props.</p>
       </div>
     </section>
 
-    <section class="doc-section" id="inertia-serveris">
-      <h2>Servera puse - kā atgriezt lapu</h2>
+    <section class="doc-section" id="inertia-kods">
+      <h2>Inertia - serveris ↔ klients</h2>
+      <div class="doc-code-cols">
+        <div>
+          <h4>Laravel (serveris)</h4>
+          <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// bez loģikas</span>
+Route::inertia(<span class="tok-str">'/shop'</span>, <span class="tok-str">'Shop'</span>);
 
-      <h3>Trīs ekvivalenti veidi</h3>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// 1) Route::inertia - ja nav nekādas loģikas, tikai statiska lapa</span>
-Route::inertia(<span class="tok-str">'/shop'</span>, <span class="tok-str">'Shop'</span>)->name(<span class="tok-str">'shop'</span>);
+<span class="tok-com">// ar datiem</span>
+Route::get(<span class="tok-str">'/product/{product}'</span>,
+  fn (Product $p) =>
+    inertia(<span class="tok-str">'Product'</span>, [<span class="tok-str">'product'</span> => $p]));
 
-<span class="tok-com">// 2) inertia() helper - ar datiem tieši maršrutā</span>
-Route::get(<span class="tok-str">'/product/{product}'</span>, <span class="tok-kw">function</span> (Product $product) {
-    $product->load(<span class="tok-str">'product_images'</span>, <span class="tok-str">'sizes'</span>);
-    <span class="tok-kw">return</span> inertia(<span class="tok-str">'Product'</span>, [<span class="tok-str">'product'</span> => $product]);
-})->name(<span class="tok-str">'product'</span>);
+<span class="tok-com">// kontrolierī</span>
+<span class="tok-kw">return</span> Inertia::render(<span class="tok-str">'settings/profile'</span>);</code></pre>
+        </div>
+        <div>
+          <h4>React (klients)</h4>
+          <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-com">// pages/Product.jsx - props no kontroliera</span>
+export default function Product({ product }) {
+  const { auth } = usePage().props; <span class="tok-com">// shared</span>
+  return &lt;Link href="/shop"&gt;Shop&lt;/Link&gt;;
+}
 
-<span class="tok-com">// 3) Inertia::render - kontrolierī (ieteicamākais, kad loģika aug)</span>
-<span class="tok-kw">use</span> Inertia\Inertia;
+<span class="tok-com">// app.jsx - nosaukums → fails</span>
+resolve: (name) =>
+  import(`./pages/${name}.jsx`)</code></pre>
+        </div>
+      </div>
 
-<span class="tok-kw">public function</span> edit(Request $request): Response
-{
-    <span class="tok-kw">return</span> Inertia::render(<span class="tok-str">'settings/profile'</span>, [
-        <span class="tok-str">'status'</span> => $request->session()->get(<span class="tok-str">'status'</span>),
-    ]);
-}</code></pre>
-
-      <h3>Komponentes nosaukums → fails</h3>
       <div class="cheat-table-wrap">
         <table class="cheat-table">
-          <thead><tr><th>PHP</th><th>Fails, ko Inertia meklē</th></tr></thead>
+          <thead><tr><th>Vajag</th><th>Lieto</th><th>Nelieto</th></tr></thead>
           <tbody>
-            <tr><td><code>inertia('Home')</code></td><td><code>resources/js/pages/Home.jsx</code></td></tr>
-            <tr><td><code>inertia('admin/Login')</code></td><td><code>resources/js/pages/admin/Login.jsx</code></td></tr>
-            <tr><td><code>Inertia::render('settings/profile')</code></td><td><code>resources/js/pages/settings/profile.jsx</code></td></tr>
+            <tr><td>Saite uz citu lapu</td><td><code>&lt;Link href="/shop"&gt;</code></td><td><code>&lt;a href&gt;</code> (pilna pārlāde)</td></tr>
+            <tr><td>Pāriet no koda</td><td><code>router.visit('/x')</code> · <code>router.post/delete(..)</code></td><td><code>window.location</code></td></tr>
+            <tr><td>Lapas virsraksts</td><td><code>&lt;Head title="Shop" /&gt;</code></td><td><code>document.title</code></td></tr>
+            <tr><td>Kopīgie dati</td><td><code>usePage().props</code></td><td>Atkārtoti vaicāt katrā lapā</td></tr>
+            <tr><td>Pēc formas</td><td><code>redirect()</code> / <code>to_route()</code></td><td><code>response()->json()</code></td></tr>
           </tbody>
         </table>
       </div>
+
       <div class="callout warn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
-        <p><strong>Reģistrjutīgi uz Linux!</strong> Windows/macOS lokāli <code>login.jsx</code> un <code>Login.jsx</code> ir viens un tas pats, bet Linux serverī/Docker konteinerā - nē. Ja lokāli strādā, bet pēc deploy "Page not found" - pārbaudi, vai nosaukums PHP pusē burts pa burtam sakrīt ar faila nosaukumu.</p>
+        <p>Failu nosaukumi ir <strong>reģistrjutīgi uz Linux</strong> (Docker/serveris): <code>inertia('admin/Login')</code> ≠ <code>login.jsx</code>. Lokāli uz Windows strādā, pēc deploy - "Page not found".</p>
       </div>
-
-      <h3>Pēc formas iesniegšanas - redirect, nevis JSON</h3>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">public function</span> update(ProfileUpdateRequest $request): RedirectResponse
-{
-    $request->user()->update($request->validated());  <span class="tok-com">// validācija: kļūdas automātiski → props.errors</span>
-
-    Inertia::flash(<span class="tok-str">'toast'</span>, [<span class="tok-str">'type'</span> => <span class="tok-str">'success'</span>, <span class="tok-str">'message'</span> => <span class="tok-str">'Saglabāts.'</span>]);
-
-    <span class="tok-kw">return</span> to_route(<span class="tok-str">'profile.edit'</span>);               <span class="tok-com">// redirect uz GET lapu</span>
-}</code></pre>
-      <p>Inertia pieprasījumam Laravel <strong>jāatgriež redirect vai Inertia atbilde</strong>. Ja atgriež parastu <code>response()->json(...)</code>, Inertia rāda kļūdu "All Inertia requests must receive a valid Inertia response" (modālis pārlūkā).</p>
-    </section>
-
-    <section class="doc-section" id="inertia-klients">
-      <h2>Klienta puse - React</h2>
-
-      <h3>Ieejas punkts <code>app.jsx</code></h3>
-      <pre class="code-block"><span class="lang">jsx</span><code>import { createInertiaApp } from <span class="tok-str">"@inertiajs/react"</span>;
-import { createRoot } from <span class="tok-str">"react-dom/client"</span>;
-
-createInertiaApp({
-  <span class="tok-com">// title() iet kopā ar &lt;Head title="..."&gt; katrā lapā</span>
-  title: (title) => title ? `${title} - ${appName}` : appName,
-
-  <span class="tok-com">// nosaukums no PHP ('admin/Login') → JS modulis</span>
-  resolve: (name) => import(`./pages/${name}.jsx`),
-
-  <span class="tok-com">// šeit pieliek globālos provider'us (context, theme u.c.)</span>
-  setup({ el, App, props }) {
-    createRoot(el).render(
-      &lt;CartProvider&gt;&lt;App {...props} /&gt;&lt;/CartProvider&gt;
-    );
-  },
-});</code></pre>
-
-      <h3>Root Blade šablons</h3>
-      <pre class="code-block"><span class="lang">blade</span><code>&lt;head&gt;
-    @viteReactRefresh
-    <span class="tok-com">{{-- ielādē kopējo JS + tieši šīs lapas komponenti --}}</span>
-    @vite(['resources/css/app.css', 'resources/js/app.jsx',
-           "resources/js/pages/{$page['component']}.jsx"])
-    &lt;x-inertia::head&gt;&lt;title&gt;{{ config('app.name') }}&lt;/title&gt;&lt;/x-inertia::head&gt;
-&lt;/head&gt;
-&lt;body&gt;
-    &lt;x-inertia::app /&gt;
-&lt;/body&gt;</code></pre>
-      <div class="callout note">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16v-4M12 8h.01M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"/></svg>
-        <p>Inertia 2.x versijā tas pats izskatās ar direktīvām <code>@inertiaHead</code> un <code>@inertia</code>. Jaunākās versijās (3.x) tiek izmantoti Blade komponenti <code>&lt;x-inertia::head&gt;</code> un <code>&lt;x-inertia::app /&gt;</code>. Pārbaudi, kuru versiju lieto projekts (<code>composer.json</code> → <code>inertiajs/inertia-laravel</code>).</p>
-      </div>
-
-      <h3>Navigācija - <code>&lt;Link&gt;</code>, nevis <code>&lt;a&gt;</code></h3>
-      <pre class="code-block"><span class="lang">jsx</span><code>import { Link, router } from <span class="tok-str">"@inertiajs/react"</span>;
-
-<span class="tok-com">// ✔ XHR navigācija, bez pārlādes</span>
-&lt;Link href={`/product/${product.id}`}&gt;{product.title}&lt;/Link&gt;
-
-<span class="tok-com">// ✘ parasts &lt;a&gt; - pilna pārlāde, Inertia netiek klāt</span>
-&lt;a href="/shop"&gt;Shop&lt;/a&gt;
-
-<span class="tok-com">// programmatiski (piem. pēc veiksmīga saglabāšanas)</span>
-router.visit(<span class="tok-str">"/admin/products"</span>);
-router.post(<span class="tok-str">"/cart"</span>, { product_id: 5 });
-router.delete(`/admin/products/${id}`);</code></pre>
-
-      <h3><code>&lt;Head&gt;</code> - lapas virsraksts</h3>
-      <pre class="code-block"><span class="lang">jsx</span><code>import { Head } from <span class="tok-str">"@inertiajs/react"</span>;
-
-&lt;Head title="Shop" /&gt;   <span class="tok-com">// → "Shop - AppName" (pēc title() funkcijas)</span></code></pre>
-
-      <h3>Datu lasīšana komponentē</h3>
-      <p>Kontroliera padotie dati nonāk kā <strong>props</strong> lapas komponentē. Shared data (no middleware) - caur <code>usePage().props</code> jebkurā komponentē.</p>
-      <pre class="code-block"><span class="lang">php</span><code>return inertia(<span class="tok-str">'Product'</span>, [<span class="tok-str">'product'</span> => $product]);</code></pre>
-      <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-com">// resources/js/pages/Product.jsx</span>
-export default function Product({ product }) {   <span class="tok-com">// ← props tieši šeit</span>
-  return &lt;h1&gt;{product.title}&lt;/h1&gt;;
-}</code></pre>
-
-      <h3>Lapas vs komponentes - biežs sajaukums</h3>
-      <p>Mapē <code>pages/</code> ir tikai tas, ko var atgriezt no kontroliera. Praktiska pieeja: lapas fails ir plāns re-export, reālā UI dzīvo <code>components/</code>:</p>
-      <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-com">// resources/js/pages/admin/Login.jsx</span>
-export { default } from <span class="tok-str">'@/components/admin/Login'</span>;</code></pre>
-      <p>Tas ļauj <code>@</code> aliasam (vite.config) norādīt uz <code>resources/js</code> un turēt lapu mapi tīru.</p>
     </section>
 
     <section class="doc-section" id="inertia-formas">
-      <h2>Formas un validācija</h2>
+      <h2>Inertia - formas un validācija</h2>
       <div class="doc-code-cols">
         <div>
-          <h4>Inertia veids - <code>useForm</code></h4>
-          <pre class="code-block"><span class="lang">jsx</span><code>import { useForm } from <span class="tok-str">"@inertiajs/react"</span>;
+          <h4>React - <code>useForm</code></h4>
+          <pre class="code-block"><span class="lang">jsx</span><code>const { data, setData, post,
+  processing, errors } =
+  useForm({ email: <span class="tok-str">""</span> });
 
-const { data, setData, post, processing, errors } =
-  useForm({ email: <span class="tok-str">""</span>, password: <span class="tok-str">""</span> });
-
-function submit(e) {
-  e.preventDefault();
-  post(<span class="tok-str">"/login"</span>);   <span class="tok-com">// kļūdas → errors.email</span>
-}</code></pre>
+post(<span class="tok-str">"/login"</span>);  <span class="tok-com">// errors.email</span></code></pre>
         </div>
         <div>
-          <h4>Servera puse (parasts Laravel)</h4>
+          <h4>Laravel</h4>
           <pre class="code-block"><span class="lang">php</span><code>$request->validate([
-    <span class="tok-str">'email'</span>    => <span class="tok-str">'required|email'</span>,
-    <span class="tok-str">'password'</span> => <span class="tok-str">'required'</span>,
-]);
-<span class="tok-com">// ja neder → 302 atpakaļ, kļūdas nonāk</span>
-<span class="tok-com">// props.errors automātiski</span>
-<span class="tok-kw">return</span> redirect()->intended(<span class="tok-str">'/'</span>);</code></pre>
+  <span class="tok-str">'email'</span> => <span class="tok-str">'required|email'</span>,
+]);          <span class="tok-com">// kļūda → props.errors</span>
+<span class="tok-kw">return</span> to_route(<span class="tok-str">'home'</span>);</code></pre>
         </div>
       </div>
 
-      <h3>Otrs veids - <code>fetch</code> + JSON (bieži sastopams "hibrīds")</h3>
-      <p>Var arī iekš Inertia lapas izsaukt <code>fetch</code>/<code>axios</code> uz endpointu, kas atgriež <code>response()->json(...)</code> (piem. admin CRUD ar <code>react-hook-form</code>), un tad pašiem apstrādāt <code>status</code>/<code>errors</code>, pēc tam <code>router.visit(...)</code>. Tas strādā, jo endpoints nav Inertia pieprasījums, bet:</p>
-      <ul>
-        <li>validācijas kļūdas <strong>nenonāk</strong> automātiski <code>props.errors</code> - jāapstrādā manuāli;</li>
-        <li>paši jāpiemin CSRF (<code>X-XSRF-TOKEN</code> no cookie) - <code>useForm</code>/<code>router</code> to dara pats;</li>
-        <li>tas ir puse "API" un puse "Inertia" - jāsaprot, kāpēc, lai nesajauktu (sk. <a href="#sanctum-vs-session">Sanctum vs sesijas</a>).</li>
-      </ul>
-
-      <h3>Flash ziņojumi</h3>
-      <p><code>Inertia::flash('toast', [...])</code> servera pusē → frontendā to nolasa no <code>usePage().props</code> (vai <code>flash</code>, atkarībā no versijas) un parāda kā toast/paziņojumu. Dati pazūd pēc nākamā pieprasījuma.</p>
-
-      <h3>Redirect kodi</h3>
-      <p><code>PUT</code>/<code>PATCH</code>/<code>DELETE</code> pēc redirect jāatgriež kā <code>303 See Other</code>, citādi pārlūks atkārto to pašu metodi uz jaunā URL. Inertia middleware to pārveido automātiski, tāpēc parasts <code>redirect()</code> kontrolierī ir pietiekams.</p>
-    </section>
-
-    <section class="doc-section" id="inertia-papildus">
-      <h2>Noderīgas iespējas</h2>
       <div class="cheat-table-wrap">
         <table class="cheat-table">
-          <thead><tr><th>Iespēja</th><th>Ko dara</th><th>Kur</th></tr></thead>
+          <thead><tr><th></th><th><code>useForm</code> / <code>router</code></th><th><code>fetch</code> + <code>response()->json()</code></th></tr></thead>
           <tbody>
-            <tr><td>Partial reloads</td><td>Pārlādē tikai norādītos props, nevis visu.</td><td><code>router.reload({ only: ['products'] })</code></td></tr>
-            <tr><td>Lazy / Optional props</td><td>Prop netiek aprēķināts, kamēr to nepieprasa.</td><td><code>Inertia::optional(fn () =&gt; ...)</code></td></tr>
-            <tr><td>Deferred props</td><td>Lapa parādās uzreiz, smagie dati ielādējas pēc tam.</td><td><code>Inertia::defer(fn () =&gt; ...)</code> + <code>&lt;Deferred&gt;</code></td></tr>
-            <tr><td>Prefetch</td><td>Ielādē lapu jau uzvedot ar peli uz saites.</td><td><code>&lt;Link prefetch&gt;</code></td></tr>
-            <tr><td>Persistent layouts</td><td>Layout (header/sidebar) nepārzīmējas starp lapām.</td><td><code>Page.layout = ...</code></td></tr>
-            <tr><td>SSR</td><td>Pirmais HTML tiek renderēts serverī (SEO, ātrāks first paint).</td><td><code>config/inertia.php</code> → <code>ssr</code></td></tr>
-            <tr><td>Wayfinder</td><td>Ģenerē TypeScript funkcijas maršrutiem, lai nav jāraksta URL ar roku.</td><td><code>resources/js/routes</code>, <code>resources/js/actions</code></td></tr>
+            <tr><td>Validācijas kļūdas</td><td>Automātiski <code>props.errors</code></td><td>Jāapstrādā ar roku</td></tr>
+            <tr><td>CSRF</td><td>Automātiski</td><td>Jāpievieno <code>X-XSRF-TOKEN</code></td></tr>
+            <tr><td>Pēc atbildes</td><td>Redirect, lapa atjaunojas pati</td><td>Pašam <code>router.visit()</code></td></tr>
+            <tr><td>Flash ziņa</td><td><code>Inertia::flash('toast', [..])</code></td><td>Pašam no JSON</td></tr>
           </tbody>
         </table>
       </div>
-
-      <h3>SSR - īsi</h3>
-      <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// config/inertia.php</span>
-<span class="tok-str">'ssr'</span> => [
-    <span class="tok-str">'enabled'</span> => true,
-    <span class="tok-str">'url'</span>     => <span class="tok-str">'http://127.0.0.1:13714'</span>,   <span class="tok-com">// Node SSR serveris</span>
-],</code></pre>
-      <p>SSR prasa atsevišķu Node procesu (<code>php artisan inertia:start-ssr</code>) un SSR build. Ja SSR serveris nav pieejams, Inertia atkāpjas uz parastu klienta renderēšanu, bet lapa tad nav "pre-rendered".</p>
     </section>
 
     <section class="doc-section" id="inertia-kludas">
-      <h2>Biežākās kļūdas un kā tās atrast</h2>
+      <h2>Inertia - biežākās kļūdas</h2>
       <div class="cheat-table-wrap">
         <table class="cheat-table">
           <thead><tr><th>Simptoms</th><th>Iemesls</th><th>Risinājums</th></tr></thead>
           <tbody>
-            <tr><td>"Page not found: ./pages/X.jsx"</td><td>Nosaukums PHP pusē nesakrīt ar failu (īpaši reģistrs uz Linux).</td><td>Salīdzini <code>inertia('X')</code> ar faktisko ceļu <code>resources/js/pages/X.jsx</code>.</td></tr>
-            <tr><td>Balts ekrāns, konsolē kļūda</td><td>Komponente nav <code>export default</code>.</td><td>Katrai lapai jābūt default eksportam.</td></tr>
-            <tr><td>Modālis "All Inertia requests must receive a valid Inertia response"</td><td>Kontrolieris Inertia pieprasījumam atgrieza JSON vai HTML.</td><td>Atgriez <code>inertia()</code> vai <code>redirect()</code>.</td></tr>
-            <tr><td>Katrs klikšķis pārlādē visu lapu</td><td>Izmantots <code>&lt;a&gt;</code> vai <code>window.location</code>.</td><td>Lieto <code>&lt;Link&gt;</code> / <code>router.visit</code>.</td></tr>
-            <tr><td><code>props.auth</code>/<code>errors</code> ir <code>undefined</code></td><td><code>HandleInertiaRequests</code> nav reģistrēts <code>web</code> grupā.</td><td>Pārbaudi <code>bootstrap/app.php</code>.</td></tr>
-            <tr><td><code>419 Page Expired</code> uz POST</td><td>CSRF: sesija beigusies vai <code>fetch</code> bez <code>X-XSRF-TOKEN</code>.</td><td>Lieto <code>useForm</code>/<code>router</code> vai pievieno headeri manuāli.</td></tr>
-            <tr><td>Stili/JS neielādējas uz produkcijas ("mixed content")</td><td>Aiz reverse proxy Laravel ģenerē <code>http://</code> URL.</td><td><code>$middleware->trustProxies(at: '*')</code> (vai konkrētas IP).</td></tr>
-            <tr><td>Pēc deploy vienreiz notiek pārlāde</td><td>Mainījusies assetu versija (409).</td><td>Normāli - nav jālabo.</td></tr>
-            <tr><td>Jauna lapa nerāda izmaiņas</td><td>Vite dev serveris nestrādā vai <code>public/build</code> novecojis.</td><td><code>npm run dev</code> lokāli, <code>npm run build</code> pirms deploy.</td></tr>
+            <tr><td>"Page not found ./pages/X.jsx"</td><td>Nosaukums/reģistrs nesakrīt</td><td>Salīdzini ar faila ceļu</td></tr>
+            <tr><td>Modālis "must receive a valid Inertia response"</td><td>Kontrolieris atdeva JSON/HTML</td><td><code>inertia()</code> vai <code>redirect()</code></td></tr>
+            <tr><td>Klikšķis pārlādē visu lapu</td><td><code>&lt;a&gt;</code> vietā <code>&lt;Link&gt;</code></td><td>Lieto <code>&lt;Link&gt;</code></td></tr>
+            <tr><td><code>auth</code>/<code>errors</code> = undefined</td><td>Middleware nav <code>web</code> grupā</td><td>Pārbaudi <code>bootstrap/app.php</code></td></tr>
+            <tr><td><code>419</code> uz POST</td><td>CSRF trūkst (<code>fetch</code>)</td><td><code>useForm</code> vai <code>X-XSRF-TOKEN</code></td></tr>
+            <tr><td>Produkcijā stili nelādējas (mixed content)</td><td>Aiz proxy Laravel dod <code>http://</code></td><td><code>trustProxies(at: '*')</code></td></tr>
+            <tr><td>Pēc deploy vienreiz pārlādējas</td><td>Assetu versija (409)</td><td>Normāli</td></tr>
           </tbody>
         </table>
       </div>
-
-      <h3>Kā debugot</h3>
-      <ul>
-        <li><strong>Network</strong> cilnē filtrē uz <code>Fetch/XHR</code> - Inertia pieprasījumiem ir galvene <code>X-Inertia: true</code>, atbilde ir page objekts (<code>component</code>, <code>props</code>).</li>
-        <li>Pirmajā HTML atbildē (<em>View Source</em>) redzams sākuma page objekts saknes elementā.</li>
-        <li>Sarakstu ar visiem maršrutiem: <code>php artisan route:list</code> - lai pārbaudītu, kuri maršruti ir <code>web</code> un kuri aizsargāti.</li>
-        <li>Middleware skatīšanās: <code>php artisan route:list -v</code> parāda, kāds middleware piesaistīts katram maršrutam.</li>
-      </ul>
-    </section>
-
-    <section class="doc-section" id="inertia-kopsavilkums">
-      <h2>Ātrais kopsavilkums</h2>
-      <div class="term-window">
-        <div class="term-window-header">
-          <span class="term-window-dots"></span>
-          <span class="term-window-title">inertia-cheatsheet</span>
-        </div>
-        <div class="term-window-body">
-          <p style="font-family:var(--font-mono); font-size:13px; margin:0; color:var(--text-secondary);">routes/web.php &nbsp;→ <span style="color:var(--page-accent); font-weight:700;">inertia('Nosaukums', [props])</span></p>
-          <p style="font-family:var(--font-mono); font-size:13px; margin:8px 0 0; color:var(--text-secondary);">resources/js/pages/Nosaukums.jsx &nbsp;→ <span style="color:var(--page-accent); font-weight:700;">export default function ({ props })</span></p>
-          <p style="font-family:var(--font-mono); font-size:13px; margin:8px 0 0; color:var(--text-secondary);">HandleInertiaRequests::share() &nbsp;→ <span style="color:var(--page-accent); font-weight:700;">usePage().props</span></p>
-          <p style="font-family:var(--font-mono); font-size:13px; margin:8px 0 0; color:var(--text-secondary);">bootstrap/app.php &nbsp;→ <span style="color:var(--page-accent); font-weight:700;">$middleware->web(append: [HandleInertiaRequests::class])</span></p>
-          <p style="font-family:var(--font-mono); font-size:13px; margin:8px 0 0; color:var(--text-secondary);">Navigācija &nbsp;→ <span style="color:var(--page-accent); font-weight:700;">&lt;Link&gt; / router.visit()</span></p>
-          <p style="font-family:var(--font-mono); font-size:13px; margin:8px 0 0; color:var(--text-secondary);">Formas &nbsp;→ <span style="color:var(--page-accent); font-weight:700;">useForm() + redirect() atpakaļ</span></p>
-        </div>
-      </div>
+      <p class="dg-caption">Debugs: DevTools → Network → Fetch/XHR, galvene <code>X-Inertia: true</code>, atbilde = page objekts. Maršrutus un to middleware: <code>php artisan route:list -v</code>.</p>
     </section>
 </main>
 
-<script src="../js/shell.js?v=177"></script>
-<script src="../js/theme.js?v=177"></script>
-<script src="../js/main.js?v=177"></script>
+<script src="../js/shell.js?v=178"></script>
+<script src="../js/theme.js?v=178"></script>
+<script src="../js/main.js?v=178"></script>
 </body>
 </html>
