@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=179" />
+<link rel="stylesheet" href="../css/style.css?v=180" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -470,6 +470,24 @@ post(<span class="tok-str">"/login"</span>);  <span class="tok-com">// errors.em
       </div>
     </section>
 
+    <section class="doc-section" id="inertia-starter-kit">
+      <h2>Inertia - ko vēl satur Laravel React starter kit</h2>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Kas</th><th>Kur</th><th>Ko dara / ko zināt</th></tr></thead>
+          <tbody>
+            <tr><td>Savs middleware (<code>HandleAppearance</code>)</td><td><code>app/Http/Middleware/</code></td><td><code>View::share('appearance', ..)</code> - dati tikai <strong>Blade</strong> root šablonam (dark mode bez mirgošanas). Atšķirība: <code>share()</code> nodod datus <strong>React props</strong>, <code>View::share</code> - Blade.</td></tr>
+            <tr><td>Wayfinder</td><td><code>resources/js/routes/</code>, <code>resources/js/actions/</code></td><td>Ģenerē TypeScript funkcijas maršrutiem un kontrolieriem, lai URL nav jāraksta ar roku. Ja izdzēš maršrutu, bet frontendā tas vēl tiek importēts - <strong>build nolūzt</strong>.</td></tr>
+            <tr><td>Fortify (autentifikācija)</td><td><code>config/fortify.php</code>, <code>app/Actions/Fortify/</code></td><td>Gatavi <code>/login</code>, <code>/register</code>, paroles atjaunošana, 2FA. Ieslēdz/izslēdz ar <code>Features::...</code>. Reģistrācijas loģika: <code>CreateNewUser.php</code>.</td></tr>
+            <tr><td>Maršrutu aizsardzība</td><td><code>routes/web.php</code></td><td><code>Route::middleware(['auth', 'verified'])-&gt;group(..)</code> - <code>auth</code> = jāielogojas, <code>verified</code> = apstiprināts e-pasts.</td></tr>
+            <tr><td>SSR</td><td><code>config/inertia.php</code></td><td><code>npm run build:ssr</code>, lokāli <code>composer dev:ssr</code>, produkcijā <code>php artisan inertia:start-ssr</code>. Ja SSR serveris nav pieejams, Inertia atgriežas pie klienta renderēšanas (nekas nesalūst).</td></tr>
+            <tr><td>Globāls React konteksts</td><td><code>resources/js/app.jsx</code> → <code>setup()</code></td><td>Provider'i (piem. grozs) tiek ietīti ap <code>&lt;App /&gt;</code>, lai būtu pieejami visās lapās.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="dg-caption">Starter kit dokumentācija: laravel.com/docs/starter-kits · Inertia: inertiajs.com/docs/v3</p>
+    </section>
+
     <section class="doc-section" id="inertia-kludas">
       <h2>Inertia - biežākās kļūdas</h2>
       <div class="cheat-table-wrap">
@@ -490,8 +508,8 @@ post(<span class="tok-str">"/login"</span>);  <span class="tok-com">// errors.em
     </section>
 </main>
 
-<script src="../js/shell.js?v=179"></script>
-<script src="../js/theme.js?v=179"></script>
-<script src="../js/main.js?v=179"></script>
+<script src="../js/shell.js?v=180"></script>
+<script src="../js/theme.js?v=180"></script>
+<script src="../js/main.js?v=180"></script>
 </body>
 </html>
