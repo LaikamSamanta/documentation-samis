@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     {
       group: "Dokumentācija",
       items: [
-        { name: "Laravel", href: "pages/laravel.html", cat: "laravel" },
+        { name: "Laravel", href: "pages/laravel.html", cat: "laravel", extras: [{ name: "Inertia.js", href: "pages/laravel-inertia.html" }, { name: "Sanctum vs sesijas", href: "pages/laravel-sanctum.html" }] },
         { name: "Vārdnīca", href: "pages/vardnica.html", cat: "vardnica" },
         { name: "Tīkls", href: "pages/web-izveide.html", cat: "web" },
         { name: "Rīki", href: "pages/riki.html", cat: "riki" },
@@ -220,9 +220,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // ---- search (self-contained copy of main.js's engine, same cache key,
   // so the two never double-fetch pages the other already indexed) ----
   var SEARCH_PAGES = [
-    "pages/laravel.html", "pages/vardnica.html", "pages/web-izveide.html", "pages/riki.html", "pages/woocommerce.html", "pages/php.html"
+    "pages/laravel.html", "pages/laravel-inertia.html", "pages/laravel-sanctum.html", "pages/vardnica.html", "pages/web-izveide.html", "pages/riki.html", "pages/woocommerce.html", "pages/php.html"
   ];
-  var SEARCH_INDEX_VERSION = "137";
+  var SEARCH_INDEX_VERSION = "138";
   var searchIndex = null;
   var searchIndexPromise = null;
 

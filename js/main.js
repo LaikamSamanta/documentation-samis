@@ -50,9 +50,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // own HTML, so results always match real content without a separate index
   // file to keep in sync manually. Cached in sessionStorage per cache-bust version.
   var SEARCH_PAGES = [
-    "pages/laravel.html", "pages/vardnica.html", "pages/web-izveide.html", "pages/riki.html", "pages/woocommerce.html", "pages/php.html"
+    "pages/laravel.html", "pages/laravel-inertia.html", "pages/laravel-sanctum.html", "pages/vardnica.html", "pages/web-izveide.html", "pages/riki.html", "pages/woocommerce.html", "pages/php.html"
   ];
-  var SEARCH_INDEX_VERSION = "137"; // bump together with the ?v= cache-bust number
+  var SEARCH_INDEX_VERSION = "138"; // bump together with the ?v= cache-bust number
   var searchIndex = null;
   var searchIndexPromise = null;
 

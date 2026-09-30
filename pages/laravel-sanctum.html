@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="lv" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="manifest" href="../manifest.json" />
+<meta name="theme-color" content="#ff2d20" />
+<title>Sanctum vs sesijas - Documentation Samis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css?v=185" />
+<script>
+  (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
+</script>
+</head>
+<body class="cat-laravel has-global-nav">
+<div id="global-nav-root"></div>
+<main class="doc-main global-main">
+    <div class="doc-breadcrumb">
+      <a href="../index.html">Sākums</a>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <a href="laravel.html">Laravel</a>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span>Sanctum vs sesijas</span>
+    </div>
+
+    <div class="doc-header">
+      <div class="icon" style="background: var(--c-laravel-soft); color: var(--c-laravel);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>
+      </div>
+      <h1 style="margin-bottom:0;">Sanctum vs sesijas</h1>
+    </div>
+
+    <section class="doc-section" id="sanctum-vs-session">
+      <h2>Sanctum vs sesiju autentifikācija (Inertia)</h2>
+
+      <div class="doc-cards">
+        <div class="doc-mini-card">
+          <h4>Inertia + Fortify</h4>
+          <ul>
+            <li>Viens projekts, viens deploy, sesiju auth.</li>
+            <li>Vienkāršāk, mazāk kustīgu daļu.</li>
+            <li>Filament strādā arī šeit - bet tikai kā cits route (piem. <code>/admin</code>) tajā pašā vienā appā/portā, ne atsevišķi.</li>
+          </ul>
+          <p><strong>Trūkums:</strong> mobile app vai atsevišķa izvietošana = pārtaisīt no nulles.</p>
+        </div>
+        <div class="doc-mini-card">
+          <h4>Sanctum + React Router</h4>
+          <ul>
+            <li>API (<code>service-platform</code>) + frontend (<code>service-platform-public</code>), katrs savs deploy.</li>
+            <li>API gatavs jauniem klientiem (mobile, trešā puse).</li>
+            <li>Filament dzīvo <code>service-platform</code> (API) pusē - tas jau ir atsevišķs deploy/ports no <code>service-platform-public</code>, kur klienti ielogojas.</li>
+          </ul>
+          <p><strong>Trūkums:</strong> CORS, tokeni, divi deploy procesi - attaisnojas tikai izmantojot elastīgumu.</p>
+        </div>
+      </div>
+
+      <h3>Kāpēc tieši tokens, nevis sesijas cookie</h3>
+      <div class="doc-diagram">
+        <svg viewBox="0 0 620 210" xmlns="http://www.w3.org/2000/svg">
+          <text x="10" y="16" class="dg-label">Inertia - viens domēns</text>
+          <rect x="10" y="26" width="130" height="46" rx="8" class="dg-node"/>
+          <text x="75" y="54" text-anchor="middle" class="dg-label">Pārlūks</text>
+          <path d="M140 49 H316" class="dg-line-accent"/>
+          <path d="M316 49 L306 44 L306 54 Z" class="dg-arrowhead-accent"/>
+          <text x="228" y="40" text-anchor="middle" class="dg-sublabel">cookie - automātiski</text>
+          <rect x="326" y="26" width="180" height="46" rx="8" class="dg-node-accent"/>
+          <text x="416" y="54" text-anchor="middle" class="dg-label-accent">Laravel backend</text>
+
+          <text x="10" y="106" class="dg-label">Sanctum - atsevišķi domēni</text>
+          <rect x="10" y="116" width="150" height="46" rx="8" class="dg-node"/>
+          <text x="85" y="144" text-anchor="middle" class="dg-label">React app</text>
+          <path d="M160 139 H336" class="dg-line-accent"/>
+          <path d="M336 139 L326 134 L326 144 Z" class="dg-arrowhead-accent"/>
+          <text x="248" y="130" text-anchor="middle" class="dg-sublabel">Bearer token - manuāli</text>
+          <rect x="346" y="116" width="150" height="46" rx="8" class="dg-node-accent"/>
+          <text x="421" y="144" text-anchor="middle" class="dg-label-accent">Laravel API</text>
+        </svg>
+        <p class="dg-caption">Vienā domēnā pārlūks pievieno cookie pats; atsevišķos domēnos backend to nesaņem, tāpēc frontend katram pieprasījumam manuāli pievieno tokenu.</p>
+      </div>
+      <h3>Kods: Inertia (cookie) vs Sanctum (tokens)</h3>
+      <div class="doc-code-cols">
+        <div>
+          <h4>Inertia - sesijas cookie (automātiski)</h4>
+          <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// POST - cookie pārlūks pievieno pats, papildu koda nav</span>
+const res = await fetch(<span class="tok-str">"/api/orders"</span>, {
+  method: <span class="tok-str">"POST"</span>,
+  headers: { <span class="tok-str">"Content-type"</span>: <span class="tok-str">"application/json"</span> },
+  body: JSON.stringify({ product_id: 5 }),
+});
+const order = await res.json();
+
+<span class="tok-com">// PUT - tas pats, tikai body mainās</span>
+await fetch(`/api/orders/${order.id}`, {
+  method: <span class="tok-str">"PUT"</span>,
+  headers: { <span class="tok-str">"Content-type"</span>: <span class="tok-str">"application/json"</span> },
+  body: JSON.stringify({ qty: 2 }),
+});
+
+<span class="tok-com">// DELETE - body nav vajadzīgs, cookie vienalga automātisks</span>
+await fetch(`/api/orders/${order.id}`, { method: <span class="tok-str">"DELETE"</span> });</code></pre>
+        </div>
+        <div>
+          <h4>Sanctum - Bearer tokens (manuāli)</h4>
+          <pre class="code-block"><span class="lang">js</span><code><span class="tok-com">// 1) POST /login - ATBILDES (response) body satur tokenu</span>
+const res = await fetch(`${apiUrl}/login`, {
+  method: <span class="tok-str">"POST"</span>,
+  headers: { <span class="tok-str">"Content-type"</span>: <span class="tok-str">"application/json"</span> },
+  body: JSON.stringify({ email, password }),
+});
+const { token } = await res.json();
+localStorage.setItem(<span class="tok-str">"token"</span>, token);
+
+<span class="tok-com">// 2) GET /user - PIEPRASĪJUMA (request) header nes tokenu, ne body</span>
+const res2 = await fetch(`${apiUrl}/user`, {
+  method: <span class="tok-str">"GET"</span>,
+  headers: { Authorization: `Bearer ${token}` },
+});
+const user = await res2.json();
+
+<span class="tok-com">// 3) PUT - header paliek tas pats, papildus nāk body</span>
+await fetch(`${apiUrl}/user/${user.id}`, {
+  method: <span class="tok-str">"PUT"</span>,
+  headers: { <span class="tok-str">"Content-type"</span>: <span class="tok-str">"application/json"</span>, Authorization: `Bearer ${token}` },
+  body: JSON.stringify({ name: <span class="tok-str">"Jauns vārds"</span> }),
+});
+
+<span class="tok-com">// 4) DELETE - header vienmēr jāpievieno, body nevajag</span>
+await fetch(`${apiUrl}/user/${user.id}`, {
+  method: <span class="tok-str">"DELETE"</span>,
+  headers: { Authorization: `Bearer ${token}` },
+});</code></pre>
+        </div>
+      </div>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Sanctum vajag, ja: (1) vairāk kā viens klients (web + mobile, trešā puse), VAI (2) frontend ir atsevišķs projekts uz cita domēna.</p>
+      </div>
+
+      <h3>Postman + CSRF: <code>419</code> kļūda</h3>
+      <p><code>web</code> maršrutiem ir CSRF aizsardzība - <code>POST</code> bez derīga tokena dod <code>419</code>. Risinājums:</p>
+      <ul>
+        <li><code>GET</code> lapu → dabū <code>XSRF-TOKEN</code> cookie → pievieno kā <code>X-XSRF-TOKEN</code> galveni <code>POST</code>, vai</li>
+        <li>Postman: ieslēdz cookie pārvaldību, tad <code>GET</code> → <code>POST</code>.</li>
+      </ul>
+    </section>
+
+
+
+</main>
+
+<script src="../js/shell.js?v=185"></script>
+<script src="../js/theme.js?v=185"></script>
+<script src="../js/main.js?v=185"></script>
+</body>
+</html>
