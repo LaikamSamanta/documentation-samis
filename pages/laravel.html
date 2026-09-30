@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=180" />
+<link rel="stylesheet" href="../css/style.css?v=181" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -470,6 +470,128 @@ post(<span class="tok-str">"/login"</span>);  <span class="tok-com">// errors.em
       </div>
     </section>
 
+    <section class="doc-section" id="inertia-props-ielade">
+      <h2>Inertia - kad un kā tiek ielādēti props</h2>
+
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Veids (Laravel)</th><th>Kad izpildās</th><th>Kam</th></tr></thead>
+          <tbody>
+            <tr><td><code>'users' =&gt; User::all()</code></td><td>Vienmēr, katrā pieprasījumā</td><td>Mazi, lēti dati</td></tr>
+            <tr><td><code>'users' =&gt; fn () =&gt; User::all()</code></td><td>Tikai kad prop tiešām vajadzīgs (partial reload to var izlaist)</td><td>Noklusējuma labā prakse</td></tr>
+            <tr><td><code>Inertia::optional(fn () =&gt; ..)</code></td><td>Nekad, kamēr klients to nepieprasa ar <code>only</code></td><td>Reti vajadzīgi, smagi dati</td></tr>
+            <tr><td><code>Inertia::always(..)</code></td><td>Vienmēr, arī partial reload</td><td>Piem. flash/auth, ko nedrīkst pazaudēt</td></tr>
+            <tr><td><code>Inertia::defer(fn () =&gt; ..)</code></td><td>Lapa parādās uzreiz, prop ielādējas otrā pieprasījumā</td><td>Lēni vaicājumi (statistika)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="doc-code-cols">
+        <div>
+          <h4>Partial reload (React)</h4>
+          <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-com">// pārlādē tikai 'users', nevis visu lapu</span>
+router.reload({ only: [<span class="tok-str">'users'</span>] });
+
+<span class="tok-com">// vai caur saiti</span>
+&lt;Link href="/users?page=2" only={['users']} /&gt;</code></pre>
+        </div>
+        <div>
+          <h4>Deferred props</h4>
+          <pre class="code-block"><span class="lang">php</span><code><span class="tok-com">// Laravel</span>
+<span class="tok-str">'permissions'</span> =>
+  Inertia::defer(fn () => Permission::all())</code></pre>
+          <pre class="code-block"><span class="lang">jsx</span><code>import { Deferred } from <span class="tok-str">'@inertiajs/react'</span>;
+
+&lt;Deferred data="permissions"
+          fallback={&lt;div&gt;Ielādē...&lt;/div&gt;}&gt;
+  ...
+&lt;/Deferred&gt;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="inertia-validacija-plusma">
+      <h2>Inertia - kā darbojas validācija un redirect</h2>
+
+      <div class="doc-diagram">
+        <svg viewBox="0 0 700 170" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="20" width="130" height="50" rx="8" class="dg-node"/>
+          <text x="75" y="42" text-anchor="middle" class="dg-label">useForm.post()</text>
+          <text x="75" y="58" text-anchor="middle" class="dg-sublabel">XHR</text>
+          <path d="M140 45 H186" class="dg-line-accent"/>
+          <path d="M186 45 L176 40 L176 50 Z" class="dg-arrowhead-accent"/>
+
+          <rect x="190" y="20" width="150" height="50" rx="8" class="dg-node-accent"/>
+          <text x="265" y="42" text-anchor="middle" class="dg-label-accent">validate()</text>
+          <text x="265" y="58" text-anchor="middle" class="dg-sublabel">redirect atpakaļ</text>
+          <path d="M340 45 H386" class="dg-line-accent"/>
+          <path d="M386 45 L376 40 L376 50 Z" class="dg-arrowhead-accent"/>
+
+          <rect x="390" y="20" width="140" height="50" rx="8" class="dg-node"/>
+          <text x="460" y="42" text-anchor="middle" class="dg-label">Kļūdas sesijā</text>
+          <text x="460" y="58" text-anchor="middle" class="dg-sublabel">(nav 422 JSON)</text>
+          <path d="M530 45 H576" class="dg-line-accent"/>
+          <path d="M576 45 L566 40 L566 50 Z" class="dg-arrowhead-accent"/>
+
+          <rect x="580" y="20" width="110" height="50" rx="8" class="dg-node-accent"/>
+          <text x="635" y="42" text-anchor="middle" class="dg-label-accent">props.errors</text>
+          <text x="635" y="58" text-anchor="middle" class="dg-sublabel">ievade paliek</text>
+
+          <text x="10" y="105" class="dg-sublabel">Veiksmīgi → redirect uz GET lapu (PUT/PATCH/DELETE: 303), Inertia atjauno lapu pati.</text>
+          <text x="10" y="128" class="dg-sublabel">Ārējs redirect (cits domēns / ne-Inertia): Inertia::location($url) → 409 → window.location.</text>
+        </svg>
+        <p class="dg-caption">Inertia validāciju dara kā parasta formas iesniegšana - nevis "noķer 422", bet redirect atpakaļ ar kļūdām sesijā.</p>
+      </div>
+
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Vajag</th><th>Kā</th></tr></thead>
+          <tbody>
+            <tr><td>Vairākas formas ar vienādiem lauku nosaukumiem</td><td><code>router.post(url, data, { errorBag: 'createCompany' })</code></td></tr>
+            <tr><td>Visas kļūdas laukam (ne tikai pirmā)</td><td><code>$withAllErrors = true</code> Inertia middleware</td></tr>
+            <tr><td>Faili (avatar u.c.)</td><td>Inertia pati pārvērš par <code>FormData</code>; <code>forceFormData: true</code> ja failu nav</td></tr>
+            <tr><td>Fails + <code>PUT</code>/<code>PATCH</code></td><td>Multipart nestrādā - sūti <code>POST</code> ar <code>_method: 'put'</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="doc-section" id="inertia-navigacija-layout">
+      <h2>Inertia - navigācijas opcijas un layout</h2>
+
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th><code>&lt;Link&gt;</code> / <code>router</code> opcija</th><th>Noklusējums</th><th>Ko dara</th></tr></thead>
+          <tbody>
+            <tr><td><code>method</code> (+ <code>as="button"</code>)</td><td><code>GET</code></td><td>Saite var sūtīt POST/PUT/PATCH/DELETE (renderējas kā <code>&lt;button&gt;</code>)</td></tr>
+            <tr><td><code>data</code></td><td>-</td><td>Dati, ko sūtīt kopā ar pieprasījumu</td></tr>
+            <tr><td><code>preserveScroll</code></td><td><code>false</code></td><td>Nepārlec uz lapas augšu pēc navigācijas</td></tr>
+            <tr><td><code>preserveState</code></td><td><code>false</code></td><td>Saglabā komponentes lokālo state (piem. atvērtus laukus)</td></tr>
+            <tr><td><code>replace</code></td><td><code>false</code></td><td>Aizvieto vēstures ierakstu (nepievieno jaunu "atpakaļ" soli)</td></tr>
+            <tr><td><code>only</code></td><td>-</td><td>Ielādē tikai norādītos props (partial reload)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="doc-code-cols">
+        <div>
+          <h4>Bez persistent layout</h4>
+          <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-com">// Layout katrā lapā iekšā →</span>
+<span class="tok-com">// tiek pārzīmēts katrā navigācijā</span>
+export default function Shop() {
+  return &lt;Layout&gt;...&lt;/Layout&gt;;
+}</code></pre>
+        </div>
+        <div>
+          <h4>Persistent layout</h4>
+          <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-com">// Layout dzīvo starp lapām (state paliek)</span>
+Shop.layout = (page) =&gt; &lt;Layout&gt;{page}&lt;/Layout&gt;;
+export default Shop;</code></pre>
+        </div>
+      </div>
+      <p class="dg-caption">Persistent layout: Inertia uztur layout instanci dzīvu starp apmeklējumiem - header/sidebar nepārzīmējas un nezaudē state. Noklusējuma layout visām lapām var uzlikt <code>resolve()</code> funkcijā <code>app.jsx</code>.</p>
+    </section>
+
     <section class="doc-section" id="inertia-starter-kit">
       <h2>Inertia - ko vēl satur Laravel React starter kit</h2>
       <div class="cheat-table-wrap">
@@ -508,8 +630,8 @@ post(<span class="tok-str">"/login"</span>);  <span class="tok-com">// errors.em
     </section>
 </main>
 
-<script src="../js/shell.js?v=180"></script>
-<script src="../js/theme.js?v=180"></script>
-<script src="../js/main.js?v=180"></script>
+<script src="../js/shell.js?v=181"></script>
+<script src="../js/theme.js?v=181"></script>
+<script src="../js/main.js?v=181"></script>
 </body>
 </html>
