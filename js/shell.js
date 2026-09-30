@@ -35,7 +35,8 @@ document.addEventListener("DOMContentLoaded", function () {
     {
       group: "Dokumentācija",
       items: [
-        { name: "Laravel", href: "pages/laravel.html", cat: "laravel", extras: [{ name: "Inertia.js", href: "pages/inertia.html" }] },
+        { name: "Laravel", href: "pages/laravel.html", cat: "laravel" },
+        { name: "Inertia.js", href: "pages/inertia.html", cat: "inertia" },
         { name: "Tīkls", href: "pages/web-izveide.html", cat: "web" },
         { name: "Rīki", href: "pages/riki.html", cat: "riki" },
         { name: "WordPress", href: "pages/woocommerce.html", cat: "wordpress" },
@@ -57,6 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // still highlights the right category when browsing those pages.
   var CATEGORY_SLUG_MAP = {
     "cat-laravel": "pages/laravel.html",
+    "cat-inertia": "pages/inertia.html",
     "cat-web": "pages/web-izveide.html",
     "cat-riki": "pages/riki.html",
     "cat-wordpress": "pages/woocommerce.html",

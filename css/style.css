@@ -30,6 +30,8 @@
   --c-js-soft: rgba(247, 211, 84, 0.15);
   --c-php: #8b7bf7;
   --c-php-soft: rgba(139, 123, 247, 0.15);
+  --c-inertia: #9553e9;
+  --c-inertia-soft: rgba(149, 83, 233, 0.15);
   --c-web: #f76ba8;
   --c-web-soft: rgba(247, 107, 168, 0.15);
   --c-integrations: #2dd4bf;
@@ -114,6 +116,7 @@
   --c-wordpress-2: color-mix(in srgb, var(--c-wordpress), white 25%);
   --c-js-2: color-mix(in srgb, var(--c-js), white 20%);
   --c-php-2: color-mix(in srgb, var(--c-php), white 25%);
+  --c-inertia-2: color-mix(in srgb, var(--c-inertia), white 25%);
   --c-web-2: color-mix(in srgb, var(--c-web), white 25%);
   --c-integrations-2: color-mix(in srgb, var(--c-integrations), white 25%);
   --c-api-2: color-mix(in srgb, var(--c-api), white 15%);
@@ -174,6 +177,7 @@
   --c-wordpress-2: color-mix(in srgb, var(--c-wordpress), black 25%);
   --c-js-2: color-mix(in srgb, var(--c-js), black 55%);
   --c-php-2: color-mix(in srgb, var(--c-php), black 20%);
+  --c-inertia-2: color-mix(in srgb, var(--c-inertia), black 20%);
   --c-web-2: color-mix(in srgb, var(--c-web), black 30%);
   --c-integrations-2: color-mix(in srgb, var(--c-integrations), black 50%);
   --c-api-2: color-mix(in srgb, var(--c-api), black 50%);
@@ -201,6 +205,7 @@
 body.cat-wordpress    { --page-accent: var(--c-wordpress);    --page-accent-2: var(--c-wordpress-2);    --page-accent-soft: var(--c-wordpress-soft); }
 body.cat-js           { --page-accent: var(--c-js);           --page-accent-2: var(--c-js-2);           --page-accent-soft: var(--c-js-soft); }
 body.cat-php          { --page-accent: var(--c-php);          --page-accent-2: var(--c-php-2);          --page-accent-soft: var(--c-php-soft); }
+body.cat-inertia      { --page-accent: var(--c-inertia);      --page-accent-2: var(--c-inertia-2);      --page-accent-soft: var(--c-inertia-soft); }
 body.cat-web          { --page-accent: var(--c-web);          --page-accent-2: var(--c-web-2);          --page-accent-soft: var(--c-web-soft); }
 body.cat-integrations { --page-accent: var(--c-integrations); --page-accent-2: var(--c-integrations-2); --page-accent-soft: var(--c-integrations-soft); }
 body.cat-api           { --page-accent: var(--c-api);          --page-accent-2: var(--c-api-2);          --page-accent-soft: var(--c-api-soft); }
@@ -654,6 +659,7 @@ p, li {
 .dir-row.wordpress { --dir-color: var(--c-wordpress); }
 .dir-row.js        { --dir-color: var(--c-js); }
 .dir-row.php       { --dir-color: var(--c-php); }
+.dir-row.inertia   { --dir-color: var(--c-inertia); }
 .dir-row.web       { --dir-color: var(--c-web); }
 .dir-row.integrations { --dir-color: var(--c-integrations); }
 .dir-row.api       { --dir-color: var(--c-api); }
