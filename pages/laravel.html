@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=181" />
+<link rel="stylesheet" href="../css/style.css?v=182" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -610,28 +610,317 @@ export default Shop;</code></pre>
       <p class="dg-caption">Starter kit dokumentācija: laravel.com/docs/starter-kits · Inertia: inertiajs.com/docs/v3</p>
     </section>
 
-    <section class="doc-section" id="inertia-kludas">
-      <h2>Inertia - biežākās kļūdas</h2>
+    <section class="doc-section" id="inertia-recepte-kolonna">
+      <h2>Recepte: pievienot kolonnu esošai tabulai</h2>
+      <p>Piemērs: tabulai <code>products</code> vajag jaunu lauku <code>color</code>. <strong>Nedrīkst</strong> rediģēt veco <code>create_products_table</code> migrāciju - tā jau ir izpildīta. Vienmēr jauna migrācija.</p>
+
+      <div class="doc-diagram">
+        <svg viewBox="0 0 700 90" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="20" width="120" height="50" rx="8" class="dg-node-accent"/>
+          <text x="70" y="42" text-anchor="middle" class="dg-label-accent">1. Migrācija</text>
+          <text x="70" y="58" text-anchor="middle" class="dg-sublabel">+ migrate</text>
+          <path d="M130 45 H146" class="dg-line-accent"/><path d="M146 45 L136 40 L136 50 Z" class="dg-arrowhead-accent"/>
+          <rect x="150" y="20" width="120" height="50" rx="8" class="dg-node"/>
+          <text x="210" y="42" text-anchor="middle" class="dg-label">2. Kontrolieris</text>
+          <text x="210" y="58" text-anchor="middle" class="dg-sublabel">validate + save</text>
+          <path d="M270 45 H286" class="dg-line-accent"/><path d="M286 45 L276 40 L276 50 Z" class="dg-arrowhead-accent"/>
+          <rect x="290" y="20" width="120" height="50" rx="8" class="dg-node"/>
+          <text x="350" y="42" text-anchor="middle" class="dg-label">3. Modelis</text>
+          <text x="350" y="58" text-anchor="middle" class="dg-sublabel">get() dod visu</text>
+          <path d="M410 45 H426" class="dg-line-accent"/><path d="M426 45 L416 40 L416 50 Z" class="dg-arrowhead-accent"/>
+          <rect x="430" y="20" width="120" height="50" rx="8" class="dg-node"/>
+          <text x="490" y="42" text-anchor="middle" class="dg-label">4. Props/JSON</text>
+          <text x="490" y="58" text-anchor="middle" class="dg-sublabel">product.color</text>
+          <path d="M550 45 H566" class="dg-line-accent"/><path d="M566 45 L556 40 L556 50 Z" class="dg-arrowhead-accent"/>
+          <rect x="570" y="20" width="120" height="50" rx="8" class="dg-node-accent"/>
+          <text x="630" y="42" text-anchor="middle" class="dg-label-accent">5. React</text>
+          <text x="630" y="58" text-anchor="middle" class="dg-sublabel">forma + tabula</text>
+        </svg>
+        <p class="dg-caption">Jaunā kolonna uz frontendu nonāk pati (<code>Product::get()</code> atgriež visas kolonnas) - jāpieliek tikai validācija, saglabāšana un UI.</p>
+      </div>
+
+      <h3>1. Migrācija</h3>
+      <pre class="code-block"><span class="lang">bash</span><code>php artisan make:migration add_color_to_products_table --table=products
+php artisan migrate</code></pre>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">public function</span> up(): void
+{
+    Schema::table(<span class="tok-str">'products'</span>, <span class="tok-kw">function</span> (Blueprint $table) {
+        <span class="tok-com">// nullable/default OBLIGĀTI - tabulā jau ir ieraksti</span>
+        $table->string(<span class="tok-str">'color'</span>)->nullable()->after(<span class="tok-str">'title'</span>);
+    });
+}
+
+<span class="tok-kw">public function</span> down(): void
+{
+    Schema::table(<span class="tok-str">'products'</span>, <span class="tok-kw">function</span> (Blueprint $table) {
+        $table->dropColumn(<span class="tok-str">'color'</span>);   <span class="tok-com">// nedrīkst palikt tukšs - citādi rollback neko nedara</span>
+    });
+}</code></pre>
       <div class="cheat-table-wrap">
         <table class="cheat-table">
-          <thead><tr><th>Simptoms</th><th>Iemesls</th><th>Risinājums</th></tr></thead>
+          <thead><tr><th>Vajag</th><th>Migrācijā</th></tr></thead>
           <tbody>
-            <tr><td>"Page not found ./pages/X.jsx" / balts ekrāns</td><td>Nosaukums/reģistrs nesakrīt</td><td>Salīdzini ar faila ceļu; <code>config/inertia.php</code> → <code>ensure_pages_exist</code> met kļūdu nepastāvošai lapai</td></tr>
-            <tr><td>Modālis ar JSON/HTML saturu (dev režīmā)</td><td>Kontrolieris Inertia pieprasījumam atdeva ne-Inertia atbildi</td><td><code>inertia()</code> vai <code>redirect()</code></td></tr>
-            <tr><td>Klikšķis pārlādē visu lapu</td><td><code>&lt;a&gt;</code> vietā <code>&lt;Link&gt;</code></td><td>Lieto <code>&lt;Link&gt;</code></td></tr>
-            <tr><td><code>auth</code>/<code>errors</code> = undefined</td><td>Middleware nav <code>web</code> grupā</td><td>Pārbaudi <code>bootstrap/app.php</code></td></tr>
-            <tr><td><code>419</code> uz POST</td><td>CSRF trūkst (<code>fetch</code>)</td><td><code>useForm</code> vai <code>X-XSRF-TOKEN</code></td></tr>
-            <tr><td>Produkcijā stili nelādējas (mixed content)</td><td>Aiz proxy Laravel dod <code>http://</code></td><td><code>trustProxies(at: '*')</code></td></tr>
-            <tr><td>Pēc deploy vienreiz pārlādējas</td><td>Assetu versija (409)</td><td>Normāli</td></tr>
+            <tr><td>Skaitlis ar noklusējumu (kā <code>status</code>)</td><td><code>$table->integer('status')->default(1);</code></td></tr>
+            <tr><td>Unikāls (kā <code>sku</code>)</td><td><code>$table->unique('sku');</code> · <code>down</code>: <code>$table->dropUnique(['sku']);</code></td></tr>
+            <tr><td>Ārējā atslēga</td><td><code>$table->foreignId('brand_id')->nullable()->constrained();</code></td></tr>
+            <tr><td>Pārsaukt / mainīt tipu</td><td><code>$table->renameColumn('a','b');</code> · <code>$table->string('x', 100)->change();</code></td></tr>
+            <tr><td>Atcelt pēdējo migrāciju</td><td><code>php artisan migrate:rollback --step=1</code></td></tr>
           </tbody>
         </table>
       </div>
-      <p class="dg-caption">v3 ar <code>@inertiajs/vite</code> spraudni <code>resolve</code>/<code>setup</code> var neierakstīt - spraudnis to konfigurē pats; šeit tie rakstīti ar roku. Debugs: DevTools → Network → Fetch/XHR, galvene <code>X-Inertia: true</code>, atbilde = page objekts. Maršrutus un to middleware: <code>php artisan route:list -v</code>.</p>
+
+      <h3>2. Kontrolieris - validācija un saglabāšana (<code>store</code> un <code>update</code>)</h3>
+      <pre class="code-block"><span class="lang">php</span><code>$validator = Validator::make($request->all(), [
+    <span class="tok-str">'title'</span> => <span class="tok-str">'required'</span>,
+    <span class="tok-str">'color'</span> => <span class="tok-str">'nullable|string|max:50'</span>,   <span class="tok-com">// ← jaunais lauks</span>
+    <span class="tok-com">// unikālam laukam update gadījumā jāizlaiž pašam ierakstam:</span>
+    <span class="tok-str">'sku'</span> => <span class="tok-str">'required|unique:products,sku,'</span>.$product->id.<span class="tok-str">',id'</span>,
+]);
+
+$product->title = $request->title;
+$product->color = $request->color;                  <span class="tok-com">// ← jaunais lauks</span>
+$product->save();</code></pre>
+      <div class="callout note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16v-4M12 8h.01M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"/></svg>
+        <p>Ja saglabā ar <code>Product::create($request->all())</code> vai <code>->update([...])</code>, kolonna jāpieraksta modelī: <code>protected $fillable = ['title', 'color', ...];</code>. Ja saglabā ar <code>$product->color = ...; save()</code> - nevajag.</p>
+      </div>
+
+      <h3>3. React - forma un saraksts</h3>
+      <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-com">// Create/Edit forma</span>
+&lt;input {...register("color")} className="form-control" /&gt;
+
+<span class="tok-com">// Edit: sākuma vērtība nāk no props (product ir kontroliera padotais)</span>
+useForm({ defaultValues: { title: product.title, color: product.color } })
+
+<span class="tok-com">// Show tabula</span>
+&lt;td&gt;{product.color}&lt;/td&gt;</code></pre>
+      <p class="dg-caption">Ja lauku vajag tikai <em>rādīt</em>, pietiek ar 3. soli - migrācija + <code>&lt;td&gt;{product.color}&lt;/td&gt;</code>.</p>
     </section>
+
+    <section class="doc-section" id="inertia-recepte-props-vai-fetch">
+      <h2>Recepte: kad datus dot kā props un kad ņemt ar fetch</h2>
+
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Situācija</th><th>Izvēle</th><th>Piemērs</th></tr></thead>
+          <tbody>
+            <tr><td>Bez šiem datiem lapu nevar uzzīmēt (viens ieraksts, Edit forma, produkta lapa)</td><td><strong>Props</strong></td><td><code>inertia('category/Edit', ['category' =&gt; $category])</code> - ieraksts nāk no route model binding</td></tr>
+            <tr><td>Sākumlapas saraksti, kas vajadzīgi uzreiz</td><td><strong>Props</strong></td><td><code>inertia('Home', compact('latestProducts', 'featuredProducts'))</code></td></tr>
+            <tr><td>Lapa ar saistītiem datiem</td><td><strong>Props</strong> + <code>load()</code></td><td><code>$product-&gt;load('product_images', 'sizes')</code> pirms <code>inertia('Product', ..)</code></td></tr>
+            <tr><td>Dati visās lapās (izvēlne, lietotājs)</td><td><strong>Shared props</strong></td><td><code>share()</code> → <code>'categories' =&gt; fn () =&gt; Category::..</code> → <code>usePage().props</code></td></tr>
+            <tr><td>Filtri / meklēšana bez lapas maiņas, dzēšana ar saraksta atjaunošanu</td><td><strong>fetch JSON</strong> (kā projektā) <em>vai</em> <code>router</code> + partial reload</td><td>Shop filtri: <code>fetch('/get-products?category=1,2')</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Kā projektā: lapa + atsevišķs JSON maršruts</h3>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>URL</th><th>Ko atgriež</th><th>Maršruts</th></tr></thead>
+          <tbody>
+            <tr><td><code>GET /admin/categories</code></td><td>Inertia lapa (tukša čaula)</td><td><code>inertia('category/Show')</code></td></tr>
+            <tr><td><code>GET /admin/categories/list</code></td><td>JSON saraksts</td><td><code>[CategoryController::class, 'index']</code></td></tr>
+            <tr><td><code>POST/PUT/DELETE /admin/categories/{id}</code></td><td>JSON</td><td><code>Route::resource(..)-&gt;except(['create','edit','index'])</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><code>/list</code> ir atsevišķs, jo <code>Route::resource</code> <code>index</code> reģistrētu otru <code>GET /admin/categories</code> - pēdējais uzvar un lapas vietā atvērtos JSON. Pārbaude: <code>php artisan route:list --name=admin.categories</code> - nedrīkst būt divu rindu uz vienu URL.</p>
+
+      <h3>Tas pats ar Inertia (bez atsevišķa JSON un <code>useEffect</code>)</h3>
+      <div class="doc-code-cols">
+        <div>
+          <h4>Projektā - fetch + state</h4>
+          <pre class="code-block"><span class="lang">jsx</span><code>const [categories, setCategories] = useState([]);
+useEffect(() => { fetchCategories(); }, []);
+
+await fetch(`${apiUrl}/categories/${id}`,
+  { method: "DELETE" });
+fetchCategories();   <span class="tok-com">// atjauno sarakstu</span></code></pre>
+        </div>
+        <div>
+          <h4>Inertia - props + router</h4>
+          <pre class="code-block"><span class="lang">php</span><code>Route::get(<span class="tok-str">'/admin/categories'</span>, fn () =>
+  inertia(<span class="tok-str">'category/Show'</span>, [
+    <span class="tok-str">'categories'</span> => Category::latest()->get(),
+  ]));
+Route::delete(<span class="tok-str">'/admin/categories/{c}'</span>,
+  <span class="tok-kw">function</span> (Category $c) {
+    $c->delete(); <span class="tok-kw">return</span> back();
+  });</code></pre>
+          <pre class="code-block"><span class="lang">jsx</span><code>const Show = ({ categories }) =&gt; ...
+router.delete(`/admin/categories/${id}`);
+<span class="tok-com">// lapa pati atjaunojas ar jauniem props</span></code></pre>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p>Projektā <code>apiUrl = 'http://localhost:8000/admin'</code> ir ierakstīts ar roku - produkcijā <code>fetch</code> iet uz lietotāja paša localhost. Lieto <strong>relatīvu ceļu</strong> (<code>'/admin'</code>) vai <code>import.meta.env.VITE_API_URL</code>.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="inertia-recepte-lapa">
+      <h2>Recepte: jauna Inertia lapa (maršruts → lapa → saite)</h2>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>#</th><th>Solis</th><th>Kur / kods</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Maršruts</td><td><code>routes/web.php</code>: <code>Route::get('/admin/brands', fn () =&gt; inertia('brand/Show'))-&gt;name('admin.brands');</code></td></tr>
+            <tr><td>2</td><td>Lapas fails (plāns re-export)</td><td><code>resources/js/pages/brand/Show.jsx</code>: <code>export { default } from '@/components/admin/brand/Show';</code></td></tr>
+            <tr><td>3</td><td>Īstā komponente</td><td><code>resources/js/components/admin/brand/Show.jsx</code> (Layout + saturs)</td></tr>
+            <tr><td>4</td><td>Saite izvēlnē</td><td><code>&lt;Link href="/admin/brands"&gt;Brands&lt;/Link&gt;</code> (piem. <code>Sidebar.jsx</code>)</td></tr>
+            <tr><td>5</td><td>Ja lapai vajag ierakstu</td><td><code>Route::get('/admin/brands/edit/{brand}', fn (Brand $brand) =&gt; inertia('brand/Edit', ['brand' =&gt; $brand]))</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="dg-caption">Katrai sadaļai (Show / Create / Edit) ir sava lapa. Nosaukums <code>'brand/Show'</code> = ceļš zem <code>pages/</code>.</p>
+    </section>
+
+    <section class="doc-section" id="inertia-recepte-middleware">
+      <h2>Recepte: kad vajag middleware (ar piemēriem)</h2>
+
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Vajag</th><th>Risinājums</th><th>Piemērs no projekta</th></tr></thead>
+          <tbody>
+            <tr><td>Nodot datus <strong>React</strong> lapām</td><td><code>HandleInertiaRequests::share()</code></td><td><code>auth.user</code>, <code>categories</code></td></tr>
+            <tr><td>Nodot datus tikai <strong>Blade</strong> root šablonam</td><td>Savs middleware + <code>View::share</code></td><td><code>HandleAppearance</code> → <code>$appearance</code> tumšajam režīmam</td></tr>
+            <tr><td>Servera/proxy iestatījums visam</td><td>Globāli: <code>$middleware-&gt;trustProxies(..)</code></td><td>Render proxy → <code>https://</code> URL</td></tr>
+            <tr><td>Sīkdatnes, ko frontend lasa pats</td><td><code>$middleware-&gt;encryptCookies(except: [..])</code></td><td><code>appearance</code>, <code>sidebar_state</code></td></tr>
+            <tr><td>Aizsargāt lapas (tikai adminiem)</td><td>Savs middleware + <code>alias</code> + maršrutu grupa</td><td>sk. zemāk</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Aizsargāt <code>/admin/*</code> ar savu middleware</h3>
+      <p>Projektā login pārbauda <code>$user-&gt;role == 'admin'</code>, bet pašus maršrutus servera pusē nekas neaizsargā - pārbaude notiek tikai frontendā (<code>/admin/me</code>). Pareizi: bloķēt jau serverī.</p>
+
+      <div class="doc-code-cols">
+        <div>
+          <h4>1) Izveido</h4>
+          <pre class="code-block"><span class="lang">bash</span><code>php artisan make:middleware EnsureAdmin</code></pre>
+          <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">public function</span> handle(Request $request, Closure $next)
+{
+    $user = $request->user();
+
+    <span class="tok-kw">if</span> (! $user || $user->role !== <span class="tok-str">'admin'</span>) {
+        <span class="tok-kw">return</span> $request->expectsJson()
+            ? response()->json(['status' => 401], 401)
+            : redirect(<span class="tok-str">'/admin/login'</span>);
+    }
+
+    <span class="tok-kw">return</span> $next($request);
+}</code></pre>
+        </div>
+        <div>
+          <h4>2) Reģistrē - <code>bootstrap/app.php</code></h4>
+          <pre class="code-block"><span class="lang">php</span><code>$middleware->alias([
+    <span class="tok-str">'admin'</span> => EnsureAdmin::<span class="tok-kw">class</span>,
+]);</code></pre>
+          <h4>3) Pieliek maršrutiem - <code>routes/web.php</code></h4>
+          <pre class="code-block"><span class="lang">php</span><code>Route::middleware(<span class="tok-str">'admin'</span>)->group(<span class="tok-kw">function</span> () {
+    Route::get(<span class="tok-str">'/admin/categories'</span>, ...);
+    Route::resource(<span class="tok-str">'admin/categories'</span>, ...);
+    <span class="tok-com">// visi admin maršruti šeit iekšā</span>
+});
+<span class="tok-com">// /admin/login paliek ārpus grupas!</span></code></pre>
+        </div>
+      </div>
+      <div class="callout note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16v-4M12 8h.01M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"/></svg>
+        <p>Vienkāršākais variants bez sava middleware: <code>Route::middleware('auth')</code> + <code>$middleware-&gt;redirectGuestsTo('/admin/login')</code> - bet tas pārbauda tikai "ielogojies", nevis "esi admin". Tāpēc admin paneļiem vajag savu.</p>
+      </div>
+
+      <h3>Kur ko rakstīt - īsi</h3>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Ko rakstīt</th><th>Fails</th></tr></thead>
+          <tbody>
+            <tr><td>Middleware klase</td><td><code>app/Http/Middleware/*.php</code></td></tr>
+            <tr><td>Globāli / grupai / alias</td><td><code>bootstrap/app.php</code> → <code>withMiddleware()</code></td></tr>
+            <tr><td>Konkrētiem maršrutiem</td><td><code>routes/web.php</code> → <code>Route::middleware('admin')-&gt;group()</code></td></tr>
+            <tr><td>Redzēt, kas kuram maršrutam piesaistīts</td><td><code>php artisan route:list -v</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="doc-section" id="inertia-recepte-forma">
+      <h2>Recepte: forma - react-hook-form + fetch (projektā) vs useForm</h2>
+      <div class="doc-code-cols">
+        <div>
+          <h4>Projektā (Edit forma)</h4>
+          <pre class="code-block"><span class="lang">jsx</span><code>const { register, handleSubmit,
+  formState: { errors } } = useForm({
+    defaultValues: { name: category.name } });
+
+const save = async (data) => {
+  const res = await fetch(url, {
+    method: "PUT",
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify(data) });
+  const result = await res.json();
+  if (result.status == 200) {
+    toast.success(result.message);
+    router.visit("/admin/categories");
+  }
+};</code></pre>
+        </div>
+        <div>
+          <h4>Ar Inertia <code>useForm</code></h4>
+          <pre class="code-block"><span class="lang">jsx</span><code>const { data, setData, put,
+  processing, errors } = useForm({
+    name: category.name });
+
+const save = (e) => {
+  e.preventDefault();
+  put(`/admin/categories/${category.id}`);
+};
+<span class="tok-com">// errors.name - no servera automātiski</span></code></pre>
+          <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">public function</span> update(Request $r, Category $c)
+{
+    $d = $r->validate(['name' => 'required']);
+    $c->name = $d['name']; $c->save();
+    <span class="tok-kw">return</span> to_route(<span class="tok-str">'admin.categories'</span>);
+}</code></pre>
+        </div>
+      </div>
+
+      <h3>Bilžu augšupielāde (kā projektā, produktu galerija)</h3>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Solis</th><th>Kas notiek</th></tr></thead>
+          <tbody>
+            <tr><td>1. Izvēlas failu</td><td><code>POST /admin/temp-images</code> ar <code>FormData</code> uzreiz → serveris saglabā <code>uploads/temp</code>, izveido thumbnail, atgriež <code>id</code></td></tr>
+            <tr><td>2. Saglabā produktu</td><td>Formā iet tikai <code>gallery[]</code> ar temp <code>id</code>; serveris no temp faila uztaisa divas kopijas (<code>large</code> 1200px un <code>small</code> 400×460), pieraksta <code>product_images</code>; pirmā bilde kļūst par vāka bildi</td></tr>
+            <tr><td><code>fetch</code> ar failiem</td><td><code>body: formData</code> - <strong>bez</strong> <code>Content-type</code> headera un bez <code>JSON.stringify</code> (pārlūks pats uzliek <code>multipart</code> boundary)</td></tr>
+            <tr><td>Ar Inertia</td><td>Failu <code>useForm</code>/<code>router</code> pats pārvērš par <code>FormData</code>; <code>PUT</code> ar failu → <code>POST</code> + <code>_method: 'put'</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="doc-section" id="inertia-recepte-produkcija">
+      <h2>Recepte: kas jāpārbauda pirms deploy</h2>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Ko</th><th>Kur</th><th>Kāpēc</th></tr></thead>
+          <tbody>
+            <tr><td>Frontend build</td><td><code>npm run build</code> → <code>public/build</code></td><td>Produkcijā Vite dev serveris nedarbojas; <code>@vite</code> lasa būvēto manifestu</td></tr>
+            <tr><td>Proxy uzticēšanās</td><td><code>bootstrap/app.php</code> → <code>trustProxies(at: '*')</code></td><td>Aiz Render proxy citādi <code>http://</code> asset URL → mixed content</td></tr>
+            <tr><td>Hardcoded URL</td><td><code>http.jsx</code> → <code>apiUrl</code></td><td>Nedrīkst būt <code>localhost</code></td></tr>
+            <tr><td><code>APP_URL</code>, <code>APP_KEY</code>, DB</td><td>Vides mainīgie (<code>.env</code> / hostinga panelis)</td><td>Bez <code>APP_KEY</code> nestrādā sesijas/šifrēšana</td></tr>
+            <tr><td>Migrācijas</td><td><code>php artisan migrate --force</code></td><td>Produkcijā vajag <code>--force</code></td></tr>
+            <tr><td>Linux reģistrjutība</td><td><code>inertia('admin/Login')</code> ↔ <code>pages/admin/Login.jsx</code></td><td>Windows to nemana, Linux serverī - "page not found"</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
 </main>
 
-<script src="../js/shell.js?v=181"></script>
-<script src="../js/theme.js?v=181"></script>
-<script src="../js/main.js?v=181"></script>
+<script src="../js/shell.js?v=182"></script>
+<script src="../js/theme.js?v=182"></script>
+<script src="../js/main.js?v=182"></script>
 </body>
 </html>
