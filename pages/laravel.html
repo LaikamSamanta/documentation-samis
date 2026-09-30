@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=182" />
+<link rel="stylesheet" href="../css/style.css?v=183" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -233,7 +233,31 @@ const result = await res.json();</code></pre>
         <p><code>fetch()</code> <strong>nemet kļūdu HTTP kļūdas gadījumā</strong> (piem. <code>404</code>, <code>500</code>) - <code>Promise</code> noraidās tikai tad, ja pieprasījums vispār neaizsniedz serveri (tīkla kļūda). Lai noķertu HTTP kļūdas, pirms <code>.json()</code> pašam jāpārbauda <code>res.ok</code> vai <code>res.status</code>.</p>
       </div>
     </section>
-<section class="doc-section" id="inertia-cikls">
+<section class="doc-section" id="inertia-vardnica">
+      <h2>Inertia - vārdnīca (vienkāršiem vārdiem)</h2>
+      <p>Ja kāds vārds zemāk lapā nav skaidrs, meklē šeit.</p>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Vārds</th><th>Ko tas nozīmē</th><th>Piemērs</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Route</strong> (maršruts)</td><td>Noteikums "kad atver šo adresi, palaid šo kodu"</td><td><code>Route::get('/shop', ...)</code></td></tr>
+            <tr><td><strong>Controller</strong> (kontrolieris)</td><td>PHP klase, kur atrodas loģika: paņem datus no DB un atdod atbildi</td><td><code>CategoryController</code></td></tr>
+            <tr><td><strong>Model</strong></td><td>PHP klase, kas pārstāv vienu DB tabulu</td><td><code>Category</code> = tabula <code>categories</code></td></tr>
+            <tr><td><strong>Migration</strong></td><td>Fails, kas izveido vai maina DB tabulu (DB izmaiņu "vēsture")</td><td><code>add_status_to_products_table</code></td></tr>
+            <tr><td><strong>Props</strong></td><td>Dati, ko serveris iedod React lapai (kā funkcijas parametri)</td><td><code>({ product }) =&gt; ...</code></td></tr>
+            <tr><td><strong>Shared props</strong></td><td>Props, kas automātiski ir <em>katrā</em> lapā</td><td><code>categories</code> izvēlnei</td></tr>
+            <tr><td><strong>Middleware</strong></td><td>"Sargs", kas pieprasījumu pārbauda vai papildina, pirms tas nonāk līdz kontrolierim</td><td>Vai lietotājs ir admin?</td></tr>
+            <tr><td><strong>Context / Provider</strong></td><td>React veids, kā vienu datu kopu (piem. grozu) padarīt pieejamu visām komponentēm, nenododot to ar rokām</td><td><code>CartProvider</code></td></tr>
+            <tr><td><strong>localStorage</strong></td><td>Pārlūka "atmiņa" - saglabā tekstu arī pēc lapas pārlādes (bet tikai šim lietotājam, šajā pārlūkā)</td><td>Grozs</td></tr>
+            <tr><td><strong>Flash</strong></td><td>Ziņa, kas tiek parādīta <em>vienu reizi</em> un pazūd (piem. "Saglabāts!")</td><td><code>Inertia::flash(..)</code></td></tr>
+            <tr><td><strong>Vite</strong></td><td>Rīks, kas savāc JS/CSS failus un palaiž lokālo dev serveri</td><td><code>npm run dev</code></td></tr>
+            <tr><td><strong>SSR</strong></td><td>Lapu iepriekš uzzīmē serverī (ātrāk un labāk Google), pēc tam pārlūks to "atdzīvina"</td><td>Nav obligāts</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="doc-section" id="inertia-cikls">
       <h2>Inertia.js - kā tas strādā</h2>
       <p>Laravel + React <strong>bez API un bez frontend router</strong>: kontrolieris atgriež <em>komponenti + datus</em>, Inertia klikšķus dara ar XHR.</p>
 
@@ -900,6 +924,203 @@ const save = (e) => {
       </div>
     </section>
 
+    <section class="doc-section" id="inertia-recepte-grozs">
+      <h2>Recepte: grozs (React Context + localStorage)</h2>
+      <p><strong>Vienkārši sakot:</strong> grozs šajā projektā <em>nav datubāzē</em> - tas glabājas lietotāja pārlūkā. Serveris par grozu neko nezina, kamēr lietotājs nenospiež "Pasūtīt". Tāpēc te nevajag ne kontrolieri, ne props - grozam pietiek ar React.</p>
+
+      <div class="doc-diagram">
+        <svg viewBox="0 0 700 130" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="20" width="150" height="50" rx="8" class="dg-node"/>
+          <text x="85" y="42" text-anchor="middle" class="dg-label">Produkta lapa</text>
+          <text x="85" y="58" text-anchor="middle" class="dg-sublabel">addToCart(product)</text>
+          <path d="M160 45 H196" class="dg-line-accent"/><path d="M196 45 L186 40 L186 50 Z" class="dg-arrowhead-accent"/>
+          <rect x="200" y="20" width="170" height="50" rx="8" class="dg-node-accent"/>
+          <text x="285" y="42" text-anchor="middle" class="dg-label-accent">CartProvider</text>
+          <text x="285" y="58" text-anchor="middle" class="dg-sublabel">cartData (state)</text>
+          <path d="M370 45 H406" class="dg-line-accent"/><path d="M406 45 L396 40 L396 50 Z" class="dg-arrowhead-accent"/>
+          <rect x="410" y="20" width="130" height="50" rx="8" class="dg-node"/>
+          <text x="475" y="42" text-anchor="middle" class="dg-label">localStorage</text>
+          <text x="475" y="58" text-anchor="middle" class="dg-sublabel">'cart' (teksts)</text>
+          <path d="M285 70 V96" class="dg-line-accent"/><path d="M285 96 L280 86 L290 86 Z" class="dg-arrowhead-accent"/>
+          <rect x="200" y="98" width="170" height="28" rx="8" class="dg-node"/>
+          <text x="285" y="117" text-anchor="middle" class="dg-label">Cart lapa, Header (skaits)</text>
+        </svg>
+        <p class="dg-caption">Provider "ietin" visu lietotni (<code>app.jsx</code> → <code>setup()</code>), tāpēc jebkura komponente var nolasīt vai mainīt grozu ar <code>useContext</code>.</p>
+      </div>
+
+      <h3>1. Kā tas jau ir uzbūvēts</h3>
+      <pre class="code-block"><span class="lang">jsx</span><code><span class="tok-com">// context/Cart.jsx</span>
+export const CartContext = createContext();
+
+export const CartProvider = ({ children }) => {
+  <span class="tok-com">// sākuma vērtība: ko pārlūks atceras, vai tukšs saraksts</span>
+  const [cartData, setCartData] =
+    useState(JSON.parse(localStorage.getItem('cart')) || []);
+
+  const addToCart = (product, size = null) => {
+    const updatedCart = [...cartData, { product_id: product.id, size, qty: 1, ... }];
+    setCartData(updatedCart);                                    <span class="tok-com">// atjauno ekrānu</span>
+    localStorage.setItem('cart', JSON.stringify(updatedCart));  <span class="tok-com">// atceras pārlūkā</span>
+  };
+
+  return &lt;CartContext.Provider value={{ cartData, addToCart }}&gt;{children}&lt;/CartContext.Provider&gt;;
+};</code></pre>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Kods</th><th>Ko tas dara</th></tr></thead>
+          <tbody>
+            <tr><td><code>JSON.stringify(x)</code></td><td>Pārvērš masīvu/objektu par tekstu (localStorage glabā tikai tekstu)</td></tr>
+            <tr><td><code>JSON.parse(text)</code></td><td>Pārvērš tekstu atpakaļ par masīvu/objektu</td></tr>
+            <tr><td><code>setCartData(..)</code></td><td>Nomaina state → React pārzīmē visu, kas grozu lieto</td></tr>
+            <tr><td><code>value={{ cartData, addToCart }}</code></td><td>Kas būs pieejams visiem, kas lieto šo kontekstu</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>2. Kā grozu lietot jebkurā komponentē</h3>
+      <pre class="code-block"><span class="lang">jsx</span><code>import { useContext } from <span class="tok-str">'react'</span>;
+import { CartContext } from <span class="tok-str">'./context/Cart'</span>;
+
+const { cartData, addToCart } = useContext(CartContext);
+
+&lt;span&gt;Grozā: {cartData.length}&lt;/span&gt;          <span class="tok-com">// Header</span>
+&lt;button onClick={() =&gt; addToCart(product, size)}&gt;   <span class="tok-com">// Produkta lapa</span></code></pre>
+
+      <h3>3. Ko vēl vajag pievienot (Cart lapa pašlaik ir tikai dizains)</h3>
+      <p>Pirmais: parādīt tos produktus, kas ir grozā, nevis "Dummy Product". Otrais: kopsumma. Trešais: dzēšana un daudzuma maiņa.</p>
+      <div class="doc-code-cols">
+        <div>
+          <h4>Cart lapa - saraksts un summa</h4>
+          <pre class="code-block"><span class="lang">jsx</span><code>const { cartData, removeFromCart } =
+  useContext(CartContext);
+
+<span class="tok-com">// summa = katras rindas cena × skaits</span>
+const subtotal = cartData.reduce(
+  (sum, item) => sum + item.price * item.qty, 0);
+
+{cartData.map(item =&gt; (
+  &lt;tr key={item.id}&gt;
+    &lt;td&gt;{item.title}&lt;/td&gt;
+    &lt;td&gt;{item.qty}&lt;/td&gt;
+    &lt;td&gt;&lt;button onClick={() =&gt;
+      removeFromCart(item.id)}&gt;X&lt;/button&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+))}</code></pre>
+        </div>
+        <div>
+          <h4>Provider - dzēšana (jauna funkcija)</h4>
+          <pre class="code-block"><span class="lang">jsx</span><code>const removeFromCart = (id) =&gt; {
+  <span class="tok-com">// atstāj visu, kam id nesakrīt</span>
+  const updated = cartData.filter(
+    item =&gt; item.id !== id);
+  setCartData(updated);
+  localStorage.setItem('cart',
+    JSON.stringify(updated));
+};
+
+<span class="tok-com">// neaizmirsti pievienot value={{ .. }}:</span>
+value={{ cartData, addToCart, removeFromCart }}</code></pre>
+        </div>
+      </div>
+
+      <h3>4. Kad grozs jāsūta uz serveri (Checkout)</h3>
+      <p>Tikai tagad iesaistās Laravel: sūti grozu kā <code>items</code> un serverī izveido pasūtījumu. Cenas <strong>vienmēr</strong> pārrēķini serverī pēc <code>product_id</code> - pārlūka datiem (arī cenai) nedrīkst uzticēties.</p>
+      <div class="doc-code-cols">
+        <div>
+          <h4>React</h4>
+          <pre class="code-block"><span class="lang">jsx</span><code>router.post(<span class="tok-str">'/checkout'</span>, {
+  name, email,
+  items: cartData,
+});</code></pre>
+        </div>
+        <div>
+          <h4>Laravel</h4>
+          <pre class="code-block"><span class="lang">php</span><code>$request->validate([
+  <span class="tok-str">'items'</span> => <span class="tok-str">'required|array|min:1'</span>,
+  <span class="tok-str">'items.*.product_id'</span> => <span class="tok-str">'exists:products,id'</span>,
+]);
+<span class="tok-com">// cenu ņem no DB, ne no $request</span></code></pre>
+        </div>
+      </div>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Uzlabojums: šobrīd <code>addToCart</code> katru reizi pievieno <em>jaunu rindu</em>, arī tam pašam produktam ar to pašu izmēru. Labāk atrast esošo rindu (<code>product_id</code> + <code>size</code>) un palielināt <code>qty</code>.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="inertia-recepte-flash">
+      <h2>Recepte: paziņojums pēc saglabāšanas (flash) un Form Request</h2>
+      <p><strong>Vienkārši sakot:</strong> lietotājs nospiež "Saglabāt" → serveris saglabā → parādās zaļš "Saglabāts!" un pazūd pats. Šo īso ziņu sauc par <strong>flash</strong>.</p>
+
+      <div class="doc-code-cols">
+        <div>
+          <h4>Laravel - nosūta ziņu</h4>
+          <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">use</span> Inertia\Inertia;
+
+<span class="tok-kw">public function</span> update(ProfileUpdateRequest $request)
+{
+    $request->user()->fill($request->validated());
+    $request->user()->save();
+
+    Inertia::flash(<span class="tok-str">'toast'</span>, [
+        <span class="tok-str">'type'</span> => <span class="tok-str">'success'</span>,
+        <span class="tok-str">'message'</span> => <span class="tok-str">'Saglabāts!'</span>,
+    ]);
+
+    <span class="tok-kw">return</span> to_route(<span class="tok-str">'profile.edit'</span>);
+}</code></pre>
+        </div>
+        <div>
+          <h4>React - parāda ziņu (vienreiz, Layout.jsx)</h4>
+          <pre class="code-block"><span class="lang">jsx</span><code>import { usePage } from <span class="tok-str">'@inertiajs/react'</span>;
+import { toast } from <span class="tok-str">'react-toastify'</span>;
+
+const { flash } = usePage();
+
+useEffect(() =&gt; {
+  if (flash.toast) {
+    toast[flash.toast.type](flash.toast.message);
+  }
+}, [flash]);</code></pre>
+        </div>
+      </div>
+      <p class="dg-caption">Ieliec <code>useEffect</code> vienreiz <code>Layout.jsx</code> (tas jau satur <code>&lt;ToastContainer /&gt;</code>) - tad <em>katra</em> lapa automātiski rādīs paziņojumus, un kontrolierī pietiek ar vienu rindu <code>Inertia::flash(..)</code>.</p>
+
+      <h3>Form Request - validācija atsevišķā failā</h3>
+      <p>Ja validācijas noteikumi kontrolierī aug garāki, tos var iznest atsevišķā klasē. Kontrolieris kļūst īss, un validācija notiek <strong>pati</strong>, pirms metode vispār sāk darboties.</p>
+      <div class="doc-code-cols">
+        <div>
+          <h4>1) Izveido</h4>
+          <pre class="code-block"><span class="lang">bash</span><code>php artisan make:request ProfileUpdateRequest</code></pre>
+          <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">class</span> ProfileUpdateRequest <span class="tok-kw">extends</span> FormRequest
+{
+    <span class="tok-kw">public function</span> rules(): array
+    {
+        <span class="tok-kw">return</span> [
+            <span class="tok-str">'name'</span>  => <span class="tok-str">'required|string|max:255'</span>,
+            <span class="tok-str">'email'</span> => <span class="tok-str">'required|email'</span>,
+        ];
+    }
+}</code></pre>
+        </div>
+        <div>
+          <h4>2) Lieto kontrolierī (tips parametrā)</h4>
+          <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">public function</span> update(
+    ProfileUpdateRequest $request)
+{
+    <span class="tok-com">// šeit dati jau ir pārbaudīti</span>
+    $data = $request->validated();
+    ...
+}</code></pre>
+          <div class="callout note">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16v-4M12 8h.01M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"/></svg>
+            <p>Ja dati neder, Laravel pats atgriež lietotāju atpakaļ ar kļūdām (<code>errors</code> props) - tev nekas nav jāraksta.</p>
+          </div>
+        </div>
+      </div>
+      <p class="dg-caption">Šis projekts izmanto Form Request Settings kontrolieros (profils, parole, 2FA) - tur tas ir gatavs paraugs (<code>app/Http/Requests/Settings/</code>). Pārējie kontrolieri validē ar <code>Validator::make(..)</code>; abi veidi ir pareizi.</p>
+    </section>
+
     <section class="doc-section" id="inertia-recepte-produkcija">
       <h2>Recepte: kas jāpārbauda pirms deploy</h2>
       <div class="cheat-table-wrap">
@@ -919,8 +1140,8 @@ const save = (e) => {
 
 </main>
 
-<script src="../js/shell.js?v=182"></script>
-<script src="../js/theme.js?v=182"></script>
-<script src="../js/main.js?v=182"></script>
+<script src="../js/shell.js?v=183"></script>
+<script src="../js/theme.js?v=183"></script>
+<script src="../js/main.js?v=183"></script>
 </body>
 </html>
