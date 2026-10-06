@@ -222,7 +222,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var SEARCH_PAGES = [
     "pages/laravel.html", "pages/laravel-inertia.html", "pages/laravel-sanctum.html", "pages/vardnica.html", "pages/web-izveide.html", "pages/riki.html", "pages/woocommerce.html", "pages/php.html"
   ];
-  var SEARCH_INDEX_VERSION = "139";
+  var SEARCH_INDEX_VERSION = "140";
   var searchIndex = null;
   var searchIndexPromise = null;
 
