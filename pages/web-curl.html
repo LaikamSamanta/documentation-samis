@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="lv" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="manifest" href="../manifest.json" />
+<meta name="theme-color" content="#f76ba8" />
+<title>curl - Documentation Samis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css?v=188" />
+<script>
+  (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
+</script>
+</head>
+<body class="cat-web has-global-nav">
+<div id="global-nav-root"></div>
+<main class="doc-main global-main">
+    <div class="doc-breadcrumb">
+      <a href="../index.html">Sākums</a>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <a href="web-izveide.html">Tīkls</a>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span>curl</span>
+    </div>
+
+    <div class="doc-header">
+      <div class="icon" style="background: var(--c-web-soft); color: var(--c-web);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10 15 15 0 0 1 4-10z"/></svg>
+      </div>
+      <h1 style="margin-bottom:0;">curl: exit codes un statusa kodi</h1>
+    </div>
+
+    <section class="doc-section" id="curl-pamati">
+      <h2>curl - kas tas ir un biežākie karogi</h2>
+      <p><code>curl</code> ir komandrindas rīks, kas nosūta HTTP pieprasījumu un parāda atbildi. To lieto, lai pārbaudītu, kas serveris tiešām atbild - bez pārlūka, kešatmiņas un spraudņiem.</p>
+
+      <div class="doc-diagram">
+        <svg viewBox="0 0 700 115" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="20" width="130" height="50" rx="8" class="dg-node"/>
+          <text x="75" y="50" text-anchor="middle" class="dg-label">curl</text>
+          <path d="M140 38 H236" class="dg-line-accent"/><path d="M236 38 L226 33 L226 43 Z" class="dg-arrowhead-accent"/>
+          <text x="190" y="30" text-anchor="middle" class="dg-sublabel">pieprasījums</text>
+          <path d="M236 56 H140" class="dg-line-accent"/><path d="M140 56 L150 51 L150 61 Z" class="dg-arrowhead-accent"/>
+          <text x="190" y="72" text-anchor="middle" class="dg-sublabel">atbilde</text>
+          <rect x="240" y="20" width="130" height="50" rx="8" class="dg-node-accent"/>
+          <text x="305" y="50" text-anchor="middle" class="dg-label-accent">Serveris</text>
+          <rect x="400" y="14" width="290" height="26" rx="6" class="dg-node"/>
+          <text x="545" y="32" text-anchor="middle" class="dg-label">HTTP/2 200 &#8592; statusa rinda (-i, -I)</text>
+          <rect x="400" y="46" width="290" height="26" rx="6" class="dg-node"/>
+          <text x="545" y="64" text-anchor="middle" class="dg-label">galvenes: Location, Set-Cookie (-i)</text>
+          <rect x="400" y="78" width="290" height="26" rx="6" class="dg-node"/>
+          <text x="545" y="96" text-anchor="middle" class="dg-label">saturs: HTML / JSON (-o fails)</text>
+        </svg>
+        <p class="dg-caption">Katram curl izsaukumam ir <strong>divi neatkarīgi rezultāti</strong>: HTTP statusa kods (ko atsūta serveris) un curl exit code (vai pats curl nostrādāja). Sk. zemāk.</p>
+      </div>
+
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Karogs</th><th>Ko dara</th><th>Piemērs</th></tr></thead>
+          <tbody>
+            <tr><td><strong><code>-s</code> / <code>-S</code></strong></td><td><code>-s</code> = kluss (bez progresa joslas). <code>-S</code> = tomēr rādīt kļūdu. Parasti <code>-sS</code> kopā.</td><td><code>curl -sS URL</code></td></tr>
+            <tr><td><strong><code>-i</code> / <code>-I</code></strong></td><td><code>-i</code> = parādīt atbildes galvenes + saturu. <code>-I</code> = tikai galvenes (HEAD pieprasījums).</td><td><code>curl -I https://example.com</code></td></tr>
+            <tr><td><strong><code>-v</code></strong></td><td>Detalizēti: parāda visu - DNS, savienojumu, TLS, sūtītās un saņemtās galvenes. Pirmais rīks, ko lieto, kad kaut kas nestrādā.</td><td><code>curl -v URL</code></td></tr>
+            <tr><td><strong><code>-L</code></strong></td><td>Seko redirect (301/302...). Bez tā redzēsi tikai pašu redirect atbildi.</td><td><code>curl -L http://example.com</code></td></tr>
+            <tr><td><strong><code>-o fails</code> / <code>-O</code></strong></td><td>Saglabā atbildi failā (<code>-o</code> ar savu nosaukumu, <code>-O</code> ar servera nosaukumu).</td><td><code>curl -o lapa.html URL</code></td></tr>
+            <tr><td><strong><code>-X METODE</code></strong></td><td>Norāda HTTP metodi (GET, POST, PUT, DELETE).</td><td><code>curl -X DELETE URL</code></td></tr>
+            <tr><td><strong><code>-H 'Galvene: vērtība'</code></strong></td><td>Pievieno galveni.</td><td><code>-H 'Authorization: Bearer TOKENS'</code></td></tr>
+            <tr><td><strong><code>-d 'dati'</code></strong></td><td>Sūta datus POST body (automātiski kļūst par POST).</td><td><code>-d '{"name":"X"}'</code></td></tr>
+            <tr><td><strong><code>-F lauks=@fails</code></strong></td><td>Sūta formu ar failu (multipart).</td><td><code>-F avatar=@foto.jpg</code></td></tr>
+            <tr><td><strong><code>-u lietotājs:parole</code></strong></td><td>Basic autentifikācija.</td><td><code>-u admin:parole URL</code></td></tr>
+            <tr><td><strong><code>-b</code> / <code>-c</code></strong></td><td><code>-c fails</code> saglabā sīkdatnes, <code>-b fails</code> tās nosūta. Vajag, lai testētu login.</td><td><code>-c sik.txt -b sik.txt</code></td></tr>
+            <tr><td><strong><code>-k</code></strong></td><td>Ignorē sertifikāta kļūdu (tikai testiem! nekad ne produkcijā).</td><td><code>curl -k https://localhost</code></td></tr>
+            <tr><td><strong><code>--max-time N</code></strong></td><td>Kopējais laika limits sekundēs (pēc tam exit code 28).</td><td><code>--max-time 10</code></td></tr>
+            <tr><td><strong><code>--connect-timeout N</code></strong></td><td>Cik sekundes gaidīt tikai savienojuma izveidi.</td><td><code>--connect-timeout 5</code></td></tr>
+            <tr><td><strong><code>--retry N</code></strong></td><td>Mēģināt vēlreiz pie īslaicīgām kļūdām.</td><td><code>--retry 3</code></td></tr>
+            <tr><td><strong><code>-f</code></strong></td><td>Ja HTTP statuss ir 400 vai vairāk, beigt ar exit code 22. Bez <code>-f</code> curl 404 uzskata par veiksmi (exit 0)!</td><td><code>curl -f URL</code></td></tr>
+            <tr><td><strong><code>--resolve</code></strong></td><td>Pieprasa konkrētu IP, ignorējot DNS (testēt serveri pirms domēna pārcelšanas).</td><td><code>--resolve domens.lv:443:1.2.3.4</code></td></tr>
+            <tr><td><strong><code>--compressed</code></strong></td><td>Pieprasa gzip/br saspiestu atbildi un pats to atpako.</td><td><code>curl --compressed URL</code></td></tr>
+            <tr><td><strong><code>-w 'formāts'</code></strong></td><td>Pēc pieprasījuma izdrukā izvēlētus rādītājus (statusu, laikus).</td><td><code>-w '%{http_code}\n'</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Biežākās komandas (recepšu saraksts)</h3>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Es gribu...</th><th>Komanda</th></tr></thead>
+          <tbody>
+            <tr><td>Tikai statusa kods</td><td><code>curl -s -o /dev/null -w "%{http_code}\n" https://example.com</code></td></tr>
+            <tr><td>Tikai galvenes (kāds serveris, vai ir redirect)</td><td><code>curl -I https://example.com</code></td></tr>
+            <tr><td>Cik ilgi katrs solis (DNS / savienojums / pirmais baits / kopā)</td><td><code>curl -s -o /dev/null -w "dns:%{time_namelookup} conn:%{time_connect} ttfb:%{time_starttransfer} total:%{time_total}\n" URL</code></td></tr>
+            <tr><td>Sekot redirect un redzēt visu ceļu</td><td><code>curl -sIL https://example.com</code></td></tr>
+            <tr><td>POST ar JSON</td><td><code>curl -X POST URL -H 'Content-Type: application/json' -d '{"a":1}'</code></td></tr>
+            <tr><td>Testēt serveri pirms DNS pārcelšanas</td><td><code>curl -I --resolve domens.lv:443:SERVERA_IP https://domens.lv</code></td></tr>
+            <tr><td>Skriptā: neveiksme, ja 4xx/5xx</td><td><code>curl -fsS URL || echo "kļūda: $?"</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  <section class="cheat-section" id="curl-exit-codes">
+    <h2>curl exit codes (ko nozīmē skaitlis pēc komandas)</h2>
+    <p class="cheat-sub">Pēc katras komandas curl atgriež skaitli. Tu to redzi ar <code>echo $?</code> (Linux/macOS/Git Bash) vai <code>echo $LASTEXITCODE</code> (PowerShell). <strong>0 = curl pats nostrādāja bez kļūdām</strong>, cits skaitlis = curl nevarēja izpildīt pieprasījumu.</p>
+
+    <div class="callout warn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+      <p><strong>Exit code NAV HTTP statusa kods.</strong> Ja serveris atbild <code>404</code> vai <code>500</code>, curl tik un tā beidzas ar <code>exit 0</code> (jo pieprasījums izdevās - atbilde saņemta). Lai 4xx/5xx kļūtu par kļūdu, pievieno <code>-f</code> → tad exit code ir <code>22</code>.</p>
+    </div>
+
+    <h3>Biežākie (ar ko darīt)</h3>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Exit code</th><th>Ko nozīmē</th><th>Ko darīt</th></tr></thead>
+          <tbody>
+            <tr><td><strong>0</strong></td><td>Viss kārtībā (bet NAV garantija, ka HTTP statuss bija 200 - sk. zemāk)</td><td>-</td></tr>
+            <tr><td><strong>6</strong></td><td>Nevar atrast hostu (DNS)</td><td>Pārbaudi domēna nosaukumu un DNS ierakstus (<code>dig</code>/<code>nslookup</code>)</td></tr>
+            <tr><td><strong>7</strong></td><td>Neizdevās savienoties (serveris izslēgts, nepareizs ports, ugunsmūris)</td><td>Pārbaudi, vai serveris darbojas un ports ir atvērts</td></tr>
+            <tr><td><strong>22</strong></td><td>HTTP statuss ≥ 400, un bija norādīts <code>-f</code></td><td>Skaties statusa kodu (<code>-w '%{http_code}'</code>)</td></tr>
+            <tr><td><strong>28</strong></td><td>Laika limits (timeout)</td><td>Serveris lēns vai nepieejams; palielini <code>--max-time</code> vai meklē lēno PHP skriptu</td></tr>
+            <tr><td><strong>35</strong></td><td>SSL/TLS rokasspiediens neizdevās</td><td>Nepareiza TLS versija/sertifikāts; mēģini <code>-v</code></td></tr>
+            <tr><td><strong>47</strong></td><td>Pārāk daudz redirect (cikls)</td><td>Redirect cikls (http↔https, www); pārbaudi <code>-I</code> katram solim</td></tr>
+            <tr><td><strong>52</strong></td><td>Serveris neatsūtīja neko (tukša atbilde)</td><td>Serveris/PHP nokrita pieprasījuma laikā; skaties servera error log</td></tr>
+            <tr><td><strong>56</strong></td><td>Savienojums pārtrūka datu saņemšanas laikā (connection reset)</td><td>Serveris vai ugunsmūris pārtrauca; skaties serveri/proxy log</td></tr>
+            <tr><td><strong>60</strong></td><td>Sertifikāts nav uzticams (nepazīstams CA, beidzies, nepareizs domēns)</td><td>Atjauno sertifikātu; testam <code>-k</code> (ne produkcijā)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    <h3>Pārējie</h3>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Exit code</th><th>Ko nozīmē</th></tr></thead>
+          <tbody>
+            <tr><td><strong>1</strong></td><td>Neatbalstīts protokols</td></tr>
+            <tr><td><strong>2</strong></td><td>Neizdevās inicializēt curl</td></tr>
+            <tr><td><strong>3</strong></td><td>Nepareizs URL formāts</td></tr>
+            <tr><td><strong>4</strong></td><td>Funkcija/protokols nav iekompilēts curl versijā</td></tr>
+            <tr><td><strong>5</strong></td><td>Nevar atrast proxy hostu</td></tr>
+            <tr><td><strong>8</strong></td><td>Dīvaina servera atbilde (nesaprotama)</td></tr>
+            <tr><td><strong>9</strong></td><td>Piekļuve resursam liegta</td></tr>
+            <tr><td><strong>16</strong></td><td>HTTP/2 problēma</td></tr>
+            <tr><td><strong>18</strong></td><td>Daļējs fails (lejupielāde nepabeigta)</td></tr>
+            <tr><td><strong>23</strong></td><td>Neizdevās ierakstīt saņemtos datus (disks pilns / nav tiesību)</td></tr>
+            <tr><td><strong>25</strong></td><td>Augšupielādes sākšana neizdevās</td></tr>
+            <tr><td><strong>26</strong></td><td>Lasīšanas kļūda (lokālais fails)</td></tr>
+            <tr><td><strong>27</strong></td><td>Nepietiek atmiņas</td></tr>
+            <tr><td><strong>33</strong></td><td>Range pieprasījums netiek atbalstīts</td></tr>
+            <tr><td><strong>36</strong></td><td>Nederīgs lejupielādes turpināšanas punkts</td></tr>
+            <tr><td><strong>37</strong></td><td><code>file://</code> fails nav atverams</td></tr>
+            <tr><td><strong>43</strong></td><td>Nepareizs funkcijas arguments (libcurl)</td></tr>
+            <tr><td><strong>48</strong></td><td>Nezināma opcija</td></tr>
+            <tr><td><strong>49</strong></td><td>Nepareiza opcijas vērtība</td></tr>
+            <tr><td><strong>55</strong></td><td>Neizdevās nosūtīt datus</td></tr>
+            <tr><td><strong>58</strong></td><td>Problēma ar lokālo klienta sertifikātu</td></tr>
+            <tr><td><strong>59</strong></td><td>Šifrēšanas algoritms nav lietojams</td></tr>
+            <tr><td><strong>61</strong></td><td>Nezināms transfer encoding</td></tr>
+            <tr><td><strong>63</strong></td><td>Pārsniegts maksimālais faila izmērs</td></tr>
+            <tr><td><strong>67</strong></td><td>Serveris noraidīja pieteikšanos</td></tr>
+            <tr><td><strong>77</strong></td><td>CA sertifikātu fails nav lasāms</td></tr>
+            <tr><td><strong>78</strong></td><td>Resurss serverī neeksistē</td></tr>
+            <tr><td><strong>90</strong></td><td>Nesakrīt piesprausta publiskā atslēga</td></tr>
+            <tr><td><strong>91</strong></td><td>Sertifikāta statusa pārbaude neizdevās</td></tr>
+            <tr><td><strong>92</strong></td><td>HTTP/2 straumes kļūda</td></tr>
+            <tr><td><strong>95</strong></td><td>HTTP/3 kļūda</td></tr>
+            <tr><td><strong>97</strong></td><td>Proxy rokasspiediena kļūda</td></tr>
+            <tr><td><strong>98</strong></td><td>Serveris prasa klienta sertifikātu</td></tr>
+          </tbody>
+        </table>
+      </div>
+    <p class="cheat-sub">Pilns saraksts: <code>man curl</code> → sadaļa EXIT CODES, vai curl.se/libcurl/c/libcurl-errors.html (skaitļi sakrīt).</p>
+  </section>
+
+  <section class="cheat-section" id="http-statusa-kodi">
+    <h2>HTTP statusa kodi</h2>
+    <p class="cheat-sub">Trīs cipari, ko serveris atsūta katrā atbildē. Pirmais cipars pasaka grupu: <strong>2</strong> viss ok · <strong>3</strong> redirect · <strong>4</strong> tava kļūda · <strong>5</strong> servera kļūda. Parādi ar <code>curl -I</code> vai <code>-w '%{http_code}'</code>.</p>
+
+    <h3>1xx - informatīvi</h3>
+    <p class="cheat-sub">Starpposma atbildes. Reti redzamas.</p>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Kods</th><th>Nosaukums</th><th>Vienkārši sakot</th><th>Piezīme</th></tr></thead>
+          <tbody>
+            <tr><td><strong>100</strong></td><td>Continue</td><td>Turpini sūtīt (servera akceptēja galvenes)</td><td></td></tr>
+            <tr><td><strong>101</strong></td><td>Switching Protocols</td><td>Pāriet uz citu protokolu</td><td>WebSocket</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    <h3>2xx - veiksmīgi</h3>
+    <p class="cheat-sub">Pieprasījums izpildīts.</p>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Kods</th><th>Nosaukums</th><th>Vienkārši sakot</th><th>Piezīme</th></tr></thead>
+          <tbody>
+            <tr><td><strong>200</strong></td><td>OK</td><td>Viss kārtībā, te ir atbilde</td><td></td></tr>
+            <tr><td><strong>201</strong></td><td>Created</td><td>Izveidots jauns ieraksts</td><td>Parasti pēc POST</td></tr>
+            <tr><td><strong>204</strong></td><td>No Content</td><td>Izdevās, bet atbildē nav satura</td><td>Bieži pēc DELETE</td></tr>
+            <tr><td><strong>206</strong></td><td>Partial Content</td><td>Atsūtīta tikai daļa (range)</td><td>Video, lejupielāde ar turpināšanu</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    <h3>3xx - redirect</h3>
+    <p class="cheat-sub">Resurss ir citur. <code>curl</code> bez <code>-L</code> šeit apstājas.</p>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Kods</th><th>Nosaukums</th><th>Vienkārši sakot</th><th>Piezīme</th></tr></thead>
+          <tbody>
+            <tr><td><strong>301</strong></td><td>Moved Permanently</td><td>Pārvietots uz visiem laikiem</td><td>http→https, SEO</td></tr>
+            <tr><td><strong>302</strong></td><td>Found</td><td>Pagaidu redirect</td><td>Laravel <code>redirect()</code></td></tr>
+            <tr><td><strong>303</strong></td><td>See Other</td><td>Pēc POST/PUT/DELETE ej ar GET uz citu adresi</td><td>Inertia formas</td></tr>
+            <tr><td><strong>304</strong></td><td>Not Modified</td><td>Nemainīts - izmanto keš</td><td></td></tr>
+            <tr><td><strong>307</strong></td><td>Temporary Redirect</td><td>Pagaidu redirect, metode nemainās</td><td></td></tr>
+            <tr><td><strong>308</strong></td><td>Permanent Redirect</td><td>Pastāvīgs redirect, metode nemainās</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    <h3>4xx - klienta kļūda</h3>
+    <p class="cheat-sub">Problēma ar pieprasījumu (tava puse).</p>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Kods</th><th>Nosaukums</th><th>Vienkārši sakot</th><th>Piezīme</th></tr></thead>
+          <tbody>
+            <tr><td><strong>400</strong></td><td>Bad Request</td><td>Nederīgs pieprasījums</td><td>Nepareizs JSON/dati</td></tr>
+            <tr><td><strong>401</strong></td><td>Unauthorized</td><td>Neesi ielogojies</td><td>Trūkst/nederīgs tokens vai sesija</td></tr>
+            <tr><td><strong>403</strong></td><td>Forbidden</td><td>Esi ielogojies, bet nedrīksti</td><td>Tiesības, ugunsmūris, drošības spraudnis</td></tr>
+            <tr><td><strong>404</strong></td><td>Not Found</td><td>Adrese neeksistē</td><td>Nepareizs URL/maršruts</td></tr>
+            <tr><td><strong>405</strong></td><td>Method Not Allowed</td><td>Šai adresei šī metode nav atļauta</td><td>GET vietā vajag POST</td></tr>
+            <tr><td><strong>408</strong></td><td>Request Timeout</td><td>Serveris nesagaidīja pieprasījumu</td><td></td></tr>
+            <tr><td><strong>409</strong></td><td>Conflict</td><td>Konflikts ar esošo stāvokli</td><td>Inertia asset versija</td></tr>
+            <tr><td><strong>410</strong></td><td>Gone</td><td>Dzēsts pavisam</td><td></td></tr>
+            <tr><td><strong>413</strong></td><td>Payload Too Large</td><td>Augšupielādējamais fails/dati par lielu</td><td><code>client_max_body_size</code> / <code>upload_max_filesize</code></td></tr>
+            <tr><td><strong>414</strong></td><td>URI Too Long</td><td>Pārāk garš URL</td><td></td></tr>
+            <tr><td><strong>419</strong></td><td>Page Expired</td><td>Beidzies CSRF tokens/sesija (nestandarta, Laravel)</td><td>Forma vecāka par sesiju</td></tr>
+            <tr><td><strong>422</strong></td><td>Unprocessable Content</td><td>Validācijas kļūda</td><td>Laravel API validācija</td></tr>
+            <tr><td><strong>429</strong></td><td>Too Many Requests</td><td>Pārāk daudz pieprasījumu (rate limit)</td><td>Gaidi un mēģini vēlāk</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    <h3>5xx - servera kļūda</h3>
+    <p class="cheat-sub">Problēma serverī (nav tava vaina, bet jāmeklē logos).</p>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Kods</th><th>Nosaukums</th><th>Vienkārši sakot</th><th>Piezīme</th></tr></thead>
+          <tbody>
+            <tr><td><strong>500</strong></td><td>Internal Server Error</td><td>Servera kods nokrita</td><td>PHP kļūda - skaties <code>error_log</code></td></tr>
+            <tr><td><strong>501</strong></td><td>Not Implemented</td><td>Serveris šo nemāk</td><td></td></tr>
+            <tr><td><strong>502</strong></td><td>Bad Gateway</td><td>Proxy (nginx) dabūja nederīgu atbildi no aizmugures</td><td>PHP-FPM/Apache nokritis, vai pārāk lielas galvenes (sk. WordPress lapu)</td></tr>
+            <tr><td><strong>503</strong></td><td>Service Unavailable</td><td>Serveris īslaicīgi nepieejams</td><td>Apkope, pārslogots, <code>.maintenance</code></td></tr>
+            <tr><td><strong>504</strong></td><td>Gateway Timeout</td><td>Aizmugure neatbildēja laikā</td><td>Lēns PHP skripts; <code>fastcgi_read_timeout</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    <h3>Kā atšķirt 502 / 503 / 504</h3>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Kods</th><th>Kas notiek</th><th>Kur skatīties</th></tr></thead>
+          <tbody>
+            <tr><td><strong>502</strong></td><td>Aizmugure atbildēja nederīgi vai nokrita</td><td>nginx <code>proxy_error_log</code>, PHP-FPM log (sk. WordPress lapā "502 Bad Gateway")</td></tr>
+            <tr><td><strong>503</strong></td><td>Serveris gaiš, bet nevar apkalpot (pārslogots / apkope)</td><td>Apache/PHP-FPM darbinieki, <code>.maintenance</code> fails WordPress</td></tr>
+            <tr><td><strong>504</strong></td><td>Aizmugure atbildēja pārāk lēni</td><td>PHP <code>max_execution_time</code>, nginx <code>fastcgi_read_timeout</code> (sk. PHP lapā)</td></tr>
+          </tbody>
+        </table>
+      </div>
+  </section>
+
+
+</main>
+
+<script src="../js/shell.js?v=188"></script>
+<script src="../js/theme.js?v=188"></script>
+<script src="../js/main.js?v=188"></script>
+</body>
+</html>

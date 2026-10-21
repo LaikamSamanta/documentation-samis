@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=187" />
+<link rel="stylesheet" href="../css/style.css?v=188" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -49,7 +49,7 @@
   <div class="vard-tools">
     <input id="vard-filter" type="search" placeholder="Meklēt vārdu (piem. middleware, props, migrācija)..." autocomplete="off" spellcheck="false">
     <div class="vard-chips"><a class="vard-chip" href="#laravel">Laravel pamati</a> <a class="vard-chip" href="#inertia">Inertia</a> <a class="vard-chip" href="#react">React</a> <a class="vard-chip" href="#db">Datubāze</a> <a class="vard-chip" href="#web">Web pamati</a> <a class="vard-chip" href="#riki">Rīki un izvietošana</a></div>
-    <p id="vard-count" class="vard-count">82 vārdi</p>
+    <p id="vard-count" class="vard-count">84 vārdi</p>
   </div>
 
   <section class="cheat-section" id="laravel">
@@ -173,6 +173,8 @@
             <tr><td><strong>HTTP metode</strong></td><td>Ko pārlūks grib darīt: GET = lasīt, POST = izveidot, PUT/PATCH = mainīt, DELETE = dzēst.</td><td><code>fetch(url, { method: 'DELETE' })</code></td></tr>
             <tr><td><strong>Statusa kods</strong></td><td>Skaitlis, kas saka, kā gāja: 200 = OK, 302/303 = redirect, 401 = neesi ielogojies, 403 = nedrīkst, 404 = nav atrasts, 419 = beidzies CSRF/sesija, 422 = validācijas kļūda (API), 500 = servera kļūda.</td><td>DevTools → Network</td></tr>
             <tr><td><strong>Redirect</strong></td><td>Serveris pasaka pārlūkam: "ej uz citu adresi".</td><td><code>return to_route('home')</code></td></tr>
+            <tr><td><strong>curl</strong></td><td>Komandrindas rīks, kas nosūta HTTP pieprasījumu un parāda atbildi (bez pārlūka). Lieto, lai pārbaudītu, ko serveris tiešām atbild.</td><td><code>curl -I https://example.com</code> → <a href="web-curl.html">curl lapa</a></td></tr>
+            <tr><td><strong>Exit code</strong></td><td>Skaitlis, ko komanda atgriež, kad beidzas. 0 = komanda nostrādāja, cits = kļūda. Curl gadījumā tas NAV HTTP statuss.</td><td><code>echo $?</code></td></tr>
             <tr><td><strong>JSON</strong></td><td>Datu formāts tekstā, ko saprot gan PHP, gan JavaScript.</td><td><code>{ "id": 5, "title": "..." }</code></td></tr>
             <tr><td><strong>API</strong></td><td>Adrese, kas atgriež datus (parasti JSON), nevis lapu.</td><td><code>/admin/categories/list</code></td></tr>
             <tr><td><strong><code>fetch</code></strong></td><td>JavaScript funkcija pieprasījuma nosūtīšanai serverim bez lapas pārlādes. Nemet kļūdu, ja serveris atbild 404/500 - pašam jāpārbauda.</td><td><code>await fetch('/api/x')</code></td></tr>
@@ -208,9 +210,9 @@
   <p id="vard-empty" class="vard-empty" hidden>Nekas netika atrasts.</p>
 </main>
 
-<script src="../js/shell.js?v=187"></script>
-<script src="../js/theme.js?v=187"></script>
-<script src="../js/main.js?v=187"></script>
+<script src="../js/shell.js?v=188"></script>
+<script src="../js/theme.js?v=188"></script>
+<script src="../js/main.js?v=188"></script>
 
 <script>
 (function () {
