@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var SEARCH_PAGES = [
     "pages/laravel.html", "pages/laravel-inertia.html", "pages/laravel-sanctum.html", "pages/vardnica.html", "pages/web-izveide.html", "pages/web-curl.html", "pages/riki.html", "pages/woocommerce.html", "pages/php.html"
   ];
-  var SEARCH_INDEX_VERSION = "141"; // bump together with the ?v= cache-bust number
+  var SEARCH_INDEX_VERSION = "142"; // bump together with the ?v= cache-bust number
   var searchIndex = null;
   var searchIndexPromise = null;
 

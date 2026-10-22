@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=188" />
+<link rel="stylesheet" href="../css/style.css?v=189" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -152,10 +152,97 @@ fastcgi_busy_buffers_size 256k;</code></pre>
         <p>Ja pēc šīm vērtībām 502 paliek, bet log rindas "too big header" nav - problēma nav buferos. Skaties PHP error log un timeoutus.</p>
       </div>
     </section>
+    <section class="doc-section" id="wp-pievienot-adminu">
+      <h2>Pievienot administratoru ar kodu (kad nav piekļuves WP admin)</h2>
+      <p>Ja vairs nevar ielogoties WordPress (nav parole, nestrādā "aizmirsu paroli", nav piekļuves e-pastam), bet ir piekļuve failiem (FTP / Plesk File Manager), vari ar nelielu PHP kodu izveidot jaunu administratoru.</p>
+
+      <div class="doc-diagram">
+        <svg viewBox="0 0 700 110" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="20" width="140" height="50" rx="8" class="dg-node"/>
+          <text x="80" y="42" text-anchor="middle" class="dg-label">1. Pieliec kodu</text>
+          <text x="80" y="58" text-anchor="middle" class="dg-sublabel">functions.php</text>
+          <path d="M150 45 H176" class="dg-line-accent"/><path d="M176 45 L166 40 L166 50 Z" class="dg-arrowhead-accent"/>
+          <rect x="180" y="20" width="140" height="50" rx="8" class="dg-node"/>
+          <text x="250" y="42" text-anchor="middle" class="dg-label">2. Atver lapu</text>
+          <text x="250" y="58" text-anchor="middle" class="dg-sublabel">1 reizi (init)</text>
+          <path d="M320 45 H346" class="dg-line-accent"/><path d="M346 45 L336 40 L336 50 Z" class="dg-arrowhead-accent"/>
+          <rect x="350" y="20" width="140" height="50" rx="8" class="dg-node"/>
+          <text x="420" y="42" text-anchor="middle" class="dg-label">3. Ielogojies</text>
+          <text x="420" y="58" text-anchor="middle" class="dg-sublabel">wp-login.php</text>
+          <path d="M490 45 H516" class="dg-line-accent"/><path d="M516 45 L506 40 L506 50 Z" class="dg-arrowhead-accent"/>
+          <rect x="520" y="20" width="170" height="50" rx="8" class="dg-node-accent"/>
+          <text x="605" y="42" text-anchor="middle" class="dg-label-accent">4. NOŅEM kodu</text>
+          <text x="605" y="58" text-anchor="middle" class="dg-sublabel">un nomaini paroli</text>
+        </svg>
+      </div>
+
+      <h3>Kods</h3>
+      <pre class="code-block"><span class="lang">php</span><code><span class="tok-kw">function</span> pievienot_jaunu_adminu() {
+    $user  = <span class="tok-str">'JAUNS_LIETOTAJVARDS'</span>;
+    $pass  = <span class="tok-str">'IZDOMA_GARU_UNIKALU_PAROLI'</span>;
+    $email = <span class="tok-str">'epasts@piemers.lv'</span>;
+
+    <span class="tok-kw">if</span> (!username_exists($user) &amp;&amp; !email_exists($email)) {
+        $user_id  = wp_create_user($user, $pass, $email);
+        $user_obj = <span class="tok-kw">new</span> WP_User($user_id);
+        $user_obj->set_role(<span class="tok-str">'administrator'</span>);
+    }
+}
+add_action(<span class="tok-str">'init'</span>, <span class="tok-str">'pievienot_jaunu_adminu'</span>);</code></pre>
+
+      <div class="callout warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.7 18.9-8-14.2c-.7-1.2-2.7-1.2-3.4 0l-8 14.2c-.7 1.3.2 2.9 1.7 2.9h16c1.5 0 2.4-1.6 1.7-2.9z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <p><strong>Pēc ielogošanās kodu uzreiz izdzēs.</strong> Paroli kodā glabā tikai tik ilgi, kamēr lietotājs izveidojas. Ja kods paliek failā, ikviens ar piekļuvi failam (vai pēc servera noplūdes) redz paroli. Šeit dokumentācijā ir tikai paraugs ar izdomātām vērtībām - īsto paroli nekad nelieto dokumentācijā vai Git.</p>
+      </div>
+
+      <h3>Kā tas darbojas</h3>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Rinda</th><th>Ko dara</th></tr></thead>
+          <tbody>
+            <tr><td><code>add_action('init', ...)</code></td><td>Palaiž funkciju <strong>katrā lapas ielādē</strong> (WordPress "init" brīdī). Tāpēc pietiek vienreiz atvērt jebkuru lapu.</td></tr>
+            <tr><td><code>username_exists()</code> / <code>email_exists()</code></td><td>Pārbauda, vai tāds lietotājvārds vai e-pasts jau ir. Ja ir - nekas netiek darīts, tāpēc dublikāti neveidojas, kamēr kods ir failā.</td></tr>
+            <tr><td><code>wp_create_user($user, $pass, $email)</code></td><td>Izveido lietotāju (parole tiek saglabāta šifrēta) un atgriež jaunā lietotāja ID. Loma ir tā, kas iestatīta WordPress Iestatījumos (parasti "subscriber").</td></tr>
+            <tr><td><code>new WP_User($user_id)</code></td><td>Paņem izveidoto lietotāju kā objektu, ar ko var strādāt.</td></tr>
+            <tr><td><code>set_role('administrator')</code></td><td>Maina lomu uz administratoru - tikai tagad lietotājs var pilnībā pārvaldīt vietni.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Kur ievietot kodu</h3>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Vieta</th><th>Piezīme</th></tr></thead>
+          <tbody>
+            <tr><td><code>wp-content/themes/&lt;aktīvā tēma&gt;/functions.php</code> (faila beigās)</td><td>Visātrāk. Ja tēmu atjauninās, kods pazudīs - nav problēma, jo tas jānoņem jebkurā gadījumā. Labāk child tēma.</td></tr>
+            <tr><td><code>wp-content/mu-plugins/admin.php</code> (jauns fails ar <code>&lt;?php</code> sākumā)</td><td>Must-use spraudnis ielādējas automātiski un nav atkarīgs no tēmas.</td></tr>
+            <tr><td>Code Snippets spraudnis</td><td>Tikai ja vēl ir piekļuve admin paneļa - tad jau var izveidot lietotāju parastā veidā.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Failu rediģē caur <strong>Plesk → Files</strong> vai FTP. Ja pēc saglabāšanas lapa kļūst balta, kodā ir sintakses kļūda - atver failu un labo (vai noņem pievienoto kodu).</p>
+
+      <h3>Drošāka versija (ar kļūdu pārbaudi)</h3>
+      <p>Oriģinālā versija pieņem, ka <code>wp_create_user</code> vienmēr izdodas. Ja neizdodas (piem., parole tukša), tā atgriež <code>WP_Error</code>, un nākamā rinda met kļūdu. Pārbaudi to:</p>
+      <pre class="code-block"><span class="lang">php</span><code>$user_id = wp_create_user($user, $pass, $email);
+
+<span class="tok-kw">if</span> (!is_wp_error($user_id)) {
+    (<span class="tok-kw">new</span> WP_User($user_id))->set_role(<span class="tok-str">'administrator'</span>);
+}</code></pre>
+
+      <h3>Alternatīva bez koda: WP-CLI</h3>
+      <p>Ja serverim ir SSH un WP-CLI, tas pats veidojas ar vienu komandu (un nekas nepaliek failos):</p>
+      <pre class="code-block"><span class="lang">bash</span><code><span class="tok-com"># jauns administrators</span>
+wp user create JAUNS_LIETOTAJVARDS epasts@piemers.lv --role=administrator --user_pass='PAROLE'
+
+<span class="tok-com"># esošam administratoram nomainīt paroli</span>
+wp user list --role=administrator
+wp user update 1 --user_pass='JAUNA_PAROLE'</code></pre>
+    </section>
 </main>
 
-<script src="../js/shell.js?v=188"></script>
-<script src="../js/theme.js?v=188"></script>
-<script src="../js/main.js?v=188"></script>
+<script src="../js/shell.js?v=189"></script>
+<script src="../js/theme.js?v=189"></script>
+<script src="../js/main.js?v=189"></script>
 </body>
 </html>
