@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css?v=190" />
+<link rel="stylesheet" href="../css/style.css?v=191" />
 <script>
   (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
 </script>
@@ -173,7 +173,7 @@
             <tr><td><strong>HTTP metode</strong></td><td>Ko pārlūks grib darīt: GET = lasīt, POST = izveidot, PUT/PATCH = mainīt, DELETE = dzēst.</td><td><code>fetch(url, { method: 'DELETE' })</code></td></tr>
             <tr><td><strong>Statusa kods</strong></td><td>Skaitlis, kas saka, kā gāja: 200 = OK, 302/303 = redirect, 401 = neesi ielogojies, 403 = nedrīkst, 404 = nav atrasts, 419 = beidzies CSRF/sesija, 422 = validācijas kļūda (API), 500 = servera kļūda.</td><td>DevTools → Network</td></tr>
             <tr><td><strong>Redirect</strong></td><td>Serveris pasaka pārlūkam: "ej uz citu adresi".</td><td><code>return to_route('home')</code></td></tr>
-            <tr><td><strong>nginx</strong></td><td>Ātrs "durvju sargs" priekšā serverim: apkalpo statiskos failus, HTTPS un pārsūta PHP pieprasījumus tālāk.</td><td><code>nginx -t</code> → <a href="web-serveris.html">Web serveris</a></td></tr>
+            <tr><td><strong>nginx</strong></td><td>Ātrs "durvju sargs" priekšā serverim: apkalpo statiskos failus, HTTPS un pārsūta PHP pieprasījumus tālāk.</td><td><a href="web-serveris.html">Web serveris</a></td></tr>
             <tr><td><strong>Apache</strong></td><td>Web serveris, kas lasa <code>.htaccess</code> un nodod PHP pieprasījumus PHP-FPM.</td><td><code>.htaccess</code>, <code>mod_rewrite</code></td></tr>
             <tr><td><strong>PHP-FPM</strong></td><td>Procesi (workeri), kas tiešām izpilda PHP kodu. Web serveris tikai nodod tam pieprasījumu.</td><td><code>pm.max_children</code></td></tr>
             <tr><td><strong>Reverse proxy</strong></td><td>Serveris, kas pieņem pieprasījumus lietotāja vietā un pārsūta tos tālāk uz aizmugures serveri.</td><td>nginx → Apache</td></tr>
@@ -216,9 +216,9 @@
   <p id="vard-empty" class="vard-empty" hidden>Nekas netika atrasts.</p>
 </main>
 
-<script src="../js/shell.js?v=190"></script>
-<script src="../js/theme.js?v=190"></script>
-<script src="../js/main.js?v=190"></script>
+<script src="../js/shell.js?v=191"></script>
+<script src="../js/theme.js?v=191"></script>
+<script src="../js/main.js?v=191"></script>
 
 <script>
 (function () {
