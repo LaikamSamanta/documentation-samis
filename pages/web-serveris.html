@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="lv" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="manifest" href="../manifest.json" />
+<meta name="theme-color" content="#f76ba8" />
+<title>Web serveris: nginx, Apache, PHP-FPM - Documentation Samis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css?v=190" />
+<script>
+  (function(){var t=localStorage.getItem("docsamis-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");document.documentElement.setAttribute("data-theme",t);})();
+</script>
+</head>
+<body class="cat-web has-global-nav">
+<div id="global-nav-root"></div>
+<main class="doc-main global-main">
+    <div class="doc-breadcrumb">
+      <a href="../index.html">Sākums</a>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <a href="web-izveide.html">Tīkls</a>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+      <span>Web serveris</span>
+    </div>
+
+    <div class="doc-header">
+      <div class="icon" style="background: var(--c-web-soft); color: var(--c-web);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10 15 15 0 0 1 4-10z"/></svg>
+      </div>
+      <h1 style="margin-bottom:0;">nginx, Apache un PHP-FPM</h1>
+    </div>
+
+    <section class="doc-section" id="serveris-pamati">
+      <h2>Web serveris: kas ir nginx, Apache un PHP-FPM</h2>
+      <p>Kad atver lapu, tev atbild nevis "viens serveris", bet vairākas programmas, kas strādā pa kārtām. Katrai ir sava darba daļa.</p>
+
+      <div class="doc-diagram">
+        <svg viewBox="0 0 700 150" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="20" width="110" height="50" rx="8" class="dg-node"/><text x="65" y="42" text-anchor="middle" class="dg-label">Pārlūks</text><path d="M120 45 H162" class="dg-line-accent"/><path d="M166 45 L156 40 L156 50 Z" class="dg-arrowhead-accent"/><rect x="170" y="20" width="150" height="50" rx="8" class="dg-node-accent"/><text x="245" y="42" text-anchor="middle" class="dg-label-accent">nginx</text><text x="245" y="58" text-anchor="middle" class="dg-sublabel">durvju sargs</text><path d="M320 45 H362" class="dg-line-accent"/><path d="M366 45 L356 40 L356 50 Z" class="dg-arrowhead-accent"/><rect x="370" y="20" width="150" height="50" rx="8" class="dg-node"/><text x="445" y="42" text-anchor="middle" class="dg-label">Apache</text><text x="445" y="58" text-anchor="middle" class="dg-sublabel">noteikumi, .htaccess</text><path d="M520 45 H562" class="dg-line-accent"/><path d="M566 45 L556 40 L556 50 Z" class="dg-arrowhead-accent"/><rect x="570" y="20" width="120" height="50" rx="8" class="dg-node"/><text x="630" y="42" text-anchor="middle" class="dg-label">PHP-FPM</text><text x="630" y="58" text-anchor="middle" class="dg-sublabel">izpilda PHP</text>
+          <text x="245" y="95" text-anchor="middle" class="dg-sublabel">statiskie faili, SSL</text>
+          <text x="445" y="95" text-anchor="middle" class="dg-sublabel">pārsūta PHP tālāk</text>
+          <text x="630" y="95" text-anchor="middle" class="dg-sublabel">PHP kods</text>
+          <text x="10" y="130" class="dg-sublabel">Parasts Plesk hostings: nginx → Apache → PHP-FPM → datubāze (MySQL).</text>
+        </svg>
+        <p class="dg-caption">Atbilde iet atpakaļ pa to pašu ceļu. Ja viena posma nav vai tas nokrīt, saņem 502/504.</p>
+      </div>
+
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Programma</th><th>Vienkārši sakot</th><th>Ko tā dara</th></tr></thead>
+          <tbody>
+            <tr><td><strong>nginx</strong></td><td>Ātrs "durvju sargs" priekšā.</td><td>Pieņem visus pieprasījumus, apkalpo <strong></strong> (attēli, CSS, JS) pats, apstrādā <strong></strong>, un visu pārējo (PHP) <strong></strong> (reverse proxy).</td></tr>
+            <tr><td><strong>Apache</strong></td><td>Vecāks, ļoti elastīgs web serveris.</td><td>Lasa <code>.htaccess</code> failus (WordPress permalinks, redirekti), apstrādā rewrite noteikumus un nodod PHP pieprasījumus PHP-FPM.</td></tr>
+            <tr><td><strong>PHP-FPM</strong></td><td>PHP "strādnieku fabrika".</td><td>Atsevišķi procesi (workeri), kas <strong></strong>. Web serveris tikai nodod tam pieprasījumu un saņem gatavu HTML atpakaļ. FPM = FastCGI Process Manager.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16v-4M12 8h.01M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"/></svg>
+        <p>Web serveris (nginx/Apache) <strong>pats PHP nesaprot</strong>. Tas tikai pieņem pieprasījumu un atdod failu vai nodod PHP-FPM, kas ir tas, kas tiešām "palaiž" <code>.php</code> failu.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="serveris-konfiguracijas">
+      <h2>Divi veidi, kā tie savienoti (Plesk)</h2>
+      <p>Plesk → domēns → <strong>Hosting &amp; DNS → Apache &amp; nginx Settings</strong> var izvēlēties, kā PHP tiek apkalpots. Tas nosaka, <strong>kur</strong> jāliek iestatījumi.</p>
+
+      <div class="doc-diagram">
+        <svg viewBox="0 0 700 170" xmlns="http://www.w3.org/2000/svg">
+          <text x="10" y="16" class="dg-label">A) nginx + Apache (+ PHP-FPM)</text>
+          <rect x="10" y="26" width="100" height="44" rx="8" class="dg-node"/><text x="60" y="48" text-anchor="middle" class="dg-label">nginx</text><path d="M110 48 H152" class="dg-line-accent"/><path d="M156 48 L146 43 L146 53 Z" class="dg-arrowhead-accent"/><rect x="160" y="26" width="100" height="44" rx="8" class="dg-node"/><text x="210" y="48" text-anchor="middle" class="dg-label">Apache</text><path d="M260 48 H302" class="dg-line-accent"/><path d="M306 48 L296 43 L296 53 Z" class="dg-arrowhead-accent"/><rect x="310" y="26" width="110" height="44" rx="8" class="dg-node-accent"/><text x="365" y="48" text-anchor="middle" class="dg-label-accent">PHP-FPM</text>
+          <text x="450" y="52" class="dg-sublabel">.htaccess strādā</text>
+
+          <text x="10" y="110" class="dg-label">B) nginx → PHP-FPM tieši (bez Apache)</text>
+          <rect x="10" y="120" width="100" height="44" rx="8" class="dg-node"/><text x="60" y="142" text-anchor="middle" class="dg-label">nginx</text><path d="M110 142 H302" class="dg-line-accent"/><path d="M306 142 L296 137 L296 147 Z" class="dg-arrowhead-accent"/><rect x="310" y="120" width="110" height="44" rx="8" class="dg-node-accent"/><text x="365" y="142" text-anchor="middle" class="dg-label-accent">PHP-FPM</text>
+          <text x="450" y="146" class="dg-sublabel">.htaccess nestrādā</text>
+        </svg>
+      </div>
+
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th></th><th>A) nginx + Apache</th><th>B) nginx → PHP-FPM</th></tr></thead>
+          <tbody>
+            <tr><td><strong><code>.htaccess</code></strong></td><td>Strādā (WordPress permalinks, redirekti)</td><td><strong></strong> - noteikumi jāliek nginx konfigurācijā</td></tr>
+            <tr><td><strong>Buferu/timeout direktīvas</strong></td><td><code>proxy_*</code> (nginx runā ar Apache)</td><td><code>fastcgi_*</code> (nginx runā ar PHP-FPM)</td></tr>
+            <tr><td><strong>Ātrums</strong></td><td>Nedaudz lēnāks (viens posms vairāk)</td><td>Ātrāks, mazāk atmiņas</td></tr>
+            <tr><td><strong>Piemērots</strong></td><td>Vecāki/WordPress projekti, kuriem vajag <code>.htaccess</code></td><td>Jauni projekti, kur viss ir konfigurēts nginx</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="dg-caption">Kuru režīmu domēns lieto, redz Plesk iestatījumos. Ja nezini - parasti tas ir A. Sk. arī <a href="woocommerce.html#wp-502-bad-gateway">502 buferu labojumu</a>, kur jāizvēlas pareizais direktīvu bloks.</p>
+    </section>
+
+    <section class="doc-section" id="serveris-kur-iestatit">
+      <h2>Man vajag... → kur to iestatīt</h2>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Man vajag</th><th>Kur</th><th>Iestatījums</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Lielāku augšupielādējamo failu</strong></td><td>Visi trīs</td><td>nginx: <code>client_max_body_size 64m;</code> · PHP: <code>upload_max_filesize</code>, <code>post_max_size</code> (jāsakrīt un jābūt mazākiem par nginx)</td></tr>
+            <tr><td><strong>Lai skripts var darboties ilgāk</strong></td><td>Visi trīs</td><td>PHP: <code>max_execution_time</code> · PHP-FPM: <code>request_terminate_timeout</code> · nginx: <code>fastcgi_read_timeout</code> / <code>proxy_read_timeout</code></td></tr>
+            <tr><td><strong>Vairāk vienlaicīgu apmeklētāju</strong></td><td>PHP-FPM</td><td><code>pm.max_children</code> (sk. <a href=""></a>)</td></tr>
+            <tr><td><strong>Vairāk atmiņas vienam skriptam</strong></td><td>PHP</td><td><code>memory_limit</code></td></tr>
+            <tr><td><strong>Redirects, rewrite (<code>/lapa</code> → <code>index.php</code>)</strong></td><td>Apache vai nginx</td><td>A) <code>.htaccess</code> (<code>RewriteRule</code>) · B) nginx <code>location</code> / <code>rewrite</code></td></tr>
+            <tr><td><strong>Novērst 502 "too big header"</strong></td><td>nginx</td><td><code>proxy_buffer_size</code> vai <code>fastcgi_buffer_size</code> (sk. WordPress lapu)</td></tr>
+            <tr><td><strong>Saspiest atbildes (gzip)</strong></td><td>nginx / Apache</td><td>nginx <code>gzip on;</code> · Apache <code>mod_deflate</code></td></tr>
+            <tr><td><strong>Ātri atdot statiskos failus</strong></td><td>nginx</td><td>Plesk: "Serve static files directly by nginx"</td></tr>
+            <tr><td><strong>Pievienot drošības galvenes (HSTS u.c.)</strong></td><td>nginx / Apache</td><td>nginx <code>add_header</code> · Apache <code>Header set</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.05V17h6v-.25c0-.85.4-1.55 1-2.05A7 7 0 0 0 12 2z"/></svg>
+        <p>Plesk: nginx iestatījumus liek laukā <strong>Additional nginx directives</strong> (domēns → Apache &amp; nginx Settings), PHP - <strong>PHP Settings</strong>. Nerediģē <code>nginx.conf</code> tieši - Plesk to pārraksta.</p>
+      </div>
+    </section>
+
+    <section class="doc-section" id="serveris-php-fpm">
+      <h2>PHP-FPM - kā tas strādā</h2>
+      <p>PHP-FPM tur gatavus <strong>workerus</strong> (procesus). Katrs worker vienā brīdī apkalpo <strong>vienu</strong> pieprasījumu. Kad visi ir aizņemti, nākamie pieprasījumi gaida rindā.</p>
+
+      <div class="doc-diagram">
+        <svg viewBox="0 0 700 130" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="20" width="130" height="50" rx="8" class="dg-node"/><text x="75" y="42" text-anchor="middle" class="dg-label">Pieprasījumi</text><text x="75" y="58" text-anchor="middle" class="dg-sublabel">no nginx / Apache</text><path d="M140 45 H192" class="dg-line-accent"/><path d="M196 45 L186 40 L186 50 Z" class="dg-arrowhead-accent"/><rect x="200" y="20" width="300" height="50" rx="8" class="dg-node-accent"/><text x="350" y="42" text-anchor="middle" class="dg-label-accent">PHP-FPM pool</text><text x="350" y="58" text-anchor="middle" class="dg-sublabel">worker 1 · worker 2 · ... · worker N</text><path d="M500 45 H552" class="dg-line-accent"/><path d="M556 45 L546 40 L546 50 Z" class="dg-arrowhead-accent"/><rect x="560" y="20" width="130" height="50" rx="8" class="dg-node"/><text x="625" y="42" text-anchor="middle" class="dg-label">MySQL</text><text x="625" y="58" text-anchor="middle" class="dg-sublabel">datubāze</text>
+          <text x="350" y="100" text-anchor="middle" class="dg-sublabel">N = pm.max_children. Visi workeri aizņemti → pieprasījumi gaida → lēni / 502 / 504.</text>
+        </svg>
+      </div>
+
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Iestatījums</th><th>Ko nozīmē</th><th>Piezīme</th></tr></thead>
+          <tbody>
+            <tr><td><strong><code>pm.max_children</code></strong></td><td>Maksimālais workeru skaits (= vienlaicīgi apkalpotie PHP pieprasījumi)</td><td>Cenšas ierobežot ar RAM: pieejamā atmiņa ÷ viena worker atmiņa</td></tr>
+            <tr><td><strong><code>pm</code> (static / dynamic / ondemand)</strong></td><td>Kā tiek veidoti workeri: vienmēr fiksēts skaits / pēc vajadzības līdz maksimumam / tikai kad pienāk pieprasījums</td><td><code>dynamic</code> ir izplatītākais</td></tr>
+            <tr><td><strong><code>request_terminate_timeout</code></strong></td><td>Pēc cik sekundēm FPM piespiedu kārtā pārtrauc workeri</td><td>Nostrādā arī tad, ja <code>max_execution_time</code> nav</td></tr>
+            <tr><td><strong><code>memory_limit</code> (php.ini)</strong></td><td>Cik RAM drīkst izmantot viens skripts</td><td>WordPress parasti 256M</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="dg-caption">Detalizēti par aprēķinu un iestatīšanu Plesk: <a href="php.html#php-fpm-tuning">PHP lapa → PHP-FPM tuning</a>.</p>
+    </section>
+
+    <section class="doc-section" id="serveris-kludas">
+      <h2>Kurš posms ir vainīgs? (kļūdas un logi)</h2>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Simptoms</th><th>Visticamākais vaininieks</th><th>Kur skatīties</th></tr></thead>
+          <tbody>
+            <tr><td><strong>403 Forbidden</strong></td><td>Apache/nginx tiesības vai drošības noteikums</td><td>Apache/nginx error log; failu tiesības</td></tr>
+            <tr><td><strong>404 uz statisku failu</strong></td><td>Fails neeksistē vai nepareizs ceļš</td><td>nginx access log</td></tr>
+            <tr><td><strong>404 uz WordPress lapu</strong></td><td>Nav <code>.htaccess</code> / rewrite noteikuma (permalinks)</td><td>Iestatījumi → Permalinks → Saglabāt; <code>.htaccess</code></td></tr>
+            <tr><td><strong>413 Payload Too Large</strong></td><td>nginx <code>client_max_body_size</code></td><td>nginx error log</td></tr>
+            <tr><td><strong>500 Internal Server Error</strong></td><td>PHP kļūda vai nepareizs <code>.htaccess</code></td><td>PHP <code>error_log</code>, Apache <code>error_log</code></td></tr>
+            <tr><td><strong>502 Bad Gateway</strong></td><td>PHP-FPM/Apache nokritis, vai nginx buferis par mazs</td><td>nginx <code>proxy_error_log</code> ("upstream sent too big header" = buferi)</td></tr>
+            <tr><td><strong>503 Service Unavailable</strong></td><td>Pārslogots vai apkope</td><td>PHP-FPM workeru skaits, <code>.maintenance</code></td></tr>
+            <tr><td><strong>504 Gateway Timeout</strong></td><td>PHP skripts pārāk lēns</td><td><code>max_execution_time</code>, <code>fastcgi_read_timeout</code>, lēnais plugin</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Logu faili (Plesk)</h3>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Kas</th><th>Fails</th></tr></thead>
+          <tbody>
+            <tr><td><strong>nginx kļūdas</strong></td><td><code>/var/www/vhosts/system/&lt;domēns&gt;/logs/proxy_error_log</code></td></tr>
+            <tr><td><strong>nginx pieprasījumi</strong></td><td><code>/var/www/vhosts/system/&lt;domēns&gt;/logs/proxy_access_log</code></td></tr>
+            <tr><td><strong>Apache / PHP kļūdas</strong></td><td><code>/var/www/vhosts/system/&lt;domēns&gt;/logs/error_log</code></td></tr>
+            <tr><td><strong>Apache pieprasījumi</strong></td><td><code>/var/www/vhosts/system/&lt;domēns&gt;/logs/access_log</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="dg-caption">Plesk: arī domēns → <strong>Logs</strong> (webā). Ātrs skats serverī: <code>tail -f &lt;fails&gt;</code> (rāda jaunās rindas reāllaikā).</p>
+    </section>
+
+    <section class="doc-section" id="serveris-komandas">
+      <h2>Noderīgas komandas</h2>
+      <div class="cheat-table-wrap">
+        <table class="cheat-table">
+          <thead><tr><th>Ko</th><th>Komanda</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Pārbaudīt nginx konfigurāciju (pirms pārlādes!)</strong></td><td><code>nginx -t</code></td></tr>
+            <tr><td><strong>Pārbaudīt Apache konfigurāciju</strong></td><td><code>apachectl configtest</code></td></tr>
+            <tr><td><strong>Pārlādēt nginx / Apache bez pārtraukuma</strong></td><td><code>systemctl reload nginx</code> · <code>systemctl reload apache2</code></td></tr>
+            <tr><td><strong>Pilna pārstartēšana (pārtrauc savienojumus)</strong></td><td><code>systemctl restart nginx</code></td></tr>
+            <tr><td><strong>Statuss</strong></td><td><code>systemctl status nginx</code></td></tr>
+            <tr><td><strong>Vai PHP-FPM darbojas, cik workeru</strong></td><td><code>ps aux | grep php-fpm | grep -c pool</code></td></tr>
+            <tr><td><strong>Kas klausās uz 80/443 portiem</strong></td><td><code>ss -tlnp | grep -E ':80|:443'</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16v-4M12 8h.01M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"/></svg>
+        <p><code>reload</code> = pielāgo jauno konfigurāciju, nepārtraucot lietotājus. <code>restart</code> = apstādina un palaiž no jauna. Vienmēr vispirms <code>nginx -t</code>: ja konfigurācijā ir kļūda, reload to nepieņems un vecais darbojas tālāk.</p>
+      </div>
+    </section>
+
+
+
+
+</main>
+
+<script src="../js/shell.js?v=190"></script>
+<script src="../js/theme.js?v=190"></script>
+<script src="../js/main.js?v=190"></script>
+</body>
+</html>
